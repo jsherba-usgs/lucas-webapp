@@ -9,7 +9,7 @@ module.exports = {
   devtool: isProd ? 'hidden-source-map' : 'cheap-eval-source-map',
   context: path.join(__dirname, './src'),
   entry: {
-    js: './components/main.js',
+    js: './index.js',
     vendor: ['smooth-scroll']
   },
   output: {
@@ -20,7 +20,7 @@ module.exports = {
     loaders: [
       {
         test: /\.html$/,
-        loader: 'file'
+        loader: 'html'
       },
       {
         test: /\.css$/,

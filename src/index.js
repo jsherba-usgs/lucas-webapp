@@ -2,12 +2,15 @@
 import smoothScroll from 'smooth-scroll';
 
 // Import Styles
-import './../style/main.css';
-import './../style/flexboxgrid.css';
+import './style/main.css';
+import './style/flexboxgrid.css';
+import './style/components.css';
 
-// Import Modules
-import utils from './utils.js';
-import filters from './filters/filters.js';
+// Import Helpers
+import service from './helpers/api-service.js';
+
+// Import Components
+import filters from './components/filters/filters.js';
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -40,5 +43,17 @@ document.addEventListener('DOMContentLoaded', () => {
   headerToggle.addEventListener('touchstart', responsiveMenuToggle);
 
   // Init filters
-  filters.init();
+  const container = document.getElementById('filters');
+  const scenario = '6370';
+  filters.init(container);
+
+  console.log(filters.scenario('6370'));
+
+  const params = {
+    scenario: '6370',
+    secondary_stratum: 'Maui',
+    stratum: 'Dry',
+    timestep: 2061,
+  };
+  //service.loadStates(params);
 });

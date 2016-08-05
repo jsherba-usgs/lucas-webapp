@@ -1,29 +1,38 @@
-<header>
-  <h2>Filters</h2>
-</header>
-
-<div class="row">
-  <div class="col-xs-12">
-    <p>Elementum sem parturient nulla quam placerat viverra
-    mauris non cum elit tempus ullamcorper dolor. Libero rutrum ut lacinia
-    donec curae mus. Eleifend id porttitor ac ultricies lobortis sem nunc
-    orci ridiculus faucibus a consectetur. Porttitor curae mauris urna mi dolor.</p>
+<div class="filters">
+  <p>Choose Options</p>
+  <div class="row">
+    <div class="col-xs-12">
+      <p class="label">SCENARIO</p>
+      <select name="scenario">
+        <option value="6368">6368 | BAU 60TS; 1MC</option>
+        <option value="6370">6370 | BAU 60TS; 20MC</option>
+        <option value="6374">6374 | BAU 60TS; 100MC</option>
+      </select>
+    </div>
+    <div class="col-xs-12">
+      <p class="label">STRATUM</p>
+      <select name="stratum">
+        <option value="all">All</option>
+        <option value="Dry">Dry</option>
+        <option value="Wet">Wet</option>
+        <option value="Mesic">Mesic</option>
+      </select>
+    </div>
+    <div class="col-xs-12">
+      <p class="label">ISLAND</p>
+      <select name="secondary_stratum">
+        <option value="Hawai'i">Hawai'i</option>
+        <option value="Kaho'olawe">Kaho'olawe</option>
+        <option value="Kaua'i">Kaua'i</option>
+        <option value="Lana'i">Lana'i</option>
+        <option value="Maui">Maui</option>
+        <option value="Moloka'i">Moloka'i</option>
+        <option value="Ni'ihau">Ni'ihau</option>
+        <option value="O'ahu">O'ahu</option>
+      </select>
+    </div>
+    <div class="col-xs-12">
+      <button>Update</button>
+    </div>
   </div>
 </div>
-
-<form method="post" action="#">
-  <div class="row">
-    <div class="col-xs-12 col-md-6">
-      <input type="text" name="name" placeholder="Name" />
-    </div>
-    <div class="col-xs-12 col-md-6">
-      <input type="text" name="email" placeholder="Email" />
-    </div>
-    <div class="col-xs-12">
-      <textarea name="message" placeholder="Message"></textarea>
-    </div>
-    <div class="col-xs-12">
-      <input type="submit" value="Send Message" />
-    </div>
-  </div>
-</form>
