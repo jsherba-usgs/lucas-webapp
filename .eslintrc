@@ -1,0 +1,14 @@
+extends: 
+  eslint-config-airbnb
+
+env:
+  browser: true
+  es6: true
+
+rules:
+  indent: 2
+  func-style: 0
+  func-names: 0
+  comma-dangle: 0
+  no-console: 0
+  no-param-reassign: 0

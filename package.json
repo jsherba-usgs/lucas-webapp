@@ -1,0 +1,38 @@
+{
+  "name": "webpack2-react-redux-budget-app-sample",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Budgeting App Sample - React, Redux, Webpack 2",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "./node_modules/.bin/webpack-dev-server --history-api-fallback --progress --port 3000",
+    "build": "node build.js production"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "babel-core": "^6.7.2",
+    "babel-loader": "^6.2.4",
+    "babel-plugin-transform-class-properties": "^6.6.0",
+    "babel-plugin-transform-runtime": "^6.6.0",
+    "babel-preset-es2015-native-modules": "^6.6.0",
+    "babel-preset-react": "^6.5.0",
+    "css-loader": "^0.23.1",
+    "eslint": "^3.2.2",
+    "eslint-config-airbnb": "^10.0.0",
+    "eslint-plugin-import": "^1.12.0",
+    "eslint-plugin-jsx-a11y": "^2.0.1",
+    "eslint-plugin-react": "^6.0.0",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "file-loader": "^0.8.5",
+    "style-loader": "^0.13.0",
+    "url-loader": "^0.5.7",
+    "webpack": "^2.1.0-beta.4",
+    "webpack-dev-server": "^2.0.0-beta"
+  },
+  "dependencies": {
+    "babel-runtime": "^6.6.1",
+    "es6-promise": "^3.1.2",
+    "smooth-scroll": "github:cferdinandi/smooth-scroll"
+  }
+}
