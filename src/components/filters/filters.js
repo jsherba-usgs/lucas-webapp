@@ -1,35 +1,123 @@
 import content from './filters.html';
+import { triggerEvent } from './../../helpers/utils';
+import projects from './../../helpers/project-details';
 
-const module = {};
+const model = {};
 
 let filtersContainer;
-let scenario;
-let stratum;
-let secondaryStratum;
+let projectId;
+let details;
+let projectSelect;
+let scenarioSelect;
+let secStratumSelect;
+let stratumSelect;
+let iterationInput;
+let updateButton;
 
-module.init = (el) => {
-  // Initialize container
-  if (!el) {
-    filtersContainer = document.getElementById('filters');
-  } else {
-    filtersContainer = el;
+function removeOptions(selectbox) {
+  for (let i = 0; i < selectbox.options.length; i++) {
+    if (selectbox.options[i].value !== 'All') {
+      selectbox.remove(i);
+    }
   }
+}
 
-  // Add content
+function updateIterationInput() {
+  const id = scenarioSelect.value;
+  const scenarioDetail = details.scenario.find((item) => item.id === id);
+  iterationInput.max = scenarioDetail.iterations;
+}
+
+
+function updateFields() {
+  projectId = this.options[this.selectedIndex].value;
+  details = projects.getDetailsForId(projectId).details;
+
+  if (details) {
+    // Populate scenario select box
+    scenarioSelect = filtersContainer.querySelector('select[name=scenario]');
+    removeOptions(scenarioSelect);
+    details.scenario.forEach((item) => {
+      const option = document.createElement('option');
+      option.text = item.name;
+      option.value = item.id;
+      scenarioSelect.add(option);
+    });
+    scenarioSelect.disabled = false;
+
+    // Populate secondary stratum select box
+    secStratumSelect = filtersContainer.querySelector('select[name=secondary_stratum]');
+    removeOptions(secStratumSelect);
+    details.secondary_stratum.forEach((item) => {
+      const option = document.createElement('option');
+      option.text = item;
+      option.value = item;
+      secStratumSelect.add(option);
+    });
+    secStratumSelect.disabled = false;
+
+    // Populate stratum select box
+    stratumSelect = filtersContainer.querySelector('select[name=stratum]');
+    removeOptions(stratumSelect);
+    details.stratum.forEach((item) => {
+      const option = document.createElement('option');
+      option.text = item;
+      option.value = item;
+      stratumSelect.add(option);
+    });
+    stratumSelect.disabled = false;
+
+    // Populate iteration input box
+    iterationInput = filtersContainer.querySelector('input[name=iteration]');
+    iterationInput.disabled = false;
+  }
+}
+
+model.init = () => {
+  // Initialize container
+  filtersContainer = document.getElementById('filters');
   filtersContainer.innerHTML = content;
 
-  scenario = filtersContainer.querySelector('select[name=scenario]').value;
-  stratum = filtersContainer.querySelector('select[name=stratum]').value;
-  secondaryStratum = filtersContainer.querySelector('select[name=secondary_stratum]').value;
+  // Add list of projects to content
+  projectSelect = filtersContainer.querySelector('select[name=project]');
+
+  projects.getList().forEach((project) => {
+    const option = document.createElement('option');
+    option.text = project;
+    option.value = project;
+    projectSelect.add(option);
+  });
+
+  projectSelect.onchange = updateFields;
+  projectSelect.onchange();
+
+  scenarioSelect.onchange = updateIterationInput;
+  scenarioSelect.onchange();
+
+  // Create a custom event that is dispatched when Update button on form is clicked
+  const form = filtersContainer.querySelector('form');
+
+  form.onsubmit = function (e) {
+    // prevent default
+    e.preventDefault();
+    // dispatch custom event
+    triggerEvent(document, 'filters.change', {
+      detail: model.getValues()
+    });
+  };
+  triggerEvent(document, 'filters.change', {
+    detail: model.getValues()
+  });
 };
 
-module.scenario = (...args) => {
-  if (args.length > 0) {
-    scenario = args[0];
-    filtersContainer.querySelector('select[name=scenario]').value = scenario;
-    return scenario;
+model.getValues = () => (
+  {
+    project: projectSelect.value,
+    scenario: scenarioSelect.value,
+    stratum: stratumSelect.value,
+    secondary_stratum: secStratumSelect.value,
+    iteration: iterationInput.value,
   }
-  return scenario;
-};
+);
 
-export default module;
+export default model;

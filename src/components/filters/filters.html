@@ -1,53 +1,47 @@
 <div class="inner">
   <h2>Select Options</h2>
   <section>
-    <form method="post" action="#">
+    <form>
+      <div class="row">
+        <div class="field col-xs-12">
+          <label for="project">Project</label>
+          <div class="select-wrapper">
+            <select name="project">
+            </select>
+          </div>       
+        </div>
+      </div>
       <div class="row">
         <div class="field col-xs-12 col-md-6">
           <label for="scenario">Scenario</label>
           <div class="select-wrapper">
-            <select name="scenario">
-              <option value="6368">6368 | BAU 60TS; 1MC</option>
-              <option value="6370">6370 | BAU 60TS; 20MC</option>
-              <option value="6374">6374 | BAU 60TS; 100MC</option>
+            <select name="scenario" disabled>
             </select>
           </div>       
         </div>
         <div class="field col-xs-12 col-md-6">
           <label for="iteration">Iteration</label>
-          <input type="radio" name="iteration" checked="">
-          <label for="iteration">1st Iteration</label>
+          <input name="iteration" type="number" min="1" max="10" step="1" value="1" disabled/> 
         </div>
       </div>
       <div class="row">
         <div class="col-xs-12 col-md-6">
-          <label for="secondary_stratum">Island (Secondary Stratum)</label>
+          <label for="secondary_stratum">Secondary Stratum</label>
           <div class="select-wrapper">
-            <select name="secondary_stratum">
-              <option value="Hawai'i">Hawai'i</option>
-              <option value="Kaho'olawe">Kaho'olawe</option>
-              <option value="Kaua'i">Kaua'i</option>
-              <option value="Lana'i">Lana'i</option>
-              <option value="Maui">Maui</option>
-              <option value="Moloka'i">Moloka'i</option>
-              <option value="Ni'ihau">Ni'ihau</option>
-              <option value="O'ahu">O'ahu</option>
+            <select name="secondary_stratum" disabled>
             </select>
           </div>
         </div>
         <div class="col-xs-12 col-md-6">
           <label for="stratum">Moisture Zone (Stratum)</label>
           <div class="select-wrapper">
-            <select name="stratum">
-              <option value="all">All</option>
-              <option value="Dry">Dry</option>
-              <option value="Wet">Wet</option>
-              <option value="Mesic">Mesic</option>
+            <select name="stratum" disabled>
+              <option value="All">All</option>
             </select>
           </div>
         </div>
       </div>
-      <div class="row actions">
+      <div class="row actions" style="justify-content:center;">
         <input type="submit" value="Update" class="special" />
       </div>
     </form>
