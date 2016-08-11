@@ -1,0 +1,119 @@
+/* Chart Axes */
+.axis text {
+  font: 10px sans-serif;
+}
+
+.x-axis-group.axis path {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 0;
+  shape-rendering: crispEdges;
+}
+
+.x-axis-group.axis line {
+  stroke: rgba(129, 140, 158, 0.5);
+  fill: none;
+  stroke-dasharray: 3,3;
+  stroke-width: 0.2%;
+}
+
+.y-axis-group-1.axis path {
+  stroke: rgba(129, 140, 158, 0.5);
+  fill: none;
+  stroke-dasharray: 3,3;
+  stroke-width: 0.2%;
+}
+
+.y-axis-group-1.axis line {
+  stroke: rgba(129, 140, 158, 0.5);
+  fill: none;
+  stroke-dasharray: 3,3;
+  stroke-width: 0.2%;
+}
+
+.y-axis-group-2.axis path {
+  fill: none;
+  stroke: none;
+  stroke-width: 0;
+}
+
+
+
+/* Slider */
+.x-brush-axis-group.axis path, .x-brush-axis-group.axis line {
+  fill: none;
+  stroke: #d3d3d3;
+  stroke-width: 2;
+}
+
+.brush .extent {
+  stroke: #FFF;
+  stroke-width: 2;
+  shape-rendering: crispEdges;
+}
+
+
+/* Data */
+.timeseries-area .area {
+  fill: rgba(129, 140, 158, 0.15);
+  clip-path: url(#clip);
+}
+
+.timeseries-line .line {
+  fill: none;
+  stroke: #aaa;
+  clip-path: url(#clip);
+  stroke-width: 2;
+}
+
+.timeseries-line g.display-default .line {
+  opacity: 0.4;
+  stroke-width: 1;
+}
+
+.timeseries-line g.display-hide .line {
+  opacity: 0;
+  stroke-width: 1;
+}
+
+.timeseries-line g.display-highlight .line  {
+  opacity: 1;
+  stroke-width: 2;
+}
+
+rect.pane {
+  cursor: move;
+  fill: none;
+  pointer-events: all;
+}
+
+/* Annotation */
+.annotated-x-axis path {
+  stroke: rgba(129, 140, 158, 0.8);
+  stroke-width: 1;
+  fill: rgba(129, 140, 158, 0.8);
+  clip-path: url(#clip);
+
+}
+
+.annotated-x-axis .tick line  {
+  fill: none;
+  stroke: rgba(129, 140, 158, 0.8);
+  stroke-width: 0.2%;
+  clip-path: url(#clip);
+}
+
+.annotated-x-axis text {
+  clip-path: url(#clip);
+}
+
+.annotation text {
+  font-size: 0.8em;
+  fill: #444;
+}
+
+.hover-line {
+  stroke: #333;
+}
+
+
