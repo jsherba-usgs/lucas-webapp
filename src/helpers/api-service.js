@@ -23,7 +23,7 @@ function getAllRecords(urlWithParams) {
       makeRequest(opts)
         .then((response) => {
           if (!response) {
-            reject('No response from server');
+            reject(Error('No response from server'));
           }
           series = series.concat(response.results);
           if (!response.next) {
@@ -46,8 +46,16 @@ service.loadStates = (params) => {
       `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`).join('&');
     url = `${url}?${params}`;
   }
-  getAllRecords(url)
-    .then((response) => response);
+  return new Promise((resolve, reject) => {
+    getAllRecords(url)
+      .then((response) => {
+        if (!response) {
+          reject(Error('No response from server'));
+        } else {
+          resolve(response);
+        }
+      });
+  });
 };
 
 service.loadTransitions = (params) => {
