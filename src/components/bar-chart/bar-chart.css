@@ -1,0 +1,14 @@
+/* Chart Axes */
+
+#section2-barchart .axis text {
+  font: 10px sans-serif;
+  fill: rgba(129, 140, 158, 0.5);;
+}
+
+#section2-barchart .axis path, .axis line {
+  fill: none;
+  stroke: rgba(129, 140, 158, 0.5);
+  shape-rendering: crispEdges;
+}
+
+
