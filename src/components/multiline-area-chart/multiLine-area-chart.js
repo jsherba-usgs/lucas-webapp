@@ -175,14 +175,12 @@ const chart = () => {
           dispatch.mouseout();
         })
         .on('click', function () {
-          var mouse  = d3.mouse(this);
+          const mouse = d3.mouse(this);
           // Dispatch click event
           dispatch.click(mouse, xScale);
         });
 
-      // Adds a div to svg's parent div
-      d3.select(this).append('div')
-        .attr('class', 'chart-tooltip hidden');
+
       /*
       *  End of all the elements appended to svg only once
       */
@@ -202,6 +200,9 @@ const chart = () => {
       // Update the x-axis.
       svg.select('.x-axis-group.axis')
         .attr({ transform: `translate(0, ${chartH})` });
+
+      // Call render chart function
+      exports.render();
     });
   }
 
@@ -360,6 +361,14 @@ const chart = () => {
       .attr('d', (d) => line(d.values))
       .style('stroke', (d) => color(d.name));
 
+    lineLabels.transition().duration(1000)
+      .attr('transform', (d) => `translate(0, ${yScale(d.values[0].values)})`)
+      .attr('dx', '-0.25em')
+      .attr('dy', '0.25em')
+      .attr('text-anchor', 'end')
+      .style('fill', (d) => color(d.name))
+      .text((d) => d.name);
+
     // D3 ENTER
     lineGroups.enter()
       .append('g')
@@ -383,6 +392,8 @@ const chart = () => {
     // If exits need to happen, apply a transition and remove DOM elements
     // when the transition has finished
     lineGroups.exit()
+      .remove();
+    lineLabels.exit()
       .remove();
   };
 
