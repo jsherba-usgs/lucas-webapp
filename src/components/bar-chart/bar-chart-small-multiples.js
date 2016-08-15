@@ -1,4 +1,7 @@
 import d3 from 'd3';
+import tip from 'd3-tip';
+
+d3.tip = tip;
 
 const chart = () => {
   /**
@@ -7,7 +10,7 @@ const chart = () => {
 
   let margin = { top: 30, right: 40, bottom: 20, left: 60 };
   let width = 300;
-  let height = 250;
+  let height = 200;
   let color = d3.scale.category10();
   let yAxisAnnotation = 'Linear Scale';
   let xAxisAnnotation = 'Ordinal Scale';
@@ -21,6 +24,9 @@ const chart = () => {
   let data;
   let container;
   let xRoundBands = 0.2;
+  const tooltip = d3.tip()
+    .attr('class', 'd3-tip')
+    .html((d) => `${d.name} - ${d.value}`);
 
   // X scale
   const xScale = d3.scale.ordinal();
@@ -30,7 +36,8 @@ const chart = () => {
 
   // X Axis on bottom of chart
   const xAxis = d3.svg.axis()
-    .scale(xScale);
+    .scale(xScale)
+    .tickFormat((d) => d.substring(0, 2));
 
   // First Y axis on the left side of chart
   const yAxis = d3.svg.axis()
@@ -66,8 +73,6 @@ const chart = () => {
       yScale
         .range([chartH, 0]).nice()
         .domain([minY, maxY]);
-
-      console.log(yScale(0));
 
       // Create a div and an SVG element for each element in
       // our data array. Note that data is a nested array
@@ -109,22 +114,15 @@ const chart = () => {
         .style('text-anchor', 'middle')
         .classed('y-axis-label', true);
 
-      // Invisible rect for mouse tracking since you
-      // can't catch mouse events on a g element
-      container.append('svg:rect')
-        .attr('width', chartW)
-        .attr('height', chartH)
-        .attr('fill', 'none')
-        .attr('pointer-events', 'all')
-        .on('mouseout', function () {
-          dispatch.mouseout();
-        })
-        .on('click', function () {
-          const mouse = d3.mouse(this);
-          // Dispatch click event
-          dispatch.click(mouse);
-        });
+      // Add Y axis label to annotation
+      annotation.append('text')
+        .attr('y', 0 - margin.top)
+        .attr('x', (chartW / 2))
+        .attr('dy', '1em')
+        .style('text-anchor', 'middle')
+        .classed('year-label', true);
 
+      container.call(tooltip);
 
       /*
       *  End of all the elements appended to svg only once
@@ -207,6 +205,7 @@ const chart = () => {
 
   exports.render = function () {
     exports.drawAxes();
+    exports.drawLabels();
     container.each(exports.drawBars);
   };
 
@@ -218,10 +217,10 @@ const chart = () => {
       .transition().duration(1000)
       .call(yAxis);
 
-    // Remove comments to draw x axis with category labels
-/*    container.select('.x-axis-group.axis')
+    // Draw x axis with category labels
+    container.select('.x-axis-group.axis')
       .transition().duration(1000)
-      .call(xAxis);*/
+      .call(xAxis);
 
     // Draw 0 x axis only if data has negative values
     if (d3.min(yScale.domain()) < 0) {
@@ -232,9 +231,15 @@ const chart = () => {
 
   };
 
+  exports.drawLabels = function () {
+    container.select('.year-label')
+      .transition().duration(1000)
+      .text('')
+      .text((d) => d.key);
+  };
 
-  exports.drawBars = function (c, i) {
 
+  exports.drawBars = function (category) {
     const barsContainer = container.select('g.bars');
     const bars = barsContainer.selectAll('rect').data((c) => c.values);
 
@@ -256,7 +261,9 @@ const chart = () => {
       .attr('x', (d) => xScale(xValue(d)))
       .attr('height', (d) => Math.abs(yScale(yValue(d)) - yScale(0)))
       .attr('width', xScale.rangeBand())
-      .style('fill', (d) => color(xValue(d)));
+      .style('fill', (d) => color(xValue(d)))
+      .on('mouseover', tooltip.show)
+      .on('mouseout', tooltip.hide);
 
     // D3 EXIT
     // If exits need to happen, apply a transition and remove DOM elements

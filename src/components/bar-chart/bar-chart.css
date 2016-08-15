@@ -11,4 +11,15 @@
   shape-rendering: crispEdges;
 }
 
+#section2-barchart .x-axis-group.axis path {
+  fill: none;
+  stroke: none;
+}
+
+#section2-barchart .x-axis-group.axis line {
+  fill: none;
+  stroke: rgba(129, 140, 158, 0.5);
+  shape-rendering: crispEdges;
+}
+
 
