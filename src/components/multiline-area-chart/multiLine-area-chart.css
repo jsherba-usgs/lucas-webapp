@@ -37,21 +37,10 @@
   stroke-width: 0;
 }
 
-
-
-/* Slider */
-.x-brush-axis-group.axis path, .x-brush-axis-group.axis line {
+.y-axis-group-2.axis text {
   fill: none;
-  stroke: #d3d3d3;
-  stroke-width: 2;
+  stroke: none;
 }
-
-.brush .extent {
-  stroke: #FFF;
-  stroke-width: 2;
-  shape-rendering: crispEdges;
-}
-
 
 /* Data */
 .timeseries-area .area {
@@ -66,19 +55,8 @@
   stroke-width: 2;
 }
 
-.timeseries-line g.display-default .line {
-  opacity: 0.4;
-  stroke-width: 1;
-}
-
-.timeseries-line g.display-hide .line {
-  opacity: 0;
-  stroke-width: 1;
-}
-
-.timeseries-line g.display-highlight .line  {
-  opacity: 1;
-  stroke-width: 2;
+.timeseries-line text {
+  font: 11px sans-serif;
 }
 
 rect.pane {

@@ -21,6 +21,15 @@ const model = {};
 let map;
 let mapContainer;
 let settings;
+const info = L.control();
+info.onAdd = function () {
+  this._div = L.DomUtil.create('div', 'info');
+  this.update();
+  return this._div;
+};
+info.update = function (year) {
+  this._div.innerHTML = year || 2001;
+};
 
 /**
 * PRIVATE FUNCTIONS
@@ -58,6 +67,8 @@ model.init = ({ selector, lat = 19.6, lng = -155.4, scenario = '6368', iteration
     scenario: scenario.toString(),
     iteration: iteration.toString(),
   };
+
+  info.addTo(map);
 };
 
 model.updateRaster = (...args) => {
@@ -79,6 +90,7 @@ model.updateRaster = (...args) => {
 
   if (update) {
     const url = `http://stage.landcarbon.org/tiles/s${settings.scenario}-it${leftPad(settings.iteration)}-ts${settings.year}-sc/{z}/{x}/{y}.png?style=lulc`;
+    info.update(settings.year);
     stateclassTiles.setUrl(url);
   }
 };

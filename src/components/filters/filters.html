@@ -2,46 +2,40 @@
   <h2>Select Options</h2>
   <section>
     <form>
-      <div class="row">
-        <div class="field col-xs-12">
-          <label for="project">Project</label>
-          <div class="select-wrapper">
-            <select name="project">
-            </select>
-          </div>       
+      <div class="field-full">
+        <label for="project">Project</label>
+        <div class="select-wrapper">
+          <select name="project">
+          </select>
+        </div>       
+      </div>
+      <div class="field">
+        <label for="scenario">Scenario</label>
+        <div class="select-wrapper">
+          <select name="scenario" disabled>
+          </select>
+        </div>       
+      </div>
+      <div class="field">
+        <label for="iteration">Iteration</label>
+        <input name="iteration" type="number" min="1" max="10" step="1" value="1" disabled/> 
+      </div>
+      <div class="field">
+        <label for="secondary_stratum">Secondary Stratum</label>
+        <div class="select-wrapper">
+          <select name="secondary_stratum" disabled>
+          </select>
         </div>
       </div>
-      <div class="row">
-        <div class="field col-xs-12 col-md-6">
-          <label for="scenario">Scenario</label>
-          <div class="select-wrapper">
-            <select name="scenario" disabled>
-            </select>
-          </div>       
-        </div>
-        <div class="field col-xs-12 col-md-6">
-          <label for="iteration">Iteration</label>
-          <input name="iteration" type="number" min="1" max="10" step="1" value="1" disabled/> 
+      <div class="field">
+        <label for="stratum">Moisture Zone (Stratum)</label>
+        <div class="select-wrapper">
+          <select name="stratum" disabled>
+            <option value="All">All</option>
+          </select>
         </div>
       </div>
-      <div class="row">
-        <div class="col-xs-12 col-md-6">
-          <label for="secondary_stratum">Secondary Stratum</label>
-          <div class="select-wrapper">
-            <select name="secondary_stratum" disabled>
-            </select>
-          </div>
-        </div>
-        <div class="col-xs-12 col-md-6">
-          <label for="stratum">Moisture Zone (Stratum)</label>
-          <div class="select-wrapper">
-            <select name="stratum" disabled>
-              <option value="All">All</option>
-            </select>
-          </div>
-        </div>
-      </div>
-      <div class="row actions" style="justify-content:center;">
+      <div class="field-full">
         <input type="submit" value="Update" class="special" />
       </div>
     </form>

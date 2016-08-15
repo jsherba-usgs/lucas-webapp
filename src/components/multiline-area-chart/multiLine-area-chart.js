@@ -5,7 +5,7 @@ const chart = () => {
   * PUBLIC VARIABLES
   **/
 
-  let margin = { top: 10, right: 40, bottom: 20, left: 60 };
+  let margin = { top: 30, right: 40, bottom: 20, left: 60 };
   let width = 1000;
   let height = 480;
   const chartClass = 'multiLinePlusArea';
@@ -192,7 +192,8 @@ const chart = () => {
       */
       // Update the outer dimensions.
       svg.transition()
-        .attr({ width, height });
+        .attr('width', width)
+        .attr('height', height);
 
       // Update the inner dimensions.
       svg.select('g')
@@ -298,8 +299,8 @@ const chart = () => {
       .call(yAxis2);
 
     // Update y axis label
-    svg.select('.y-axis-label')
-      .text(yAxisAnnotation);
+/*    svg.select('.y-axis-label')
+      .text(yAxisAnnotation);*/
 
     // Update the x-axis.
     svg.select('.x-axis-group.axis')
@@ -370,12 +371,10 @@ const chart = () => {
 
     lineLabels.enter()
       .append('text')
-        .attr("transform", (d) => {
-          console.log(d.name, d.values[0].values);
-          return "translate(0," + (d.values[0].values) + ")"
-        })
-        .attr("dy", ".35em")
-        .attr("text-anchor", "start")
+        .attr('transform', (d) => `translate(0, ${yScale(d.values[0].values)})`)
+        .attr('dx', '-0.25em')
+        .attr('dy', '0.25em')
+        .attr('text-anchor', 'end')
         .style('fill', (d) => color(d.name))
         .text((d) => d.name);
 
