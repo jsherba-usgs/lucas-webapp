@@ -51,6 +51,8 @@ service.loadStates = (params) => {
       .then((response) => {
         if (!response) {
           reject(Error('No response from server'));
+        } else if (response.length === 0) {
+          reject(Error('No data'));
         } else {
           resolve(response);
         }
