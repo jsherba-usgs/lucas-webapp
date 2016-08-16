@@ -22,7 +22,7 @@ const parentContainer = document.getElementById('one');
 const mapContainer = document.getElementById('map');
 const sliderContainer = parentContainer.querySelector('.chroniton-slider');
 let slider;
-const controlsContainer = parentContainer.querySelector('.chroniton-controls');
+const controlsContainer = parentContainer.querySelector('.controls');
 const chartContainer = parentContainer.querySelector('.chart');
 let timeseriesChart;
 

@@ -305,7 +305,7 @@
 		width: -webkit-max-content;
 		width: -ms-max-content;
 		width: max-content;
-		margin-bottom: 2em;
+		margin-bottom: 1em;
 	}
 
 		header.major > :first-child {
@@ -1840,7 +1840,7 @@
 /**********************************
 * Common Chart Elements
 **********************************/
-
+/* Charts */
 .chart {
 	height: 400px;
 	background-color: #fff;
@@ -1867,6 +1867,7 @@
   transform:translate(-50%,-50%);
 }
 
+/* Button controls */
 .controls {
 	text-align: center;
 	margin-top: 15px;
