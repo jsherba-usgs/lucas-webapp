@@ -900,11 +900,9 @@
 		-webkit-transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, color 0.2s ease-in-out;
 		-ms-transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, color 0.2s ease-in-out;
 		transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, color 0.2s ease-in-out;
-		background-color: transparent;
 		border: 0;
 		border-radius: 0;
-		box-shadow: inset 0 0 0 2px #c9d4b2;
-		color: #444;
+		box-shadow: none;
 		cursor: pointer;
 		display: inline-block;
 		font-size: 0.8em;
@@ -917,6 +915,8 @@
 		text-decoration: none;
 		text-transform: uppercase;
 		white-space: nowrap;
+		background-color: #87A449;
+		color: #fff;
 	}
 
 		input[type="submit"]:hover, input[type="submit"]:active,
@@ -928,7 +928,7 @@
 		button:active,
 		.button:hover,
 		.button:active {
-			box-shadow: inset 0 0 0 2px #87A449;
+			box-shadow: inset 0 0 0 2px #c9d4b2;
 		}
 
 		input[type="submit"]:active,
@@ -936,8 +936,7 @@
 		input[type="button"]:active,
 		button:active,
 		.button:active {
-			background-color: rgba(155, 241, 255, 0.1);
-			box-shadow: inset 0 0 0 2px #697f39;
+			box-shadow: inset 0 0 0 2px #c9d4b2;
 		}
 
 		input[type="submit"]:focus,
@@ -945,8 +944,7 @@
 		input[type="button"]:focus,
 		button:focus,
 		.button:focus {
-			background-color: rgba(155, 241, 255, 0.1);
-			box-shadow: inset 0 0 0 2px #697f39;
+			box-shadow: inset 0 0 0 2px #c9d4b2;
 		}
 
 		input[type="submit"].icon:before,
@@ -984,115 +982,6 @@
 			height: 3em;
 			line-height: 3em;
 		}
-
-		input[type="submit"].next,
-		input[type="reset"].next,
-		input[type="button"].next,
-		button.next,
-		.button.next {
-			padding-right: 4.5em;
-			position: relative;
-		}
-
-			input[type="submit"].next:before, input[type="submit"].next:after,
-			input[type="reset"].next:before,
-			input[type="reset"].next:after,
-			input[type="button"].next:before,
-			input[type="button"].next:after,
-			button.next:before,
-			button.next:after,
-			.button.next:before,
-			.button.next:after {
-				-moz-transition: opacity 0.2s ease-in-out;
-				-webkit-transition: opacity 0.2s ease-in-out;
-				-ms-transition: opacity 0.2s ease-in-out;
-				transition: opacity 0.2s ease-in-out;
-				background-position: center right;
-				background-repeat: no-repeat;
-				background-size: 36px 24px;
-				content: '';
-				display: block;
-				height: 100%;
-				position: absolute;
-				right: 1.5em;
-				top: 0;
-				vertical-align: middle;
-				width: 36px;
-			}
-
-			input[type="submit"].next:before,
-			input[type="reset"].next:before,
-			input[type="button"].next:before,
-			button.next:before,
-			.button.next:before {
-				background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='36px' height='24px' viewBox='0 0 36 24' zoomAndPan='disable'%3E%3Cstyle%3Eline %7B stroke: %23ffffff%3B stroke-width: 2px%3B %7D%3C/style%3E%3Cline x1='0' y1='12' x2='34' y2='12' /%3E%3Cline x1='25' y1='4' x2='34' y2='12.5' /%3E%3Cline x1='25' y1='20' x2='34' y2='11.5' /%3E%3C/svg%3E");
-			}
-
-			input[type="submit"].next:after,
-			input[type="reset"].next:after,
-			input[type="button"].next:after,
-			button.next:after,
-			.button.next:after {
-				background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='36px' height='24px' viewBox='0 0 36 24' zoomAndPan='disable'%3E%3Cstyle%3Eline %7B stroke: %239bf1ff%3B stroke-width: 2px%3B %7D%3C/style%3E%3Cline x1='0' y1='12' x2='34' y2='12' /%3E%3Cline x1='25' y1='4' x2='34' y2='12.5' /%3E%3Cline x1='25' y1='20' x2='34' y2='11.5' /%3E%3C/svg%3E");
-				opacity: 0;
-				z-index: 1;
-			}
-
-			input[type="submit"].next:hover:after, input[type="submit"].next:active:after,
-			input[type="reset"].next:hover:after,
-			input[type="reset"].next:active:after,
-			input[type="button"].next:hover:after,
-			input[type="button"].next:active:after,
-			button.next:hover:after,
-			button.next:active:after,
-			.button.next:hover:after,
-			.button.next:active:after {
-				opacity: 1;
-			}
-
-			@media screen and (max-width: 1280px) {
-
-				input[type="submit"].next,
-				input[type="reset"].next,
-				input[type="button"].next,
-				button.next,
-				.button.next {
-					padding-right: 5em;
-				}
-
-			}
-
-		input[type="submit"].special,
-		input[type="reset"].special,
-		input[type="button"].special,
-		button.special,
-		.button.special {
-			background-color: #87A449;
-			box-shadow: none;
-			color: #fff;
-		}
-
-			input[type="submit"].special:hover, input[type="submit"].special:active,
-			input[type="reset"].special:hover,
-			input[type="reset"].special:active,
-			input[type="button"].special:hover,
-			input[type="button"].special:active,
-			button.special:hover,
-			button.special:active,
-			.button.special:hover,
-			.button.special:active {
-				background-color: #697f39;
-				color: #fff;
-			}
-
-			input[type="submit"].special:active,
-			input[type="reset"].special:active,
-			input[type="button"].special:active,
-			button.special:active,
-			.button.special:active {
-				background-color: #697f39;
-				color: #fff;
-			}
 
 		input[type="submit"].disabled, input[type="submit"]:disabled,
 		input[type="reset"].disabled,
@@ -1932,45 +1821,14 @@
 /**********************************
 * Section 1 Chart and Map Elements
 **********************************/
-#map {
+#one #map {
 	height: 550px;
 }
 
-#section1-timeseries {
-	height: 400px;
-	background-color: #fff;
-  position: relative;
-}
-
-#section1-timeseries.loading, #section1-timeseries.no-data {
-	background-color: #e6e6e6;
-}
-
-#section1-timeseries.loading:before {
-  content: 'Loading timeseries...';
-  position: absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-}
-
-#section1-timeseries.no-data:before {
-  content: 'No data';
-  position: absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-}
-
-.button-controls {
-	text-align: center;
-	margin-top: 15px;
-}
-
 /**********************************
-* Section 2 Chart Elements
+* Section 2 Elements
 **********************************/
-#section2-barchart {
+#two .chart.multiples {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -1979,11 +1837,21 @@
   position: relative;
 }
 
-#section2-barchart.loading, #section2-barchart.no-data {
+/**********************************
+* Common Chart Elements
+**********************************/
+
+.chart {
+	height: 400px;
+	background-color: #fff;
+  position: relative;
+}
+
+.chart.loading, .chart.no-data {
 	background-color: #e6e6e6;
 }
 
-#section2-barchart.loading:before {
+.chart.loading:before {
   content: 'Loading data...';
   position: absolute;
   top:50%;
@@ -1991,7 +1859,7 @@
   transform:translate(-50%,-50%);
 }
 
-#section2-barchart.no-data:before {
+.chart.no-data:before {
   content: 'No data';
   position: absolute;
   top:50%;
@@ -1999,13 +1867,10 @@
   transform:translate(-50%,-50%);
 }
 
-#section2-barchart .chart {
-  height: 200px;
+.controls {
+	text-align: center;
+	margin-top: 15px;
 }
-
-/**********************************
-* Common Chart Elements
-**********************************/
 
 /* Chart tooltip */
 .d3-tip {

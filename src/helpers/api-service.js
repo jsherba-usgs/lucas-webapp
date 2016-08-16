@@ -67,8 +67,18 @@ service.loadTransitions = (params) => {
       `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`).join('&');
     url = `${url}?${params}`;
   }
-  getAllRecords(url)
-    .then((response) => response);
+  return new Promise((resolve, reject) => {
+    getAllRecords(url)
+      .then((response) => {
+        if (!response) {
+          reject(Error('No response from server'));
+        } else if (response.length === 0) {
+          reject(Error('No data'));
+        } else {
+          resolve(response);
+        }
+      });
+  });
 };
 
 export default service;

@@ -81,10 +81,13 @@ const chart = () => {
       
       div.enter()
         .append('div')
-          .attr('class', 'chart')
+          .attr('class', 'barchart')
         .append('svg')
         .append('g')
           .attr('class', 'container');
+
+      div.exit()
+        .remove();
 
       let  svg = div.select('svg');
 
