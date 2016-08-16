@@ -12,6 +12,7 @@ const chart = () => {
   let width = 300;
   let height = 200;
   let color = d3.scale.category10();
+  let chartClass = 'barchart';
   let yAxisAnnotation = 'Linear Scale';
   let xAxisAnnotation = 'Ordinal Scale';
   let xValue = function(d) { return d.name; };
@@ -77,11 +78,11 @@ const chart = () => {
       // Create a div and an SVG element for each element in
       // our data array. Note that data is a nested array
       // with each element containing another array of 'values'
-      let div = d3.select(this).selectAll('.chart').data(data);
-      
+      const div = d3.select(this).selectAll(`.${chartClass}`).data(data);
+
       div.enter()
         .append('div')
-          .attr('class', 'barchart')
+          .attr('class', chartClass)
         .append('svg')
         .append('g')
           .attr('class', 'container');
@@ -199,6 +200,12 @@ const chart = () => {
   exports.yAxisAnnotation = function (_) {
     if (!_) return yAxisAnnotation;
     yAxisAnnotation = _;
+    return this;
+  };
+
+  exports.chartClass = function (_) {
+    if (!_) return chartClass;
+    chartClass = _;
     return this;
   };
 
