@@ -82,19 +82,20 @@ const chart = () => {
 
       div.enter()
         .append('div')
-          .attr('class', chartClass)
-        .append('svg')
-        .append('g')
-          .attr('class', 'container');
+          .attr('class', chartClass);
 
       div.exit()
         .remove();
 
-      let  svg = div.select('svg');
+      div.selectAll('svg').data([]).exit().remove();
+
+      const svg = div.append('svg');
 
       // Add a group element called Container that hold all elements in the chart
-      container = svg.select('g.container');
+      svg.append('g')
+          .attr('class', 'container');
 
+      container = svg.selectAll('g.container');
 
       // Add group element to Container for x axis
       container.append('g').classed('x-axis-group axis', true);
@@ -249,7 +250,7 @@ const chart = () => {
   };
 
 
-  exports.drawBars = function (category) {
+  exports.drawBars = function () {
     const barsContainer = container.select('g.bars');
     const bars = barsContainer.selectAll('rect').data((c) => c.values);
 
