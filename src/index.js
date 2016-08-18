@@ -85,7 +85,6 @@ document.addEventListener('DOMContentLoaded', () => {
   */
   section2.init();
 
-
   /*
   * INTIALIZATIONS FOR SECTION 3
   */
@@ -169,15 +168,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // Fetch data for transitions and update charts
     service.loadTransitions(params)
     .then((data) => {
-      console.log(data);
       // Group data by transition group and year, calculate total area (amount)
       const totalAreaByYear = d3.nest()
         .key((d) => d.TransitionGroup)
         .key((d) => d.Timestep)
         .rollup((v) => d3.sum(v, (d) => d.Amount))
         .entries(data);
-
-      console.log(totalAreaByYear);
 
       // Update section 3 ag contraction chart
       section3.update(totalAreaByYear);
