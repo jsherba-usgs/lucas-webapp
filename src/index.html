@@ -23,7 +23,7 @@
 
         <!-- Header -->
           <header id="header" class="alt">
-            <a href="index.html" class="logo">Land<strong>Carbon</strong> <span>ST-SIM Visualizer Prototype</span></a>
+            <a href="index.html" class="logo">Land<strong>Carbon</strong> <span>SyncroSim Visualizer Prototype</span></a>
             <nav>
               <a id="overlayOpen" href="#overlay">About</a>
             </nav>
@@ -35,13 +35,12 @@
           <section id="banner" class="major">
             <div class="inner">
               <header class="major">
-                <h1>Dynamics of Landuse Change in Hawai'i</h1>
+                <h1>Landuse Change Projections for Hawai'i</h1>
               </header>
               <div class="content">
-                <p>Explore dynamics of landuse/landcover (LULC) change for the state of Hawai'i using the State-and-transition modeling approach. Processes represented in this example include expansion/contraction of agricultural lands, urbanization, wildfire, shrub encroachment into grassland and harvest of tree plantations.</p>
-                <ul class="actions">
-                  <li><a href="#one" data-scroll class="button special">Explore</a></li>
-                </ul>
+                <p>
+                  Explore dynamics of land-use/land-cover (LULC) change projections for the state of Hawai'i. These datasets are a result of a USGS modeling project that simulates LULC change into the future over different scenarios using a state-and-transition simulation model (STSM). The STSM model was run using the <a href="http://syncrosim.com" target="blank">SyncroSim</a> framework and the ST-SIM module. Processes represented in this project include expansion/contraction of agricultural lands, urbanization, wildfire, shrub encroachment into grassland and harvest of tree plantations. Additional details on the STSM approach can be found in <a href="http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12597/full">Daniel et al (2016)</a>.
+                </p>
               </div>
             </div>
           </section>
@@ -59,9 +58,14 @@
               <section id="one">
                 <div class="inner">
                   <header class="major">
-                    <h2>Massa libero</h2>
+                    <h2>Change in LULC over time</h2>
                   </header>
-                  <p>Nullam et orci eu lorem consequat tincidunt vivamus et sagittis libero. Mauris aliquet magna magna sed nunc rhoncus pharetra. Pellentesque condimentum sem. In efficitur ligula tate urna. Maecenas laoreet massa vel lacinia pellentesque lorem ipsum dolor. Nullam et orci eu lorem consequat tincidunt. Vivamus et sagittis libero. Mauris aliquet magna magna sed nunc rhoncus amet pharetra et feugiat tempus.</p>
+                  <p>
+                    The landscape is divided spatially into simulation cells, each of which is 1x1 km in size. Simulations were run for 60 years with an annual timestep using initial conditions corresponding to the year 2001. A different number of Monte Carlo realizations (iterations) were run for different scenarios. Each cell is characterized by a group of state variables. One of these is the State Type of each cell which corresponds to one of the seven LULC classes. 
+                  </p>
+                  <p>
+                    The map below shows the change in State Type over the simulation period (2001 -2061) in 10 year intervals for selected combination of scenario, iteration, moisture zone (stratum) and island (secondary stratum). The chart below displays the total landscape area in each LULC class per year. Use the play, pause and stop controls or move the slider to see the changes.
+                  </p>
                 </div>
                 <div class="row">
                   <article class="col half">
@@ -86,9 +90,11 @@
               <section id="two">
                 <div class="inner">
                   <header class="major">
-                    <h2>Total Area by State Class</h2>
+                    <h2>Total LULC Area and Net Change</h2>
                   </header>
-                  <p>Nullam et orci eu lorem consequat tincidunt vivamus et sagittis libero. Mauris aliquet magna magna sed nunc rhoncus pharetra. Pellentesque condimentum sem. In efficitur ligula tate urna. Maecenas laoreet massa vel lacinia pellentesque lorem ipsum dolor. Nullam et orci eu lorem consequat tincidunt. Vivamus et sagittis libero. Mauris aliquet magna magna sed nunc rhoncus amet pharetra et feugiat tempus.</p>
+                  <p>
+                    The charts below show the total landscape area in square kilometers over the simulation period beginning with start of the simulation, then at a 10 year interval. Click on the Net Change button to see the net amount of change in landscape area over the previous decade. Hover over the bars for more detailed tooltip.
+                  </p>
                 </div>
                 <div class="controls" style="margin: 1em 0;">
                   <button class="total">Total Area</button>
@@ -105,19 +111,14 @@
               <section id="three">
                 <div class="inner">
                   <header class="major">
-                    <h2>Transition Groups</h2>
+                    <h2>Transition Types and Transition Pathways</h2>
                   </header>
-                  <p>Nullam et orci eu lorem consequat tincidunt vivamus et sagittis libero. Mauris aliquet magna magna sed nunc rhoncus pharetra. Pellentesque condimentum sem. In efficitur ligula tate urna. Maecenas laoreet massa vel lacinia pellentesque lorem ipsum dolor. Nullam et orci eu lorem consequat tincidunt. Vivamus et sagittis libero. Mauris aliquet magna magna sed nunc rhoncus amet pharetra et feugiat tempus.</p>
+                  <p>A set of all possible transition pathways between State Types is also defined in the model. For this project, the processes represented by these transition pathways include expansion and contraction of agricultural lands, urbanization, wildfire, shrub encroachment into grassland, harvest of tree plantations and shifts in moisture zones due to climate change.</p>
                 </div>
                 <div class="row">
-                  <article class="col half">
+                  <article class="col">
                     <div class="box">
                       <div class="chart timeseries"></div>
-                    </div>
-                  </article>
-                  <article class="col half">
-                    <div class="box">
-                      <div class="chart sankey"></div>
                     </div>
                   </article>
                 </div>
@@ -148,10 +149,24 @@
       <div id="overlay">
         <div class="inner">
           <p>
-            The USGS is involved in a variety of scenario-based modeling projects aimed at projecting land-use change into the future. One of these projects looks at using the State-and-transition simulation models (STSMs) to forecast landscape dynamics, including projecting changes in both vegetation and land use. Because the method is inherently stochastic, it is well suited for characterizing uncertainty in model projections. STSMs have been applied to a wide range of landscapes and management questions, including forests, rangelands, grasslands, wetlands, aquatic communities and urban areas, over spatial extents ranging from thousands to millions of hectares. Additional details on the STSM approach can be found in the paper by <a href="http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12597/full">Daniel et al (2016)</a>.
+            The USGS is involved in a variety of scenario-based modeling projects aimed at projecting land-use change into the future. Typically, these projects lead to the creation of many time-series datasets in the form of large tabular and spatial files. A common difficulty among land-use scenario researchers is efficiently managing, analyzing, and visualizing these datasets.
           </p>
           <p>
-            This site has been developed by University of California at Berkeley's Geospatial Innovation Facility (GIF).
+            The <a href="http://gif.berkeley.edu/" target="blank">Geospatial Innovation Facility</a> (GIF) at University of California, Berkeley has developed a prototype web application designed to ingest the tabular and spatial data stored within a generalized USGS land-use database that manages modeling results from <a href="http://www.apexrms.com/" target="blank">ApexRMS</a>'s <a href="http://syncrosim.com" target="blank">SyncroSim</a> software. The prototype web application consists of the following components:
+          </p>
+          <ul>
+            <li>
+              A public <a href="http://stage.landcarbon.org/api/">Application Programming Interface</a> (API) built on the <a href="http://www.django-rest-framework.org/">Django REST framework</a>. The API provides standardized access to data within the SyncroSim database for building web applications and data visualizations.
+            </li>
+            <li>
+              A data management console for researchers to manage projects and scenarios that have been imported into the SyncroSim database.
+            </li>
+            <li>
+              Interactive web based data visualizations built using the API that allow users to dynamically visualize dense time series of projected climate and land use futures.
+            </li>
+          </ul>
+          </p>
+            This prototype web application allows researchers to explore land-use data scenarios and quickly share land-use modeling results with colleagues and  the public. The interactive data visualizations presented here and new tools built using the API can be used to communicate complex data and introduce non-scientists to the concept of scenarios, thus successfully fulfilling the USGS mandate of sharing datasets and science with the public. 
           </p>
         </div>
         
