@@ -51,7 +51,7 @@
 .timeseries-line .line {
   fill: none;
   stroke: #aaa;
-  clip-path: url(#clip);
+  /* clip-path: url(#clip); */
   stroke-width: 2;
 }
 
