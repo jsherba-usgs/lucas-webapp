@@ -1,20 +1,10 @@
-{
-"nodes":[
-{"node":0,"name":"node0"},
-{"node":1,"name":"node1"},
-{"node":2,"name":"node2"},
-{"node":3,"name":"node3"},
-{"node":4,"name":"node4"}
-],
-"links":[
-{"source":0,"target":2,"value":2},
-{"source":1,"target":2,"value":2},
-{"source":1,"target":3,"value":2},
-{"source":0,"target":4,"value":2},
-{"source":2,"target":3,"value":2},
-{"source":2,"target":4,"value":2},
-{"source":3,"target":4,"value":4}
-]}
+// Adapted from http://www.d3noob.org/2013/02/formatting-data-for-sankey-diagrams-in.html
+import d3 from 'd3';
+
+const dataToNodeMap = () => {
+  
+  
+};
 
         // Move to other file
 
@@ -64,3 +54,5 @@
 /*        graph.nodes.forEach(function (d, i) {
           graph.nodes[i] = { "name": d };
         });*/
+
+export default dataToNodeMap;

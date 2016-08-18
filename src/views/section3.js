@@ -18,7 +18,7 @@ import sankeyChart from './../components/sankey-chart/sankey-chart';
 */
 const parentContainer = document.getElementById('three');
 const timeseriesContainer = parentContainer.querySelector('.chart.timeseries');
-//const sankeyContainer = parentContainer.querySelector('.chart.sankey');
+const sankeyContainer = parentContainer.querySelector('.chart.sankey');
 let timeseriesChart;
 let transitionsChart;
 
@@ -41,7 +41,6 @@ const view = {
       .width(timeseriesContainer.offsetWidth)
       .height(250)
       .yAxisAnnotation('Area (square kilometers)')
-      .color(stateclassColorScale)
       .xValue(xAccessor)
       .yValue(yAccessor)
       .on('click', (mousePos, xScale) => {
@@ -70,9 +69,9 @@ const view = {
 
 
     // sankey chart
-/*    transitionsChart = sankeyChart()
+    transitionsChart = sankeyChart()
       .width(sankeyContainer.offsetWidth)
-      .height(250);*/
+      .height(250);
   },
   update(nestedData) {
     // Remove loading/no-data class
@@ -102,26 +101,13 @@ const view = {
     // Filter timeseries data for Transition Pathways
     function filterTransitionPathways(row) {
       if (row.name.match(re)) {
-        //console.log('Transition pathway', row);
+        console.log('Transition pathway', row);
         return true;
       }
       return false;
     }
 
-    const transitionTypes = timeseriesData.filter(filterTransitionTypes);
-
-    // Set y domain
-    const domainRange = [];
-    transitionTypes.forEach((series) =>
-      series.values.forEach((d) => domainRange.push(d.values))
-    );
-    timeseriesChart.yDomain([0, d3.max(domainRange)]);
-
-    // Call timeseries chart
-    d3.select(timeseriesContainer)
-      .datum(transitionTypes)
-      .transition()
-      .call(timeseriesChart);
+    const transitionPathways = timeseriesData.filter(filterTransitionPathways);
 
     const dummyData = {
       "nodes":[
@@ -141,9 +127,25 @@ const view = {
       {"source":3,"target":4,"value":4}
       ]};
     // Call sankey chart
-/*    d3.select(sankeyContainer)
+    d3.select(sankeyContainer)
       .datum(dummyData)
-      .call(transitionsChart);*/
+      .transition()
+      .call(transitionsChart);
+
+
+    const transitionTypes = timeseriesData.filter(filterTransitionTypes);
+    // Set y domain
+    const domainRange = [];
+    transitionTypes.forEach((series) =>
+      series.values.forEach((d) => domainRange.push(d.values))
+    );
+    timeseriesChart.yDomain([0, d3.max(domainRange)]);
+
+    // Call timeseries chart
+    d3.select(timeseriesContainer)
+      .datum(transitionTypes)
+      .transition()
+      .call(timeseriesChart);
 
   }
 };
