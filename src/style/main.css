@@ -150,7 +150,7 @@
 	}
 
 	p {
-		margin: 0 0 2em 0;
+		margin: 0 0 1em 0;
 	}
 
 	h1, h2, h3, h4, h5, h6 {
@@ -327,7 +327,6 @@
 			font-weight: 600;
 			letter-spacing: 0.25em;
 			margin-bottom: 0;
-			text-transform: uppercase;
 		}
 
 		body.is-ie header.major > :first-child:after {
@@ -1440,10 +1439,8 @@
 				}
 
 				#banner > .inner .content p {
-					font-size: 0.7em;
+					font-size: 1.1em;
 					font-weight: 600;
-					letter-spacing: 0.25em;
-					text-transform: uppercase;
 				}
 
 		#banner.major {
@@ -1688,7 +1685,6 @@
 			max-height: 100vh;
 			opacity: 0;
 			overflow: auto;
-			text-align: center;
 			visibility: hidden;
 			width: 80vw;
 		}

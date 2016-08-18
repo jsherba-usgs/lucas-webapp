@@ -27,7 +27,7 @@ const chart = () => {
   let xRoundBands = 0.2;
   const tooltip = d3.tip()
     .attr('class', 'd3-tip')
-    .html((d) => `${d.name} - ${d.value}`);
+    .html((d) => `${d.name}: ${d.value} km<sup>2</sup>`);
 
   // X scale
   const xScale = d3.scale.ordinal();
