@@ -1,4 +1,7 @@
 import d3 from 'd3';
+import tip from 'd3-tip';
+
+d3.tip = tip;
 
 const chart = () => {
   /**
@@ -6,16 +9,21 @@ const chart = () => {
   **/
 
   let margin = { top: 30, right: 40, bottom: 20, left: 60 };
-  let width = 1000;
-  let height = 480;
-  let chartClass = 'multiLinePlusArea';
+  let width = 300;
+  let height = 200;
+  let color = d3.scale.ordinal()
+      .domain([])
+      .range(['#8c564b']);
+  let chartClass = 'linechart';
   let xValue = (d) => d.date;
   let yValue = (d) => +d.value;
   let xDomain = [new Date(2001, 1), new Date(2061, 1)];
   let yDomain = [0, 100];
-  let color = d3.scale.category10();
   let yAxisAnnotation = 'Ordinal Scale';
   let xAxisAnnotation = 'Time Scale';
+  const tooltip = d3.tip()
+    .attr('class', 'd3-tip')
+    .html((d) => `${d.key}: ${d.values} km<sup>2</sup>`);
 
   /**
   * PRIVATE VARIABLES
@@ -59,10 +67,7 @@ const chart = () => {
     .y0((d) => yScale(+d.min))
     .y1((d) => yScale(+d.max));
   // Events
-  const dispatch = d3.dispatch('click', 'mouseout', 'brushmove');
-
-  // TODO: Make it responsive
-  // http://stackoverflow.com/questions/20010864/d3-axis-labels-become-too-fine-grained-when-zoomed-in
+  const dispatch = d3.dispatch('click', 'mouseout', 'mouseover');
 
 
   function exports(_selection) {
@@ -75,13 +80,10 @@ const chart = () => {
       // been done by the time it reaches chart.
       data = _data;
 
+      // Setup scales
       xScale
         .range([0, chartW])
         .domain(xDomain);
-
-      xScaleBrush
-        .range([0, chartW])
-        .domain(xScale.domain());
 
       yScale
         .rangeRound([chartH, 0])
@@ -94,86 +96,57 @@ const chart = () => {
       // Create a div and an SVG element for each element in
       // our data array. Note that data is a nested array
       // with each element containing another array of 'values'
-      const div = d3.select(this).selectAll(`.${chartClass}`).data(data);
+      const div = d3.select(this).selectAll(`.${chartClass}`).data(_data);
 
       div.enter()
         .append('div')
-          .attr('class', chartClass)
-        .append('svg')
-        .append('g')
-          .attr('class', 'container');
+          .attr('class', chartClass);
 
       div.exit()
         .remove();
 
-      let  svg = div.select('svg');
+      div.selectAll('svg').data([]).exit().remove();
+
+      const svg = div.append('svg');
 
       // Add a group element called Container that hold all elements in the chart
+      svg.append('g')
+          .classed('container', true);
+
       container = svg.select('g.container');
-
-      // Add defintions of graphical objects to be used later inside
-      // a def container element.
-      const defs = svg.append('defs');
-
-      // Add a clip path for hiding parts of graph out of bounds
-      defs.append('clipPath')
-        .attr('id', 'clip')
-        .append('rect')
-          .attr('width', chartW)
-          .attr('height', chartH);
-
 
       // Add group element to Container for x axis
       container.append('g').classed('x-axis-group axis', true);
 
-      // Add group element to Container to hold data that will be drawn as area
+      // Add group element to Container to hold lines
+      container.append('g').classed('timeseries-line', true);
+
+       // Add group element to Container to hold areas
       container.append('g').classed('timeseries-area', true);
 
       // Add group element to Container for y axis on left and right of chart
       container.append('g').classed('y-axis-group-1 axis', true);
       container.append('g').classed('y-axis-group-2 axis', true);
 
-      // Add group element to Container tp hold data that will be drawn as lines
-      container.append('g').classed('timeseries-line', true);
-
       // Group element to hold annotations, explanatory text, legend
       const annotation = container.append('g').classed('annotation', true);
 
       // Add Y axis label to annotation
       annotation.append('text')
-          .attr('transform', 'rotate(-90)')
-          .attr('y', 0 - margin.left)
-          .attr('x', 0 - (chartH / 2))
-          .attr('dy', '1em')
-          .style('text-anchor', 'middle')
-          .classed('y-axis-label', true);
+        .attr('transform', 'rotate(-90)')
+        .attr('y', 0 - margin.left)
+        .attr('x', 0 - (chartH / 2))
+        .attr('dy', '1em')
+        .style('text-anchor', 'middle')
+        .classed('y-axis-label', true);
 
-      // Hover line for click events
-      container.append('g')
-        .append('line')
-          .classed('hover-line', true)
-          .attr('x1', 0)
-          .attr('x2', 0)
-          .attr('y1', 0)
-          .attr('y2', chartH)
-          .style('stroke-opacity', 0);
-
-      // Invisible rect for mouse tracking since you
-      // can't catch mouse events on a g element
-      container.append('svg:rect')
-        .attr('width', chartW)
-        .attr('height', chartH)
-        .attr('fill', 'none')
-        .attr('pointer-events', 'all')
-        .on('mouseout', function () {
-          dispatch.mouseout();
-        })
-        .on('click', function () {
-          const mouse = d3.mouse(this);
-          // Dispatch click event
-          dispatch.click(mouse, xScale);
-        });
-
+      // Add line label to annotation
+      annotation.append('text')
+        .attr('y', 0 - margin.top)
+        .attr('x', (chartW / 2))
+        .attr('dy', '1em')
+        .style('text-anchor', 'middle')
+        .classed('line-label', true);
 
       /*
       *  End of all the elements appended to svg only once
@@ -188,14 +161,13 @@ const chart = () => {
         .attr('height', height);
 
       // Update the inner dimensions.
-      svg.select('g')
+      svg.selectAll('g.container')
         .attr({ transform: `translate(${margin.left}, ${margin.top})` });
 
       // Update the x-axis.
       container.select('.x-axis-group.axis')
         .attr({ transform: `translate(0, ${chartH})` });
 
-      // Call render chart function
       exports.render();
     });
   }
@@ -241,6 +213,18 @@ const chart = () => {
     return this;
   };
 
+  exports.yAxisAnnotation = function (_) {
+    if (!_) return yAxisAnnotation;
+    yAxisAnnotation = _;
+    return this;
+  };
+
+  exports.chartClass = function (_) {
+    if (!_) return chartClass;
+    chartClass = _;
+    return this;
+  };
+
   exports.yDomain = function (_) {
     if (!_) return yDomain;
     yDomain = _;
@@ -253,34 +237,17 @@ const chart = () => {
     return this;
   };
 
-  exports.yAxisAnnotation = function (_) {
-    if (!_) return yAxisAnnotation;
-    yAxisAnnotation = _;
-    return this;
-  };
-
  /**
   * PUBLIC FUNCTIONS
   **/
 
-  exports.getColor = function (seriesName) {
-    if (!seriesName) return '#000';
-    return color(seriesName);
-  };
-
   exports.render = function () {
-    this.drawAxes();
-    container.each(exports.drawArea);
-    container.each(exports.drawLines);
+    exports.drawAxes();
+    exports.drawLabels();
+    //container.each(exports.drawLines);
+    exports.drawLines();
   };
 
-
-  exports.onBrush = function (brush) {
-    xScale.domain(brush.empty() ? xScaleBrush.domain() : brush.extent());
-    this.drawAxes();
-    container.each(exports.drawArea);
-    container.each(exports.drawLines);
-  };
 
   exports.drawAxes = function () {
     // Update the y-axis.
@@ -303,73 +270,59 @@ const chart = () => {
       .call(xAxis);
   };
 
-
-  exports.drawArea = function () {
-    const areaData = data.filter((series) => {
-      if (series.type === 'area') {
-        return series;
-      }
-      return null;
-    });
-    const areaGroupContainer = container.select('g.timeseries-area');
-    const areaGroups = areaGroupContainer.selectAll('path.area').data(areaData);
-
-    // D3 UPDATE
-    areaGroups.transition().duration(1000)
-      .attr('class', 'area')
-      .attr('d', (d) => area(d.values));
-
-    // D3 ENTER
-    areaGroups.enter()
-      .append('g')
-        .attr('class', (d) => d.name)
-      .append('path')
-        .attr('class', 'area')
-        .attr('d', (d) => area(d.values));
-
-    // D3 EXIT
-    // If exits need to happen, apply a transition and remove DOM elements
-    // when the transition has finished
-    areaGroups.exit()
-      .remove();
+  exports.drawLabels = function () {
+    container.select('.line-label')
+      .transition().duration(1000)
+      .text('')
+      .text((d) => d.name);
   };
 
-  exports.drawLines = function (c) {
-    console.log(c);
-    const lineGroupContainer = container.select('g.timeseries-line');
-    const lineGroups = lineGroupContainer.select('path.line').data(c.values);
 
-    // Add a group element for every timeseries. The path (line) for each time series
-    // is added to this group element. This is useful for changing the drawing order of
-    // lines on hover or click events.
+  exports.drawLines = function () {
+    let lineContainer = container.select('g.timeseries-line');
+    lineContainer.append('g').append('path');
+    lineContainer.select('g').append('circle');
+
+    lineContainer.call(tooltip);
+
+    let lines = lineContainer.select('path');
+    let circles = lineContainer.selectAll('circle').data((d) => d.values);
+
 
     // D3 UPDATE
-    lineGroups.transition().duration(1000)
+    lines.transition().duration(1000)
       .attr('class', 'line')
-      .attr('d', (d) => line(d))
-      .style('stroke', (d) => color(c.name));
+      .attr('d', (d) => line(d.values))
+      .style('stroke', (d) => color(d.name));
+
+    circles.enter()
+      .append('circle')
+        .attr('r', 2.5)
+        .attr('cx', (d) => xScale(xValue(d)))
+        .attr('cy', (d) => yScale(yValue(d)))
+        .style('fill', 'none')
+        .style('stroke', (d) => color(d.name))
+        .on('mouseover', tooltip.show)
+        .on('mouseout', tooltip.hide);
+
 
     // D3 ENTER
-    lineGroups.enter()
+    lines.enter()
       .append('g')
-        .attr('class', (d) => c.name)
       .append('path')
         .attr('class', 'line')
-        .attr('d', (d) => line(d))
-        .style('stroke', (d) => color(c.name));
+        .attr('d', (d) => line(d.values))
+        .style('stroke', (d) => color(d.name));
 
 
     // D3 EXIT
     // If exits need to happen, apply a transition and remove DOM elements
     // when the transition has finished
-    lineGroups.exit()
+    lines.exit()
       .remove();
-
   };
 
-
   d3.rebind(exports, dispatch, 'on');
-
 
   return exports;
 };
