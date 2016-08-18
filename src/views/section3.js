@@ -1,4 +1,4 @@
-// Import Node Modules
+ // Import Node Modules
 import d3 from 'd3';
 import 'd3-svg-legend';
 
@@ -10,7 +10,7 @@ import './../components/sankey-chart/sankey-chart.css';
 import { stateclassColorScale } from './../helpers/colors';
 
 // Import Components
-import lineChart from './../components/multiline-area-chart/multiLine-area-chart';
+import lineChart from './../components/multiline-area-chart/multiLine-area-chart-small-multiples';
 import sankeyChart from './../components/sankey-chart/sankey-chart';
 
 /*
@@ -18,7 +18,7 @@ import sankeyChart from './../components/sankey-chart/sankey-chart';
 */
 const parentContainer = document.getElementById('three');
 const timeseriesContainer = parentContainer.querySelector('.chart.timeseries');
-const sankeyContainer = parentContainer.querySelector('.chart.sankey');
+//const sankeyContainer = parentContainer.querySelector('.chart.sankey');
 let timeseriesChart;
 let transitionsChart;
 
@@ -33,11 +33,17 @@ const view = {
       return '<p>label</p>';
     }
 
+    // Set x and y accessors
+    const yAccessor = function (d) { return +d.values; };
+    const xAccessor = function (d) { return new Date(d.key, 0, 1); };
+
     timeseriesChart = lineChart()
       .width(timeseriesContainer.offsetWidth)
       .height(250)
       .yAxisAnnotation('Area (square kilometers)')
       .color(stateclassColorScale)
+      .xValue(xAccessor)
+      .yValue(yAccessor)
       .on('click', (mousePos, xScale) => {
         const html = getTooltipContent(mousePos, xScale);
         const xPos = Math.round(mousePos[0] + 75); // adding right chart margin
@@ -62,10 +68,11 @@ const view = {
           .style('stroke-opacity', 0);
       });
 
+
     // sankey chart
-    transitionsChart = sankeyChart()
+/*    transitionsChart = sankeyChart()
       .width(sankeyContainer.offsetWidth)
-      .height(250);
+      .height(250);*/
   },
   update(nestedData) {
     // Remove loading/no-data class
@@ -82,36 +89,37 @@ const view = {
       }
     ));
 
-    // Set x and y accessors
-    const yAccessor = function (d) { return +d.values; };
-    const xAccessor = function (d) { return new Date(d.key, 0, 1); };
-    timeseriesChart.yValue(yAccessor);
-    timeseriesChart.xValue(xAccessor);
-
-    const re = /\W+/;
-    // Filter timeseries data for transition groups
-    function filterTGroups(row) {
-      
-      if (row.name.match(re)) {
-        console.log(row);
+    const re = /[:->]/;
+    // Filter timeseries data for Transition Types
+    function filterTransitionTypes(row) {
+      if (!row.name.match(re)) {
+        //console.log('Transition type', row);
         return true;
       }
       return false;
     }
 
-    const filteredData = timeseriesData.filter(filterTGroups);
-    console.log(filteredData);
+    // Filter timeseries data for Transition Pathways
+    function filterTransitionPathways(row) {
+      if (row.name.match(re)) {
+        //console.log('Transition pathway', row);
+        return true;
+      }
+      return false;
+    }
+
+    const transitionTypes = timeseriesData.filter(filterTransitionTypes);
 
     // Set y domain
     const domainRange = [];
-    filteredData.forEach((series) =>
+    transitionTypes.forEach((series) =>
       series.values.forEach((d) => domainRange.push(d.values))
     );
     timeseriesChart.yDomain([0, d3.max(domainRange)]);
 
     // Call timeseries chart
     d3.select(timeseriesContainer)
-      .datum(filteredData)
+      .datum(transitionTypes)
       .transition()
       .call(timeseriesChart);
 
@@ -133,9 +141,9 @@ const view = {
       {"source":3,"target":4,"value":4}
       ]};
     // Call sankey chart
-    d3.select(sankeyContainer)
+/*    d3.select(sankeyContainer)
       .datum(dummyData)
-      .call(transitionsChart);
+      .call(transitionsChart);*/
 
   }
 };
