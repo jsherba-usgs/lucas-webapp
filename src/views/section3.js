@@ -12,6 +12,8 @@ import { stateclassColorScale } from './../helpers/colors';
 // Import Components
 import lineChart from './../components/multiline-area-chart/multiLine-area-chart-small-multiples';
 import sankeyChart from './../components/sankey-chart/sankey-chart';
+import sankeyDataTransform from './../components/sankey-chart/sankey-data';
+import barChart from './../components/bar-chart/bar-chart-small-multiples';
 
 /*
 * PRIVATE VARIABLES
@@ -101,36 +103,53 @@ const view = {
     // Filter timeseries data for Transition Pathways
     function filterTransitionPathways(row) {
       if (row.name.match(re)) {
-        console.log('Transition pathway', row);
         return true;
       }
       return false;
     }
 
-    const transitionPathways = timeseriesData.filter(filterTransitionPathways);
+    const transitionPathways = timeseriesData
+      .filter(filterTransitionPathways)
+      .map((series) => {
+        const name = series.name.split(':');
+        series.tgroup = name[0].trim();
+        if (series.tgroup !== 'FIRE') {
+          series.source = name[1].split('-')[0].trim();
+          series.target = name[1].split('>')[1].trim();
+        } else {
+          series.source = name[1].trim();
+          series.target = '';
+        }
+        series.values = d3.sum(series.values, (d) => d.values);
+        delete series.type;
+        return series;
+      });
+    console.log(transitionPathways);
 
-    const dummyData = {
-      "nodes":[
-      {"node":0,"name":"node0"},
-      {"node":1,"name":"node1"},
-      {"node":2,"name":"node2"},
-      {"node":3,"name":"node3"},
-      {"node":4,"name":"node4"}
-      ],
-      "links":[
-      {"source":0,"target":2,"value":2},
-      {"source":1,"target":2,"value":2},
-      {"source":1,"target":3,"value":2},
-      {"source":0,"target":4,"value":2},
-      {"source":2,"target":3,"value":2},
-      {"source":2,"target":4,"value":2},
-      {"source":3,"target":4,"value":4}
-      ]};
+    const dummyData = d3.nest()
+        .key((d) => d.tgroup)
+        .key((d) => `${d.source}-${d.target}`)
+        //.rollup((v) => d3.sum(v.values, (d) => d.values))
+        .entries(transitionPathways);
+
+    console.log('duumu', dummyData);
+    //const sankeyData = sankeyDataTransform(dummyData);
+    //console.log(sankeyData);
+
     // Call sankey chart
+/*    d3.select(sankeyContainer)
+      .datum(sankeyData)
+      .transition()
+      .call(transitionsChart);*/
+
+    // First time
+    // Call bar charts - small multiples
     d3.select(sankeyContainer)
       .datum(dummyData)
-      .transition()
-      .call(transitionsChart);
+      .call(barChart()
+        .height(250)
+        .color(stateclassColorScale)
+      );
 
 
     const transitionTypes = timeseriesData.filter(filterTransitionTypes);
