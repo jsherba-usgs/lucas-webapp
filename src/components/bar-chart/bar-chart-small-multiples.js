@@ -16,7 +16,7 @@ const chart = () => {
   let yAxisAnnotation = 'Linear Scale';
   let xAxisAnnotation = 'Ordinal Scale';
   let xValue = function(d) { return d.name; };
-  let yValue = function(d) { return d.value; };
+  let yValue = function(d) { return +d.value; };
 
   /**
   * PRIVATE VARIABLES
@@ -222,7 +222,6 @@ const chart = () => {
 
 
   exports.drawAxes = function () {
-
     // Update the y-axis.
     container.select('.y-axis-group.axis')
       .transition().duration(1000)
@@ -239,7 +238,6 @@ const chart = () => {
         .transition().duration(1000)
         .call(xAxis.tickFormat('').tickSize(0));
     }
-
   };
 
   exports.drawLabels = function () {

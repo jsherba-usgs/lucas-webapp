@@ -133,11 +133,11 @@
 
 		a:hover {
 			border-bottom-color: transparent;
-			color: #9bf1ff;
+			color: #7B4D8A;
 		}
 
 		a:active {
-			color: #53e3fb;
+			color: #7B4D8A;
 		}
 
 	strong, b {
@@ -999,53 +999,6 @@
 			opacity: 0.25;
 		}
 
-/* Tiles */
-
-		@media screen and (max-width: 1280px) {
-
-			.tiles article {
-				padding: 4em 3em 2em 3em ;
-				height: 30vh;
-				max-height: 30em;
-				min-height: 20em;
-			}
-
-		}
-
-		@media screen and (max-width: 980px) {
-
-			.tiles article {
-				width: 50% !important;
-			}
-
-		}
-
-		@media screen and (max-width: 736px) {
-
-			.tiles article {
-				padding: 3em 1.5em 1em 1.5em ;
-				height: 16em;
-				max-height: none;
-				min-height: 0;
-			}
-
-				.tiles article h3 {
-					font-size: 1.5em;
-				}
-
-		}
-
-		@media screen and (max-width: 480px) {
-
-				.tiles article {
-					height: 20em;
-					width: 100% !important;
-				}
-
-		}
-
-
-
 /* Header */
 
 	@-moz-keyframes reveal-header {
@@ -1127,15 +1080,7 @@
 		}
 
 			#header .logo strong {
-/*				-moz-transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
-				-webkit-transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
-				-ms-transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
-				transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;*/
 				color: #777777;
-/*				display: inline-block;
-				line-height: 1.65em;
-				margin-right: 0.325em;
-				padding: 0 0.125em 0 0.375em;*/
 			}
 
 			#header .logo:hover strong {
@@ -1418,25 +1363,12 @@
 					}
 
 			#banner > .inner .content {
-				display: -moz-flex;
-				display: -webkit-flex;
-				display: -ms-flex;
-				display: flex;
 				-moz-align-items: center;
 				-webkit-align-items: center;
 				-ms-align-items: center;
 				align-items: center;
 				margin: 0 0 2em 0;
 			}
-
-				#banner > .inner .content > * {
-					margin-left: 1.5em;
-					margin-bottom: 0;
-				}
-
-				#banner > .inner .content > :first-child {
-					margin-left: 0;
-				}
 
 				#banner > .inner .content p {
 					font-size: 1.1em;
@@ -1813,7 +1745,6 @@
 		}
 
 
-
 /**********************************
 * Section 1 Chart and Map Elements
 **********************************/
@@ -1831,6 +1762,13 @@
   min-height: 500px;
   background-color: #fff;
   position: relative;
+}
+
+/**********************************
+* Section 3 Elements
+**********************************/
+#three .col.chart div {
+  margin-top: 1em;
 }
 
 /**********************************
@@ -1990,4 +1928,36 @@
 
 .legend-stateclass svg {
 	width: 52em;
+}
+
+/* Filters legend */
+.inline-list {
+	display: flex;
+	justify-content: center;
+	color: #b4b4b4;
+}
+
+.inline-list ul {
+	display: flex;
+	list-style: none;
+	text-transform: uppercase;
+}
+
+.inline-list ul li:before {
+	content: '\2022';
+	margin-right: 5px;
+}
+
+.inline-list ul li:first-child:before {
+	content: '';
+}
+
+.legend-filters a {
+	margin-left: 10px;
+	border-bottom: none;
+}
+
+.vis-list {
+	text-align: center;
+	color: #444
 }

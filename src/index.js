@@ -91,9 +91,9 @@ document.addEventListener('DOMContentLoaded', () => {
   section3.init();
 
   /*
-  * ADD static D3 elements common to more than one section, e.g. Stateclass legend
+  * ADD COMMON LEGEND ELEMENTS
   */
-  // Add stateclass legends
+  // State type legend
   const stateclassLegends = d3.selectAll('.legend-stateclass');
 
   stateclassLegends
@@ -112,12 +112,34 @@ document.addEventListener('DOMContentLoaded', () => {
   stateclassLegends.select('.legendOrdinal')
     .call(stateclassOrdinal);
 
+  // Filters legend
+  const filtersLegend = Array.from(document.getElementsByClassName('legend-filters'));
+  function updateFiltersLegend(d) {
+    const content = `
+      <ul>
+        <li>Scenario ${d.scenario}</li>
+        <li>Iteration ${d.iteration}</li>
+        <li>${d.secondary_stratum}</li>
+        <li>${d.stratum}</li>
+      </ul>
+      <a data-scroll href="#filters">
+        (Update)
+      </a>`;
+
+    filtersLegend.forEach((el) => {
+      el.innerHTML = content;
+    });
+  
+  }
   /*
   * FILTERS
   */
   // Add event listener to document for filters.change event
   addEventListener(document, 'filters.change', (e) => {
     console.log('filters changed', e.detail);
+
+    updateFiltersLegend(e.detail);
+
 
     // Update section 1 map
     leafletMap.updateRaster(e.detail);
@@ -170,7 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
     .then((data) => {
       // Group data by transition group and year, calculate total area (amount)
       const totalAreaByYear = d3.nest()
-        .key((d) => d.TransitionGroup)
+        .key((d) => d.TransitionGroup).sortKeys(d3.ascending)
         .key((d) => d.Timestep)
         .rollup((v) => d3.sum(v, (d) => d.Amount))
         .entries(data);

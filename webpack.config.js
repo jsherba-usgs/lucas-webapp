@@ -10,7 +10,7 @@ module.exports = {
   context: path.join(__dirname, './src'),
   entry: {
     js: './index.js',
-    vendor: ['smooth-scroll']
+    vendor: ['smooth-scroll', 'd3', 'leaflet']
   },
   output: {
     path: path.join(__dirname, './build'),

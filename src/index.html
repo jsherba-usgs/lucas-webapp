@@ -41,6 +41,13 @@
                 <p>
                   Explore dynamics of land-use/land-cover (LULC) change projections for the state of Hawai'i. These datasets are a result of a USGS modeling project that simulates LULC change into the future over different scenarios using a state-and-transition simulation model (STSM). The STSM model was run using the <a href="http://syncrosim.com" target="blank">SyncroSim</a> framework and the ST-SIM module. Processes represented in this project include expansion/contraction of agricultural lands, urbanization, wildfire, shrub encroachment into grassland and harvest of tree plantations. Additional details on the STSM approach can be found in <a href="http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12597/full">Daniel et al (2016)</a>.
                 </p>
+                <div class="vis-list inline-list">
+                  <ul>
+                    <li><a data-scroll href="#one" >Change in Landuse over Time</a></li>
+                    <li><a data-scroll href="#two" >Total Area &amp; Net Change</a></li>
+                    <li><a data-scroll href="#three" >Transition Types &amp; Pathways</a></li>
+                  </ul>
+                </div>
               </div>
             </div>
           </section>
@@ -58,7 +65,7 @@
               <section id="one">
                 <div class="inner">
                   <header class="major">
-                    <h2>Change in LULC over time</h2>
+                    <h2>Change in Landuse over Time</h2>
                   </header>
                   <p>
                     The landscape is divided spatially into simulation cells, each of which is 1x1 km in size. Simulations were run for 60 years with an annual timestep using initial conditions corresponding to the year 2001. A different number of Monte Carlo realizations (iterations) were run for different scenarios. Each cell is characterized by a group of state variables. One of these is the State Type of each cell which corresponds to one of the seven LULC classes. 
@@ -81,8 +88,8 @@
                     </div>
                   </article>
                 </div>
-                <div class="legend-stateclass">                                    
-                </div>
+                <div class="legend-stateclass"></div>
+                <div class="legend-filters inline-list"></div>
               </section>
               <hr/>
 
@@ -90,20 +97,19 @@
               <section id="two">
                 <div class="inner">
                   <header class="major">
-                    <h2>Total LULC Area and Net Change</h2>
+                    <h2>Total Landuse Area and Net Change</h2>
                   </header>
                   <p>
                     The charts below show the total landscape area in square kilometers over the simulation period beginning with start of the simulation, then at a 10 year interval. Click on the Net Change button to see the net amount of change in landscape area over the previous decade. Hover over the bars for more detailed tooltip.
                   </p>
                 </div>
+                <div class="legend-filters inline-list"></div>
                 <div class="controls" style="margin: 1em 0;">
                   <button class="total">Total Area</button>
                   <button class="change">Net Change</button>
                 </div>
-                <div class="chart multiples">                                    
-                </div>
-                <div class="legend-stateclass">                           
-                </div>
+                <div class="chart multiples"></div>
+                <div class="legend-stateclass"></div>
               </section>
               <hr/>
 
@@ -115,31 +121,15 @@
                   </header>
                   <p>A set of all possible transition pathways between State Types is also defined in the model. For this project, the processes represented by these transition pathways include expansion and contraction of agricultural lands, urbanization, wildfire, shrub encroachment into grassland, harvest of tree plantations and shifts in moisture zones due to climate change.</p>
                 </div>
+                <div class="legend-filters inline-list"></div>
                 <div class="row">
                   <div class="col chart timeseries"></div>
-                  <div class="col chart sankey"></div>
+                  <div class="col chart pathways"></div>
                 </div>
               </section>
-              <hr/>
 
           </div>
-
-
-
-        <!-- Footer -->
-          <footer id="footer">
-            <div class="inner">
-              <ul class="icons">
-                <li><a href="#" class="icon alt fa-twitter"><span class="label">Twitter</span></a></li>
-                <li><a href="#" class="icon alt fa-facebook"><span class="label">Facebook</span></a></li>
-                <li><a href="#" class="icon alt fa-github"><span class="label">GitHub</span></a></li>
-              </ul>
-              <ul class="copyright">
-                <li>&copy; Untitled</li>
-              </ul>
-            </div>
-          </footer>
-
+ 
       </div>
 
       <!-- About -->

@@ -279,14 +279,14 @@ const chart = () => {
 
 
   exports.drawLines = function () {
-    let lineContainer = container.select('g.timeseries-line');
+    const lineContainer = container.select('g.timeseries-line');
     lineContainer.append('g').append('path');
     lineContainer.select('g').append('circle');
 
     lineContainer.call(tooltip);
 
-    let lines = lineContainer.select('path');
-    let circles = lineContainer.selectAll('circle').data((d) => d.values);
+    const lines = lineContainer.select('path');
+    const circles = lineContainer.selectAll('circle').data((d) => d.values);
 
 
     // D3 UPDATE

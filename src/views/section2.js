@@ -4,14 +4,12 @@ import 'd3-svg-legend';
 
 // Import Styles
 import './../components/bar-chart/bar-chart.css';
-import './../components/horizontal-bar-chart/horizontal-bar-chart.css';
-
 
 // Import Helpers
 import { stateclassColorScale } from './../helpers/colors';
 
 // Import Components
-import barChart from './../components/horizontal-bar-chart/horizontal-bar-chart';
+import barChart from './../components/bar-chart/bar-chart-small-multiples';
 
 
 /*
@@ -84,8 +82,6 @@ const view = {
     const barChartChange = d3.nest()
       .key((d) => d.year)
       .entries(decadalChange);
-
-    console.log('bar chart', barChartTotals);
 
     showTotals.onclick = () => {
       // Call bar charts - small multiples
