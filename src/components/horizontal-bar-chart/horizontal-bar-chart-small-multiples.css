@@ -1,0 +1,6 @@
+.horizontal-bar .y-axis-group.axis path {
+  fill: none;
+  stroke: rgba(129, 140, 158, 0.5);
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+}

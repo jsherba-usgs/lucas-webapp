@@ -95,9 +95,11 @@ document.addEventListener('DOMContentLoaded', () => {
   */
   // State type legend
   const stateclassLegends = d3.selectAll('.legend-stateclass');
+  const legendWidth = stateclassLegends.node().getBoundingClientRect().width;
 
   stateclassLegends
     .append('svg')
+    .attr('width', legendWidth)
     .append('g')
     .attr('class', 'legendOrdinal')
     .attr('transform', 'translate(25,20)');
@@ -136,13 +138,11 @@ document.addEventListener('DOMContentLoaded', () => {
   */
   // Add event listener to document for filters.change event
   addEventListener(document, 'filters.change', (e) => {
-    console.log('filters changed', e.detail);
-
+    // Update ul element
     updateFiltersLegend(e.detail);
 
-
     // Update section 1 map
-    leafletMap.updateRaster(e.detail);
+    section1.updateMap(e.detail);
 
     // Setup query params for fetching data from API
     const params = {
@@ -174,45 +174,37 @@ document.addEventListener('DOMContentLoaded', () => {
       })
       .catch((error) => {
         if (error.message.indexOf('No data') > -1) {
-          d3.select('#section1-timeseries')
+          d3.selectAll('.chart')
             .classed('no-data', true)
             .select('svg')
-              .remove();
-          d3.select('#section2-barchart')
-            .classed('no-data', true)
-            .selectAll('div')
               .remove();
         }
         console.log(error);
       });
 
 
-  // Fetch data for transitions and update charts
+    // Fetch data for transitions and update charts
     service.loadTransitions(params)
-    .then((data) => {
-      // Group data by transition group and year, calculate total area (amount)
-      const totalAreaByYear = d3.nest()
-        .key((d) => d.TransitionGroup).sortKeys(d3.ascending)
-        .key((d) => d.Timestep)
-        .rollup((v) => d3.sum(v, (d) => d.Amount))
-        .entries(data);
+      .then((data) => {
+        // Group data by transition group and year, calculate total area (amount)
+        const totalAreaByYear = d3.nest()
+          .key((d) => d.TransitionGroup).sortKeys(d3.ascending)
+          .key((d) => d.Timestep)
+          .rollup((v) => d3.sum(v, (d) => d.Amount))
+          .entries(data);
 
-      // Update section 3 ag contraction chart
-      section3.update(totalAreaByYear);
-    })
-    .catch((error) => {
-/*      if (error.message.indexOf('No data') > -1) {
-        d3.select('#section1-timeseries')
-          .classed('no-data', true)
-          .select('svg')
-            .remove();
-        d3.select('#section2-barchart')
-          .classed('no-data', true)
-          .selectAll('div')
-            .remove();
-      }*/
-      console.log(error);
-    });
+        // Update section 3 ag contraction chart
+        section3.update(totalAreaByYear);
+      })
+      .catch((error) => {
+        if (error.message.indexOf('No data') > -1) {
+          d3.selectAll('#three .chart')
+            .classed('no-data', true)
+            .select('svg')
+              .remove();
+        }
+        console.log(error);
+      });
 
   });
 

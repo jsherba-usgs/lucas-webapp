@@ -4,6 +4,7 @@ import 'd3-svg-legend';
 
 // Import Styles
 import './../components/multiline-area-chart/multiLine-area-chart.css';
+import './../components/horizontal-bar-chart/horizontal-bar-chart-small-multiples.css';
 
 // Import Helpers
 import { stateclassColorScale } from './../helpers/colors';

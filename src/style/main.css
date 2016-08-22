@@ -45,6 +45,8 @@
 		-webkit-text-size-adjust: none;
 	}
 
+	html, body { height: 100%; }
+
 /* Box Model */
 
 	*, *:before, *:after {
@@ -301,10 +303,6 @@
 	}
 
 	header.major {
-		width: -moz-max-content;
-		width: -webkit-max-content;
-		width: -ms-max-content;
-		width: max-content;
 		margin-bottom: 1em;
 	}
 
@@ -1301,7 +1299,6 @@
 		cursor: default;
 		height: 60vh;
 		margin-bottom: -3.25em;
-		max-height: 32em;
 		min-height: 22em;
 		position: relative;
 		top: -3.25em;
@@ -1344,6 +1341,7 @@
 			padding: 0 !important;
 			position: relative;
 			z-index: 2;
+			height: 100%;
 		}
 
 			#banner > .inner .image {
@@ -1378,7 +1376,6 @@
 		#banner.major {
 			height: 75vh;
 			min-height: 30em;
-			max-height: 50em;
 		}
 
 			#banner.major.alt {
@@ -1756,24 +1753,45 @@
 * Section 2 Elements
 **********************************/
 #two .chart.multiples {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  min-height: 500px;
-  background-color: #fff;
-  position: relative;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+	background-color: #fff;
+	min-height: 400px;
+	height: 100%;
 }
 
 /**********************************
 * Section 3 Elements
 **********************************/
+#three .col.chart  {
+  height: 100%;
+}
+
 #three .col.chart div {
-  margin-top: 1em;
+	padding: 0.5em;
 }
 
 /**********************************
 * Common Chart Elements
 **********************************/
+
+/* Stateclass legend */
+.legend-stateclass {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	text-align: center;
+	margin-top: 1em;
+}
+
+.legend-stateclass svg {
+	width: 80%;
+}
+
 /* Charts */
 .chart {
 	height: 400px;
@@ -1920,27 +1938,18 @@
   font:bold 12px sans-serif;
 }
 
-/* Stateclass legend */
-.legend-stateclass {
-	display: flex;
-	justify-content: center;
-}
-
-.legend-stateclass svg {
-	width: 52em;
-}
-
 /* Filters legend */
 .inline-list {
 	display: flex;
 	justify-content: center;
-	color: #b4b4b4;
+	text-align: center;
 }
 
 .inline-list ul {
 	display: flex;
 	list-style: none;
 	text-transform: uppercase;
+	justify-content: center;
 }
 
 .inline-list ul li:before {
@@ -1959,5 +1968,20 @@
 
 .vis-list {
 	text-align: center;
-	color: #444
+}
+
+@media screen and (max-width: 736px) {
+	.inline-list {
+		flex-direction: column;
+	}
+
+	.inline-list ul {
+		flex-direction: column;
+	}
+
+	.inline-list ul li:before {
+		content: '';
+		margin-right: 0;
+	}
+
 }

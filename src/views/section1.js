@@ -8,7 +8,6 @@ import './../components/multiline-area-chart/multiLine-area-chart.css';
 
 // Import Helpers
 import { stateclassColorScale } from './../helpers/colors';
-import { addEventListener, triggerEvent } from './../helpers/utils';
 
 // Import Components
 import leafletMap from './../components/map/index';
@@ -34,6 +33,17 @@ const view = {
     // Init map
     leafletMap.init(mapContainer);
 
+    // Add loading class
+    // TODO: Refactor this, expose another method on view maybe, e.g. view.setStatus('loading')
+    chartContainer.classList.add('loading');
+
+    timeseriesChart = chart()
+      .width(chartContainer.offsetWidth)
+      .height(chartContainer.offsetHeight || 400)
+      .xDomain([new Date(2001, 0), new Date(2061, 0)])
+      .yAxisAnnotation('Area (square kilometers)')
+      .color(stateclassColorScale);
+
     // Init date slider
     slider = chroniton()
       // TODO: Refactor - get range of years from data, instead of hardcoding values below
@@ -52,12 +62,9 @@ const view = {
         if ([2001, 2011, 2021, 2031, 2041, 2051, 2061].indexOf(year) > -1) {
           leafletMap.updateRaster({ year });
         }
-        // Publish event with date, the timeseries chart listens for this event
-        triggerEvent(document, 'slider.slide', {
-          detail: year
-        });
+        timeseriesChart.moveTooltip(year);
       })
-      .playbackRate(0.2);
+      .playbackRate(0.1);
 
     // Create slider
     // TODO: Set slider domain and change function after data comes back from API,;
@@ -83,45 +90,6 @@ const view = {
         .html('<i class="icon fa-stop"></i>')
         .attr('class', 'small')
         .on('click', () => slider.stop());
-
-
-    // Add loading class
-    // TODO: Refactor this, expose another method on view maybe, e.g. view.setStatus('loading')
-    chartContainer.classList.add('loading');
-
-    function getTooltipContent() {
-      return '<p>label</p>';
-    }
-
-    timeseriesChart = chart()
-      .width(chartContainer.offsetWidth)
-      .height(chartContainer.offsetHeight || 400)
-      .xDomain(slider.getScale().domain())
-      .yAxisAnnotation('Area (square kilometers)')
-      .color(stateclassColorScale)
-      .on('click', (mousePos, xScale) => {
-        const html = getTooltipContent(mousePos, xScale);
-        const xPos = Math.round(mousePos[0] + 75); // adding right chart margin
-        const yPos = Math.round(mousePos[1] + 0); // adding top chart margin
-
-        d3.select('.chart-tooltip')
-          .style('left', `${xPos}px`)
-          .style('top', `${yPos}px`)
-          .html(html);
-
-        d3.select('.hover-line')
-          .attr('x1', mousePos[0])
-          .attr('x2', mousePos[0])
-          .style('stroke-opacity', 1);
-
-        d3.select('.chart-tooltip').classed('hidden', false);
-      })
-      .on('mouseout', () => {
-        // Hide the tooltip
-        d3.select('.chart-tooltip').classed('hidden', true);
-        d3.select('.hover-line')
-          .style('stroke-opacity', 0);
-      });
   },
   update(nestedData) {
     // Remove loading/no-data class
@@ -156,7 +124,9 @@ const view = {
       .datum(timeseriesData)
       .transition()
       .call(timeseriesChart);
-
+  },
+  updateMap(options) {
+    leafletMap.updateRaster(options);
   }
 };
 

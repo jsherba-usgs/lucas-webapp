@@ -23,6 +23,8 @@ const chart = () => {
 
   let svg;
   let data;
+  let chartW;
+  let chartH;
   // X scale
   const xScale = d3.time.scale().nice();
   // Second X scale for brush slider
@@ -67,8 +69,8 @@ const chart = () => {
 
   function exports(_selection) {
     _selection.each(function (_data) {
-      const chartW = width - margin.left - margin.right;
-      const chartH = height - margin.top - margin.bottom;
+      chartW = width - margin.left - margin.right;
+      chartH = height - margin.top - margin.bottom;
 
       xScale
         .range([0, chartW])
@@ -142,6 +144,8 @@ const chart = () => {
       // Add group element to Container tp hold data that will be drawn as lines
       container.append('g').classed('timeseries-line', true);
 
+      container.append('g').classed('mouse-over-effects', true);
+
       // Group element to hold annotations, explanatory text, legend
       const annotation = container.append('g').classed('annotation', true);
 
@@ -155,18 +159,18 @@ const chart = () => {
           .classed('y-axis-label', true);
 
       // Hover line for click events
-      container.append('g')
+/*      container.append('g')
         .append('line')
           .classed('hover-line', true)
           .attr('x1', 0)
           .attr('x2', 0)
           .attr('y1', 0)
           .attr('y2', chartH)
-          .style('stroke-opacity', 0);
+          .style('stroke-opacity', 0);*/
 
       // Invisible rect for mouse tracking since you
       // can't catch mouse events on a g element
-      container.append('svg:rect')
+/*      container.append('svg:rect')
         .attr('width', chartW)
         .attr('height', chartH)
         .attr('fill', 'none')
@@ -178,7 +182,9 @@ const chart = () => {
           const mouse = d3.mouse(this);
           // Dispatch click event
           dispatch.click(mouse, xScale);
-        });
+        });*/
+
+
 
 
       /*
@@ -278,6 +284,7 @@ const chart = () => {
     this.drawAxes();
     this.drawArea();
     this.drawLines();
+    this.drawMouseOverElements();
   };
 
 
@@ -395,6 +402,126 @@ const chart = () => {
       .remove();
     lineLabels.exit()
       .remove();
+  };
+
+  exports.drawMouseOverElements = function () {
+    // Mouse over effect
+    const mouseG = svg.select('g.mouse-over-effects');
+
+    // Add black vertical line to follow mouse
+    mouseG.append('path') 
+      .attr('class', 'mouse-line')
+      .style('stroke', 'black')
+      .style('stroke-width', '1px')
+      .style('opacity', '0');
+
+    // Select all plotted lines
+    const lines = d3.selectAll('.line');
+
+    // Add circles at intersection of all plotted lines and black vertical line
+    const mousePerLine = mouseG.selectAll('.mouse-per-line')
+      .data(data)
+      .enter()
+      .append('g')
+      .attr('class', 'mouse-per-line');
+
+    mousePerLine.append('circle')
+      .attr('r', 3)
+      .style('stroke', '#888')
+      .style('fill', 'none')
+      .style('stroke-width', '2px')
+      .style('opacity', '0');
+
+    mousePerLine.append('text')
+      .attr('transform', 'translate(10,3)');
+
+    // Append a rect to catch mouse movements on canvas
+    mouseG.append('svg:rect')
+      .attr('width', chartW) // can't catch mouse events on a g element
+      .attr('height', chartH)
+      .attr('fill', 'none')
+      .attr('pointer-events', 'all')
+      .on('mouseout', function () { // on mouse out hide line, circles and text
+        d3.select('.mouse-line')
+          .style('opacity', '0');
+        d3.selectAll('.mouse-per-line circle')
+          .style('opacity', '0');
+        d3.selectAll('.mouse-per-line text')
+          .style('opacity', '0');
+      })
+      .on('mouseover', function () { // on mouse in show line, circles and text
+        d3.select('.mouse-line')
+          .style('opacity', '1');
+        d3.selectAll('.mouse-per-line circle')
+          .style('opacity', '1');
+        d3.selectAll('.mouse-per-line text')
+          .style('opacity', '1');
+      })
+      .on('mousemove', function () { // mouse moving over canvas
+        const mouse = d3.mouse(this);
+        d3.select('.mouse-line')
+          .attr('d', () => {
+            let d = `M${mouse[0]}, ${chartH}`;
+            d += ` ${mouse[0]}, 0`;
+            return d;
+          });
+
+        d3.selectAll('.mouse-per-line')
+          .attr('transform', function (d) {
+            const x0 = xScale.invert(mouse[0]).getFullYear();
+            const bisect = d3.bisector((c) => parseInt(c.key)).right;
+            const idx = bisect(d.values, x0);
+            const d0 = d.values[idx - 1];
+            const d1 = d.values[idx];
+            let datum;
+            if (d1) {
+              datum = x0 - parseInt(d0.key) > parseInt(d1.key) - x0 ? d1 : d0;
+            } else {
+              datum = d0;
+            }
+            d3.select(this).select('text')
+              .text(datum.values);
+              
+            return `translate(${mouse[0]}, ${yScale(datum.values)})`;
+          });
+      });
+  };
+
+  exports.moveTooltip = function (year) {
+    d3.select('.mouse-line')
+      .style('opacity', '1');
+    d3.selectAll('.mouse-per-line circle')
+      .style('opacity', '1');
+    d3.selectAll('.mouse-per-line text')
+      .style('opacity', '1');
+
+    const mouse = xScale(new Date(year, 0, 1));
+    d3.select('.mouse-line')
+      .attr('d', () => {
+        let d = `M${mouse}, ${chartH}`;
+        d += ` ${mouse}, 0`;
+        return d;
+      });
+
+    d3.selectAll('.mouse-per-line')
+      .attr('transform', function (d) {
+        const x0 = year;
+        const bisect = d3.bisector((c) => parseInt(c.key)).right;
+        const idx = bisect(d.values, x0);
+        const d0 = d.values[idx - 1];
+        const d1 = d.values[idx];
+        let datum;
+        if (d1) {
+          datum = x0 - parseInt(d0.key) > parseInt(d1.key) - x0 ? d1 : d0;
+        } else {
+          datum = d0;
+        }
+
+        d3.select(this).select('text')
+          .text(datum.values);
+  
+        return `translate(${mouse}, ${yScale(datum.values)})`;
+      });
   };
 
 

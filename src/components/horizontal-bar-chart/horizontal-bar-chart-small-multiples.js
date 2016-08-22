@@ -49,17 +49,6 @@ const chart = () => {
       // been done by the time it reaches chart.
       data = _data;
 
-/*      const maxX = d3.max(data, (c) => d3.max(c.values, (d) => xValue(d)));
-      const minX = d3.min(data, (c) => d3.min(c.values, (d) => xValue(d)));
-      xScale
-        .range([0, chartW]);*/
-        //.domain([minX, maxX]);
-
-/*      const yDomain = data.map((d) => d.values.map((c) => c.pathway));
-      yScale
-        .rangeRoundBands([0, chartH], yRoundBands);*/
-        //.domain(d3.merge(yDomain));
-
       // Create a div and an SVG element for each element in
       // our data array. Note that data is a nested array
       // with each element containing another array of 'values'
@@ -84,7 +73,6 @@ const chart = () => {
 
       // Add group element to Container for y axis
       container.append('g').classed('y-axis-group axis', true);
-      container.append('g').classed('y-axis-0-group axis', true);
 
       // Add group element to Container to hold data that will be drawn as area
       container.append('g').classed('bars', true);
@@ -137,7 +125,6 @@ const chart = () => {
 /*      container.select('.y-axis-0-group.axis')
         .attr({ transform: `translate(${xScale(0)}, 0)` });*/
 
-      //exports.drawChart();
       exports.render();
     });
   }
@@ -211,19 +198,20 @@ const chart = () => {
   };
 
   exports.drawChart = function (chartData) {
-    console.log(this);
+    // For each chart the Y axis and X axis domain is different
+    // So create a new scle and axis each for each chart
+
     // X scale
     const maxX = d3.max(chartData.values, (d) => xValue(d));
     const xScale = d3.scale.linear()
       .range([0, chartW])
       .domain([0, maxX]);
-    console.log(xScale.domain());
 
     // Y scale
-/*    const yDomain = chartData.values.map((d) => yValue(d));
+    const yDomain = chartData.values.map((d) => yValue(d));
     const yScale = d3.scale.ordinal()
       .rangeRoundBands([0, chartH], yRoundBands)
-      .domain(yDomain);*/
+      .domain(yDomain);
 
     // X Axis on bottom of chart
     const xAxis = d3.svg.axis()
@@ -231,14 +219,14 @@ const chart = () => {
       .orient('bottom');
 
     // Y axis on the left side of chart
-/*    const yAxis = d3.svg.axis()
+    const yAxis = d3.svg.axis()
       .scale(yScale)
-      .orient('left');*/
+      .orient('left');
 
      // Update the y-axis.
-/*    d3.select(this).select('.y-axis-group.axis')
+    d3.select(this).select('.y-axis-group.axis')
       .transition().duration(1000)
-      .call(yAxis);*/
+      .call(yAxis);
 
     // Draw x axis with category labels
 /*    d3.select(this).select('.x-axis-group.axis')
@@ -247,51 +235,23 @@ const chart = () => {
 
     const barsContainer = d3.select(this).select('g.bars');
     const bars = barsContainer.selectAll('rect').data((c) => c.values);
-    const labels = barsContainer.selectAll('text.category').data((c) => c.values);
     const valueLabels = barsContainer.selectAll('text.value').data((c) => c.values);
+
+    const barHeight = d3.min([30, yScale.rangeBand()]);
 
     // D3 UPDATE
     bars.transition().duration(1000)
       .attr('class', (d) => yValue(d))
       .attr('x', () => xScale(0))
-      .attr('y', (d, i) => {
-        if (d.tgroup === 'FIRE') {
-          return (14 * i);
-        }
-        return (26 * i);
-      })
+      .attr('y', (d) => yScale(yValue(d)))
       .attr('width', (d) => xScale(xValue(d)))
-      .attr('height', (d) => {
-        if (d.tgroup === 'FIRE') {
-          return 12;
-        }
-        return 20;
-      })
+      .attr('height', barHeight)
       .style('fill', (d) => color(yValue(d)));
-
-    labels.transition().duration(1000)
-        .attr('class', 'category')
-        .attr('x', -5)
-        .attr('y', (d, i) => {
-          if (d.tgroup === 'FIRE') {
-            return (14 * i) + 7;
-          }
-          return (26 * i) + 13;
-        })
-        .text((d) => `${yValue(d)} `)
-        .style('font-size', '10px')
-        .style('font-family', 'sans-serif')
-        .style('text-anchor', 'end');
 
     valueLabels.transition().duration(1000)
         .attr('class', 'value')
         .attr('x', (d) => xScale(xValue(d)) + 2)
-        .attr('y', (d, i) => {
-          if (d.tgroup === 'FIRE') {
-            return (14 * i) + 7;
-          }
-          return (26 * i) + 13;
-        })
+        .attr('y', (d) => yScale(yValue(d)) + (barHeight / 2))
         .text((d) => `${xValue(d)}`)
         .style('font-size', '10px')
         .style('font-family', 'sans-serif')
@@ -302,48 +262,18 @@ const chart = () => {
       .append('rect')
         .attr('class', (d) => yValue(d))
         .attr('x', () => xScale(0))
-        .attr('y', (d, i) => {
-          if (d.tgroup === 'FIRE') {
-            return (14 * i);
-          }
-          return (26 * i);
-        })
+        .attr('y', (d) => yScale(yValue(d)))
         .attr('width', (d) => xScale(xValue(d)))
-        .attr('height', (d) => {
-          if (d.tgroup === 'FIRE') {
-            return 12;
-          }
-          return 20;
-        })
+        .attr('height', barHeight)
         .style('fill', (d) => color(yValue(d)))
         .on('mouseover', tooltip.show)
         .on('mouseout', tooltip.hide);
-
-    labels.enter()
-      .append('text')
-        .attr('class', 'category')
-        .attr('x', -5)
-        .attr('y', (d, i) => {
-          if (d.tgroup === 'FIRE') {
-            return (14 * i) + 7;
-          }
-          return (26 * i) + 13;
-        })
-        .text((d) => `${yValue(d)} `)
-        .style('font-size', '10px')
-        .style('font-family', 'sans-serif')
-        .style('text-anchor', 'end');
 
     valueLabels.enter()
       .append('text')
         .attr('class', 'value')
         .attr('x', (d) => xScale(xValue(d)) + 2)
-        .attr('y', (d, i) => {
-          if (d.tgroup === 'FIRE') {
-            return (14 * i) + 7;
-          }
-          return (26 * i) + 13;
-        })
+        .attr('y', (d) => yScale(yValue(d)) + (barHeight / 2))
         .text((d) => `${xValue(d)}`)
         .style('font-size', '10px')
         .style('font-family', 'sans-serif')
@@ -353,9 +283,6 @@ const chart = () => {
     // If exits need to happen, apply a transition and remove DOM elements
     // when the transition has finished
     bars.exit()
-      .remove();
-
-    labels.exit()
       .remove();
 
     valueLabels.exit()

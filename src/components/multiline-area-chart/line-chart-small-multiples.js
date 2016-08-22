@@ -8,7 +8,7 @@ const chart = () => {
   * PUBLIC VARIABLES
   **/
 
-  let margin = { top: 30, right: 40, bottom: 20, left: 60 };
+  let margin = { top: 30, right: 40, bottom: 20, left: 40 };
   let width = 300;
   let height = 200;
   let color = d3.scale.ordinal()
@@ -19,7 +19,7 @@ const chart = () => {
   let yValue = (d) => +d.value;
   let xDomain = [new Date(2001, 1), new Date(2061, 1)];
   let yDomain = [0, 100];
-  let yAxisAnnotation = 'Ordinal Scale';
+  let yAxisAnnotation = 'Area (sq. km)';
   let xAxisAnnotation = 'Time Scale';
   const tooltip = d3.tip()
     .attr('class', 'd3-tip')
@@ -244,8 +244,7 @@ const chart = () => {
   exports.render = function () {
     exports.drawAxes();
     exports.drawLabels();
-    //container.each(exports.drawLines);
-    exports.drawLines();
+    container.each(exports.drawLine);
   };
 
 
@@ -261,8 +260,8 @@ const chart = () => {
       .call(yAxis2);
 
     // Update y axis label
-/*    svg.select('.y-axis-label')
-      .text(yAxisAnnotation);*/
+    container.select('.y-axis-label')
+      .text(yAxisAnnotation);
 
     // Update the x-axis.
     container.select('.x-axis-group.axis')
@@ -277,17 +276,12 @@ const chart = () => {
       .text((d) => d.name);
   };
 
-
-  exports.drawLines = function () {
-    const lineContainer = container.select('g.timeseries-line');
-    lineContainer.append('g').append('path');
-    lineContainer.select('g').append('circle');
-
-    lineContainer.call(tooltip);
-
-    const lines = lineContainer.select('path');
+  exports.drawLine = function (chartData) {
+    const lineContainer = d3.select(this).select('g.timeseries-line');
+    const lines = lineContainer.selectAll('path').data([chartData]);
     const circles = lineContainer.selectAll('circle').data((d) => d.values);
 
+    lineContainer.call(tooltip);
 
     // D3 UPDATE
     lines.transition().duration(1000)
@@ -297,7 +291,7 @@ const chart = () => {
 
     circles.enter()
       .append('circle')
-        .attr('r', 2.5)
+        .attr('r', 3.5)
         .attr('cx', (d) => xScale(xValue(d)))
         .attr('cy', (d) => yScale(yValue(d)))
         .style('fill', 'none')
@@ -308,7 +302,6 @@ const chart = () => {
 
     // D3 ENTER
     lines.enter()
-      .append('g')
       .append('path')
         .attr('class', 'line')
         .attr('d', (d) => line(d.values))

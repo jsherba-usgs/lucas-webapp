@@ -3,6 +3,11 @@
   font: 10px sans-serif;
 }
 
+.mouse-per-line text {
+  font: 11px sans-serif;
+  font-style: bold;
+}
+
 .x-axis-group.axis path {
   fill: none;
   stroke: #fff;
@@ -37,7 +42,7 @@
   stroke-width: 0;
 }
 
-.y-axis-group-2.axis text {
+#one .y-axis-group-2.axis text {
   fill: none;
   stroke: none;
 }
