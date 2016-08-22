@@ -1,8 +1,8 @@
 {
-  "name": "webpack2-react-redux-budget-app-sample",
+  "name": "landcarbon",
   "version": "1.0.0",
   "private": true,
-  "description": "Budgeting App Sample - React, Redux, Webpack 2",
+  "description": "Prototype app for visualizing output from SynchroSim",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
