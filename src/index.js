@@ -138,6 +138,10 @@ document.addEventListener('DOMContentLoaded', () => {
   */
   // Add event listener to document for filters.change event
   addEventListener(document, 'filters.change', (e) => {
+    // Change chart state to loading
+    d3.selectAll('.chart')
+      .classed('loading', true);
+      
     // Update ul element
     updateFiltersLegend(e.detail);
 
