@@ -12,7 +12,6 @@ let scenarioSelect;
 let secStratumSelect;
 let stratumSelect;
 let iterationInput;
-let updateButton;
 
 function removeOptions(selectbox) {
   for (let i = 0; i < selectbox.options.length; i++) {
@@ -50,8 +49,8 @@ function updateFields() {
     removeOptions(secStratumSelect);
     details.secondary_stratum.forEach((item) => {
       const option = document.createElement('option');
-      option.text = item;
-      option.value = item;
+      option.text = item.id;
+      option.value = item.id;
       secStratumSelect.add(option);
     });
     secStratumSelect.disabled = false;
@@ -61,8 +60,8 @@ function updateFields() {
     removeOptions(stratumSelect);
     details.stratum.forEach((item) => {
       const option = document.createElement('option');
-      option.text = item;
-      option.value = item;
+      option.text = item.id;
+      option.value = item.id;
       stratumSelect.add(option);
     });
     stratumSelect.disabled = false;

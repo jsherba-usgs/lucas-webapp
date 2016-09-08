@@ -7,7 +7,7 @@ import markerIcon from 'leaflet/dist/images/marker-icon.png';
 
 // Import helpers
 import { cartoDBPositronLabelsOnly, stateclassTiles } from './../../helpers/leaflet-layers';
-import shapes from './islands.js';
+import projects from './../../helpers/project-details';
 
 /**
 * EXPORT VARIABLE
@@ -66,7 +66,7 @@ model.init = ({ selector, lat = 19.6, lng = -155.4, scenario = '6368', iteration
     year: year.toString(),
     scenario: scenario.toString(),
     iteration: iteration.toString(),
-    secondary_stratum: shapes.features.find((ftr) => ftr.properties.name === "Hawai'i"),
+    secondary_stratum: '',
   };
 
   info.addTo(map);
@@ -89,9 +89,10 @@ model.updateRaster = (...args) => {
     }
     if (args[0].secondary_stratum && args[0].secondary_stratum !== settings.secondary_stratum) {
       settings.secondary_stratum = args[0].secondary_stratum;
-      const feature = shapes.features.find((ftr) => ftr.properties.name === args[0].secondary_stratum);
-      if (feature) {
-        const tempLayer = L.geoJson(feature);
+      const project = projects.getDetailsForId(args[0].project);
+      const feature = project.details.secondary_stratum.find((item) => item.id === args[0].secondary_stratum);
+      if (feature.geom) {
+        const tempLayer = L.geoJson(feature.geom);
         map.fitBounds(tempLayer.getBounds());
       }
       update = true;
