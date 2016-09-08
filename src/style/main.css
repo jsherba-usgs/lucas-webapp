@@ -1759,7 +1759,6 @@
 	flex-direction: row;
 	flex-wrap: wrap;
 	justify-content: center;
-	background-color: #fff;
 	min-height: 400px;
 	height: 100%;
 }
@@ -1767,6 +1766,12 @@
 /**********************************
 * Section 3 Elements
 **********************************/
+#three .row {
+	-ms-flex-pack: distribute;
+  justify-content: space-around;
+  padding-right: 1em;
+  padding-left: 1em;
+}
 #three .col.chart  {
   height: 100%;
 }
@@ -1790,6 +1795,10 @@
 
 .legend-stateclass svg {
 	width: 80%;
+}
+
+.legend-stateclass text {
+	font-size: 0.8em;
 }
 
 /* Charts */
