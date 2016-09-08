@@ -1,6 +1,7 @@
 // Import Node Modules
 import d3 from 'd3';
 import 'd3-svg-legend';
+import Spinner from 'spin';
 
 // Import Styles
 import './../components/bar-chart/bar-chart.css';
@@ -19,17 +20,14 @@ const parentContainer = document.getElementById('two');
 const chartContainer = parentContainer.querySelector('.chart.multiples');
 const showTotals = parentContainer.querySelector('.total');
 const showChange = parentContainer.querySelector('.change');
+let loading;
 
 const view = {
   init() {
-    // Add loading class
-    // TODO: Refactor this, expose another method on view maybe, e.g. view.setStatus('loading')
-    chartContainer.classList.add('loading');
+
   },
-  update(nestedData) {
-    // Remove loading/no-data class
-    // TODO: Refactor this, expose another method on view maybe, e.g. view.setStatus('loading')
-    chartContainer.classList.remove('loading');
+  updateChart(nestedData) {
+    this.chartStatus('loaded');
     chartContainer.classList.remove('no-data');
 
     // Filter nested data
@@ -109,7 +107,18 @@ const view = {
       .call(barChart()
         .color(stateclassColorScale)
       );
-
+  },
+  chartStatus(status) {
+    switch (status) {
+      case 'loading':
+        loading = new Spinner().spin(chartContainer);
+        break;
+      case 'loaded':
+        loading.stop();
+        break;
+      default:
+        chartContainer.classList.add('no-data');
+    }
   }
 };
 

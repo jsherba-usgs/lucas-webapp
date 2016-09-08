@@ -1,13 +1,11 @@
  // Import Node Modules
 import d3 from 'd3';
 import 'd3-svg-legend';
+import Spinner from 'spin';
 
 // Import Styles
 import './../components/multiline-area-chart/multiLine-area-chart.css';
 import './../components/horizontal-bar-chart/horizontal-bar-chart-small-multiples.css';
-
-// Import Helpers
-import { stateclassColorScale } from './../helpers/colors';
 
 // Import Components
 import lineChart from './../components/multiline-area-chart/line-chart-small-multiples';
@@ -21,14 +19,11 @@ const timeseriesContainer = parentContainer.querySelector('.chart.timeseries');
 const hbarsContainer = parentContainer.querySelector('.chart.pathways');
 let timeseriesChart;
 let pathwaysChart;
+let loading1;
+let loading2;
 
 const view = {
   init() {
-    // Add loading class
-    // TODO: Refactor this, expose another method on view maybe, e.g. view.setStatus('loading')
-    timeseriesContainer.classList.add('loading');
-    hbarsContainer.classList.add('loading');
-
     // Set x and y accessors
     const yAccessor = function (d) { return +d.values; };
     const xAccessor = function (d) { return new Date(d.key, 0, 1); };
@@ -46,12 +41,9 @@ const view = {
       .yValue((d) => d.pathway)
       .xValue((d) => +d.total);
   },
-  update(nestedData) {
-    // Remove loading/no-data class
-    // TODO: Refactor this, expose another method on view maybe, e.g. view.setStatus('loading')
-    timeseriesContainer.classList.remove('loading');
+  updateChart(nestedData) {
+    this.chartStatus('loaded');
     timeseriesContainer.classList.remove('no-data');
-    hbarsContainer.classList.remove('loading');
     hbarsContainer.classList.remove('no-data');
 
     // Remap nested data for plotting
@@ -115,6 +107,21 @@ const view = {
       .datum(transitionTypes)
       .transition()
       .call(timeseriesChart);
+  },
+  chartStatus(status) {
+    switch (status) {
+      case 'loading':
+        loading1 = new Spinner().spin(timeseriesContainer);
+        loading2 = new Spinner().spin(hbarsContainer);
+        break;
+      case 'loaded':
+        loading1.stop();
+        loading2.stop();
+        break;
+      default:
+        timeseriesContainer.classList.remove('no-data');
+        hbarsContainer.classList.remove('no-data');
+    }
   }
 };
 

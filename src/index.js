@@ -105,8 +105,8 @@ document.addEventListener('DOMContentLoaded', () => {
     .attr('transform', 'translate(25,20)');
 
   const stateclassOrdinal = d3.legend.color()
-    .shapePadding(60)
-    .shapeWidth(30)
+    .shapePadding(legendWidth / 20)
+    .shapeWidth(25)
     .orient('horizontal')
     .title('State Classes (area in square kilometers):')
     .scale(stateclassColorScale);
@@ -139,9 +139,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // Add event listener to document for filters.change event
   addEventListener(document, 'filters.change', (e) => {
     // Change chart state to loading
-    d3.selectAll('.chart')
-      .classed('loading', true);
-      
+    section1.chartStatus('loading');
+    section2.chartStatus('loading');
+    section3.chartStatus('loading');
+
     // Update ul element
     updateFiltersLegend(e.detail);
 
@@ -171,10 +172,10 @@ document.addEventListener('DOMContentLoaded', () => {
           .entries(data);
 
         // Update section 1 charts
-        section1.update(totalAreaByYear);
+        section1.updateChart(totalAreaByYear);
 
         // Update section 2 charts
-        section2.update(totalAreaByYear);
+        section2.updateChart(totalAreaByYear);
       })
       .catch((error) => {
         if (error.message.indexOf('No data') > -1) {
@@ -198,7 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
           .entries(data);
 
         // Update section 3 ag contraction chart
-        section3.update(totalAreaByYear);
+        section3.updateChart(totalAreaByYear);
       })
       .catch((error) => {
         if (error.message.indexOf('No data') > -1) {
@@ -209,7 +210,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         console.log(error);
       });
-
   });
 
   // Intializing the filters starts the app on page load

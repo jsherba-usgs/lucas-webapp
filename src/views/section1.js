@@ -2,6 +2,7 @@
 import d3 from 'd3';
 import chroniton from 'chroniton';
 import 'd3-svg-legend';
+import Spinner from 'spin';
 
 // Import Styles
 import './../components/multiline-area-chart/multiLine-area-chart.css';
@@ -24,6 +25,7 @@ let slider;
 const controlsContainer = parentContainer.querySelector('.controls');
 const chartContainer = parentContainer.querySelector('.chart');
 let timeseriesChart;
+let loading;
 
 /*
 * EXPORT OBJECT
@@ -32,10 +34,6 @@ const view = {
   init() {
     // Init map
     leafletMap.init(mapContainer);
-
-    // Add loading class
-    // TODO: Refactor this, expose another method on view maybe, e.g. view.setStatus('loading')
-    chartContainer.classList.add('loading');
 
     timeseriesChart = chart()
       .width(chartContainer.offsetWidth)
@@ -91,10 +89,8 @@ const view = {
         .attr('class', 'small')
         .on('click', () => slider.stop());
   },
-  update(nestedData) {
-    // Remove loading/no-data class
-    // TODO: Refactor this, expose another method on view maybe, e.g. view.setStatus('loading')
-    chartContainer.classList.remove('loading');
+  updateChart(nestedData) {
+    this.chartStatus('loaded');
     chartContainer.classList.remove('no-data');
 
     // Remap nested data for plotting
@@ -127,6 +123,18 @@ const view = {
   },
   updateMap(options) {
     leafletMap.updateRaster(options);
+  },
+  chartStatus(status) {
+    switch (status) {
+      case 'loading':
+        loading = new Spinner().spin(chartContainer);
+        break;
+      case 'loaded':
+        loading.stop();
+        break;
+      default:
+        chartContainer.classList.add('no-data');
+    }
   }
 };
 

@@ -40,6 +40,7 @@
     "d3-tip": "^0.6.7",
     "es6-promise": "^3.1.2",
     "leaflet": "^0.7.7",
-    "smooth-scroll": "github:cferdinandi/smooth-scroll"
+    "smooth-scroll": "github:cferdinandi/smooth-scroll",
+    "spin": "0.0.1"
   }
 }
