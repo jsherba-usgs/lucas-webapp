@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
     filtersLegend.forEach((el) => {
       el.innerHTML = content;
     });
-  
+
   }
   /*
   * FILTERS
