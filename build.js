@@ -1,5 +1,6 @@
 /* eslint no-var: 0 */
 var exec = require('child_process').exec;
+var fs = require('fs');
 
 var cmdLine = './node_modules/.bin/webpack --progress';
 var environ = (!process.argv[2].indexOf('development')) ? 'development' : 'production';
@@ -22,3 +23,6 @@ command.stderr.on('data', function(data) {
 command.on('error', function(err) {
   process.stderr.write(err);
 });
+
+fs.createReadStream('src/index.html')
+  .pipe(fs.createWriteStream('build/index.html'));
