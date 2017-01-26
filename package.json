@@ -11,6 +11,9 @@
   },
   "license": "MIT",
   "devDependencies": {
+  	"bootstrap": "^3.3.7",
+    "browser-sync": "^2.13.0",
+    "font-awesome": "^4.6.3",
     "babel-core": "^6.7.2",
     "babel-loader": "^6.2.4",
     "babel-plugin-transform-class-properties": "^6.6.0",
@@ -32,6 +35,7 @@
     "webpack-dev-server": "2.0.0-beta"
   },
   "dependencies": {
+  	"simple-line-icons": "^2.3.2",
     "babel-runtime": "^6.6.1",
     "chroniton": "github:mukhtyar/chroniton#margin",
     "d3": "^3.5.6",

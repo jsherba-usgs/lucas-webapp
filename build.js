@@ -24,5 +24,5 @@ command.on('error', function(err) {
   process.stderr.write(err);
 });
 
-fs.createReadStream('src/index.html')
-  .pipe(fs.createWriteStream('build/index.html'));
+fs.createReadStream('src/test.html')
+  .pipe(fs.createWriteStream('build/test.html'));

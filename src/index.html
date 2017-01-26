@@ -1,168 +1,198 @@
-<!DOCTYPE HTML>
-<!--
-  Forty by Pixelarity
-  pixelarity.com | hello@pixelarity.com
-  License: pixelarity.com/license
--->
-<html>
-  <head>
-    <title>LandCarbon</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title></title>
-    <meta name="description" content="description">
-    <meta property="og:description" content="description">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-    <link href="https://fonts.googleapis.com/css?family=Lato:300,300italic,600,600italic" rel="stylesheet" type="text/css">
-  </head>
-  <body>
+<!DOCTYPE html>
+<html lang="en">
 
-    <!-- Wrapper -->
-      <div id="wrapper">
+<section id='header'>
 
-        <!-- Header -->
-          <header id="header" class="alt">
-            <a href="index.html" class="logo">Land<strong>Carbon</strong> <span>SyncroSim Visualizer Prototype</span></a>
-            <nav>
-              <a id="overlayOpen" href="#overlay">About</a>
-            </nav>
-          </header>
+</section>
 
+<body id="page-top">
 
-
-        <!-- Banner -->
-          <section id="banner" class="major">
-            <div class="inner">
-              <header class="major">
-                <h1>Land Change Projections for Hawai'i</h1>
-              </header>
-              <div class="content">
-                <p>
-                  Explore dynamics of land-use/land-cover (LULC) change projections for the state of Hawai'i. These datasets are a result of a USGS modeling project that simulates LULC change into the future over different scenarios using a state-and-transition simulation model (STSM). The STSM model was run using the <a href="http://syncrosim.com" target="blank">SyncroSim</a> framework and the ST-SIM module. Processes represented in this project include expansion/contraction of agricultural lands, urbanization, wildfire, shrub encroachment into grassland and harvest of tree plantations. Additional details on the STSM approach can be found in <a href="http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12597/full">Daniel et al (2016)</a>.
-                </p>
-                <div class="vis-list inline-list">
-                  <ul>
-                    <li><a data-scroll href="#one" >Land Change over Time</a></li>
-                    <li><a data-scroll href="#two" >Total Area &amp; Net Change</a></li>
-                    <li><a data-scroll href="#three" >Transition Groups &amp; Types</a></li>
-                  </ul>
-                </div>
-              </div>
+    <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
+                </button>
+                <a class="navbar-brand page-scroll" href="#page-top">USGS LUCAS</a>
             </div>
-          </section>
 
-        <!-- Contact -->
-          <section id="filters">
-
-          </section>
-          <hr/>
-
-        <!-- Main -->
-          <div id="main">
-
-            <!-- One -->
-              <section id="one">
-                <div class="inner">
-                  <header class="major">
-                    <h2>Land Change over Time</h2>
-                  </header>
-                  <p>
-                    The landscape is divided spatially into simulation cells, each of which is 1x1 km in size. Simulations were run for 60 years with an annual timestep using initial conditions corresponding to the year 2001. A different number of Monte Carlo realizations (iterations) were run for different scenarios. Each cell is characterized by a group of state variables. One of these is the State Type of each cell which corresponds to one of the seven LULC classes.
-                  </p>
-                  <p>
-                    The map below shows the change in State Type over the simulation period (2001 -2061) in 10 year intervals for selected combination of scenario, iteration, moisture zone (stratum) and island (secondary stratum). The chart below displays the total landscape area in each LULC class per year. Use the play, pause and stop controls or move the slider to see the changes.
-                  </p>
-                </div>
-                <div class="row">
-                  <article class="col half">
-                    <div class="box">
-                      <div id="map"></div>
-                    </div>
-                  </article>
-                  <article class="col half">
-                    <div class="box">
-                      <div class="chart"></div>
-                      <div class="chroniton-slider"></div>
-                      <div class="controls"></div>
-                    </div>
-                  </article>
-                </div>
-                <div class="legend-stateclass"></div>
-                <div class="legend-filters inline-list"></div>
-              </section>
-              <hr/>
-
-            <!-- Two -->
-              <section id="two">
-                <div class="inner">
-                  <header class="major">
-                    <h2>Total Area and Net Change</h2>
-                  </header>
-                  <p>
-                    The charts below show the total landscape area in square kilometers over the simulation period beginning with start of the simulation, then at a 10 year interval. Click on the Net Change button to see the net amount of change in landscape area over the previous decade. Hover over the bars for more detailed tooltip.
-                  </p>
-                </div>
-                <div class="legend-filters inline-list"></div>
-                <div class="controls" style="margin: 1em 0;">
-                  <button class="total">Total Area</button>
-                  <button class="change">Net Change</button>
-                </div>
-                <div class="chart multiples"></div>
-                <div class="legend-stateclass"></div>
-              </section>
-              <hr/>
-
-            <!-- Three -->
-              <section id="three">
-                <div class="inner">
-                  <header class="major">
-                    <h2>Transition Groups and Types</h2>
-                  </header>
-                  <p>A set of all possible transitions between State Types is also defined in the model. For this project, the processes represented by these transitions include expansion and contraction of agricultural lands, urbanization, wildfire, shrub encroachment into grassland, harvest of tree plantations and shifts in moisture zones due to climate change.</p>
-                </div>
-                <div class="legend-filters inline-list"></div>
-                <div class="row">
-                  <div class="col chart timeseries"></div>
-                  <div class="col chart pathways"></div>
-                </div>
-              </section>
-
-          </div>
-
-      </div>
-
-      <!-- About -->
-      <div id="overlay">
-        <div class="inner">
-          <p>
-            The USGS is involved in a variety of scenario-based modeling projects aimed at projecting land-use change into the future. Typically, these projects lead to the creation of many time-series datasets in the form of large tabular and spatial files. A common difficulty among land-use scenario researchers is efficiently managing, analyzing, and visualizing these datasets.
-          </p>
-          <p>
-            The <a href="http://gif.berkeley.edu/" target="blank">Geospatial Innovation Facility</a> (GIF) at University of California, Berkeley has developed a prototype web application designed to ingest the tabular and spatial data stored within a generalized USGS land-use database that manages modeling results from <a href="http://www.apexrms.com/" target="blank">ApexRMS</a>'s <a href="http://syncrosim.com" target="blank">SyncroSim</a> software. The prototype web application consists of the following components:
-          </p>
-          <ul>
-            <li>
-              A public <a href="http://stage.landcarbon.org/api/">Application Programming Interface</a> (API) built on the <a href="http://www.django-rest-framework.org/">Django REST framework</a>. The API provides standardized access to data within the SyncroSim database for building web applications and data visualizations.
-            </li>
-            <li>
-              A data management console for researchers to manage projects and scenarios.
-            </li>
-            <li>
-              Interactive web based data visualizations built using the API that allow users to dynamically visualize dense time series of projected climate and land use futures.
-            </li>
-          </ul>
-          </p>
-            This prototype web application allows researchers to explore land-use data scenarios and quickly share land-use modeling results with colleagues and  the public. The interactive data visualizations presented here and new tools built using the API can be used to communicate complex data and introduce non-scientists to the concept of scenarios, thus successfully fulfilling the USGS mandate of sharing datasets and science with the public.
-          </p>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="#download">Models</a>
+                    </li>
+                    <li>
+                        <a href="#features">About</a>
+                    </li>
+                    <li>
+                        <a href="#contact">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
         </div>
+        <!-- /.container-fluid -->
+    </nav>
 
-        <a id="overlayClose" class="close" href="#overlay">Close</a>
-      </div>
+    <header>
+        <div class="container">
+            <div class="row">
+				 <div class="col-sm-2">
+				 </div>
+                <div class="col-sm-7">
+                    <div class="header-content">
+                        <div class="header-content-inner">
+                            <h1>The Land-use and Carbon Scenario Simulator (LUCAS).</h1>
+                            <a href="#download" class="btn btn-outline btn-xl page-scroll">View models</a>
+                        </div>
+                    </div>
+                </div>
+				<div class="col-sm-3">
+				 </div>
+                
+             </div>
+         </div>  
+    </header>
 
-    <!-- Scripts -->
-    <script src="./vendor.bundle.js"></script>
-    <script src="./bundle.js"></script>
+    <section class="bg-primary text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <h2 class="section-heading">Get started with LUCAS</h2>
+                    <p>Download LUCAS template and St-Sim software!</p>
+                    <div class="badges">
+                        <a class="badge-link" href="#"><img src="img/google-play-badge.svg" alt=""></a>
+                        <a class="badge-link" href="#"><img src="img/app-store-badge.svg" alt=""></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  </body>
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="section-heading">
+                        <h2>Unlimited Features, Unlimited Fun</h2>
+                        <p class="text-muted">Check out what you can do with this app theme!</p>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="device-container">
+                        <div class="device-mockup iphone6_plus portrait white">
+                            <div class="device">
+                                <div class="screen">
+                                    <!-- Demo image for screen mockup, you can put an image here, some HTML, an animation, video, or anything else! -->
+                                    <img src="img/demo-screen-1.jpg" class="img-responsive" alt=""> </div>
+                                <div class="button">
+                                    <!-- You can hook the "home button" to some JavaScript events or just remove it -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="feature-item">
+                                    <i class="icon-screen-smartphone text-primary"></i>
+                                    <h3>Device Mockups</h3>
+                                    <p class="text-muted">Ready to use HTML/CSS device mockups, no Photoshop required!</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="feature-item">
+                                    <i class="icon-camera text-primary"></i>
+                                    <h3>Flexible Use</h3>
+                                    <p class="text-muted">Put an image, video, animation, or anything else in the screen!</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="feature-item">
+                                    <i class="icon-present text-primary"></i>
+                                    <h3>Free to Use</h3>
+                                    <p class="text-muted">As always, this theme is free to download and use for any purpose!</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="feature-item">
+                                    <i class="icon-lock-open text-primary"></i>
+                                    <h3>Open Source</h3>
+                                    <p class="text-muted">Since this theme is MIT licensed, you can use it commercially!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </section>
+
+    <section class="cta">
+        <div class="cta-content">
+            <div class="container">
+                <h2>Stop waiting.<br>Start building.</h2>
+                <a href="#contact" class="btn btn-outline btn-xl page-scroll">Let's Get Started!</a>
+            </div>
+        </div>
+        <div class="overlay"></div>
+    </section>
+
+    <section class="bg-primary">
+        <div class="container">
+            <h2>We <i class="fa fa-heart"></i> new friends!</h2>
+            <ul class="list-inline list-social">
+                <li class="social-twitter">
+                    <a href="#"><i class="fa fa-twitter"></i></a>
+                </li>
+                <li class="social-facebook">
+                    <a href="#"><i class="fa fa-facebook"></i></a>
+                </li>
+                <li class="social-google-plus">
+                    <a href="#"><i class="fa fa-google-plus"></i></a>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2016 Start Bootstrap. All Rights Reserved.</p>
+            <ul class="list-inline">
+                <li>
+                    <a href="#">Privacy</a>
+                </li>
+                <li>
+                    <a href="#">Terms</a>
+                </li>
+                <li>
+                    <a href="#">FAQ</a>
+                </li>
+            </ul>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="theme/vendor/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+
+    <!-- Plugin JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+
+    <!-- Theme JavaScript -->
+   <script src="../build/vendor.bundle.js"></script>
+    <script src="../build/jstheme-bundle.js"></script>
+
+
+</body>
+
 </html>

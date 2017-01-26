@@ -9,8 +9,9 @@ module.exports = {
   devtool: isProd ? 'hidden-source-map' : 'cheap-eval-source-map',
   context: path.join(__dirname, './src'),
   entry: {
-    js: './index.js',
-    vendor: ['smooth-scroll', 'd3', 'leaflet']
+    js: './test.js',
+    //jstheme: './index.js',
+    vendor: ['smooth-scroll', 'd3', 'leaflet', 'bootstrap']
   },
   output: {
     path: path.join(__dirname, './build'),
