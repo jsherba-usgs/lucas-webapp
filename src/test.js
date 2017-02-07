@@ -20,6 +20,7 @@ import section1 from './views/section1';
 import section2 from './views/section2';
 import section3 from './views/section3';
 
+
 document.addEventListener('DOMContentLoaded', () => {
   /*
   * PAGE UI

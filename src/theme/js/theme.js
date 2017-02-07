@@ -1,11 +1,14 @@
 
-import content from '../../head.html';
+import head from '../html/head.html';
+import nav from '../html/navigation.html';
+
 export function loadtheme() {
 
 headerContainer = document.getElementById('header');
-headerContainer.innerHTML = content;
+headerContainer.innerHTML = head;
 
-
+navContainer = document.getElementById('navigation');
+navContainer.innerHTML = nav;
 
 (function($) {
     "use strict"; // Start of use strict

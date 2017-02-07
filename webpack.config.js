@@ -9,13 +9,13 @@ module.exports = {
   devtool: isProd ? 'hidden-source-map' : 'cheap-eval-source-map',
   context: path.join(__dirname, './src'),
   entry: {
-    js: './test.js',
-    //jstheme: './index.js',
-    vendor: ['smooth-scroll', 'd3', 'leaflet', 'bootstrap']
+    lucas: './test.js',
+    theme: './index.js',
+    vendor: ['smooth-scroll', 'd3', 'leaflet', 'bootstrap', 'jquery']
   },
   output: {
     path: path.join(__dirname, './build'),
-    filename: 'bundle.js'
+    filename: '[name]-bundle.js'
   },
   module: {
     loaders: [
