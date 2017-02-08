@@ -11,7 +11,9 @@ let projectSelect;
 let scenarioSelect;
 let secStratumSelect;
 let stratumSelect;
+let variableSelect;
 let iterationInput;
+let variableDetail;
 
 function removeOptions(selectbox) {
   for (let i = 0; i < selectbox.options.length; i++) {
@@ -25,7 +27,21 @@ function updateIterationInput() {
   const id = scenarioSelect.value;
   const scenarioDetail = details.scenario.find((item) => item.id === id);
   iterationInput.max = scenarioDetail.iterations;
+
 }
+
+function updateVariableDetail() {
+  removeOptions(variableDetail);
+  const id = variableSelect.value;
+  const getvariableDetail = details.variable.find((item) => item.id === id);
+  getvariableDetail.variable_detail.forEach((item) => {
+      const option = document.createElement('option');
+      option.text = item.id;
+      option.value = item.id;
+      variableDetail.add(option);
+    });
+    variableDetail.disabled = false;
+  }
 
 
 function updateFields() {
@@ -66,9 +82,24 @@ function updateFields() {
     });
     stratumSelect.disabled = false;
 
+     // Populate variable select box
+    variableSelect = filtersContainer.querySelector('select[name=variable]');
+    removeOptions(variableSelect);
+    details.variable.forEach((item) => {
+      const option = document.createElement('option');
+      option.text = item.id;
+      option.value = item.id;
+      variableSelect.add(option);
+    });
+    variableSelect.disabled = false;
+
     // Populate iteration input box
+
     iterationInput = filtersContainer.querySelector('input[name=iteration]');
     iterationInput.disabled = false;
+
+    variableDetail = filtersContainer.querySelector('select[name=variable_detail]');
+    variableDetail.disabled = false;
   }
 }
 
@@ -93,6 +124,9 @@ model.init = () => {
   scenarioSelect.onchange = updateIterationInput;
   scenarioSelect.onchange();
 
+  variableSelect.onchange = updateVariableDetail;
+  variableSelect.onchange();
+
   // Create a custom event that is dispatched when Update button on form is clicked
   const form = filtersContainer.querySelector('form');
 
@@ -116,6 +150,8 @@ model.getValues = () => (
     stratum: stratumSelect.value,
     secondary_stratum: secStratumSelect.value,
     iteration: iterationInput.value,
+    variable: variableSelect.value,
+    variable_detail: variableDetail.value,
   }
 );
 

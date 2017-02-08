@@ -32,6 +32,53 @@ const projectDetails = [
           iterations: 20,
         },
       ],
+      variable: [
+        {
+          id: 'Land-Cover State',
+          variable_detail: [
+          {
+            id: 'Forest',
+          },
+          {
+            id: 'Grassland',
+          },
+          {
+            id: 'Agriculture',
+          },
+        ],
+          
+        },
+        {
+          id: 'Carbon Stock',
+          variable_detail: [
+          {
+            id: 'AGRICULTURAL CONTRACTION',
+          },
+          {
+            id: 'AGRICULTURAL EXPANSION',
+          },
+          {
+            id: 'URBANIZATION',
+          },
+        ],
+         
+        },
+        {
+          id: 'Land-Cover Transition',
+          
+        },
+      ],
+      variable_detail: [
+          {
+            id: 'Forest',
+          },
+          {
+            id: 'Grassland',
+          },
+          {
+            id: 'Agriculture',
+          },
+        ],
       stratum: [
         {
           id: 'Dry',
