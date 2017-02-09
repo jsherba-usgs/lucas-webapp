@@ -5,7 +5,7 @@
  */
 
 const config = {
-  apiEndpoint: 'http://stage.landcarbon.org/api/',
+  apiEndpoint: 'http://127.0.0.1:8000/api/',
   tileurl: '',
 };
 

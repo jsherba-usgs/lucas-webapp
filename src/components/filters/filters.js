@@ -16,8 +16,10 @@ let iterationInput;
 let variableDetail;
 
 function removeOptions(selectbox) {
+  console.log(selectbox.options.length)
   for (let i = 0; i < selectbox.options.length; i++) {
     if (selectbox.options[i].value !== 'All') {
+      console.log(i)
       selectbox.remove(i);
     }
   }
@@ -27,11 +29,10 @@ function updateIterationInput() {
   const id = scenarioSelect.value;
   const scenarioDetail = details.scenario.find((item) => item.id === id);
   iterationInput.max = scenarioDetail.iterations;
-
 }
 
 function updateVariableDetail() {
-  removeOptions(variableDetail);
+  variableDetail.options.length = 0
   const id = variableSelect.value;
   const getvariableDetail = details.variable.find((item) => item.id === id);
   getvariableDetail.variable_detail.forEach((item) => {

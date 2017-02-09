@@ -11,6 +11,7 @@ const chart = () => {
   const chartClass = 'multiLinePlusArea';
   let xValue = (d) => d.date;
   let yValue = (d) => +d.value;
+  //let yValue = (d) => +d['pc(sum, 50)']
   let xDomain = [new Date(2001, 1), new Date(2061, 1)];
   let yDomain = [0, 100];
   let color = d3.scale.category10();
@@ -58,8 +59,11 @@ const chart = () => {
   // Area function
   const area = d3.svg.area()
     .x((d) => xScale(xValue(d)))
-    .y0((d) => yScale(+d.min))
-    .y1((d) => yScale(+d.max));
+    //.y0((d) => yScale(+d.min))
+    //.y1((d) => yScale(+d.max));
+     .y0((d) => yScale(yValue(d)))
+    .y1((d) => yScale(yValue(d)+20));
+    
   // Events
   const dispatch = d3.dispatch('click', 'mouseout', 'brushmove');
 

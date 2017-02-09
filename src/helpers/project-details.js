@@ -7,24 +7,24 @@ const projectDetails = [
     id: '7096',
     details: {
       scenario: [
-        {
+        /*{
           id: '6368',
           name: '6368 | BAU 60TS; 1MC',
           type: 'Business as Usual',
           iterations: 1,
-        },
+        },*/
         {
           id: '6370',
           name: '6370 | BAU 60TS; 20MC',
           type: 'Business as Usual',
           iterations: 20,
         },
-        {
+        /*{
           id: '6374',
           name: '6374 | BAU 60TS; 100MC',
           type: 'Business as Usual',
           iterations: 100,
-        },
+        },*/
         {
           id: '6385',
           name: '6385 | No Fire',
@@ -52,6 +52,21 @@ const projectDetails = [
           id: 'Carbon Stock',
           variable_detail: [
           {
+            id: 'Litter',
+          },
+          {
+            id: 'SOC',
+          },
+          {
+            id: 'Biomass',
+          },
+        ],
+         
+        },
+        {
+          id: 'Land-Cover Transition',
+          variable_detail: [
+          {
             id: 'AGRICULTURAL CONTRACTION',
           },
           {
@@ -61,24 +76,8 @@ const projectDetails = [
             id: 'URBANIZATION',
           },
         ],
-         
-        },
-        {
-          id: 'Land-Cover Transition',
-          
-        },
+      },
       ],
-      variable_detail: [
-          {
-            id: 'Forest',
-          },
-          {
-            id: 'Grassland',
-          },
-          {
-            id: 'Agriculture',
-          },
-        ],
       stratum: [
         {
           id: 'Dry',

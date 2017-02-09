@@ -11,7 +11,7 @@ module.exports = {
   entry: {
     lucas: './test.js',
     theme: './index.js',
-    vendor: ['smooth-scroll', 'd3', 'leaflet', 'bootstrap', 'jquery']
+    vendor: ['smooth-scroll', 'd3', 'leaflet', 'bootstrap']
   },
   output: {
     path: path.join(__dirname, './build'),

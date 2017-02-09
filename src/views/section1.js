@@ -94,30 +94,74 @@ const view = {
     chartContainer.classList.remove('no-data');
 
     // Remap nested data for plotting
-    const timeseriesData = nestedData.map((series) => (
+    const timeseriesDataLine = nestedData.map((series) => (
       {
         name: series.key,
         type: 'line',
         values: series.values,
       }
     ));
-
+    
     // Set x and y accessors for timeseries chart
     const yAccessor = function (d) { return +d.values; };
+    //const yAccessor = function (d) { return d.values, function (d) { return +d.values;}};
     const xAccessor = function (d) { return new Date(d.key, 0, 1); };
+
+
     timeseriesChart.yValue(yAccessor);
     timeseriesChart.xValue(xAccessor);
 
     // Set y domain
     const domainRange = [];
-    timeseriesData.forEach((series) =>
+    timeseriesDataLine.forEach((series) =>
       series.values.forEach((d) => domainRange.push(d.values))
+      //series.values.forEach((d) => d.values.forEach((f) => domainRange.push(f.MinMax[0], f.MinMax[1])))
+      
     );
-    timeseriesChart.yDomain([0, d3.max(domainRange)]);
+
+    timeseriesChart.yDomain([d3.min(domainRange), d3.max(domainRange)]);
 
     // Call timeseries chart
     d3.select(chartContainer)
-      .datum(timeseriesData)
+      .datum(timeseriesDataLine)
+      .transition()
+      .call(timeseriesChart);
+  },
+  updateChartArea(nestedData) {
+    this.chartStatus('loaded');
+    //chartContainer.classList.remove('no-data');
+
+    // Remap nested data for plotting
+    const timeseriesDataArea = nestedData.map((series) => (
+      {
+        name: series.key,
+        type: 'area',
+        values: series.values,
+      }
+    ));
+    
+    // Set x and y accessors for timeseries chart
+    //const yAccessor = function (d) { return +d.values; };
+    //const yAccessor = function (d) { return d.values, function (d) { return +d.values;}};
+    //const xAccessor = function (d) { return new Date(d.key, 0, 1); };
+
+
+    //timeseriesChart.yValue(yAccessor);
+    //timeseriesChart.xValue(xAccessor);
+
+    // Set y domain
+   /* const domainRange = [];
+    timeseriesDataLine.forEach((series) =>
+      series.values.forEach((d) => domainRange.push(d.values))
+      //series.values.forEach((d) => d.values.forEach((f) => domainRange.push(f.MinMax[0], f.MinMax[1])))
+      
+    );
+
+    timeseriesChart.yDomain([d3.min(domainRange), d3.max(domainRange)]);*/
+
+    // Call timeseries chart
+    d3.select(chartContainer)
+      .datum(timeseriesDataArea)
       .transition()
       .call(timeseriesChart);
   },

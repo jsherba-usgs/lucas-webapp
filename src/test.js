@@ -138,6 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
   /*
   * FILTERS
   */
+      
   // Add event listener to document for filters.change event
   addEventListener(document, 'filters.change', (e) => {
     // Change chart state to loading
@@ -154,9 +155,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Setup query params for fetching data from API
     const params = {
       scenario: e.detail.scenario,
-      iteration: e.detail.iteration,
+      //iteration: e.detail.iteration,
       secondary_stratum: e.detail.secondary_stratum,
       stratum: e.detail.stratum,
+      state_label_x: e.detail.variable_detail,
+      group_by:"Timestep,StateLabelX,Iteration",
+      percentile: "Iteration, 95",
       pagesize: 1000,
     };
     if (params.stratum === 'All') {
@@ -166,16 +170,39 @@ document.addEventListener('DOMContentLoaded', () => {
     // Fetch data for state class and update charts
     service.loadStates(params)
       .then((data) => {
+        const renameTotalAreaByYear = d3.nest()
+          .entries(data)
+          .map(function(group) {
+            return {
+              StateLabelX: group.StateLabelX,
+              Timestep: group.Timestep,
+              MinMax: [group["pc(sum, 5)"],group["pc(sum, 95)"]],
+              Mean:   group["pc(sum, 5)"]
+            }
+          });
+
+          
         // Group data by stateclass and year, calculate total area (amount)
+       
         const totalAreaByYear = d3.nest()
           .key((d) => d.StateLabelX)
           .key((d) => d.Timestep)
-          .rollup((v) => d3.sum(v, (d) => d.Amount))
-          .entries(data);
+          //.value((d) => d['pc(sum, 50)'])
+          .rollup((v) => d3.sum(v, (d) => d.Mean))
+          //.value((d) => [d['pc(sum, 5)'], d['pc(sum, 95)']])
+          .entries(renameTotalAreaByYear);
 
+        const totalAreaByYearArea = d3.nest()
+          .key((d) => d.StateLabelX)
+          .key((d) => d.Timestep)
+          //.value((d) => d['pc(sum, 50)'])
+          .rollup((v) => d3.sum(v, (d) => d.Mean))
+          //.value((d) => [d['pc(sum, 5)'], d['pc(sum, 95)']])
+          .entries(renameTotalAreaByYear);
+        console.log(totalAreaByYearArea)
         // Update section 1 charts
         section1.updateChart(totalAreaByYear);
-
+        section1.updateChartArea(totalAreaByYearArea);
         // Update section 2 charts
         section2.updateChart(totalAreaByYear);
       })
