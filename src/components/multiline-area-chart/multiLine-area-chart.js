@@ -9,9 +9,8 @@ const chart = () => {
   let width = 1000;
   let height = 480;
   const chartClass = 'multiLinePlusArea';
-  let xValue = (d) => d.date;
-  let yValue = (d) => +d.value;
-  //let yValue = (d) => +d['pc(sum, 50)']
+  //let xValue = (d) => d.date;
+  //let yValue = (d) => +d.value;
   let xDomain = [new Date(2001, 1), new Date(2061, 1)];
   let yDomain = [0, 100];
   let color = d3.scale.category10();
@@ -32,6 +31,7 @@ const chart = () => {
   const xScaleBrush = d3.time.scale().nice();
     // Y scale
   const yScale = d3.scale.linear();
+
   // X Axis on top of chart
   const xAxis = d3.svg.axis()
     .scale(xScale)
@@ -57,13 +57,16 @@ const chart = () => {
     .x((d) => xScale(xValue(d)))
     .y((d) => yScale(yValue(d)));
   // Area function
-  const area = d3.svg.area()
+ /* const area = d3.svg.area()
     .x((d) => xScale(xValue(d)))
-    //.y0((d) => yScale(+d.min))
-    //.y1((d) => yScale(+d.max));
-     .y0((d) => yScale(yValue(d)))
-    .y1((d) => yScale(yValue(d)+20));
-    
+    .y0(function(d) { return d.values, function(d) { return yScale(+d.min); }})
+    .y1(function(d) { return d.values, function(d) { return yScale(+d.max); }});*/
+    //.y0((d) => yScale(yValue(d)))
+    //.y1((d) => yScale(yValue(d)));
+
+    //.y0((d) => yScale(yValue(d)))
+    //.y1((d) => yScale(yValue(d)+20));
+  
   // Events
   const dispatch = d3.dispatch('click', 'mouseout', 'brushmove');
 
@@ -280,6 +283,7 @@ const chart = () => {
   **/
 
   exports.getColor = function (seriesName) {
+    console.log(seriesName)
     if (!seriesName) return '#000';
     return color(seriesName);
   };
@@ -320,17 +324,99 @@ const chart = () => {
       .call(xAxis);
   };
 
+  exports.drawLines = function () {
+    
+   /* const lineData = data.filter((series) => {
+     if (series.type === 'line') {
+        return series;
+      }
+      
+      return null;
+      
+    });
+    if (lineData.length === 0) {
+        return;
+      }*/
+   
+    const lineData = data.filter((series) => {
+        return series;
+    });
 
-  exports.drawArea = function () {
-    const areaData = data.filter((series) => {
-      if (series.type === 'area') {
+    const lineGroupContainer = svg.select('g.timeseries-line');
+    const lineGroups = lineGroupContainer.selectAll('path.line').data(lineData);
+    const lineLabels = lineGroupContainer.selectAll('text').data(lineData);
+ 
+    // Add a group element for every timeseries. The path (line) for each time series
+    // is added to this group element. This is useful for changing the drawing order of
+    // lines on hover or click events.
+   
+    // D3 UPDATE
+    lineGroups.transition().duration(1000)
+      .attr('class', 'line')
+      .attr('d', (d) => line(d.values))
+      .style('stroke', (d) => color(d.name.split(":")[0]));
+
+    lineLabels.transition().duration(1000)
+      .attr('transform', (d) => `translate(0, ${yScale(d.values[0].values)})`)
+      .attr('dx', '-0.25em')
+      .attr('dy', '0.25em')
+      .attr('text-anchor', 'end')
+      .style('fill', (d) => color(d.name.split(":")[0]))
+      .text((d) => d.name);
+
+    // D3 ENTER
+    lineGroups.enter()
+      .append('g')
+        .attr('class', (d) => d.name)
+      .append('path')
+        .attr('class', 'line')
+        .attr('d', (d) => line(d.values))
+        .style('stroke', (d) => color(d.name.split(":")[0]));
+
+    lineLabels.enter()
+      .append('text')
+        .attr('transform', (d) => `translate(0, ${yScale(d.values[0].values)})`)
+        .attr('dx', '-0.25em')
+        .attr('dy', '0.25em')
+        .attr('text-anchor', 'end')
+        .style('fill', (d) => color(d.name.split(":")[0]))
+        .text((d) => d.name);
+
+
+    // D3 EXIT
+    // If exits need to happen, apply a transition and remove DOM elements
+    // when the transition has finished
+    lineGroups.exit()
+      .remove();
+    lineLabels.exit()
+      .remove();
+  };
+
+   exports.drawArea = function () {
+
+    /*const areaData = data.filter((series) => {
+     if (series.type === 'area') {
         return series;
       }
       return null;
     });
+    if (areaData.length === 0) {
+        return;
+      }*/
+    
+    const areaData = data.filter((series) => {
+        return series;
+    });
+
     const areaGroupContainer = svg.select('g.timeseries-area');
     const areaGroups = areaGroupContainer.selectAll('path.area').data(areaData);
-
+  
+  
+   
+    let area = d3.svg.area()
+    .x((d) => xScale(xValue(d)))
+    .y0(function(d) { return yScale(+d.min)})
+    .y1(function(d) { return yScale(+d.max)});
     // D3 UPDATE
     areaGroups.transition().duration(1000)
       .attr('class', 'area')
@@ -349,64 +435,7 @@ const chart = () => {
     // when the transition has finished
     areaGroups.exit()
       .remove();
-  };
-
-  exports.drawLines = function () {
-    const lineData = data.filter((series) => {
-      if (series.type === 'line') {
-        return series;
-      }
-      return null;
-    });
-    const lineGroupContainer = svg.select('g.timeseries-line');
-    const lineGroups = lineGroupContainer.selectAll('path.line').data(lineData);
-    const lineLabels = lineGroupContainer.selectAll('text').data(lineData);
-
-    // Add a group element for every timeseries. The path (line) for each time series
-    // is added to this group element. This is useful for changing the drawing order of
-    // lines on hover or click events.
-
-    // D3 UPDATE
-    lineGroups.transition().duration(1000)
-      .attr('class', 'line')
-      .attr('d', (d) => line(d.values))
-      .style('stroke', (d) => color(d.name));
-
-    lineLabels.transition().duration(1000)
-      .attr('transform', (d) => `translate(0, ${yScale(d.values[0].values)})`)
-      .attr('dx', '-0.25em')
-      .attr('dy', '0.25em')
-      .attr('text-anchor', 'end')
-      .style('fill', (d) => color(d.name))
-      .text((d) => d.name);
-
-    // D3 ENTER
-    lineGroups.enter()
-      .append('g')
-        .attr('class', (d) => d.name)
-      .append('path')
-        .attr('class', 'line')
-        .attr('d', (d) => line(d.values))
-        .style('stroke', (d) => color(d.name));
-
-    lineLabels.enter()
-      .append('text')
-        .attr('transform', (d) => `translate(0, ${yScale(d.values[0].values)})`)
-        .attr('dx', '-0.25em')
-        .attr('dy', '0.25em')
-        .attr('text-anchor', 'end')
-        .style('fill', (d) => color(d.name))
-        .text((d) => d.name);
-
-
-    // D3 EXIT
-    // If exits need to happen, apply a transition and remove DOM elements
-    // when the transition has finished
-    lineGroups.exit()
-      .remove();
-    lineLabels.exit()
-      .remove();
-  };
+    };
 
   exports.drawMouseOverElements = function () {
     // Mouse over effect
@@ -423,6 +452,7 @@ const chart = () => {
     const lines = d3.selectAll('.line');
 
     // Add circles at intersection of all plotted lines and black vertical line
+    console.log(data)
     const mousePerLine = mouseG.selectAll('.mouse-per-line')
       .data(data)
       .enter()

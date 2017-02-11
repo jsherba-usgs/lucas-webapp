@@ -15,11 +15,20 @@ let variableSelect;
 let iterationInput;
 let variableDetail;
 
+function getOptionVals(selection) {
+  let details = [];
+  Object.keys(selection).forEach((key) => {
+    if (selection[key].selected === true){
+      details.push(selection[key].value)
+    }
+  });
+  detailsString = details.join(",")
+  return detailsString
+};
+
 function removeOptions(selectbox) {
-  console.log(selectbox.options.length)
   for (let i = 0; i < selectbox.options.length; i++) {
     if (selectbox.options[i].value !== 'All') {
-      console.log(i)
       selectbox.remove(i);
     }
   }
@@ -41,6 +50,7 @@ function updateVariableDetail() {
       option.value = item.id;
       variableDetail.add(option);
     });
+    variableDetail[0].selected = true
     variableDetail.disabled = false;
   }
 
@@ -59,6 +69,7 @@ function updateFields() {
       option.value = item.id;
       scenarioSelect.add(option);
     });
+    scenarioSelect[0].selected = true
     scenarioSelect.disabled = false;
 
     // Populate secondary stratum select box
@@ -101,6 +112,7 @@ function updateFields() {
 
     variableDetail = filtersContainer.querySelector('select[name=variable_detail]');
     variableDetail.disabled = false;
+
   }
 }
 
@@ -141,18 +153,20 @@ model.init = () => {
   };
   triggerEvent(document, 'filters.change', {
     detail: model.getValues()
+
   });
 };
 
 model.getValues = () => (
   {
     project: projectSelect.value,
-    scenario: scenarioSelect.value,
+    scenario: getOptionVals(scenarioSelect),
     stratum: stratumSelect.value,
     secondary_stratum: secStratumSelect.value,
     iteration: iterationInput.value,
     variable: variableSelect.value,
-    variable_detail: variableDetail.value,
+    variable_detail: getOptionVals(variableDetail)
+
   }
 );
 

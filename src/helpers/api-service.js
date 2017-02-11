@@ -60,6 +60,27 @@ service.loadStates = (params) => {
   });
 };
 
+service.loadCarbonStocks = (params) => {
+  let url = `${apiEndpoint}stocktypes/`;
+  if (params && typeof params === 'object') {
+    params = Object.keys(params).map((key) =>
+      `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`).join('&');
+    url = `${url}?${params}`;
+  }
+  return new Promise((resolve, reject) => {
+    getAllRecords(url)
+      .then((response) => {
+        if (!response) {
+          reject(Error('No response from server'));
+        } else if (response.length === 0) {
+          reject(Error('No data'));
+        } else {
+          resolve(response);
+        }
+      });
+  });
+};
+
 service.loadTransitions = (params) => {
   let url = `${apiEndpoint}transitions/`;
   if (params && typeof params === 'object') {

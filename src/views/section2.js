@@ -38,7 +38,7 @@ const view = {
       }
       return false;
     }
-
+    
     const decadalData = [];
     nestedData.forEach((series) => {
       const filteredValues = series.values.filter(yearFilter);
@@ -46,7 +46,7 @@ const view = {
         decadalData.push(
           {
             name: series.key,
-            value: row.values,
+            value: row.values[0].Mean,
             year: row.key,
           }
         );

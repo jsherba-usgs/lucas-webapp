@@ -153,70 +153,122 @@ document.addEventListener('DOMContentLoaded', () => {
     section1.updateMap(e.detail);
 
     // Setup query params for fetching data from API
-    const params = {
-      scenario: e.detail.scenario,
-      //iteration: e.detail.iteration,
-      secondary_stratum: e.detail.secondary_stratum,
-      stratum: e.detail.stratum,
-      state_label_x: e.detail.variable_detail,
-      group_by:"Timestep,StateLabelX,Iteration",
-      percentile: "Iteration, 95",
-      pagesize: 1000,
-    };
-    if (params.stratum === 'All') {
-      delete params.stratum;
-    }
+    if (e.detail.variable ==="Land-Cover State"){
+      let params = {
+        scenario: e.detail.scenario,
+        //iteration: e.detail.iteration,
+        secondary_stratum: e.detail.secondary_stratum,
+        stratum: e.detail.stratum,
+        state_label_x: e.detail.variable_detail,
+        group_by:"Timestep,StateLabelX,Iteration,IDScenario",
+        percentile: "Iteration, 95",
+        pagesize: 1000,
+      };
+      if (params.stratum === 'All') {
+        delete params.stratum;
+      }
 
-    // Fetch data for state class and update charts
-    service.loadStates(params)
-      .then((data) => {
-        const renameTotalAreaByYear = d3.nest()
-          .entries(data)
-          .map(function(group) {
-            return {
-              StateLabelX: group.StateLabelX,
-              Timestep: group.Timestep,
-              MinMax: [group["pc(sum, 5)"],group["pc(sum, 95)"]],
-              Mean:   group["pc(sum, 5)"]
+      // Fetch data for state class and update charts
+      service.loadStates(params)
+        .then((data) => {
+          const renameTotalAreaByYear = d3.nest()
+            .entries(data)
+            .map(function(group) {
+              return {
+                StateLabelX: group.StateLabelX,
+                ScenarioID: group.IDScenario,
+                Timestep: group.Timestep,
+                max: group["pc(sum, 95)"],
+                min: group["pc(sum, 5)"],
+                Mean:   group["pc(sum, 50)"],
+                
+              }
+            });
+
+            
+          // Group data by stateclass and year, calculate total area (amount)
+         
+          const totalAreaByYear = d3.nest()
+            .key((d) => d.StateLabelX+":"+d.ScenarioID)
+            .key((d) => d.Timestep)
+             //.rollup((v) => d3.sum(v, (d) => d.Mean))
+            .entries(renameTotalAreaByYear);
+          
+          // Update section 1 charts
+          section1.updateChart(totalAreaByYear);
+      
+          // Update section 2 charts
+          section2.updateChart(totalAreaByYear);
+        })
+        .catch((error) => {
+          if (error.message.indexOf('No data') > -1) {
+            d3.selectAll('.chart')
+              .classed('no-data', true)
+              .select('svg')
+                .remove();
+          }
+          console.log(error);
+        });
+
+    }
+    if (e.detail.variable ==="Carbon Stock"){
+      let params = {
+          scenario: e.detail.scenario,
+          //iteration: e.detail.iteration,
+          secondary_stratum: e.detail.secondary_stratum,
+          stratum: e.detail.stratum,
+          stock_type: e.detail.variable_detail,
+          group_by:"Timestep,StockType,Iteration,IDScenario",
+          percentile: "Iteration, 95",
+          pagesize: 1000,
+        };
+        if (params.stratum === 'All') {
+          delete params.stratum;
+        }
+
+        // Fetch data for state class and update charts
+        service.loadCarbonStocks(params)
+          .then((data) => {
+            const renameTotalAreaByYear = d3.nest()
+              .entries(data)
+              .map(function(group) {
+                return {
+                  StockType: group.StockType,
+                  ScenarioID: group.IDScenario,
+                  Timestep: group.Timestep,
+                  max: group["pc(sum, 95)"],
+                  min: group["pc(sum, 5)"],
+                  Mean:   group["pc(sum, 50)"],
+                  
+                }
+              });
+              console.log(data)
+              
+            // Group data by stateclass and year, calculate total area (amount)
+           
+            const totalAreaByYear = d3.nest()
+              .key((d) => d.StockType+":"+d.ScenarioID)
+              .key((d) => d.Timestep)
+               //.rollup((v) => d3.sum(v, (d) => d.Mean))
+              .entries(renameTotalAreaByYear);
+            
+            // Update section 1 charts
+            section1.updateChart(totalAreaByYear);
+        
+            // Update section 2 charts
+            section2.updateChart(totalAreaByYear);
+          })
+          .catch((error) => {
+            if (error.message.indexOf('No data') > -1) {
+              d3.selectAll('.chart')
+                .classed('no-data', true)
+                .select('svg')
+                  .remove();
             }
+            console.log(error);
           });
 
-          
-        // Group data by stateclass and year, calculate total area (amount)
-       
-        const totalAreaByYear = d3.nest()
-          .key((d) => d.StateLabelX)
-          .key((d) => d.Timestep)
-          //.value((d) => d['pc(sum, 50)'])
-          .rollup((v) => d3.sum(v, (d) => d.Mean))
-          //.value((d) => [d['pc(sum, 5)'], d['pc(sum, 95)']])
-          .entries(renameTotalAreaByYear);
-
-        const totalAreaByYearArea = d3.nest()
-          .key((d) => d.StateLabelX)
-          .key((d) => d.Timestep)
-          //.value((d) => d['pc(sum, 50)'])
-          .rollup((v) => d3.sum(v, (d) => d.Mean))
-          //.value((d) => [d['pc(sum, 5)'], d['pc(sum, 95)']])
-          .entries(renameTotalAreaByYear);
-        console.log(totalAreaByYearArea)
-        // Update section 1 charts
-        section1.updateChart(totalAreaByYear);
-        section1.updateChartArea(totalAreaByYearArea);
-        // Update section 2 charts
-        section2.updateChart(totalAreaByYear);
-      })
-      .catch((error) => {
-        if (error.message.indexOf('No data') > -1) {
-          d3.selectAll('.chart')
-            .classed('no-data', true)
-            .select('svg')
-              .remove();
-        }
-        console.log(error);
-      });
-
-
+    }
     // Fetch data for transitions and update charts
     service.loadTransitions(params)
       .then((data) => {

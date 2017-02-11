@@ -58,7 +58,7 @@ const projectDetails = [
             id: 'SOC',
           },
           {
-            id: 'Biomass',
+            id: 'Living Biomass',
           },
         ],
          
