@@ -70,7 +70,78 @@ model.init = ({ selector, lat = 19.6, lng = -155.4, scenario = '6368', iteration
   };
 
   info.addTo(map);
+
+  function style(feature) {
+    return {
+        //fillColor: getColor(feature.properties.density),
+        //weight: 2,
+        //opacity: 1,
+        color: '#87a449',
+        //dashArray: '3',
+        fillOpacity: 0
+    };
+  };
+
+  function highlightFeature(e) {
+    var layer = e.target;
+
+    layer.setStyle({
+        weight: 5,
+        color: '#87a449',
+        dashArray: '',
+        fillOpacity: 0.7
+    })
+
+    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+        layer.bringToFront();
+    }
+  };
+  function resetHighlight(e) {
+    islandLayer.resetStyle(e.target);
+  };
+  function zoomToFeature(e) {
+    map.fitBounds(e.target.getBounds());
+  };
+
+  function onEachFeature(feature, layer) {
+    layer.on({
+        mouseover: highlightFeature,
+        mouseout: resetHighlight,
+        click: zoomToFeature
+    });
+  }
+
+  project = projects.getDetailsForId('7096')
+
+  island = project.details.islands
+  
+  const islandLayer = L.geoJson(island[0].geom,{
+    style: style,
+    onEachFeature: onEachFeature
+    }).addTo(map);
+  
+
+var extentControl = L.Control.extend({
+options: {
+    position: 'topleft'
+},
+onAdd: function (map) {
+    
+    var container = L.DomUtil.create('div', 'extentControl');
+    container.style.backgroundColor = 'white';
+    container.style.width = '30px';
+    container.style.height = '30px';
+    $(container).on('click', function () {
+        map.fitBounds(islandLayer.getBounds());
+    });
+    return container;
+   }
+})
+
+map.addControl(new extentControl());
+
 };
+
 
 model.updateRaster = (...args) => {
   let update = false;
@@ -103,6 +174,8 @@ model.updateRaster = (...args) => {
     const url = `http://stage.landcarbon.org/tiles/s${settings.scenario}-it${leftPad(settings.iteration)}-ts${settings.year}-sc/{z}/{x}/{y}.png?style=lulc`;
     info.update(settings.year);
     stateclassTiles.setUrl(url);
+   
+
   }
 };
 

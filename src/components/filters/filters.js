@@ -1,4 +1,5 @@
 import content from './filters.html';
+import mapFilterContent from './filters_map.html';
 import { triggerEvent } from './../../helpers/utils';
 import projects from './../../helpers/project-details';
 
@@ -73,7 +74,7 @@ function updateFields() {
     scenarioSelect.disabled = false;
 
     // Populate secondary stratum select box
-    secStratumSelect = filtersContainer.querySelector('select[name=secondary_stratum]');
+    secStratumSelect = filtersContainer2.querySelector('select[name=secondary_stratum]');
     removeOptions(secStratumSelect);
     details.secondary_stratum.forEach((item) => {
       const option = document.createElement('option');
@@ -84,7 +85,7 @@ function updateFields() {
     secStratumSelect.disabled = false;
 
     // Populate stratum select box
-    stratumSelect = filtersContainer.querySelector('select[name=stratum]');
+    stratumSelect = filtersContainer2.querySelector('select[name=stratum]');
     removeOptions(stratumSelect);
     details.stratum.forEach((item) => {
       const option = document.createElement('option');
@@ -121,6 +122,10 @@ model.init = () => {
   filtersContainer = document.getElementById('filters');
   filtersContainer.innerHTML = content;
 
+  // Initialize container
+  filtersContainer2 = document.getElementById('filters_map');
+  filtersContainer2.innerHTML = mapFilterContent;
+
   // Add list of projects to content
   projectSelect = filtersContainer.querySelector('select[name=project]');
 
@@ -146,6 +151,7 @@ model.init = () => {
   form.onsubmit = function (e) {
     // prevent default
     e.preventDefault();
+    console.log(model.getValues())
     // dispatch custom event
     triggerEvent(document, 'filters.change', {
       detail: model.getValues()
@@ -156,6 +162,8 @@ model.init = () => {
 
   });
 };
+
+
 
 model.getValues = () => (
   {

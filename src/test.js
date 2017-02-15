@@ -166,6 +166,9 @@ document.addEventListener('DOMContentLoaded', () => {
       };
       if (params.stratum === 'All') {
         delete params.stratum;
+      };
+      if (params.secondary_stratum === 'All') {
+        delete params.secondary_stratum;
       }
 
       // Fetch data for state class and update charts
@@ -224,6 +227,9 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         if (params.stratum === 'All') {
           delete params.stratum;
+        }
+        if (params.secondary_stratum === 'All') {
+          delete params.secondary_stratum;
         }
 
         // Fetch data for state class and update charts
