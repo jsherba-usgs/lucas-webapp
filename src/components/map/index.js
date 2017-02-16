@@ -171,7 +171,9 @@ model.updateRaster = (...args) => {
   }
 
   if (update) {
-    const url = `http://stage.landcarbon.org/tiles/s${settings.scenario}-it${leftPad(settings.iteration)}-ts${settings.year}-sc/{z}/{x}/{y}.png?style=lulc`;
+    //console.log(leftPad(settings.iteration))
+    //const url = `http://stage.landcarbon.org/tiles/s${settings.scenario}-it${leftPad(settings.iteration)}-ts${settings.year}-sc/{z}/{x}/{y}.png?style=lulc`;
+    const url = `http://stage.landcarbon.org/tiles/s${settings.scenario}-it${'0001'}-ts${settings.year}-sc/{z}/{x}/{y}.png?style=lulc`;
     info.update(settings.year);
     stateclassTiles.setUrl(url);
    

@@ -1,5 +1,6 @@
 import content from './filters.html';
 import mapFilterContent from './filters_map.html';
+import percentileFilterContent from './filters_percentile.html';
 import { triggerEvent } from './../../helpers/utils';
 import projects from './../../helpers/project-details';
 
@@ -36,9 +37,9 @@ function removeOptions(selectbox) {
 }
 
 function updateIterationInput() {
-  const id = scenarioSelect.value;
-  const scenarioDetail = details.scenario.find((item) => item.id === id);
-  iterationInput.max = scenarioDetail.iterations;
+  //const id = scenarioSelect.value;
+  //const scenarioDetail = details.scenario.find((item) => item.id === id);
+  //iterationInput.max = scenarioDetail.iterations;
 }
 
 function updateVariableDetail() {
@@ -108,7 +109,7 @@ function updateFields() {
 
     // Populate iteration input box
 
-    iterationInput = filtersContainer.querySelector('input[name=iteration]');
+    iterationInput = filtersContainer3.querySelector('input[name=iteration]');
     iterationInput.disabled = false;
 
     variableDetail = filtersContainer.querySelector('select[name=variable_detail]');
@@ -125,6 +126,9 @@ model.init = () => {
   // Initialize container
   filtersContainer2 = document.getElementById('filters_map');
   filtersContainer2.innerHTML = mapFilterContent;
+
+  filtersContainer3 = document.getElementById('filters_percentile');
+  filtersContainer3.innerHTML = percentileFilterContent;
 
   // Add list of projects to content
   projectSelect = filtersContainer.querySelector('select[name=project]');
@@ -146,21 +150,35 @@ model.init = () => {
   variableSelect.onchange();
 
   // Create a custom event that is dispatched when Update button on form is clicked
-  const form = filtersContainer.querySelector('form');
-
+  const form =  filtersContainer.querySelector('form');//document.querySelectorAll('form.update')filtersContainer.querySelector('form');
+  const form2 = filtersContainer3.querySelector('form')
+  //const form2 = filtersContainer3.querySelector('form');
   form.onsubmit = function (e) {
     // prevent default
     e.preventDefault();
-    console.log(model.getValues())
     // dispatch custom event
     triggerEvent(document, 'filters.change', {
       detail: model.getValues()
     });
   };
+  form2.onsubmit = function (e) {
+    // prevent default
+    e.preventDefault();
+    // dispatch custom event
+    triggerEvent(document, 'filters.change', {
+      detail: model.getValues()
+    });
+  };
+
   triggerEvent(document, 'filters.change', {
     detail: model.getValues()
 
   });
+
+  
+
+ 
+
 };
 
 

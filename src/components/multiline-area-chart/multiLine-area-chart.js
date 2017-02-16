@@ -283,7 +283,6 @@ const chart = () => {
   **/
 
   exports.getColor = function (seriesName) {
-    console.log(seriesName)
     if (!seriesName) return '#000';
     return color(seriesName);
   };
@@ -452,7 +451,6 @@ const chart = () => {
     const lines = d3.selectAll('.line');
 
     // Add circles at intersection of all plotted lines and black vertical line
-    console.log(data)
     const mousePerLine = mouseG.selectAll('.mouse-per-line')
       .data(data)
       .enter()

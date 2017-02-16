@@ -92,8 +92,9 @@ const view = {
   updateChart(nestedData) {
     this.chartStatus('loaded');
     chartContainer.classList.remove('no-data');
-
+    console.log(nestedData)
     // Remap nested data for plotting
+
     const timeseriesData = nestedData.map((series) => (
       {
         name: series.key,
@@ -133,11 +134,6 @@ const view = {
       .datum(timeseriesData)
       .transition()
       .call(timeseriesChart);
-
-   /* d3.select(chartContainer)
-      .datum(timeseriesDataArea)
-      .transition()
-      .call(timeseriesChart);*/
 
   },
   updateMap(options) {

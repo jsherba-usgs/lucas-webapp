@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
   * PAGE UI
   */
   // Intialize smooth scrolling
+  console.log("test2")
   smoothScroll.init({
     updateURL: false,
     easing: 'easeInOutCubic',
@@ -141,6 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
       
   // Add event listener to document for filters.change event
   addEventListener(document, 'filters.change', (e) => {
+    console.log("test1")
     // Change chart state to loading
     section1.chartStatus('loading');
     section2.chartStatus('loading');
@@ -152,6 +154,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Update section 1 map
     section1.updateMap(e.detail);
 
+    minPercentile = String(100 - parseInt(e.detail.iteration))
+    maxPercentile = e.detail.iteration
     // Setup query params for fetching data from API
     if (e.detail.variable ==="Land-Cover State"){
       let params = {
@@ -161,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
         stratum: e.detail.stratum,
         state_label_x: e.detail.variable_detail,
         group_by:"Timestep,StateLabelX,Iteration,IDScenario",
-        percentile: "Iteration, 95",
+        percentile: "Iteration, "+maxPercentile,
         pagesize: 1000,
       };
       if (params.stratum === 'All') {
@@ -171,6 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
         delete params.secondary_stratum;
       }
 
+      
       // Fetch data for state class and update charts
       service.loadStates(params)
         .then((data) => {
@@ -181,8 +186,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 StateLabelX: group.StateLabelX,
                 ScenarioID: group.IDScenario,
                 Timestep: group.Timestep,
-                max: group["pc(sum, 95)"],
-                min: group["pc(sum, 5)"],
+                max: group["pc(sum, "+maxPercentile+")"],
+                min: group["pc(sum, "+minPercentile+")"],
                 Mean:   group["pc(sum, 50)"],
                 
               }
@@ -248,7 +253,7 @@ document.addEventListener('DOMContentLoaded', () => {
                   
                 }
               });
-              console.log(data)
+              
               
             // Group data by stateclass and year, calculate total area (amount)
            
