@@ -30,11 +30,11 @@ a {
   -webkit-transition: all 0.35s;
   -moz-transition: all 0.35s;
   transition: all 0.35s;
-  color: #fdcc52;
+  color: #588C7E;
 }
 a:hover,
 a:focus {
-  color: #fcbd20;
+  color: #588C7E;
 }
 hr {
   max-width: 100px;
@@ -143,10 +143,26 @@ p {
   .navbar-default.affix .nav > li > a:focus {
     color: #222222;
   }
-  .navbar-default.affix .navbar-header > a >img >svg >path,
-  .navbar-default.affix .navbar-header > a >img >svg>path:focus {
-    width: 180px; /* Width of new image */
-    fill: black;
+  .navbar-default.affix .navbar-brand >a > svg,
+  .navbar-default.affix .navbar-brand >a > svg:focus {
+    width:100px;
+  }
+  .navbar-default.affix .navbar-brand >a > svg > g> g> path,
+  .navbar-default.affix .navbar-brand >a > svg > g> g> path:focus {
+    fill: #4d4d4d;
+  }
+  .navbar-default.affix .navbar-brand >a > svg > g> path,
+  .navbar-default.affix .navbar-brand >a > svg > g> path:focus {
+    fill: #4d4d4d;
+  }
+  .navbar-default.affix .navbar-brand >a > svg > g> g> polygon,
+  .navbar-default.affix .navbar-brand >a > svg > g> g> polygon:focus {
+    fill: #4d4d4d;
+    stroke-width:1
+  }
+  .navbar-default.affix .navbar-brand{
+
+    padding-top:2px;
   }
   .navbar-default.affix .nav > li > a:hover,
   .navbar-default.affix .nav > li > a:focus:hover {
@@ -158,11 +174,11 @@ header {
   width: 100%;
   min-height: auto;
   overflow-y: hidden;
-  background: url("../img/09_01_1525_update.jpg"), #7b4397;
+  background: url("../img/denali.jpg"), #7b4397;
   /* fallback for old browsers */
-  background: url("../img/09_01_1525_update.jpg"), -webkit-linear-gradient(to left, #7b4397, #dc2430);
+  background: url("../img/denali.jpg"), -webkit-linear-gradient(to left, #7b4397, #dc2430);
   /* Chrome 10-25, Safari 5.1-6 */
-  background: url("../img/09_01_1525_update.jpg"), linear-gradient(to left, #7b4397, #dc2430);
+  background: url("../img/denali.jpg"), linear-gradient(to left, #7b4397, #dc2430);
   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   color: white;
   background-size: cover;
@@ -264,7 +280,7 @@ section.download .badges .badge-link img {
   }
 }
 section.features .section-heading {
-  margin-bottom: 100px;
+  margin-bottom: 25px;
 }
 section.features .section-heading h2 {
   margin-top: 0;
@@ -287,13 +303,13 @@ section.features .device-container {
 }
 section.features .feature-item {
   text-align: center;
-  margin-bottom: 100px;
+  margin-bottom: 15px;
 }
 section.features .feature-item h3 {
   font-size: 30px;
 }
 section.features .feature-item i {
-  font-size: 80px;
+  font-size: 60px;
   background: -webkit-linear-gradient(to left, #7b4397, #dc2430);
   background: linear-gradient(to left, #7b4397, #dc2430);
   -webkit-background-clip: text;
@@ -403,9 +419,9 @@ footer ul li a.active {
   text-decoration: none;
 }
 .bg-primary {
-  background: #fdcc52;
-  background: -webkit-linear-gradient(#fdcc52, #fdc539);
-  background: linear-gradient(#fdcc52, #fdc539);
+  color: #222222;
+  background-color: #f0f0f0;
+  
 }
 .text-primary {
   color: #fdcc52;
@@ -424,8 +440,8 @@ footer ul li a.active {
 .btn-outline:active,
 .btn-outline.active {
   color: white;
-  background-color: #fdcc52;
-  border-color: #fdcc52;
+  background-color: #F2AE72;
+  border-color: #F2AE72;
 }
 .btn {
   font-family: 'Lato', 'Helvetica', 'Arial', 'sans-serif';
@@ -462,3 +478,109 @@ body {
 .usgslogo {
   width: 120px; 
 }
+.stateclassanimation{
+
+  height:450px;
+  background: url(../img/stateclass_animation.gif), #7b4397;
+}
+.stateclassanimationtext{
+  height:450px;
+  background-color:#f0f0f0;
+
+}
+.stateclassanimationsection{
+  padding-top:0px;
+  padding-bottom:0px;
+}
+.stateclassanimationcontainer{
+  width:100%;
+}
+svg{
+  width:120px;
+  height: 50px;
+}
+.features{
+  /*background-color:rgba(88, 140, 12, .2);*/
+  background-color: white;
+}
+.stsmdiagram{
+   width:500px;
+   height:500px;
+}
+.sfdiagram{
+    width:500px;
+    height:500px;
+
+}
+
+.extramargintop{
+  margin-top:50px;
+}
+.featurescontainer{
+  width:80%;
+}
+.center-block {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+ }
+
+.modelsnav .navbar-default .nav > li > a,
+.modelsnav .navbar-default .nav > li > a:focus {
+    color: #222222;
+  }
+
+  .modelsnav .navbar-default .navbar-brand > a > svg > g> g> path,
+  .modelsnav .navbar-default .navbar-brand > a > svg > g> g> path:focus {
+    fill: #4d4d4d;
+  }
+   .modelsnav .navbar-default .navbar-brand > a > svg > g> path,
+   .modelsnav .navbar-default .navbar-brand > a > svg > g> path:focus {
+    fill: #4d4d4d;
+  }
+   .modelsnav .navbar-default .navbar-brand > a > svg > g> g> polygon,
+   .modelsnav .navbar-default .navbar-brand > a > svg > g> g> polygon:focus {
+    fill: #4d4d4d;
+    stroke-width:1
+  }
+  .downloadresults{
+    background-color: white;
+  }
+  .divitem{
+    height:150px;
+  }
+ 
+.hawaiianislands{
+  color: #D96459;
+}
+.pacificnorthwest{
+  color: #588C7E;
+}
+.conus{
+  color: #8C4646;
+}
+.california{
+  color:#F2AE72 ;
+}
+ .divitem:hover {
+    background-color: #8C4646;
+ }
+ .divitem:hover .text-muted{
+    color: white;
+ }
+/*.divitem:hover .pacificnorthwest, .california, .conus, .hawaiianislands{
+    color: white;
+  }*/
+ 
+ .divitem:hover .pacificnorthwest{
+    color: white;
+  }
+  .divitem:hover .california{
+    color: white;
+  }
+  .divitem:hover .conus{
+    color: white;
+  }
+  .divitem:hover .hawaiianislands{
+    color: white;
+  }

@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
   * PAGE UI
   */
   // Intialize smooth scrolling
-  console.log("test2")
+ 
   smoothScroll.init({
     updateURL: false,
     easing: 'easeInOutCubic',
@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
       
   // Add event listener to document for filters.change event
   addEventListener(document, 'filters.change', (e) => {
-    console.log("test1")
+    
     // Change chart state to loading
     section1.chartStatus('loading');
     section2.chartStatus('loading');
@@ -178,6 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
       
       // Fetch data for state class and update charts
       service.loadStates(params)
+
         .then((data) => {
           const renameTotalAreaByYear = d3.nest()
             .entries(data)
@@ -280,8 +281,73 @@ document.addEventListener('DOMContentLoaded', () => {
           });
 
     }
+    if (e.detail.variable ==="Land-Cover Transition"){
+      section3.chartStatus('loading');
+      let params = {
+          scenario: e.detail.scenario,
+          //iteration: e.detail.iteration,
+          secondary_stratum: e.detail.secondary_stratum,
+          stratum: e.detail.stratum,
+          transition_group: e.detail.variable_detail,
+          group_by:"Timestep,TransitionGroup,Iteration,IDScenario",
+          percentile: "Iteration, 95",
+          pagesize: 1000,
+        };
+        if (params.stratum === 'All') {
+          delete params.stratum;
+        }
+        if (params.secondary_stratum === 'All') {
+          delete params.secondary_stratum;
+        }
+
+        // Fetch data for state class and update charts
+        service.loadTransitions(params)
+          .then((data) => {
+            const renameTotalAreaByYear = d3.nest()
+              .entries(data)
+              .map(function(group) {
+                return {
+                  TransitionGroup: group.TransitionGroup,
+                  ScenarioID: group.IDScenario,
+                  Timestep: group.Timestep,
+                  max: group["pc(sum, 95)"],
+                  min: group["pc(sum, 5)"],
+                  Mean:   group["pc(sum, 50)"],
+                  
+                }
+              });
+              
+              
+            // Group data by stateclass and year, calculate total area (amount)
+           
+            const totalAreaByYear = d3.nest()
+              /*.key((d) => d.TransitionGroup+":"+d.ScenarioID)*/
+              .key((d) => d.TransitionGroup)
+              .key((d) => d.Timestep)
+               .rollup((v) => d3.sum(v, (d) => d.Mean))
+              .entries(renameTotalAreaByYear);
+            
+            // Update section 1 charts
+          /*  section1.updateChart(totalAreaByYear);
+        
+            // Update section 2 charts
+            section2.updateChart(totalAreaByYear);*/
+
+            section3.updateChart(totalAreaByYear);
+          })
+          .catch((error) => {
+            if (error.message.indexOf('No data') > -1) {
+              d3.selectAll('.chart')
+                .classed('no-data', true)
+                .select('svg')
+                  .remove();
+            }
+            console.log(error);
+          });
+
+    }
     // Fetch data for transitions and update charts
-    service.loadTransitions(params)
+   /* service.loadTransitions(params)
       .then((data) => {
         // Group data by transition group and year, calculate total area (amount)
         const totalAreaByYear = d3.nest()
@@ -301,7 +367,7 @@ document.addEventListener('DOMContentLoaded', () => {
               .remove();
         }
         console.log(error);
-      });
+      });*/
   });
 
   // Intializing the filters starts the app on page load

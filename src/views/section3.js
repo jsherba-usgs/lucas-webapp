@@ -45,13 +45,20 @@ const view = {
     this.chartStatus('loaded');
     timeseriesContainer.classList.remove('no-data');
     hbarsContainer.classList.remove('no-data');
-
+    console.log(nestedData)
     // Remap nested data for plotting
     const timeseriesData = nestedData.map((series) => (
       {
         name: series.key,
         type: 'line',
         values: series.values,
+       /*values: series.values.map(function(dd){
+                key = dd.key
+                values = dd.values[0].Mean
+                min = dd.values[0].min
+                max = dd.values[0].max
+                return {key:key, min:min, max:max, values:values}
+              })*/
       }
     ));
 
