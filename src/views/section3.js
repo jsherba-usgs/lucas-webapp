@@ -45,22 +45,24 @@ const view = {
     this.chartStatus('loaded');
     timeseriesContainer.classList.remove('no-data');
     hbarsContainer.classList.remove('no-data');
-    console.log(nestedData)
+
     // Remap nested data for plotting
     const timeseriesData = nestedData.map((series) => (
       {
         name: series.key,
         type: 'line',
-        values: series.values,
-       /*values: series.values.map(function(dd){
+      //  values: series.values,
+       values: series.values.map(function(dd){
                 key = dd.key
                 values = dd.values[0].Mean
                 min = dd.values[0].min
                 max = dd.values[0].max
                 return {key:key, min:min, max:max, values:values}
-              })*/
+              })
       }
     ));
+
+    //let dataVariablesSplit = dataVariables.split(',');
 
     const re = /[:->]/;
     // Filter timeseries data for Transition Types
@@ -70,6 +72,10 @@ const view = {
       }
       return false;
     }
+    /* function filterTransitionTypes(row) {
+
+       return dataVariablesSplit.includes(row.name)
+    }*/
 
     // Filter timeseries data for Transition Pathways
     function filterTransitionPathways(row) {
@@ -78,8 +84,8 @@ const view = {
       }
       return false;
     }
-
-    const transitionPathways = timeseriesData
+    
+   /* const transitionPathways = timeseriesData
       .filter(filterTransitionPathways)
       .map((series) => {
         const name = series.name.split(':');
@@ -89,19 +95,38 @@ const view = {
         return series;
       });
 
+    
+    const transitionPathwaysFilter = transitionPathways
+      .filter(function(d){return dataVariablesSplit.includes(d.tgroup )})*/
+  
+    const transitionPathways = timeseriesData
+      .filter(filterTransitionPathways)
+      .map((series) => {
+        const name = series.name.split(' / ')[0];
+        const name2 = name.split(':');
+        series.tgroup = name2[0].trim();
+        series.pathway = name2[1].trim();
+        series.total = d3.sum(series.values, (d) => d.values);
+        return series;
+      });
+
+
+
     const transitionPathwaysNested = d3.nest()
       .key((d) => d.tgroup)
       .sortKeys(d3.ascending)
       .entries(transitionPathways);
 
-
+   
     // Call horizontal bar charts - small multiples
     d3.select(hbarsContainer)
       .datum(transitionPathwaysNested)
       .call(pathwaysChart);
 
-
     const transitionTypes = timeseriesData.filter(filterTransitionTypes);
+
+   console.log(transitionTypes)
+   console.log(transitionPathwaysNested)
     // Set y domain
     const domainRange = [];
     transitionTypes.forEach((series) =>
@@ -114,8 +139,11 @@ const view = {
       .datum(transitionTypes)
       .transition()
       .call(timeseriesChart);
+
+
   },
   chartStatus(status) {
+    
     switch (status) {
       case 'loading':
         loading1 = new Spinner().spin(timeseriesContainer);
@@ -129,6 +157,7 @@ const view = {
         timeseriesContainer.classList.remove('no-data');
         hbarsContainer.classList.remove('no-data');
     }
+    
   }
 };
 

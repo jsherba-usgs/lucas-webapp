@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Change chart state to loading
     section1.chartStatus('loading');
     section2.chartStatus('loading');
-    section3.chartStatus('loading');
+    //section3.chartStatus('loading');
 
     // Update ul element
     updateFiltersLegend(e.detail);
@@ -288,7 +288,7 @@ document.addEventListener('DOMContentLoaded', () => {
           //iteration: e.detail.iteration,
           secondary_stratum: e.detail.secondary_stratum,
           stratum: e.detail.stratum,
-          transition_group: e.detail.variable_detail,
+          //transition_group: e.detail.variable_detail,
           group_by:"Timestep,TransitionGroup,Iteration,IDScenario",
           percentile: "Iteration, 95",
           pagesize: 1000,
@@ -315,25 +315,40 @@ document.addEventListener('DOMContentLoaded', () => {
                   Mean:   group["pc(sum, 50)"],
                   
                 }
+
               });
               
               
             // Group data by stateclass and year, calculate total area (amount)
            
-            const totalAreaByYear = d3.nest()
-              /*.key((d) => d.TransitionGroup+":"+d.ScenarioID)*/
+           /* const totalAreaByYear = d3.nest()
+              .key((d) => d.TransitionGroup+":"+d.ScenarioID)
               .key((d) => d.TransitionGroup)
               .key((d) => d.Timestep)
                .rollup((v) => d3.sum(v, (d) => d.Mean))
+              .entries(renameTotalAreaByYear);*/
+
+           const totalAreaByYearAll = d3.nest()
+              .key((d) => d.TransitionGroup+" / "+d.ScenarioID)
+              
+              .key((d) => d.Timestep)
+               //.rollup((v) => d3.sum(v, (d) => d.Mean))
               .entries(renameTotalAreaByYear);
+
+           let groupVariable = e.detail.variable_detail.split(",")
+          console.log(groupVariable)
+  
+            const totalAreaAll2 = totalAreaByYearAll.filter(function (d) { return groupVariable.includes(d["key"].split(' / ')[0])})
+            const totalAreaAll3 = totalAreaByYearAll.filter(function (d) { if (groupVariable.includes(d["key"].split(':')[0]) || groupVariable.includes(d["key"].split(' / ')[0])) return true}  )
             
             // Update section 1 charts
-          /*  section1.updateChart(totalAreaByYear);
+            section1.updateChart(totalAreaAll2);
         
             // Update section 2 charts
-            section2.updateChart(totalAreaByYear);*/
+            section2.updateChart(totalAreaAll2);
 
-            section3.updateChart(totalAreaByYear);
+            //section3.updateChart(totalAreaByYear, e.detail.variable_detail);
+            section3.updateChart(totalAreaAll3);
           })
           .catch((error) => {
             if (error.message.indexOf('No data') > -1) {
