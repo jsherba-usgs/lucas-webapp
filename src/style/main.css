@@ -357,6 +357,16 @@
 			flex-basis: 100%;
 		}
 
+		form .field-75 {
+			margin: 0 1em 2em;
+			flex-basis: calc(100% * 0.75 - 2em);
+		}
+
+		form .field-20 {
+			margin: 0 1em 2em;
+			flex-basis: calc(100% * 0.2 - 2em);
+		}
+
 		form .field {
 			margin: 0 1em 2em;
 			flex-basis: calc(100% * 0.5 - 2em);
@@ -1375,7 +1385,7 @@
 				}
 
 		#banner.major {
-			height: 75vh;
+			height: 100vh;
 			min-height: 30em;
 		}
 
@@ -1804,7 +1814,7 @@
 
 /* Charts */
 .chart {
-	height: 400px;
+	height: 500px;
 	background-color: #fff;
   position: relative;
 }

@@ -1,26 +1,50 @@
 <div class="inner">
-  <h2>Select Options</h2>
+ <h2>Choose Scenarios and Variables</h2>
   <section>
-    <form>
+   <form>
       <div class="field-full">
-        <label for="project">Project ID</label>
-        <div class="select-wrapper">
-          <select name="project">
-          </select>
-        </div>       
-      </div>
-      <div class="field">
         <label for="scenario">Scenario</label>
         <div class="select-wrapper">
           <select name="scenario" multiple disabled>
           </select>
         </div>       
       </div>
-      <!--<div class="field">
-        <label for="iteration">Iteration</label>
-        <input name="iteration" type="number" min="1" max="10" step="1" value="1" disabled/> 
+      <div class="field">
+        <label for="variable">Data Variable</label>
+        <div class="select-wrapper">
+          <select name="variable" disabled>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label for="variable_detail">Variable Class</label>
+        <div class="select-wrapper">
+          <select name="variable_detail" multiple disabled>
+          </select>
+        </div>
+      </div>
+     </form>
+  </section>
+  <h2>Filter by strata</h2>
+  <section>
+    <form>
+      <!--<div class="field-full">
+        <label for="project">Project ID</label>
+        <div class="select-wrapper">
+          <select name="project">
+          </select>
+        </div>       
       </div>-->
-     <!-- <div class="field">
+      <!--<div class="field">
+        <label for="scenario">Scenario</label>
+        <div class="select-wrapper">
+          <select name="scenario" multiple disabled>
+          </select>
+        </div>       
+      </div>-->
+      
+     
+      <div class="field">
         <label for="secondary_stratum">Island (Secondary Stratum)</label>
         <div class="select-wrapper">
           <select name="secondary_stratum" disabled>
@@ -35,16 +59,20 @@
             <option value="All">All</option>
           </select>
         </div>
-      </div>-->
-      <div class="field">
+      </div>
+     <!-- <div class="field">
         <label for="variable">Data Variable</label>
         <div class="select-wrapper">
           <select name="variable" disabled>
           </select>
         </div>
-      </div>
-      <div class="field">
-        <label for="variable_detail">Variable Detail</label>
+      </div>-->
+    <!--  <div class="field">
+        <label for="iteration">Percentile of Iterations</label>
+        <input name="iteration" type="number" min="1" max="100" step="1" value="95" disabled/> 
+      </div>-->
+      <!--<div class="field">
+        <label for="variable_detail">Variable Class</label>
         <div class="select-wrapper">
           <select name="variable_detail" multiple disabled>
           </select>
@@ -54,8 +82,28 @@
       <div class="field-full update">
         <input type="submit" value="Update" />
       </div>
-    </form>
-    <div class="vis-list inline-list">
+     
+    </form>-->
+   <!-- <div class="vis-list inline-list">
+      <ul>
+        <li><a data-scroll href="#one" >Change in Landuse over Time</a></li>
+        <li><a data-scroll href="#two" >Total Area &amp; Net Change</a></li>
+        <li><a data-scroll href="#three" >Transition Types &amp; Pathways</a></li>
+      </ul>
+    </div>-->
+  </section>
+   <h2>Select Percentile of Iterations</h2>
+  <section>
+   <form class='filterform'>
+      <div class="field">
+        <label for="iteration">Percentile of Iterations</label>
+        <input name="iteration" type="number" min="1" max="100" step="1" value="95" disabled/> 
+      </div>
+      <div class="field-full update">
+        <input type="submit" value="Update" />
+      </div>
+     </form>
+     <div class="vis-list inline-list">
       <ul>
         <li><a data-scroll href="#one" >Change in Landuse over Time</a></li>
         <li><a data-scroll href="#two" >Total Area &amp; Net Change</a></li>

@@ -1,5 +1,5 @@
 import content from './filters.html';
-import mapFilterContent from './filters_map.html';
+import projectFilterContent from './filters_projects.html';
 import percentileFilterContent from './filters_percentile.html';
 import { triggerEvent } from './../../helpers/utils';
 import projects from './../../helpers/project-details';
@@ -75,7 +75,7 @@ function updateFields() {
     scenarioSelect.disabled = false;
 
     // Populate secondary stratum select box
-    secStratumSelect = filtersContainer2.querySelector('select[name=secondary_stratum]');
+    secStratumSelect = filtersContainer.querySelector('select[name=secondary_stratum]');
     removeOptions(secStratumSelect);
     details.secondary_stratum.forEach((item) => {
       const option = document.createElement('option');
@@ -86,7 +86,7 @@ function updateFields() {
     secStratumSelect.disabled = false;
 
     // Populate stratum select box
-    stratumSelect = filtersContainer2.querySelector('select[name=stratum]');
+    stratumSelect = filtersContainer.querySelector('select[name=stratum]');
     removeOptions(stratumSelect);
     details.stratum.forEach((item) => {
       const option = document.createElement('option');
@@ -109,7 +109,7 @@ function updateFields() {
 
     // Populate iteration input box
 
-    iterationInput = filtersContainer3.querySelector('input[name=iteration]');
+    iterationInput = filtersContainer.querySelector('input[name=iteration]');
     iterationInput.disabled = false;
 
     variableDetail = filtersContainer.querySelector('select[name=variable_detail]');
@@ -124,14 +124,15 @@ model.init = () => {
   filtersContainer.innerHTML = content;
 
   // Initialize container
-  filtersContainer2 = document.getElementById('filters_map');
-  filtersContainer2.innerHTML = mapFilterContent;
+  filtersContainer2 = document.getElementById('filters_project');
+  filtersContainer2.innerHTML = projectFilterContent;
+  
 
-  filtersContainer3 = document.getElementById('filters_percentile');
-  filtersContainer3.innerHTML = percentileFilterContent;
+  /*filtersContainer3 = document.getElementById('filters_percentile');
+  filtersContainer3.innerHTML = percentileFilterContent;*/
 
   // Add list of projects to content
-  projectSelect = filtersContainer.querySelector('select[name=project]');
+  projectSelect = filtersContainer2.querySelector('select[name=project]');
 
   projects.getList().forEach((project) => {
     const option = document.createElement('option');
@@ -150,9 +151,9 @@ model.init = () => {
   variableSelect.onchange();
 
   // Create a custom event that is dispatched when Update button on form is clicked
-  const form =  filtersContainer.querySelector('form');//document.querySelectorAll('form.update')filtersContainer.querySelector('form');
-  const form2 = filtersContainer3.querySelector('form')
-  //const form2 = filtersContainer3.querySelector('form');
+  const form =  filtersContainer.querySelector('.filterform');//document.querySelectorAll('form.update')filtersContainer.querySelector('form');
+  const form2 = filtersContainer2.querySelector('form')
+  //const form2 = filtersContainer2.querySelector('form');
   form.onsubmit = function (e) {
     // prevent default
     e.preventDefault();
@@ -161,10 +162,11 @@ model.init = () => {
       detail: model.getValues()
     });
   };
-  form2.onsubmit = function (e) {
+ form2.onsubmit = function (e) {
     // prevent default
     e.preventDefault();
     // dispatch custom event
+    console.log("test")
     triggerEvent(document, 'filters.change', {
       detail: model.getValues()
     });

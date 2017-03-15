@@ -10,6 +10,7 @@ import './../components/multiline-area-chart/multiLine-area-chart.css';
 // Import Helpers
 import { stateclassColorScale } from './../helpers/colors';
 
+
 // Import Components
 import leafletMap from './../components/map/index';
 import chart from './../components/multiline-area-chart/multiLine-area-chart';
@@ -40,7 +41,7 @@ const view = {
       .height(chartContainer.offsetHeight || 400)
       .xDomain([new Date(2001, 0), new Date(2061, 0)])
       .yAxisAnnotation('Area (square kilometers)')
-      .color(stateclassColorScale);
+     // .color(stateclassColorScale);
 
     // Init date slider
     slider = chroniton()
@@ -89,10 +90,10 @@ const view = {
         .attr('class', 'small')
         .on('click', () => slider.stop());
   },
-  updateChart(nestedData) {
+  updateChart(nestedData, colorscale) {
     this.chartStatus('loaded');
     chartContainer.classList.remove('no-data');
-    console.log(nestedData)
+    
     // Remap nested data for plotting
 
     const timeseriesData = nestedData.map((series) => (
@@ -128,6 +129,8 @@ const view = {
     );
 
     timeseriesChart.yDomain([d3.min(domainRange), d3.max(domainRange)]);
+
+    timeseriesChart.color(colorscale);
     
     // Call timeseries chart
     d3.select(chartContainer)

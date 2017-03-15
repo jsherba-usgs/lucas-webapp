@@ -8,7 +8,7 @@ import './style/main.css';
 
 // Import Helpers
 import service from './helpers/api-service.js';
-import { stateclassColorScale } from './helpers/colors';
+import {stateclassColorScale, transitionColorScale, carbonstockColorScale, colorScaleDic} from './helpers/colors';
 import { addEventListener, triggerEvent } from './helpers/utils';
 
 // Import Components
@@ -97,8 +97,9 @@ document.addEventListener('DOMContentLoaded', () => {
   * ADD COMMON LEGEND ELEMENTS
   */
   // State type legend
-  const stateclassLegends = d3.selectAll('.legend-stateclass');
-  const legendWidth = stateclassLegends.node().getBoundingClientRect().width;
+  const legend = d3.legend.color()
+  let stateclassLegends = d3.selectAll('.legend-stateclass');
+  let legendWidth = stateclassLegends.node().getBoundingClientRect().width;
 
   stateclassLegends
     .append('svg')
@@ -107,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
     .attr('class', 'legendOrdinal')
     .attr('transform', 'translate(25,20)');
 
-  const stateclassOrdinal = d3.legend.color()
+  let stateclassOrdinal = legend
     .shapePadding(legendWidth / 20)
     .shapeWidth(25)
     .orient('horizontal')
@@ -139,7 +140,16 @@ document.addEventListener('DOMContentLoaded', () => {
   /*
   * FILTERS
   */
-      
+    let lucasVariable = 'Land-Cover State'
+
+     function variableHasChanged(e){
+        if (lucasVariable === e.detail.variable){
+          return false;
+        }else {
+          lucasVariable = e.detail.variable
+          return true;
+        }
+      }
   // Add event listener to document for filters.change event
   addEventListener(document, 'filters.change', (e) => {
     
@@ -147,17 +157,39 @@ document.addEventListener('DOMContentLoaded', () => {
     section1.chartStatus('loading');
     section2.chartStatus('loading');
     //section3.chartStatus('loading');
+    
+
 
     // Update ul element
     updateFiltersLegend(e.detail);
-
+    
     // Update section 1 map
     section1.updateMap(e.detail);
 
     minPercentile = String(100 - parseInt(e.detail.iteration))
     maxPercentile = e.detail.iteration
     // Setup query params for fetching data from API
+   
+    if (variableHasChanged(e)){
+      d3.selectAll(".legend-stateclass.svg").selectAll("*").remove();
+      d3.selectAll("svg.multiLinePlusArea").remove();
+
+      stateclassOrdinal = legend
+        .shapePadding(legendWidth / colorScaleDic[e.detail.variable][1])
+        .shapeWidth(25)
+        .orient('horizontal')
+        .title('State Classes (area in square kilometers):')
+        .scale(colorScaleDic[e.detail.variable][0]);
+   
+   console.log(stateclassOrdinal.labels())
+
+      stateclassLegends.select('.legendOrdinal')
+        .call(stateclassOrdinal);
+        
+    }
+
     if (e.detail.variable ==="Land-Cover State"){
+
       let params = {
         scenario: e.detail.scenario,
         //iteration: e.detail.iteration,
@@ -198,16 +230,16 @@ document.addEventListener('DOMContentLoaded', () => {
           // Group data by stateclass and year, calculate total area (amount)
          
           const totalAreaByYear = d3.nest()
-            .key((d) => d.StateLabelX+":"+d.ScenarioID)
+            .key((d) => d.StateLabelX+" / "+d.ScenarioID)
             .key((d) => d.Timestep)
              //.rollup((v) => d3.sum(v, (d) => d.Mean))
             .entries(renameTotalAreaByYear);
           
           // Update section 1 charts
-          section1.updateChart(totalAreaByYear);
+          section1.updateChart(totalAreaByYear, stateclassColorScale);
       
           // Update section 2 charts
-          section2.updateChart(totalAreaByYear);
+          section2.updateChart(totalAreaByYear, stateclassColorScale);
         })
         .catch((error) => {
           if (error.message.indexOf('No data') > -1) {
@@ -259,16 +291,16 @@ document.addEventListener('DOMContentLoaded', () => {
             // Group data by stateclass and year, calculate total area (amount)
            
             const totalAreaByYear = d3.nest()
-              .key((d) => d.StockType+":"+d.ScenarioID)
+              .key((d) => d.StockType+" / "+d.ScenarioID)
               .key((d) => d.Timestep)
                //.rollup((v) => d3.sum(v, (d) => d.Mean))
               .entries(renameTotalAreaByYear);
             
             // Update section 1 charts
-            section1.updateChart(totalAreaByYear);
+            section1.updateChart(totalAreaByYear, carbonstockColorScale);
         
             // Update section 2 charts
-            section2.updateChart(totalAreaByYear);
+            section2.updateChart(totalAreaByYear, carbonstockColorScale);
           })
           .catch((error) => {
             if (error.message.indexOf('No data') > -1) {
@@ -282,6 +314,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     }
     if (e.detail.variable ==="Land-Cover Transition"){
+
+
       section3.chartStatus('loading');
       let params = {
           scenario: e.detail.scenario,
@@ -336,16 +370,16 @@ document.addEventListener('DOMContentLoaded', () => {
               .entries(renameTotalAreaByYear);
 
            let groupVariable = e.detail.variable_detail.split(",")
-          console.log(groupVariable)
+          
   
             const totalAreaAll2 = totalAreaByYearAll.filter(function (d) { return groupVariable.includes(d["key"].split(' / ')[0])})
             const totalAreaAll3 = totalAreaByYearAll.filter(function (d) { if (groupVariable.includes(d["key"].split(':')[0]) || groupVariable.includes(d["key"].split(' / ')[0])) return true}  )
             
             // Update section 1 charts
-            section1.updateChart(totalAreaAll2);
+            section1.updateChart(totalAreaAll2, transitionColorScale);
         
             // Update section 2 charts
-            section2.updateChart(totalAreaAll2);
+            section2.updateChart(totalAreaAll2, transitionColorScale);
 
             //section3.updateChart(totalAreaByYear, e.detail.variable_detail);
             section3.updateChart(totalAreaAll3);

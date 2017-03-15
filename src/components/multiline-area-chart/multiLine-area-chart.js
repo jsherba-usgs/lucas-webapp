@@ -1,4 +1,5 @@
 import d3 from 'd3';
+import { dashed } from '../../helpers/colors';
 
 const chart = () => {
   /**
@@ -13,7 +14,7 @@ const chart = () => {
   //let yValue = (d) => +d.value;
   let xDomain = [new Date(2001, 1), new Date(2061, 1)];
   let yDomain = [0, 100];
-  let color = d3.scale.category10();
+  //let color = d3.scale.category10();
   let yAxisAnnotation = 'Ordinal Scale';
   let xAxisAnnotation = 'Time Scale';
 
@@ -282,10 +283,10 @@ const chart = () => {
   * PUBLIC FUNCTIONS
   **/
 
-  exports.getColor = function (seriesName) {
+  /*exports.getColor = function (seriesName) {
     if (!seriesName) return '#000';
     return color(seriesName);
-  };
+  };*/
 
   exports.render = function () {
     this.drawAxes();
@@ -342,25 +343,33 @@ const chart = () => {
     });
 
     const lineGroupContainer = svg.select('g.timeseries-line');
+    //const lineGroups = lineGroupContainer.selectAll('g').data(lineData);
     const lineGroups = lineGroupContainer.selectAll('path.line').data(lineData);
     const lineLabels = lineGroupContainer.selectAll('text').data(lineData);
- 
+
+
+
     // Add a group element for every timeseries. The path (line) for each time series
     // is added to this group element. This is useful for changing the drawing order of
     // lines on hover or click events.
    
     // D3 UPDATE
+
+
     lineGroups.transition().duration(1000)
       .attr('class', 'line')
       .attr('d', (d) => line(d.values))
-      .style('stroke', (d) => color(d.name.split(":")[0]));
+      .style("stroke-dasharray", (d) => (dashed(d.name.split(" / ")[1])))
+      .style('stroke', (d) => color(d.name.split(" / ")[0]));
+
 
     lineLabels.transition().duration(1000)
       .attr('transform', (d) => `translate(0, ${yScale(d.values[0].values)})`)
       .attr('dx', '-0.25em')
       .attr('dy', '0.25em')
       .attr('text-anchor', 'end')
-      .style('fill', (d) => color(d.name.split(":")[0]))
+      .style('fill', (d) => color(d.name.split(" / ")[0]))
+      .style("stroke-dasharray", (d) => (dashed(d.name.split(" / ")[1])))
       .text((d) => d.name);
 
     // D3 ENTER
@@ -370,7 +379,10 @@ const chart = () => {
       .append('path')
         .attr('class', 'line')
         .attr('d', (d) => line(d.values))
-        .style('stroke', (d) => color(d.name.split(":")[0]));
+        //.style("stroke-dasharray", (d) => (dashed(d.name.split(":")[1])))
+        .style("stroke-dasharray", (d) => (dashed(d.name.split(" / ")[1])))
+        .style('stroke', (d) => color(d.name.split(" / ")[0]));
+
 
     lineLabels.enter()
       .append('text')
@@ -378,8 +390,11 @@ const chart = () => {
         .attr('dx', '-0.25em')
         .attr('dy', '0.25em')
         .attr('text-anchor', 'end')
-        .style('fill', (d) => color(d.name.split(":")[0]))
+        .style('fill', (d) => color(d.name.split(" / ")[0]))
         .text((d) => d.name);
+
+
+
 
 
     // D3 EXIT
