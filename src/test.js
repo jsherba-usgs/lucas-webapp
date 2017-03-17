@@ -8,7 +8,7 @@ import './style/main.css';
 
 // Import Helpers
 import service from './helpers/api-service.js';
-import {stateclassColorScale, transitionColorScale, carbonstockColorScale, colorScaleDic} from './helpers/colors';
+import {colorScaleDicLegend, colorScaleDic, dashed,dashedLegend } from './helpers/colors';
 import { addEventListener, triggerEvent } from './helpers/utils';
 
 // Import Components
@@ -98,8 +98,8 @@ document.addEventListener('DOMContentLoaded', () => {
   */
   // State type legend
   const legend = d3.legend.color()
-  let stateclassLegends = d3.selectAll('.legend-stateclass');
-  let legendWidth = stateclassLegends.node().getBoundingClientRect().width;
+  const stateclassLegends = d3.selectAll('.legend-stateclass');
+  const legendWidth = stateclassLegends.node().getBoundingClientRect().width;
 
   stateclassLegends
     .append('svg')
@@ -108,15 +108,41 @@ document.addEventListener('DOMContentLoaded', () => {
     .attr('class', 'legendOrdinal')
     .attr('transform', 'translate(25,20)');
 
+
   let stateclassOrdinal = legend
     .shapePadding(legendWidth / 20)
     .shapeWidth(25)
     .orient('horizontal')
     .title('State Classes (area in square kilometers):')
-    .scale(stateclassColorScale);
+    .scale(colorScaleDicLegend["Land-Cover State"][0]);
 
+  
   stateclassLegends.select('.legendOrdinal')
     .call(stateclassOrdinal);
+
+// Scenario Legend
+ const scenarioLegends = d3.selectAll('.legend-scenario');
+
+ scenarioLegends
+    .append('svg')
+    .attr('width', legendWidth)
+    .append('g')
+    .attr('class', 'legendOrdinal')
+    .attr('transform', 'translate(25,20)');
+
+ let scenarioOrdinal = legend
+    .shapePadding(legendWidth / 20)
+    .shapeWidth(36)
+    .shape('line')
+    .labelOffset(20)
+    .useClass(true)
+    .orient('horizontal')
+    .title('Scenario:')
+    .scale(dashedLegend);
+
+ scenarioLegends.select('.legendOrdinal')
+    .call(scenarioOrdinal);
+  
 
   // Filters legend
   const filtersLegend = Array.from(document.getElementsByClassName('legend-filters'));
@@ -166,25 +192,39 @@ document.addEventListener('DOMContentLoaded', () => {
     // Update section 1 map
     section1.updateMap(e.detail);
 
+    section1.reloadMap(e.detail);
+
     minPercentile = String(100 - parseInt(e.detail.iteration))
     maxPercentile = e.detail.iteration
     // Setup query params for fetching data from API
    
     if (variableHasChanged(e)){
-      d3.selectAll(".legend-stateclass.svg").selectAll("*").remove();
+      
+      d3.selectAll(".legend-stateclass > *").remove();
       d3.selectAll("svg.multiLinePlusArea").remove();
 
+     stateclassLegends
+        .append('svg')
+        .attr('width', legendWidth)
+        .append('g')
+        .attr('class', 'legendOrdinal')
+        .attr('transform', 'translate(25,20)');
+
       stateclassOrdinal = legend
-        .shapePadding(legendWidth / colorScaleDic[e.detail.variable][1])
+        .shapePadding(legendWidth / colorScaleDicLegend[e.detail.variable][1])
         .shapeWidth(25)
+         .shape("rect")
+          .useClass(false)
         .orient('horizontal')
         .title('State Classes (area in square kilometers):')
-        .scale(colorScaleDic[e.detail.variable][0]);
-   
-   console.log(stateclassOrdinal.labels())
+        .scale(colorScaleDicLegend[e.detail.variable][0]);
 
+
+  
       stateclassLegends.select('.legendOrdinal')
         .call(stateclassOrdinal);
+
+
         
     }
 
@@ -236,10 +276,10 @@ document.addEventListener('DOMContentLoaded', () => {
             .entries(renameTotalAreaByYear);
           
           // Update section 1 charts
-          section1.updateChart(totalAreaByYear, stateclassColorScale);
+          section1.updateChart(totalAreaByYear, colorScaleDic[e.detail.variable][0]);
       
           // Update section 2 charts
-          section2.updateChart(totalAreaByYear, stateclassColorScale);
+          section2.updateChart(totalAreaByYear, colorScaleDic[e.detail.variable][0]);
         })
         .catch((error) => {
           if (error.message.indexOf('No data') > -1) {
@@ -297,10 +337,10 @@ document.addEventListener('DOMContentLoaded', () => {
               .entries(renameTotalAreaByYear);
             
             // Update section 1 charts
-            section1.updateChart(totalAreaByYear, carbonstockColorScale);
+            section1.updateChart(totalAreaByYear, colorScaleDic[e.detail.variable][0]);
         
             // Update section 2 charts
-            section2.updateChart(totalAreaByYear, carbonstockColorScale);
+            section2.updateChart(totalAreaByYear, colorScaleDic[e.detail.variable][0]);
           })
           .catch((error) => {
             if (error.message.indexOf('No data') > -1) {
@@ -376,10 +416,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const totalAreaAll3 = totalAreaByYearAll.filter(function (d) { if (groupVariable.includes(d["key"].split(':')[0]) || groupVariable.includes(d["key"].split(' / ')[0])) return true}  )
             
             // Update section 1 charts
-            section1.updateChart(totalAreaAll2, transitionColorScale);
+            section1.updateChart(totalAreaAll2, colorScaleDic[e.detail.variable][0]);
         
             // Update section 2 charts
-            section2.updateChart(totalAreaAll2, transitionColorScale);
+            section2.updateChart(totalAreaAll2, colorScaleDic[e.detail.variable][0]);
 
             //section3.updateChart(totalAreaByYear, e.detail.variable_detail);
             section3.updateChart(totalAreaAll3);

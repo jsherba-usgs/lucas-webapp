@@ -363,14 +363,16 @@ const chart = () => {
       .style('stroke', (d) => color(d.name.split(" / ")[0]));
 
 
-    lineLabels.transition().duration(1000)
+   /* lineLabels.transition().duration(1000)
       .attr('transform', (d) => `translate(0, ${yScale(d.values[0].values)})`)
-      .attr('dx', '-0.25em')
-      .attr('dy', '0.25em')
+      //.attr('dx', '-0.25em')
+      //.attr('dy', '0.25em')
+      //.attr('dx', '-0.25em')
+      //.attr('dy', '0.25em')
       .attr('text-anchor', 'end')
       .style('fill', (d) => color(d.name.split(" / ")[0]))
       .style("stroke-dasharray", (d) => (dashed(d.name.split(" / ")[1])))
-      .text((d) => d.name);
+      .text((d) => d.name);*/
 
     // D3 ENTER
     lineGroups.enter()
@@ -384,14 +386,16 @@ const chart = () => {
         .style('stroke', (d) => color(d.name.split(" / ")[0]));
 
 
-    lineLabels.enter()
+    /*lineLabels.enter()
       .append('text')
         .attr('transform', (d) => `translate(0, ${yScale(d.values[0].values)})`)
-        .attr('dx', '-0.25em')
-        .attr('dy', '0.25em')
+        //.attr('dx', '-0.25em')
+       // .attr('dy', '0.25em')
+        .attr('dx', '2em')
+        .attr('dy', '-.5em')
         .attr('text-anchor', 'end')
         .style('fill', (d) => color(d.name.split(" / ")[0]))
-        .text((d) => d.name);
+        .text((d) => d.name);*/
 
 
 
@@ -521,14 +525,21 @@ const chart = () => {
             const d0 = d.values[idx - 1];
             const d1 = d.values[idx];
             let datum;
+          //  let variablename = d.name.split(" / ")[0]
+           // let scenario = d.name.split(" / ")[1]
+            //let textcolor = color(d.name.split(" / ")[0])
             if (d1) {
               datum = x0 - parseInt(d0.key) > parseInt(d1.key) - x0 ? d1 : d0;
             } else {
               datum = d0;
             }
+            //let textval = variablename + " " + scenario + " " + datum.values
             d3.select(this).select('text')
-              .text(datum.values);
+              .text(datum.values)
+             // .style('fill', textcolor);
+
               
+             
             return `translate(${mouse[0]}, ${yScale(datum.values)})`;
           });
       });

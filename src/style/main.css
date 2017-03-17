@@ -1480,7 +1480,7 @@
 			}
 
 			#main > * > .inner {
-				padding: 1.5em 0 1.5em 0 ;
+				padding: 1.5em 0 .5em 0 ;
 				margin: 0 auto;
 				max-width: 65em;
 				width: calc(100% - 3em);
@@ -1796,7 +1796,8 @@
 **********************************/
 
 /* Stateclass legend */
-.legend-stateclass {
+.legend-stateclass, .legend-scenario{
+	height:100px;
 	width: 100%;
 	display: flex;
 	justify-content: center;
@@ -1804,12 +1805,13 @@
 	margin-top: 1em;
 }
 
-.legend-stateclass svg {
+.legend-stateclass svg, .legend-scenario svg {
 	width: 80%;
 }
 
-.legend-stateclass text {
+.legend-stateclass text, .legend-scenario text {
 	font-size: 0.8em;
+
 }
 
 /* Charts */
@@ -2004,4 +2006,19 @@
 		margin-right: 0;
 	}
 
+}
+.Scenario6370{
+
+	stroke: grey;
+	stroke-width: 4;
+}
+.Scenario6385{
+    
+	stroke: grey;
+	stroke-dasharray: 4;
+	stroke-width: 4;
+}
+.largechartbox{
+	padding-left:0px;
+	padding-top:0px;
 }

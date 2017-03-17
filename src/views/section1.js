@@ -8,11 +8,12 @@ import Spinner from 'spin';
 import './../components/multiline-area-chart/multiLine-area-chart.css';
 
 // Import Helpers
-import { stateclassColorScale } from './../helpers/colors';
+//import { stateclassColorScale } from './../helpers/colors';
 
 
 // Import Components
 import leafletMap from './../components/map/index';
+import leafletFilters from './../components/map/leaflet_filters'
 import chart from './../components/multiline-area-chart/multiLine-area-chart';
 
 
@@ -21,6 +22,7 @@ import chart from './../components/multiline-area-chart/multiLine-area-chart';
 */
 const parentContainer = document.getElementById('one');
 const mapContainer = document.getElementById('map');
+const filtersContainer = document.getElementById('mapfilters');
 const sliderContainer = parentContainer.querySelector('.chroniton-slider');
 let slider;
 const controlsContainer = parentContainer.querySelector('.controls');
@@ -35,6 +37,7 @@ const view = {
   init() {
     // Init map
     leafletMap.init(mapContainer);
+    leafletFilters.init(mapContainer);
 
     timeseriesChart = chart()
       .width(chartContainer.offsetWidth)
@@ -141,6 +144,9 @@ const view = {
   },
   updateMap(options) {
     leafletMap.updateRaster(options);
+  },
+  reloadMap(options) {
+    leafletMap.reloadMap(options);
   },
   chartStatus(status) {
     switch (status) {

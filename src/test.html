@@ -72,7 +72,8 @@
                     <h2>Land Change over Time</h2>
                   </header>
                   <p>
-                    The landscape is divided spatially into simulation cells, each of which is 1x1 km in size. Simulations were run for 60 years with an annual timestep using initial conditions corresponding to the year 2001. A different number of Monte Carlo realizations (iterations) were run for different scenarios. Each cell is characterized by a group of state variables. One of these is the State Type of each cell which corresponds to one of the seven LULC classes.
+                    Use the graph controls to watch as the data changes through time and visualize the spatial distrubution of change on the map. 
+                    <!--The landscape is divided spatially into simulation cells, each of which is 1x1 km in size. Simulations were run for 60 years with an annual timestep using initial conditions corresponding to the year 2001. A different number of Monte Carlo realizations (iterations) were run for different scenarios. Each cell is characterized by a group of state variables. One of these is the State Type of each cell which corresponds to one of the seven LULC classes.-->
                   </p>
                 <!--  <p>
                     The map below shows the change in State Type over the simulation period (2001 -2061) in 10 year intervals for selected combination of scenario, iteration, moisture zone (stratum) and island (secondary stratum). The chart below displays the total landscape area in each LULC class per year. Use the play, pause and stop controls or move the slider to see the changes.
@@ -85,13 +86,14 @@
                     </section>-->
                       <div class="box">
                         <div id="map"></div>
+                        <div id="mapfilters"></div>
                       </div>
                   </article>
                   <article class="col half">
                      <!--<section id="filters_percentile">
 
                     </section>-->
-                    <div class="box">
+                    <div class="box largechartbox">
                       <div class="chart"></div>
                       <div class="chroniton-slider"></div>
                       <div class="controls"></div>
@@ -99,6 +101,7 @@
                   </article>
                 </div>
                 <div class="legend-stateclass"></div>
+                <div class="legend-scenario"></div>
                 <div class="legend-filters inline-list"></div>
               </section>
               <hr/>
