@@ -35,6 +35,14 @@ function removeOptions(selectbox) {
   }
 }
 
+function updateIterationInput() {
+  
+  details = projects.getDetailsForId(projectId).details;
+  const id = scenarioSelect.value;
+  const scenarioDetail = details.scenario.find((item) => item.id === id);
+  iterationInput.max = scenarioDetail.iterations;
+}
+
 function updateVariableDetail() {
   variableDetail.options.length = 0
   const id = variableSelect.value;
@@ -89,7 +97,9 @@ function GetSelectValues(select) {
 }
 
 model.update = () =>{
-filtersContainer = document.getElementById('mapfilters');
+ 
+
+  filtersContainer = document.getElementById('mapfilters');
   filtersContainer.innerHTML = content;
 
   mapscenarioSelect = filtersContainer.querySelector('select[name=mapscenario]');
@@ -109,65 +119,50 @@ filtersContainer = document.getElementById('mapfilters');
   });
  mapscenarioSelect.disabled = false;
 
+ // Populate iteration input box
+iterationInput = filtersContainer.querySelector('input[name=iteration]');
+iterationInput.disabled = false;
+
 }
 
 model.init = () => {
   // Initialize container
-
- /*filtersContainer = document.getElementById('mapfilters');
-  filtersContainer.innerHTML = content;
-
-  mapscenarioSelect = filtersContainer.querySelector('select[name=mapscenario]');
-
-  filtersContainer2 = document.getElementById('filters_project');
-  projectSelect = filtersContainer2.querySelector('select[name=project]');
-
-  selectedProject = projectSelect.options[projectSelect.selectedIndex].value;
-  
  
-  projectDetails = projects.getDetailsForId(selectedProject)
-  
-  initialScenario = projectDetails.details.scenario[0].name
 
-  option = document.createElement("option");
-  option.text = initialScenario;
-  option.value = initialScenario;
-  option.selected = true
-  mapscenarioSelect.add(option);
-  mapscenarioSelect.disabled = false;
-
-
-  selectedProject = projectSelect.options[projectSelect.selectedIndex].value;
-  
  
-  projectDetails = projects.getDetailsForId(selectedProject)
-  
-  initialScenario = projectDetails.details.scenario[0].name*/
  filtersContainer = document.getElementById('mapfilters');
-  filtersContainer.innerHTML = content;
+ filtersContainer.innerHTML = content;
 
-  mapscenarioSelect = filtersContainer.querySelector('select[name=mapscenario]');
+ mapscenarioSelect = filtersContainer.querySelector('select[name=mapscenario]');
 
  filtersContainer2 = document.getElementById('filters');
-  scenarioSelect = filtersContainer2.querySelector('select[name=scenario]');
+ scenarioSelect = filtersContainer2.querySelector('select[name=scenario]');
 
-  scenarios = GetSelectValues(scenarioSelect) 
+ filtersContainer3 = document.getElementById('filters_project');
+ projectSelect = filtersContainer3.querySelector('select[name=project]');
 
-  scenarios.forEach((scenario) => {
+ scenarios = GetSelectValues(scenarioSelect) 
+ selectedProjects = GetSelectValues(projectSelect)
+ projectId = selectedProjects[0].name
+console.log(projectId)
+ scenarios.forEach((scenario) => {
    
     const option = document.createElement('option');
     option.text = scenario.name;
     option.value = scenario.id;
     option.selected = true
     mapscenarioSelect.add(option);
-  });
+ });
  mapscenarioSelect.disabled = false;
 
+ iterationInput = filtersContainer.querySelector('input[name=iteration]');
+iterationInput.disabled = false;
 
+scenarioSelect.onchange = updateIterationInput;
+scenarioSelect.onchange();
 
-
-  mapscenarioSelect.onchange = updateFields;
-  mapscenarioSelect.onchange();
+ mapscenarioSelect.onchange = updateFields;
+ mapscenarioSelect.onchange();
 
   //updateFields()
   //updateVariableDetail()

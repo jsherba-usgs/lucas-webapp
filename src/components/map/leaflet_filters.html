@@ -2,14 +2,18 @@
   <section>
    <form class="mapform">
       <div class="field">
-        <label for="mapscenario">Show on map:</label>
+        <label for="mapscenario">Scenario:</label>
         <div class="select-wrapper">
           <select name="mapscenario" multiple disabled>
           </select>
         </div>       
       </div>
+       <div class="field">
+        <label for="iteration">Iteration</label>
+        <input name="iteration" type="number" min="1" max="10" step="1" value="1" disabled/> 
+      </div>
       <div class="field-full update">
-        <input type="submit" value="Update" />
+        <input type="submit" value="Update Map" />
       </div>
      </form>
   </section>

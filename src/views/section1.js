@@ -39,6 +39,10 @@ const view = {
     leafletMap.init(mapContainer);
 
     //leafletFilters.init();
+    let sliderVals = []
+    for(var i=2001; i<2061;i=i+2) {
+    sliderVals.push(i);
+    }
 
     timeseriesChart = chart()
       .width(chartContainer.offsetWidth)
@@ -62,12 +66,13 @@ const view = {
         const year = d.getFullYear();
         // Update leaflet map for year 1 or every 10th year
         // TODO: Refactor - replace hardcoded values below
-        if ([2001, 2011, 2021, 2031, 2041, 2051, 2061].indexOf(year) > -1) {
+       // if ([2001, 2011, 2021, 2031, 2041, 2051, 2061].indexOf(year) > -1) {
+      if (sliderVals.indexOf(year) > -1) {
           leafletMap.updateRaster({ year });
         }
         timeseriesChart.moveTooltip(year);
       })
-      .playbackRate(0.1);
+      .playbackRate(0.2);
 
     // Create slider
     // TODO: Set slider domain and change function after data comes back from API,;
