@@ -37,7 +37,8 @@ const view = {
   init() {
     // Init map
     leafletMap.init(mapContainer);
-    leafletFilters.init(mapContainer);
+
+    //leafletFilters.init();
 
     timeseriesChart = chart()
       .width(chartContainer.offsetWidth)
@@ -146,6 +147,7 @@ const view = {
     leafletMap.updateRaster(options);
   },
   reloadMap(options) {
+    leafletFilters.init();
     leafletMap.reloadMap(options);
   },
   chartStatus(status) {

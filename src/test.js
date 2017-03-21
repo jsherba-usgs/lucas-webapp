@@ -14,6 +14,7 @@ import { addEventListener, triggerEvent } from './helpers/utils';
 // Import Components
 import filters from './components/filters/filters';
 import leafletMap from './components/map/index';
+import leafletFilters from './components/map/leaflet_filters'
 
 // Import views
 import section1 from './views/section1';
@@ -183,14 +184,14 @@ document.addEventListener('DOMContentLoaded', () => {
     section1.chartStatus('loading');
     section2.chartStatus('loading');
     //section3.chartStatus('loading');
-    
+   // leafletFilters.init();
 
 
     // Update ul element
     updateFiltersLegend(e.detail);
     
     // Update section 1 map
-    section1.updateMap(e.detail);
+    //section1.updateMap(e.detail);
 
     section1.reloadMap(e.detail);
 
@@ -461,5 +462,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Intializing the filters starts the app on page load
   filters.init();
+  leafletFilters.init();
 });
 

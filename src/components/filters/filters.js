@@ -166,7 +166,7 @@ model.init = () => {
     // prevent default
     e.preventDefault();
     // dispatch custom event
-    console.log("test")
+    
     triggerEvent(document, 'filters.change', {
       detail: model.getValues()
     });
