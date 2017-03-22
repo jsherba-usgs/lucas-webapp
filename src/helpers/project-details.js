@@ -18,6 +18,7 @@ const projectDetails = [
           name: '6370 | BAU 60TS; 20MC',
           type: 'Business as Usual',
           iterations: 20,
+          years: [2001,2061]
         },
         /*{
           id: '6374',
@@ -30,6 +31,7 @@ const projectDetails = [
           name: '6385 | No Fire',
           type: 'Sensitivity Test',
           iterations: 20,
+          years: [2001,2061],
         },
       ],
       variable: [

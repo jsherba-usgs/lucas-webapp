@@ -43,6 +43,15 @@ function updateIterationInput() {
   iterationInput.max = scenarioDetail.iterations;
 }
 
+function updateYearInput() {
+  
+  details = projects.getDetailsForId(projectId).details;
+  const id = scenarioSelect.value;
+  const scenarioDetail = details.scenario.find((item) => item.id === id);
+  yearInput.max = scenarioDetail.years[1];
+  yearInput.min = scenarioDetail.years[0];
+}
+
 function updateVariableDetail() {
   variableDetail.options.length = 0
   const id = variableSelect.value;
@@ -144,19 +153,25 @@ model.init = () => {
  scenarios = GetSelectValues(scenarioSelect) 
  selectedProjects = GetSelectValues(projectSelect)
  projectId = selectedProjects[0].name
-console.log(projectId)
+
  scenarios.forEach((scenario) => {
    
     const option = document.createElement('option');
     option.text = scenario.name;
     option.value = scenario.id;
-    option.selected = true
+   // option.selected = true
     mapscenarioSelect.add(option);
  });
  mapscenarioSelect.disabled = false;
 
- iterationInput = filtersContainer.querySelector('input[name=iteration]');
+iterationInput = filtersContainer.querySelector('input[name=iteration]');
 iterationInput.disabled = false;
+
+yearInput = filtersContainer.querySelector('input[name=year]');
+yearInput.disabled = false;
+
+scenarioSelect.onchange = updateYearInput;
+scenarioSelect.onchange();
 
 scenarioSelect.onchange = updateIterationInput;
 scenarioSelect.onchange();
@@ -176,6 +191,7 @@ scenarioSelect.onchange();
     triggerEvent(document, 'mapfilters.change', {
       detail: model.getValues()
     });
+    
   };
 };
 
@@ -183,14 +199,10 @@ scenarioSelect.onchange();
 
 model.getValues = () => (
   {
-    project: projectSelect.value,
-    scenario: getOptionVals(scenarioSelect),
-    stratum: stratumSelect.value,
-    secondary_stratum: secStratumSelect.value,
-    iteration: iterationInput.value,
-    variable: variableSelect.value,
-    variable_detail: getOptionVals(variableDetail)
-
+    
+    scenario: mapscenarioSelect.value,
+    iteration_number: iterationInput.value,
+    year: yearInput.value
   }
 );
 

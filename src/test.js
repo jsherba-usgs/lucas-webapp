@@ -78,7 +78,14 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   overlayOpenBtn.addEventListener('click', overlayOpen);
   overlayCloseBtn.addEventListener('click', overlayClose);
+  
 
+  function expandchart(){
+
+    document.getElementById('maparticle').style.flex = '100%'
+  }
+  const chartExpandButton = document.getElementById('mapexpand');
+  chartExpandButton.addEventListener("click", expandchart);
   /*
   * INTIALIZATIONS FOR SECTION 1
   */
@@ -177,6 +184,12 @@ document.addEventListener('DOMContentLoaded', () => {
           return true;
         }
       }
+
+  addEventListener(document, 'mapfilters.change', (e) => {
+
+    section1.updateIndividualMap(e.detail)
+  })
+
   // Add event listener to document for filters.change event
   addEventListener(document, 'filters.change', (e) => {
     

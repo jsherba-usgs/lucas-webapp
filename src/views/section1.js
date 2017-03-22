@@ -151,6 +151,9 @@ const view = {
   updateMap(options) {
     leafletMap.updateRaster(options);
   },
+  updateIndividualMap(options) {
+    leafletMap.updateIndividualRaster(options);
+  },
   reloadMap(options) {
     leafletFilters.init();
     leafletMap.reloadMap(options);
