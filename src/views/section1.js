@@ -23,9 +23,9 @@ import chart from './../components/multiline-area-chart/multiLine-area-chart';
 const parentContainer = document.getElementById('one');
 const mapContainer = document.getElementById('map');
 const filtersContainer = document.getElementById('mapfilters');
-const sliderContainer = parentContainer.querySelector('.chroniton-slider');
+let sliderContainer = parentContainer.querySelector('.chroniton-slider');
 let slider;
-const controlsContainer = parentContainer.querySelector('.controls');
+let controlsContainer = parentContainer.querySelector('.controls');
 const chartContainer = parentContainer.querySelector('.chart');
 let timeseriesChart;
 let loading;
@@ -33,6 +33,8 @@ let loading;
 /*
 * EXPORT OBJECT
 */
+
+
 const view = {
   init() {
     // Init map
@@ -43,7 +45,7 @@ const view = {
     for(var i=2001; i<2061;i=i+2) {
     sliderVals.push(i);
     }
-
+    
     timeseriesChart = chart()
       .width(chartContainer.offsetWidth)
       .height(chartContainer.offsetHeight || 400)
@@ -99,6 +101,71 @@ const view = {
         .attr('class', 'small')
         .on('click', () => slider.stop());
   },
+  sliderinit(){
+    sliderContainer = parentContainer.querySelector('.chroniton-slider');
+    controlsContainer = parentContainer.querySelector('.controls');
+   
+    // Create slider
+    // TODO: Set slider domain and change function after data comes back from API,;
+    //       move create slider to update function
+
+    slider.width(sliderContainer.offsetWidth)
+    
+    d3.select(sliderContainer)
+      .call(slider);
+
+     // Add slider controls
+    d3.select(controlsContainer)
+        .append('button')
+        .html('<i class="icon fa-play"></i>')
+        .attr('class', 'small')
+        .on('click', () => slider.play());
+
+    d3.select(controlsContainer)
+        .append('button')
+        .html('<i class="icon fa-pause"></i>')
+        .attr('class', 'small')
+        .on('click', () => slider.pause());
+
+    d3.select(controlsContainer)
+        .append('button')
+        .html('<i class="icon fa-stop"></i>')
+        .attr('class', 'small')
+        .on('click', () => slider.stop());
+
+
+  },
+  sliderremove(){
+   sliderContainer.querySelector('svg').remove();
+   Array.prototype.forEach.call(controlsContainer.querySelectorAll('*'),function(e){
+    
+      e.parentNode.removeChild(e);
+    });
+
+    
+  },
+  
+  resizeChart() {
+    // update width
+    d3.selectAll(".halo").remove();
+    d3.selectAll(".slider").remove();
+    controlsContainer = parentContainer.querySelector('.controls');
+    timeseriesChart.width(chartContainer.offsetWidth)
+    slider.width(chartContainer.offsetWidth)
+
+    
+    d3.select(chartContainer)
+      .call(timeseriesChart);
+
+    d3.select(sliderContainer)
+      .call(slider);
+
+
+    // reset x range
+   // x.range([0, width]);
+
+    // do the actual resize...
+      },
   updateChart(nestedData, colorscale) {
     this.chartStatus('loaded');
     chartContainer.classList.remove('no-data');
@@ -125,7 +192,7 @@ const view = {
     //const yAccessor = function (d) { return d.values, function (d) { return +d.values;}};
     const xAccessor = function (d) { return new Date(d.key, 0, 1); };
 
-
+   
     timeseriesChart.yValue(yAccessor);
     timeseriesChart.xValue(xAccessor);
     
@@ -147,8 +214,13 @@ const view = {
       .transition()
       .call(timeseriesChart);
 
+
+  },
+  resizeMap(){
+    leafletMap.resizeMap()
   },
   updateMap(options) {
+
     leafletMap.updateRaster(options);
   },
   updateIndividualMap(options) {

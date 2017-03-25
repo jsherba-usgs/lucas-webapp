@@ -80,12 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
   overlayCloseBtn.addEventListener('click', overlayClose);
   
 
-  function expandchart(){
-
-    document.getElementById('maparticle').style.flex = '100%'
-  }
-  const chartExpandButton = document.getElementById('mapexpand');
-  chartExpandButton.addEventListener("click", expandchart);
+  
   /*
   * INTIALIZATIONS FOR SECTION 1
   */
@@ -191,7 +186,66 @@ document.addEventListener('DOMContentLoaded', () => {
   })
 
   // Add event listener to document for filters.change event
+
+  const mapExpandButton = document.getElementById('mapexpand');
+  mapExpandButton.addEventListener("click", expandmap);
+
+  const chartExpandButton = document.getElementById('chartexpand');
+  chartExpandButton.addEventListener("click", expandchart);
+
+  function expandmap(){
+      
+      let isfull = window.getComputedStyle(document.getElementById("chartarticle"),null).getPropertyValue('display')
+      
+      if (isfull === "block"){
+        section1.sliderremove()
+
+         document.getElementById("mapexpandicon").className = "fa fa-compress";
+         document.getElementById("chartarticle").className = "col half hidden";
+
+         document.getElementById("mapslider").className = "chroniton-slider";
+         document.getElementById("mapslidercontrol").className = "controls";
+         section1.sliderinit()
+
+       }else{
+         section1.sliderremove()
+         document.getElementById("mapslider").className = "placeholdclass1";
+         document.getElementById("mapslidercontrol").className = "placeholdclass2";
+        
+
+         document.getElementById("mapexpandicon").className = "fa fa-expand";
+         document.getElementById("chartarticle").className = "col half";
+
+         section1.sliderinit()
+       }
+   section1.resizeMap()
+    //section1.reloadMap(e.detail);
+   }
+
+   
+   function expandchart(){
+
+      let isfull = window.getComputedStyle(document.getElementById("maparticle"),null).getPropertyValue('display')
+      
+      if (isfull === "block"){
+          document.getElementById("chartexpandicon").className = "fa fa-compress";
+         document.getElementById("maparticle").className = "col half hidden";
+         document.getElementById("chartarticle").style.maxWidth = "100%";
+       }else{
+         document.getElementById("chartexpandicon").className = "fa fa-expand";
+        document.getElementById("chartarticle").style.maxWidth = "50%";
+        document.getElementById("maparticle").className = "col half";
+
+        document.getElementById("chartarticle").className = "col half";
+        
+        
+       }
+    section1.resizeMap()
+    section1.resizeChart()
+   }
+
   addEventListener(document, 'filters.change', (e) => {
+
     
     // Change chart state to loading
     section1.chartStatus('loading');

@@ -49,8 +49,9 @@
 
 /* Data */
 .timeseries-area .area {
-  fill: rgba(129, 140, 158, 0.15);
-  clip-path: url(#clip);
+  /*fill: rgba(129, 140, 158, 0.15);
+  /*clip-path: url(#clip);*/
+  fill: rgba(141, 144, 149, 0.2);
 }
 
 .timeseries-line .line {

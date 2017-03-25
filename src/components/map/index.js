@@ -230,6 +230,7 @@ model.updateRaster = (...args) => {
   }
 };
 
+
 model.updateIndividualRaster = (...args) => {
  //settings.iteration_number = leftPad(settings.iteration_number)
  
@@ -291,11 +292,15 @@ model.updateIndividualRaster = (...args) => {
   
   }
 };
-
+model.resizeMap = () => {
+   for (i = 0; i < maps.length; i++) {
+        maps[i].invalidateSize();
+   }
+};
 
 model.reloadMap = (...args) => {
  
-  let update = false;
+  let update = true;
   if (args && args[0]) {
     if (args[0].year && args[0].year !== settings.year) {
       settings.year = args[0].year;
@@ -344,8 +349,8 @@ if (update) {
     m.id=id
     m.style.background = 'white';
     if (maps.length >1 && maps.length <3){
-      m.style.height = "50%"
-      m.style.width = "100%"
+      m.style.height = "100%"
+      m.style.width = "50%"
     }else if (maps.length >=3){
       m.style.height = "50%"
       m.style.width = "50%"

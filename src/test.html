@@ -80,17 +80,19 @@
                   </p>-->
                 </div>
                 <div class="row">
+                 
                   <article id="maparticle" class="col half">
-                    <!--<section id="filters_map">
-
-                    </section>-->
+                     
                       <div class="box">
                         <div id="map">
-                           
-
+                          
                         </div>
-                       
+                       <button class="btn btn-info pull-left" id='mapexpand' type="button"> <i id="mapexpandicon" class="fa fa-expand" aria-hidden="true"></i> </button>
+
+                       <div id="mapslider" class="placeholdclass1" ></div>
+                      <div id="mapslidercontrol" class="placeholdclass1" ></div>
                       </div>
+                     
                       <div id="myModal" class="modal">
 
                                 <!-- Modal content -->
@@ -100,22 +102,32 @@
                                 </div>
 
                        </div>
-                       <button id='mapexpand' type="button" class="btn btn-outline-primary">Expand</button>
+                      
+                     
                   </article>
-                  <article class="col half">
-                     <!--<section id="filters_percentile">
 
-                    </section>-->
+                  <article id="chartarticle" class="col half">
+                     
+
                     <div class="box largechartbox">
+
                       <div class="chart"></div>
                       <div class="chroniton-slider"></div>
                       <div class="controls"></div>
+                      <button class="btn btn-info pull-right" id='chartexpand' type="button"> <i id="chartexpandicon" class="fa fa-expand" aria-hidden="true"></i> </button>
+
                     </div>
+                     
                   </article>
+
                 </div>
-                <div class="legend-stateclass"></div>
-                <div class="legend-scenario"></div>
+                <div class="row">
+                  <div class="legend-stateclass col threefour"></div>
+                   <div class="legend-scenario col onefour"></div>
+                 </div>
+                 <br><br>
                 <div class="legend-filters inline-list"></div>
+
               </section>
               <hr/>
 

@@ -281,14 +281,25 @@
 
 	.col {
 		flex: 1;
+
+
 	}
 
   .col.half {
     flex: calc(100% * 0.5);
+
   }
 
-  .col.third {
-    flex: calc(100% * 0.3333);
+  .col.onefour {
+    flex: calc(100% * 0.25);
+    justify-content: center;
+ 	align-items: center;
+  }
+
+  .col.threefour {
+    flex: calc(100% * 0.75);
+    justify-content: center;
+     align-items: center;
   }
 
 	.box {
@@ -1385,7 +1396,7 @@
 				}
 
 		#banner.major {
-			height: 100vh;
+			height: 150vh;
 			min-height: 30em;
 		}
 
@@ -1802,7 +1813,7 @@
 	display: flex;
 	justify-content: center;
 	text-align: center;
-	margin-top: 1em;
+	margin-top: 0em;
 }
 
 .legend-stateclass svg, .legend-scenario svg {
@@ -2033,6 +2044,9 @@
       }
  .info{
  	color:white;
+ 	background-color:#87a449;
+ 	padding:5px;
+ 	pointer-events:none;
  }
 
    /* The Modal (background) */
@@ -2072,3 +2086,39 @@
     text-decoration: none;
     cursor: pointer;
 }
+.hidden {
+  display: none !important;
+  visibility: hidden !important;
+}
+#chartarticle{
+	max-width: 50%;
+}
+
+
+#chartexpand{
+	
+	background-color: transparent;
+	color: black;
+	/*height: 2em;*/
+	top: -65px;
+	position: relative;
+	padding:0px;
+}
+#mapexpand{
+	background-color: transparent;
+	color: black;
+	/*height: 2em;*/
+	top: -15px;
+	position: relative;
+	padding:0px;
+}
+#mapexpand:focus, #mapexpand:hover, #mapexpand:active{
+			box-shadow: none;
+			color: #87a449;
+}
+#chartexpand:focus, #chartexpand:hover, #mapexpand:active{
+			box-shadow: none;
+			color: #87a449;
+}
+
+		 
