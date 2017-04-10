@@ -259,7 +259,7 @@ const chart = () => {
       .attr('x', (d) => xScale(xValue(d)))
       .attr('height', (d) => Math.abs(yScale(yValue(d)) - yScale(0)))
       .attr('width', xScale.rangeBand())
-      .style('fill', (d) => color(xValue(d)));
+      .style('fill', (d) => color(xValue(d).split(" / ")[0]));
 
 
     // D3 ENTER
@@ -270,7 +270,7 @@ const chart = () => {
       .attr('x', (d) => xScale(xValue(d)))
       .attr('height', (d) => Math.abs(yScale(yValue(d)) - yScale(0)))
       .attr('width', xScale.rangeBand())
-      .style('fill', (d) => color(xValue(d)))
+      .style('fill', (d) => color(xValue(d).split(" / ")[0]))
       .on('mouseover', tooltip.show)
       .on('mouseout', tooltip.hide);
 

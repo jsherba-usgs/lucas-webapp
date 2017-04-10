@@ -39,12 +39,12 @@ export const carbonstockColorScale = d3.scale.ordinal()
    '#386cb0',
    '#f0027f',
    '#bf5b17',
-   '#f0027f'
+   
   ]).domain([
     'Litter',
     'SOC',
     'Living Biomass',
-    'test'
+    
   ]);
 
 export const colorScaleDic = {"Land-Cover State": [stateclassColorScale, 20], "Carbon Stock": [carbonstockColorScale, 18], "Land-Cover Transition":[transitionColorScale, 7]};

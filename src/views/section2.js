@@ -7,7 +7,7 @@ import Spinner from 'spin';
 import './../components/bar-chart/bar-chart.css';
 
 // Import Helpers
-import { stateclassColorScale } from './../helpers/colors';
+import { stateclassColorScale, carbonstockColorScale } from './../helpers/colors';
 
 // Import Components
 import barChart from './../components/bar-chart/bar-chart-small-multiples';
@@ -26,7 +26,7 @@ const view = {
   init() {
 
   },
-  updateChart(nestedData) {
+  updateChart(nestedData, colorScale) {
     this.chartStatus('loaded');
     chartContainer.classList.remove('no-data');
 
@@ -87,7 +87,7 @@ const view = {
       d3.select(chartContainer)
         .datum(barChartTotals)
         .call(barChart()
-          .color(stateclassColorScale)
+          .color(colorScale)
         );
     };
 
@@ -96,16 +96,18 @@ const view = {
       d3.select(chartContainer)
         .datum(barChartChange)
         .call(barChart()
-          .color(stateclassColorScale)
+          .color(colorScale)
         );
     };
 
     // First time
     // Call bar charts - small multiples
+    console.log(barChartTotals)
+    console.log(colorScale)
     d3.select(chartContainer)
       .datum(barChartTotals)
       .call(barChart()
-        .color(stateclassColorScale)
+        .color(colorScale)
       );
   },
   chartStatus(status) {

@@ -4,6 +4,7 @@ import percentileFilterContent from './filters_percentile.html';
 import { triggerEvent } from './../../helpers/utils';
 import projects from './../../helpers/project-details';
 
+
 const model = {};
 
 let filtersContainer;
@@ -16,6 +17,9 @@ let stratumSelect;
 let variableSelect;
 let iterationInput;
 let variableDetail;
+let strataOverlayOpenBtn
+let strataOverlayCloseBtn
+
 
 function getOptionVals(selection) {
   let details = [];
@@ -136,11 +140,11 @@ model.init = () => {
 
   projects.getList().forEach((project) => {
     const option = document.createElement('option');
-    option.text = project;
-    option.value = project;
+    option.text = project.name;
+    option.value = project.id;
     projectSelect.add(option);
   });
-
+  
   projectSelect.onchange = updateFields;
   projectSelect.onchange();
 
@@ -153,6 +157,8 @@ model.init = () => {
   // Create a custom event that is dispatched when Update button on form is clicked
   const form =  filtersContainer.querySelector('.filterform');//document.querySelectorAll('form.update')filtersContainer.querySelector('form');
   const form2 = filtersContainer2.querySelector('form')
+
+  
   //const form2 = filtersContainer2.querySelector('form');
   form.onsubmit = function (e) {
     // prevent default
@@ -161,7 +167,11 @@ model.init = () => {
     triggerEvent(document, 'filters.change', {
       detail: model.getValues()
     });
+
+
   };
+
+  
  form2.onsubmit = function (e) {
     // prevent default
     e.preventDefault();
@@ -177,9 +187,96 @@ model.init = () => {
 
   });
 
+  strataOverlayOpenBtn= document.getElementById('strataoverlayOpen');
+  strataOverlayOpenBtn.addEventListener('click', strataoverlayOpen);
+  // Open, close overlay
+  function strataoverlayOpen() {
+    console.log("test")
+    //document.body.classList.add('is-overlay-visible2');
+    stratamodal.style.display = "block";
+    stratamap.invalidateSize();
+    stratamap.fitBounds(geojsonLayer.getBounds());
+  }
   
-
+  /*strataOverlayCloseBtn = document.getElementById('strataoverlayClose');
+  strataOverlayCloseBtn.addEventListener('click', strataoverlayClose);
+  function strataoverlayClose() {
+    document.body.classList.remove('is-overlay-visible2');
+  }*/
  
+
+
+const stratamodal = document.getElementById('strataModal');
+const strataspan = document.getElementsByClassName("close")[0];
+
+// When the user clicks on <span> (x), close the modal
+strataspan.onclick = function() {
+    stratamodal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == stratamodal) {
+        stratamodal.style.display = "none";
+    }
+}
+
+jsonstrata = projects.getDetailsForId(projectId).details.jsonlayer.strata
+console.log(jsonstrata)
+var stratamap = new L.Map('strata-leaflet', {
+  'center': [37.8, -96],
+  'zoom': 4,
+  'layers': [
+    L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
+  maxZoom: 18,
+  attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+})
+  ]
+});
+
+
+
+    var selected
+    
+    // Create new geojson layer
+   var geojsonLayer = new L.GeoJSON(jsonstrata, {
+      // Set default style
+      'style': function () {
+        return {
+          'color': 'yellow',
+        }
+      }, 
+      onEachFeature: function(feature, layer) {
+            if (feature.properties && feature.properties.name) {
+                layer.bindPopup(feature.properties.name, {closeButton: false});
+                layer.on('mouseover', function() { layer.openPopup(); });
+                layer.on('mouseout', function() { layer.closePopup(); });
+            }
+        },
+    }).on('click', function (e) {
+      console.log(e.layer.feature.properties.name)
+     filtersContainer.querySelector('select[name=secondary_stratum]').value = e.layer.feature.properties.name
+     stratamodal.style.display = "none";
+      // Check for selected
+      /*if (selected) {
+        // Reset selected to default style
+        e.target.resetStyle(selected)
+      }
+      // Assign new selected
+      selected = e.layer
+      // Bring selected to front
+      selected.bringToFront()
+      // Style selected
+      selected.setStyle({
+        'color': 'red'
+      })*/
+    }).addTo(stratamap)
+
+
+    
+
+
+
 
 };
 
@@ -187,6 +284,7 @@ model.init = () => {
 
 model.getValues = () => (
   {
+
     project: projectSelect.value,
     scenario: getOptionVals(scenarioSelect),
     stratum: stratumSelect.value,

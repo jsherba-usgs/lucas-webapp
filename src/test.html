@@ -45,14 +45,22 @@
                 <p>
                   Explore dynamics of land-use/land-cover (LULC) change projections for the state of Hawai'i. These datasets are a result of a USGS modeling project that simulates LULC change into the future over different scenarios using a state-and-transition simulation model (STSM). The STSM model was run using the <a href="http://syncrosim.com" target="blank">SyncroSim</a> framework and the ST-SIM module. Processes represented in this project include expansion/contraction of agricultural lands, urbanization, wildfire, shrub encroachment into grassland and harvest of tree plantations. Additional details on the STSM approach can be found in <a href="http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12597/full">Daniel et al (2016)</a>.
                 </p>
-                <div class="vis-list inline-list">
+               <!-- <div class="vis-list inline-list">
                   <ul>
                     <li><a data-scroll href="#one" >Land Change over Time</a></li>
                     <li><a data-scroll href="#two" >Total Area &amp; Net Change</a></li>
                     <li><a data-scroll href="#three" >Transition Groups &amp; Types</a></li>
                   </ul>
-                </div>
+                </div>-->
+                
               </div>
+              <div class="vis-list inline-list">
+                  <ul>
+                    <li><a data-scroll href="#filters" ><p id="choosefilterbtn">Choose filters</p><p><i class="fa fa-arrow-down" aria-hidden="true"></i></p></a> </li>
+                   
+                  </ul>
+                </div>
+             
             </div>
           </section>
 
@@ -197,6 +205,8 @@
 
         <a id="overlayClose" class="close" href="#overlay">Close</a>
       </div>
+      
+
        <script src="theme/vendor/jquery/jquery.min.js"></script>
     <!-- Scripts -->
     <script src="./vendor.bundle.js"></script>

@@ -6,7 +6,7 @@ const chart = () => {
   * PUBLIC VARIABLES
   **/
 
-  let margin = { top: 30, right: 40, bottom: 20, left: 60 };
+  let margin = { top: 15, right: 40, bottom: 20, left: 30 };
   let width = 1000;
   let height = 480;
   const chartClass = 'multiLinePlusArea';
@@ -39,6 +39,7 @@ const chart = () => {
     .orient('top')
     .tickFormat(d3.time.format('%Y'))
     .tickValues([new Date(2001, 0), new Date(2011, 0), new Date(2021, 0), new Date(2031, 0), new Date(2041, 0), new Date(2051, 0), new Date(2061, 0)])
+
   // X Axis for brush slider
   const xAxisBrush = d3.svg.axis()
     .scale(xScaleBrush)
@@ -315,9 +316,9 @@ const area = d3.svg.area()
       .call(yAxis1);
 
     // Update second y axis
-    svg.select('.y-axis-group-2.axis')
+    /*svg.select('.y-axis-group-2.axis')
       .transition().duration(1000)
-      .call(yAxis2);
+      .call(yAxis2);*/
 
     // Update y axis label
 /*    svg.select('.y-axis-label')

@@ -64,7 +64,8 @@
       
      
       <div class="field">
-        <label for="secondary_stratum">Island (Secondary Stratum)</label>
+        <label for="secondary_stratum">Island <a id="strataoverlayOpen" href="#strata-overlay">(Choose on Map)</a></label>
+
         <div class="select-wrapper">
           <select name="secondary_stratum" disabled>
             
@@ -72,7 +73,7 @@
         </div>
       </div>
       <div class="field">
-        <label for="stratum">Moisture Zone (Stratum)</label>
+        <label for="stratum">Moisture Zone <a>(Choose on Map)<a/></label>
         <div class="select-wrapper">
           <select name="stratum" disabled>
             <option value="All">All</option>
@@ -131,3 +132,26 @@
     </div>
   </section>
 </div>
+
+ <div id="strataModal" class="modal">
+
+          <!-- Modal content -->
+          <div class="modal-content">
+            <span class="close">&times;</span>
+            <br>
+             <div id="strata-leaflet"></div>
+            
+          </div>
+
+ </div>
+ <div id="secstrataModal" class="modal">
+
+          <!-- Modal content -->
+          <div class="modal-content">
+            <span class="close">&times;</span>
+            <br>
+             <div id="secstrata-leaflet"></div>
+            
+          </div>
+
+ </div>

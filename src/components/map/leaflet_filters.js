@@ -44,7 +44,7 @@ function updateIterationInput() {
 }
 
 function updateYearInput() {
-  
+  console.log(projectId)
   details = projects.getDetailsForId(projectId).details;
   const id = scenarioSelect.value;
   const scenarioDetail = details.scenario.find((item) => item.id === id);
@@ -152,7 +152,7 @@ model.init = () => {
 
  scenarios = GetSelectValues(scenarioSelect) 
  selectedProjects = GetSelectValues(projectSelect)
- projectId = selectedProjects[0].name
+ projectId = selectedProjects[0].id
 
  scenarios.forEach((scenario) => {
    

@@ -69,6 +69,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 250);
   });
 
+  
+
   // Open, close overlay
   function overlayOpen() {
     body.classList.add('is-overlay-visible');
@@ -243,6 +245,8 @@ document.addEventListener('DOMContentLoaded', () => {
     section1.resizeMap()
     section1.resizeChart()
    }
+
+   
 
   addEventListener(document, 'filters.change', (e) => {
 
