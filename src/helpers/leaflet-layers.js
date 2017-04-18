@@ -37,7 +37,7 @@ const Stamen_TonerLabels = L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net
   ext: 'png'
 });
 
-const stateclassTiles = L.tileLayer('http://stage.landcarbon.org/tiles/s6368-it0001-ts2001-sc/{z}/{x}/{y}.png', {
+const stateclassTiles = L.tileLayer('http://stage.landcarbon.org/tiles/s6368-it0001-ts2011-sc/{z}/{x}/{y}.png', {
   attribution: 'LULC: <a href="http://landcarbon.org">LandCarbon</a>',
   maxZoom: 19,
   //scenario: '6368',

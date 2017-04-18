@@ -246,7 +246,7 @@ document.addEventListener('DOMContentLoaded', () => {
     section1.resizeChart()
    }
 
-   
+
 
   addEventListener(document, 'filters.change', (e) => {
 

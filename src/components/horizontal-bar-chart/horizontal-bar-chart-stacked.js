@@ -17,7 +17,7 @@ const chart = () => {
   let chartClass = 'horizontal-bar';
   let yAxisAnnotation = 'Ordinal Scale';
   let xAxisAnnotation = 'Linear Scale';
-  let yValue = (d) => d.name;
+  let yValue = (d) => +d.y;
   let xValue = (d) => +d.value;
 
   /**
@@ -31,7 +31,7 @@ const chart = () => {
   let chartH;
   const tooltip = d3.tip()
     .attr('class', 'd3-tip')
-    .html((d) => `${yValue(d)}: ${xValue(d)} km<sup>2</sup>`);
+    .html((d) => `${yValue(d)}: ${d.x} km<sup>2</sup>`);
 
 
 
@@ -52,6 +52,7 @@ const chart = () => {
       // Create a div and an SVG element for each element in
       // our data array. Note that data is a nested array
       // with each element containing another array of 'values'
+
       const div = d3.select(this).selectAll(`.${chartClass}`).data(data);
 
       div.enter()
@@ -199,16 +200,26 @@ const chart = () => {
 
   exports.drawChart = function (chartData) {
     // For each chart the Y axis and X axis domain is different
-    // So create a new scle and axis each for each chart
-
+    // So create a new scle and axis each for each chart'
+    
     // X scale
-    const maxX = d3.max(chartData.values, (d) => xValue(d));
+    //const maxX = d3.max(chartData.values, (d) => xValue(d));
+    console.log(chartData)
+    const maxX = d3.max(chartData.values, function (group) {
+
+        
+            return group.x + group.x0;
+        
+    })
+
     const xScale = d3.scale.linear()
       .range([0, chartW])
       .domain([0, maxX]);
-
+     
     // Y scale
-    const yDomain = chartData.values.map((d) => yValue(d));
+ 
+    const yDomain = chartData.values.map((d) => d.y);
+
     const yScale = d3.scale.ordinal()
       .rangeRoundBands([0, chartH], yRoundBands)
       .domain(yDomain);
@@ -217,6 +228,7 @@ const chart = () => {
     const xAxis = d3.svg.axis()
       .scale(xScale)
       .orient('bottom');
+     
 
     // Y axis on the left side of chart
     const yAxis = d3.svg.axis()
@@ -229,56 +241,73 @@ const chart = () => {
       .call(yAxis);
 
     // Draw x axis with category labels
-/*    d3.select(this).select('.x-axis-group.axis')
+   d3.select(this).select('.x-axis-group.axis')
       .transition().duration(1000)
-      .call(xAxis);*/
+      .call(xAxis);
+
+
 
     const barsContainer = d3.select(this).select('g.bars');
-    
+  
     const bars = barsContainer.selectAll('rect').data((c) => c.values);
-    const valueLabels = barsContainer.selectAll('text.value').data((c) => c.values);
+   
 
-    const barHeight = d3.min([30, yScale.rangeBand()]);
+    const valueLabels = barsContainer.selectAll('text.value').data((c) => c.values);
+ 
+    const barHeight = yScale.rangeBand()//d3.min([30, yScale.rangeBand()]);
+
+    const color = d3.scale.ordinal()
+  .range([
+   '#7fc97f',
+   '#beaed4',
+   '#fdc086'
+  ]).domain([
+    'Ag->Forest',
+    'Ag->Grassland',
+    'Ag->Shrubland'
+  ]);
+
 
     // D3 UPDATE
     bars.transition().duration(1000)
-      .attr('class', (d) => yValue(d))
-      .attr('x', () => xScale(0))
-      .attr('y', (d) => yScale(yValue(d)))
-      .attr('width', (d) => xScale(xValue(d)))
+      .attr('class', (d) => d.y)
+      .attr('x', (d) => xScale(d.x0))
+      .attr('y', (d) => yScale(d.y))
+      .attr('width', (d) => xScale(d.x))
       .attr('height', barHeight)
-      .style('fill', (d) => color(yValue(d)));
+      .style('fill', (d) => color(d.pathway));
 
     valueLabels.transition().duration(1000)
         .attr('class', 'value')
-        .attr('x', (d) => xScale(xValue(d)) + 2)
-        .attr('y', (d) => yScale(yValue(d)) + (barHeight / 2))
-        .text((d) => `${xValue(d)}`)
+        .attr('x', (d) => xScale(d.x) + 2)
+        .attr('y', (d) => yScale(d.y) + (barHeight / 2))
+        .text((d) => `${d.pathway}`)
         .style('font-size', '10px')
         .style('font-family', 'sans-serif')
-        .style('text-anchor', 'start');
+        .style('text-anchor', 'middle');
+
 
     // D3 ENTER
     bars.enter()
       .append('rect')
-        .attr('class', (d) => yValue(d))
-        .attr('x', () => xScale(0))
-        .attr('y', (d) => yScale(yValue(d)))
-        .attr('width', (d) => xScale(xValue(d)))
+        .attr('class', (d) => d.y)
+        .attr('x', (d) => xScale(d.x0))
+        .attr('y', (d) => yScale(d.y))
+        .attr('width', (d) => xScale(d.x))
         .attr('height', barHeight)
-        .style('fill', (d) => color(yValue(d)))
+        .style('fill', (d) => color(d.pathway))
         .on('mouseover', tooltip.show)
         .on('mouseout', tooltip.hide);
 
     valueLabels.enter()
       .append('text')
         .attr('class', 'value')
-        .attr('x', (d) => xScale(xValue(d)) + 2)
-        .attr('y', (d) => yScale(yValue(d)) + (barHeight / 2))
-        .text((d) => `${xValue(d)}`)
+        .attr('x', (d) => xScale(d.x0) + d.x/2)
+        .attr('y', (d) => yScale(d.y) + (barHeight / 2))
+        .text((d) => `${d.pathway}`)
         .style('font-size', '10px')
         .style('font-family', 'sans-serif')
-        .style('text-anchor', 'start');
+        .style('text-anchor', 'middle');
 
     // D3 EXIT
     // If exits need to happen, apply a transition and remove DOM elements

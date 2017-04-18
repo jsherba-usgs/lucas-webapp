@@ -80,7 +80,7 @@ selectIterationNode = function(inputMap, iteration){
 
 info.update = function (year) {
 
-  this._div.innerHTML = year || 2001;
+  this._div.innerHTML = year || 2011;
 };
 
 /**
@@ -112,7 +112,7 @@ function pairs(arr) {
 /**
 * PUBLIC FUNCTIONS
 **/
-model.init = ({ selector, lat = 22.234262, lng = -159.784857, scenario = '6368', iteration = '1', year = '2001' }) => {
+model.init = ({ selector, lat = 22.234262, lng = -159.784857, scenario = '6368', iteration = '1', year = '2011' }) => {
   // Initialize container
   if (!selector) {
     mapContainer = document.getElementById('map');
@@ -273,9 +273,7 @@ model.updateIndividualRaster = (...args) => {
       let iteration =  leftPad(args[0].iteration_number)
       let year = args[0].year
       let scenario = args[0].scenario
-      console.log(scenario)
-      console.log(year)
-      console.log(iteration)
+     
       
       const url = `http://stage.landcarbon.org/tiles/s${scenario}-it${iteration}-ts${year}-sc/{z}/{x}/{y}.png?style=lulc`;
       
@@ -371,7 +369,7 @@ if (update) {
 });
 
 
-  const stateclassTiles = L.tileLayer('http://stage.landcarbon.org/tiles/s6368-it0001-ts2001-sc/{z}/{x}/{y}.png', {
+  const stateclassTiles = L.tileLayer('http://stage.landcarbon.org/tiles/s6368-it0001-ts2011-sc/{z}/{x}/{y}.png', {
   attribution: 'LULC: <a href="http://landcarbon.org">LandCarbon</a>',
   maxZoom: 19,
   //scenario: '6368',

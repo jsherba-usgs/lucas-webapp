@@ -17,7 +17,7 @@ const chart = () => {
   let chartClass = 'linechart';
   let xValue = (d) => d.date;
   let yValue = (d) => +d.value;
-  let xDomain = [new Date(2001, 1), new Date(2061, 1)];
+  let xDomain = [new Date(2011, 1), new Date(2061, 1)];
   let yDomain = [0, 100];
   let yAxisAnnotation = 'Area (sq. km)';
   let xAxisAnnotation = 'Time Scale';
@@ -42,7 +42,7 @@ const chart = () => {
     .scale(xScale)
     .orient('top')
     .tickFormat(d3.time.format('%Y'))
-    .tickValues([new Date(2001, 0), new Date(2011, 0), new Date(2021, 0), new Date(2031, 0), new Date(2041, 0), new Date(2051, 0), new Date(2061, 0)])
+    .tickValues([new Date(2011, 0), new Date(2021, 0), new Date(2031, 0), new Date(2041, 0), new Date(2051, 0), new Date(2061, 0)])
   // X Axis for brush slider
   const xAxisBrush = d3.svg.axis()
     .scale(xScaleBrush)

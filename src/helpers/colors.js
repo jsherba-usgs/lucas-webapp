@@ -34,6 +34,17 @@ export const transitionColorScale = d3.scale.ordinal()
     'URBANIZATION'
   ]);
 
+export const transitionTypeColorScale = d3.scale.ordinal()
+  .range([
+   '#7fc97f',
+   '#beaed4',
+   '#fdc086'
+  ]).domain([
+    'Ag->Forest',
+    'Ag->Grassland',
+    'Ag->Shrubland'
+  ]);
+
 export const carbonstockColorScale = d3.scale.ordinal()
   .range([
    '#386cb0',
@@ -47,7 +58,7 @@ export const carbonstockColorScale = d3.scale.ordinal()
     
   ]);
 
-export const colorScaleDic = {"Land-Cover State": [stateclassColorScale, 20], "Carbon Stock": [carbonstockColorScale, 18], "Land-Cover Transition":[transitionColorScale, 7]};
+export const colorScaleDic = {"Land-Cover State": [stateclassColorScale, 20], "Carbon Stock": [carbonstockColorScale, 18], "Land-Cover Transition":[transitionColorScale, 7], "Land-Cover Transition Types":[transitionTypeColorScale] };
 
 export const dashed = d3.scale.ordinal()
     .domain(["6370", "6385"])

@@ -102,8 +102,7 @@ const view = {
 
     // First time
     // Call bar charts - small multiples
-    console.log(barChartTotals)
-    console.log(colorScale)
+    
     d3.select(chartContainer)
       .datum(barChartTotals)
       .call(barChart()

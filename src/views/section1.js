@@ -42,27 +42,27 @@ const view = {
 
     //leafletFilters.init();
     let sliderVals = []
-    for(var i=2001; i<2061;i=i+2) {
+    for(var i=2011; i<2061;i=i+2) {
     sliderVals.push(i);
     }
     
     timeseriesChart = chart()
       .width(chartContainer.offsetWidth)
       .height(chartContainer.offsetHeight || 400)
-      .xDomain([new Date(2001, 0), new Date(2061, 0)])
+      .xDomain([new Date(2011, 0), new Date(2061, 0)])
       .yAxisAnnotation('Area (square kilometers)')
      // .color(stateclassColorScale);
 
     // Init date slider
     slider = chroniton()
       // TODO: Refactor - get range of years from data, instead of hardcoding values below
-      .domain([new Date(2001, 0), new Date(2061, 0)])
+      .domain([new Date(2011, 0), new Date(2061, 0)])
       .labelFormat(d3.time.format('%Y'))
       .width(sliderContainer.offsetWidth)
       .margin({ top: 10, right: 40, bottom: 20, left: 60 })
       // TODO: Refactor axis tick values to add ticks every n years
       // instead of hardcoding values below
-      .tapAxis((axis) => axis.tickValues([new Date(2001, 0), new Date(2011, 0), new Date(2021, 0), new Date(2031, 0), new Date(2041, 0), new Date(2051, 0), new Date(2061, 0)]))
+      .tapAxis((axis) => axis.tickValues([new Date(2011, 0), new Date(2021, 0), new Date(2031, 0), new Date(2041, 0), new Date(2051, 0), new Date(2061, 0)]))
       .on('change', (d) => {
         // Get year from date object
         const year = d.getFullYear();

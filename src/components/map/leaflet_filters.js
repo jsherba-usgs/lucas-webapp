@@ -44,7 +44,7 @@ function updateIterationInput() {
 }
 
 function updateYearInput() {
-  console.log(projectId)
+  
   details = projects.getDetailsForId(projectId).details;
   const id = scenarioSelect.value;
   const scenarioDetail = details.scenario.find((item) => item.id === id);

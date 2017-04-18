@@ -191,7 +191,7 @@ model.init = () => {
   strataOverlayOpenBtn.addEventListener('click', strataoverlayOpen);
   // Open, close overlay
   function strataoverlayOpen() {
-    console.log("test")
+    
     //document.body.classList.add('is-overlay-visible2');
     stratamodal.style.display = "block";
     stratamap.invalidateSize();
@@ -222,7 +222,7 @@ window.onclick = function(event) {
 }
 
 jsonstrata = projects.getDetailsForId(projectId).details.jsonlayer.strata
-console.log(jsonstrata)
+
 var stratamap = new L.Map('strata-leaflet', {
   'center': [37.8, -96],
   'zoom': 4,
@@ -254,7 +254,7 @@ var stratamap = new L.Map('strata-leaflet', {
             }
         },
     }).on('click', function (e) {
-      console.log(e.layer.feature.properties.name)
+      
      filtersContainer.querySelector('select[name=secondary_stratum]').value = e.layer.feature.properties.name
      stratamodal.style.display = "none";
       // Check for selected
