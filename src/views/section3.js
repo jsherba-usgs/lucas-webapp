@@ -11,6 +11,7 @@ import './../components/horizontal-bar-chart/horizontal-bar-chart-small-multiple
 import lineChart from './../components/multiline-area-chart/line-chart-small-multiples';
 import hbarChart from './../components/horizontal-bar-chart/horizontal-bar-chart-stacked';
 
+
 /*
 * PRIVATE VARIABLES
 */
@@ -21,6 +22,8 @@ let timeseriesChart;
 let pathwaysChart;
 let loading1;
 let loading2;
+
+
 
 const view = {
   init() {
@@ -45,7 +48,7 @@ const view = {
     this.chartStatus('loaded');
     //timeseriesContainer.classList.remove('no-data');
     hbarsContainer.classList.remove('no-data');
-
+   
     // Remap nested data for plotting
     const timeseriesData = nestedData.map((series) => (
       {
@@ -85,20 +88,7 @@ const view = {
       return false;
     }
     
-   /* const transitionPathways = timeseriesData
-      .filter(filterTransitionPathways)
-      .map((series) => {
-        const name = series.name.split(':');
-        series.tgroup = name[0].trim();
-        series.pathway = name[1].trim();
-        series.total = d3.sum(series.values, (d) => d.values);
-        return series;
-      });
-
-    
-    const transitionPathwaysFilter = transitionPathways
-      .filter(function(d){return dataVariablesSplit.includes(d.tgroup )})*/
-  
+  console.log(timeseriesData)
     const transitionPathways = timeseriesData
       .filter(filterTransitionPathways)
       .map((series) => {
@@ -108,10 +98,10 @@ const view = {
         series.tgroup = name2[0].trim();
         series.pathway = name2[1].trim();
         series.total = d3.sum(series.values, (d) => d.values);
+        
         return series;
       });
-console.log(transitionPathways)
-     
+
 
      scenarios = transitionPathways.map(function (d) {
         return d.pathway;
@@ -138,7 +128,7 @@ console.log(transitionPathways)
           });
         });
       })
-console.log(dataset)
+
     stack = d3.layout.stack();
     dataset.forEach(function(groupval){
       groupval.forEach(function(groupval2){
@@ -172,55 +162,6 @@ console.log(dataset)
       .key((d) => d.group)
       .sortKeys(d3.ascending)
       .entries(dataset); 
-
- /* const transitionPathwaysNested = d3.nest()
-      .key((d) => d.tgroup)
-      .key((d) => d.pathway)
-      .sortKeys(d3.ascending)
-      .entries(transitionPathways);
-
-    
-   console.log(transitionPathwaysNested)   
-   dataset = transitionPathwaysNested.map(function(d) {
-    return d.values.map(function (o, i) {
-          // Structure it so that your numeric
-          // axis (the stacked amount) is y
-          return [{
-            y: o.total,
-            x: o.name.split(' / ')[1],
-            group: d.key,
-            pathway: o.pathway
-          }];
-        });
-      })
-    console.log(dataset)
-    stack = d3.layout.stack();
-    dataset.forEach(function(groupval){
-
-      stack(groupval)
-    })
-    //stack(dataset);
-    console.log(dataset)
-    var dataset = dataset.map(function (transgroups) {
-        return transgroups.map(function (groups){
-
-    //return groups.map(function (d, i) {
-          return  {
-            // Invert the x and y values, and y0 becomes x0
-            x: groups[0].y,
-            y: groups[0].x,
-            x0: groups[0].y0,
-            group: groups[0].group,
-            pathway: groups[0].pathway
-            
-        };
-      })  
-  })
- dataset = [].concat.apply([], dataset)
-  dataset= d3.nest()
-      .key((d) => d.group)
-      .sortKeys(d3.ascending)
-      .entries(dataset);*/
    
   
         // Call horizontal bar charts - small multiples

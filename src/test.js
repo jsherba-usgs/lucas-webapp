@@ -246,10 +246,16 @@ document.addEventListener('DOMContentLoaded', () => {
     section1.resizeChart()
    }
 
+   const year = []
 
+    for (var i = 2011; i <= 2061; i++) {
+       year.push(i);
+    }
 
   addEventListener(document, 'filters.change', (e) => {
-
+    document.getElementById("one").style.display = 'block';
+    document.getElementById("two").style.display = 'block';
+    document.getElementById("three").style.display = 'block';
     
     // Change chart state to loading
     section1.chartStatus('loading');
@@ -301,6 +307,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (e.detail.variable ==="Land-Cover State"){
+      
+      document.getElementById("three").style.display = 'none';
 
       let params = {
         scenario: e.detail.scenario,
@@ -310,6 +318,7 @@ document.addEventListener('DOMContentLoaded', () => {
         state_label_x: e.detail.variable_detail,
         group_by:"Timestep,StateLabelX,Iteration,IDScenario",
         percentile: "Iteration, "+maxPercentile,
+        timestep: year,
         pagesize: 1000,
       };
       if (params.stratum === 'All') {
@@ -319,7 +328,6 @@ document.addEventListener('DOMContentLoaded', () => {
         delete params.secondary_stratum;
       }
 
-      
       // Fetch data for state class and update charts
       service.loadStates(params)
 
@@ -338,7 +346,7 @@ document.addEventListener('DOMContentLoaded', () => {
               }
             });
 
-            
+          
           // Group data by stateclass and year, calculate total area (amount)
          
           const totalAreaByYear = d3.nest()
@@ -365,6 +373,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     }
     if (e.detail.variable ==="Carbon Stock"){
+      document.getElementById("three").style.display = 'none';
       let params = {
           scenario: e.detail.scenario,
           //iteration: e.detail.iteration,
@@ -373,6 +382,7 @@ document.addEventListener('DOMContentLoaded', () => {
           stock_type: e.detail.variable_detail,
           group_by:"Timestep,StockType,Iteration,IDScenario",
           percentile: "Iteration, 95",
+          timestep: year,
           pagesize: 1000,
         };
         if (params.stratum === 'All') {
@@ -426,7 +436,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     }
     if (e.detail.variable ==="Land-Cover Transition"){
-
+      document.getElementById("two").style.display = 'none';
 
       section3.chartStatus('loading');
       let params = {
@@ -437,6 +447,7 @@ document.addEventListener('DOMContentLoaded', () => {
           //transition_group: e.detail.variable_detail,
           group_by:"Timestep,TransitionGroup,Iteration,IDScenario",
           percentile: "Iteration, 95",
+          timestep: year,
           pagesize: 1000,
         };
         if (params.stratum === 'All') {

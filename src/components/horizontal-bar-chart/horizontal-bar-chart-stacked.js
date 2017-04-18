@@ -1,6 +1,7 @@
 import d3 from 'd3';
 import tip from 'd3-tip';
 
+
 d3.tip = tip;
 
 const chart = () => {
@@ -193,9 +194,11 @@ const chart = () => {
   };
 
   exports.drawLabels = function () {
+    
     container.select('.series-label')
       .transition().duration(1000)
-      .text('TRANSITION PATHWAYS');
+      .text('')
+      .text((d) => d.key);
   };
 
   exports.drawChart = function (chartData) {
@@ -204,7 +207,7 @@ const chart = () => {
     
     // X scale
     //const maxX = d3.max(chartData.values, (d) => xValue(d));
-    console.log(chartData)
+  
     const maxX = d3.max(chartData.values, function (group) {
 
         
@@ -256,15 +259,34 @@ const chart = () => {
  
     const barHeight = yScale.rangeBand()//d3.min([30, yScale.rangeBand()]);
 
-    const color = d3.scale.ordinal()
+    
+  const color = d3.scale.ordinal()
   .range([
-   '#7fc97f',
-   '#beaed4',
-   '#fdc086'
+   '#8dd3c7',
+   '#ffffb3',
+   '#bebada',
+   '#fb8072',
+   '#80b1d3',
+   '#fdb462',
+   '#b3de69',
+   '#fccde5',
+   '#ffed6f',
+   '#bc80bd',
+   '#ccebc5'
+
   ]).domain([
     'Ag->Forest',
     'Ag->Grassland',
-    'Ag->Shrubland'
+    'Ag->Shrubland',
+    'Forest->Ag',
+    'Grassland->Ag',
+    'Shrubland->Ag',
+    'Agriculture->Developed',
+    'Barren->Developed',
+    'Forest->Developed',
+    'Grassland->Developed',
+    'Shrubland->Developed'
+
   ]);
 
 
@@ -302,7 +324,7 @@ const chart = () => {
     valueLabels.enter()
       .append('text')
         .attr('class', 'value')
-        .attr('x', (d) => xScale(d.x0) + d.x/2)
+        .attr('x', (d) => xScale(d.x0 + d.x/2))
         .attr('y', (d) => yScale(d.y) + (barHeight / 2))
         .text((d) => `${d.pathway}`)
         .style('font-size', '10px')

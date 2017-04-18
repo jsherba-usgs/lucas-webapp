@@ -36,13 +36,31 @@ export const transitionColorScale = d3.scale.ordinal()
 
 export const transitionTypeColorScale = d3.scale.ordinal()
   .range([
-   '#7fc97f',
-   '#beaed4',
-   '#fdc086'
+   '#8dd3c7',
+   '#ffffb3',
+   '#bebada',
+   '#fb8072',
+   '#80b1d3',
+   '#fdb462',
+   '#b3de69',
+   '#fccde5',
+   '#d9d9d9',
+   '#bc80bd',
+   '#ccebc5'
+
   ]).domain([
     'Ag->Forest',
     'Ag->Grassland',
-    'Ag->Shrubland'
+    'Ag->Shrubland',
+    'Forest->Ag',
+    'Grassland->Ag',
+    'Shrubland->Ag',
+    'Agriculture->Developed',
+    'Barren->Developed',
+    'Forest->Developed',
+    'Grassland->Developed',
+    'Shrubland->Developed'
+
   ]);
 
 export const carbonstockColorScale = d3.scale.ordinal()
