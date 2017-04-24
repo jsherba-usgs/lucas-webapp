@@ -27,6 +27,7 @@ const view = {
 
   },
   updateChart(nestedData, colorScale) {
+    
     this.chartStatus('loaded');
     chartContainer.classList.remove('no-data');
 
@@ -38,7 +39,7 @@ const view = {
       }
       return false;
     }
-    
+   
     const decadalData = [];
     nestedData.forEach((series) => {
       const filteredValues = series.values.filter(yearFilter);
@@ -47,6 +48,8 @@ const view = {
           {
             name: series.key,
             value: row.values[0].Mean,
+            max:row.values[0].max,
+            min:row.values[0].min,
             year: row.key,
           }
         );
@@ -56,6 +59,7 @@ const view = {
       .key((d) => d.year)
       .entries(decadalData);
 
+    
     // Caluclate Net change
     const decadalChange = [];
     function calculateChange(currentRow, idx, arr) {
@@ -71,6 +75,8 @@ const view = {
           {
             name: currentRow.name,
             value: nextRow.value - currentRow.value,
+            min: nextRow.min -  currentRow.value,
+            max: nextRow.max -  currentRow.value,
             year: `${nextRow.year} - ${currentRow.year}`,
           }
         );
@@ -80,7 +86,7 @@ const view = {
     const barChartChange = d3.nest()
       .key((d) => d.year)
       .entries(decadalChange);
-
+    
     showTotals.onclick = () => {
       // Call bar charts - small multiples
 

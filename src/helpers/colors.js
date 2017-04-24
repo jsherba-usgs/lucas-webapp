@@ -86,7 +86,7 @@ export const dashedLegend = d3.scale.ordinal()
     .domain(["6370", "6385"])
     .range(["Scenario6370", "Scenario6385"]);
 
-export const stateclassColorScaleLegend = d3.scale.ordinal()
+/*export const stateclassColorScaleLegend = d3.scale.ordinal()
   .range([
     '#ff8040',
     '#c0c0c0',
@@ -124,13 +124,33 @@ export const carbonstockColorScaleLegend = d3.scale.ordinal()
   .range([
    '#386cb0',
    '#f0027f',
-   '#bf5b17',
-   '#f0027f'
+   '#bf5b17'
+  
   ]).domain([
     'Litter',
     'SOC',
-    'Living Biomass',
-    'test'
-  ]);
+    'Living Biomass'
+   
+  ]);*/
 
-export const colorScaleDicLegend = {"Land-Cover State": [stateclassColorScaleLegend, 20], "Carbon Stock": [carbonstockColorScaleLegend, 18], "Land-Cover Transition":[transitionColorScaleLegend, 7]};
+export const transitionClassLegendLookup = {
+          'AGRICULTURAL CONTRACTION':'#7fc97f',
+          'AGRICULTURAL EXPANSION':'#beaed4',
+          'URBANIZATION':'#fdc086'}
+
+export const stateClassLegendLookup = {'Agriculture':'#ff8040',
+          'Barren':'#c0c0c0',
+          'Developed':'#000',
+          'Forest':'#008000',
+          'Grassland':'#ffff80',
+          'Shrubland':'#a6a600',
+          'Water':'#0080ff',
+          'Plantation':'#ff00ff',
+          'Wetland':'#80ffff'}
+
+export const stockLegendLookup = {'Agriculture':'#ff8040',
+          'Litter':'#386cb0',
+          'SOC':'#f0027f',
+          'Living Biomass':'#bf5b17'}
+
+export const colorScaleDicLegend = {"Land-Cover State": [stateclassColorScale, 20], "Carbon Stock": [carbonstockColorScale, 18], "Land-Cover Transition":[transitionColorScale, 7]};

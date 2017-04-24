@@ -8,7 +8,7 @@ import './style/main.css';
 
 // Import Helpers
 import service from './helpers/api-service.js';
-import {colorScaleDicLegend, colorScaleDic, dashed,dashedLegend } from './helpers/colors';
+import {colorScaleDicLegend, colorScaleDic, dashed,dashedLegend, stateClassLegendLookup, stockLegendLookup, transitionClassLegendLookup} from './helpers/colors';
 import { addEventListener, triggerEvent } from './helpers/utils';
 
 // Import Components
@@ -81,7 +81,41 @@ document.addEventListener('DOMContentLoaded', () => {
   overlayOpenBtn.addEventListener('click', overlayOpen);
   overlayCloseBtn.addEventListener('click', overlayClose);
   
+function updateLineandBarLegend(params, lookupDictionary){
+  //update stateclass legend
+    b = (typeof b !== 'undefined') ?  b : 1;
 
+    let stateclassRange = []
+    let stateclassDomain = []
+    
+    params.split(',').forEach(function(stateclassValue) {
+        stateclassRange.push(lookupDictionary[stateclassValue])
+        stateclassDomain.push(stateclassValue)
+    });
+
+    const stateclassColorScale = d3.scale.ordinal().domain(stateclassDomain).range(stateclassRange)
+  
+   d3.selectAll(".legend-stateclass > *").remove();
+
+   stateclassLegends
+      .append('svg')
+      .attr('width', legendWidth)
+      .append('g')
+      .attr('class', 'legendOrdinal')
+      .attr('transform', 'translate(25,20)');
+
+    stateclassOrdinal = legend
+      .shapePadding(legendWidth / 20)
+      .shapeWidth(25)
+       .shape("rect")
+        .useClass(false)
+      .orient('horizontal')
+      .title('State Classes (area in square kilometers):')
+      .scale(stateclassColorScale);
+
+    stateclassLegends.select('.legendOrdinal')
+      .call(stateclassOrdinal);
+}
   
   /*
   * INTIALIZATIONS FOR SECTION 1
@@ -105,6 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const legend = d3.legend.color()
   const stateclassLegends = d3.selectAll('.legend-stateclass');
   const legendWidth = stateclassLegends.node().getBoundingClientRect().width;
+
 
   stateclassLegends
     .append('svg')
@@ -132,7 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
     .append('svg')
     .attr('width', legendWidth)
     .append('g')
-    .attr('class', 'legendOrdinal')
+    .attr('class', 'legendScenario')
     .attr('transform', 'translate(25,20)');
 
  let scenarioOrdinal = legend
@@ -145,7 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
     .title('Scenario:')
     .scale(dashedLegend);
 
- scenarioLegends.select('.legendOrdinal')
+ scenarioLegends.select('.legendScenario')
     .call(scenarioOrdinal);
   
 
@@ -258,8 +293,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById("three").style.display = 'block';
     
     // Change chart state to loading
-    section1.chartStatus('loading');
-    section2.chartStatus('loading');
+    //section1.chartStatus('loading');
+    //section2.chartStatus('loading');
     //section3.chartStatus('loading');
    // leafletFilters.init();
 
@@ -276,7 +311,7 @@ document.addEventListener('DOMContentLoaded', () => {
     maxPercentile = e.detail.iteration
     // Setup query params for fetching data from API
    
-    if (variableHasChanged(e)){
+   /* if (variableHasChanged(e)){
       
       d3.selectAll(".legend-stateclass > *").remove();
       d3.selectAll("svg.multiLinePlusArea").remove();
@@ -304,10 +339,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
         
-    }
+    }*/
 
     if (e.detail.variable ==="Land-Cover State"){
-      
+      section1.chartStatus('loading');
+      section2.chartStatus('loading');
       document.getElementById("three").style.display = 'none';
 
       let params = {
@@ -356,10 +392,16 @@ document.addEventListener('DOMContentLoaded', () => {
             .entries(renameTotalAreaByYear);
           
           // Update section 1 charts
+         
           section1.updateChart(totalAreaByYear, colorScaleDic[e.detail.variable][0]);
       
           // Update section 2 charts
+          
           section2.updateChart(totalAreaByYear, colorScaleDic[e.detail.variable][0]);
+
+
+
+
         })
         .catch((error) => {
           if (error.message.indexOf('No data') > -1) {
@@ -371,8 +413,12 @@ document.addEventListener('DOMContentLoaded', () => {
           console.log(error);
         });
 
+        updateLineandBarLegend(params.state_label_x, stateClassLegendLookup)
+
     }
     if (e.detail.variable ==="Carbon Stock"){
+      section1.chartStatus('loading');
+      section2.chartStatus('loading');
       document.getElementById("three").style.display = 'none';
       let params = {
           scenario: e.detail.scenario,
@@ -419,9 +465,11 @@ document.addEventListener('DOMContentLoaded', () => {
               .entries(renameTotalAreaByYear);
             
             // Update section 1 charts
+            
             section1.updateChart(totalAreaByYear, colorScaleDic[e.detail.variable][0]);
         
             // Update section 2 charts
+            
             section2.updateChart(totalAreaByYear, colorScaleDic[e.detail.variable][0]);
           })
           .catch((error) => {
@@ -434,11 +482,14 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log(error);
           });
 
+          updateLineandBarLegend(params.stock_type, stockLegendLookup)
     }
     if (e.detail.variable ==="Land-Cover Transition"){
+      section1.chartStatus('loading');
+      section3.chartStatus('loading');
       document.getElementById("two").style.display = 'none';
 
-      section3.chartStatus('loading');
+     
       let params = {
           scenario: e.detail.scenario,
           //iteration: e.detail.iteration,
@@ -499,12 +550,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const totalAreaAll3 = totalAreaByYearAll.filter(function (d) { if (groupVariable.includes(d["key"].split(':')[0]) || groupVariable.includes(d["key"].split(' / ')[0])) return true}  )
             
             // Update section 1 charts
+            
             section1.updateChart(totalAreaAll2, colorScaleDic[e.detail.variable][0]);
         
             // Update section 2 charts
-            section2.updateChart(totalAreaAll2, colorScaleDic[e.detail.variable][0]);
+            //section2.updateChart(totalAreaAll2, colorScaleDic[e.detail.variable][0]);
 
             //section3.updateChart(totalAreaByYear, e.detail.variable_detail);
+            //section3.chartStatus('loading');
             section3.updateChart(totalAreaAll3);
           })
           .catch((error) => {
@@ -516,7 +569,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             console.log(error);
           });
-
+          console.log(e.detail.variable_detail)
+          console.log(transitionClassLegendLookup)
+          updateLineandBarLegend(e.detail.variable_detail, transitionClassLegendLookup)
     }
     // Fetch data for transitions and update charts
    /* service.loadTransitions(params)

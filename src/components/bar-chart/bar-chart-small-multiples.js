@@ -17,6 +17,7 @@ const chart = () => {
   let xAxisAnnotation = 'Ordinal Scale';
   let xValue = function(d) { return d.name; };
   let yValue = function(d) { return +d.value; };
+  let errorBarWidth = 4
 
   /**
   * PRIVATE VARIABLES
@@ -103,6 +104,10 @@ const chart = () => {
 
       // Add group element to Container to hold data that will be drawn as area
       container.append('g').classed('bars', true);
+
+      container.append('g').classed('barsPattern', true);
+
+      container.append('g').classed('errorBars', true);
 
       // Add group element to Container for y axis on left and right of chart
       container.append('g').classed('y-axis-group axis', true);
@@ -217,7 +222,9 @@ const chart = () => {
   exports.render = function () {
     exports.drawAxes();
     exports.drawLabels();
+    container.each(exports.drawErrorBars);
     container.each(exports.drawBars);
+    
   };
 
 
@@ -240,6 +247,8 @@ const chart = () => {
     }
   };
 
+  
+
   exports.drawLabels = function () {
     container.select('.year-label')
       .transition().duration(1000)
@@ -252,6 +261,19 @@ const chart = () => {
     const barsContainer = container.select('g.bars');
     const bars = barsContainer.selectAll('rect').data((c) => c.values);
 
+    const barsContainerPattern = container.select('g.barsPattern');
+    const barsPattern = barsContainerPattern.selectAll('rect').data((c) => c.values);
+
+    const pattern = d3.scale.ordinal()
+    .range([
+     '0',
+     '4'
+    ]).domain([
+      '6370',
+      '6385'
+    ]);
+
+
     // D3 UPDATE
     bars.transition().duration(1000)
       .attr('class', (d) => xValue(d))
@@ -261,6 +283,26 @@ const chart = () => {
       .attr('width', xScale.rangeBand())
       .style('fill', (d) => color(xValue(d).split(" / ")[0]));
 
+    barsPattern.transition().duration(1000)
+      .attr('class', (d) => xValue(d))
+      .attr('y', (d) => yScale(Math.max(0, yValue(d))))
+      .attr('x', (d) => xScale(xValue(d)))
+      .attr('height', (d) => Math.abs(yScale(yValue(d)) - yScale(0)))
+      .attr('width', xScale.rangeBand())
+      .attr('fill', (d) => 'url('+'#'+'diagonalHatch'+xValue(d).split(" / ")[1]+')');
+  
+   
+/* bars.transition()
+      .append('defs')
+    .append('pattern')
+      .attr('id', (d) => 'diagonalHatch'+xValue(d).split(" / ")[1])
+      .attr('patternUnits', 'userSpaceOnUse')
+      .attr('width', (d) => pattern(xValue(d).split(" / ")[1]))
+      .attr('height', (d) => pattern(xValue(d).split(" / ")[1]))
+    .append('path')
+      .attr('d', 'M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2')
+      .attr('stroke', '#000000')
+      .attr('stroke-width', 1);*/
 
     // D3 ENTER
     bars.enter()
@@ -274,11 +316,92 @@ const chart = () => {
       .on('mouseover', tooltip.show)
       .on('mouseout', tooltip.hide);
 
+    barsPattern.enter()
+      .append('rect')
+      .attr('class', (d) => xValue(d))
+      .attr('y', (d) => yScale(Math.max(0, yValue(d))))
+      .attr('x', (d) => xScale(xValue(d)))
+      .attr('height', (d) => Math.abs(yScale(yValue(d)) - yScale(0)))
+      .attr('width', xScale.rangeBand())
+      .attr('fill', (d) => 'url('+'#'+'diagonalHatch'+xValue(d).split(" / ")[1]+')')
+      .on('mouseover', tooltip.show)
+      .on('mouseout', tooltip.hide);
+
+
+    barsPattern.enter()
+    .append('defs')
+    .append('pattern')
+      .attr('id', (d) => 'diagonalHatch'+xValue(d).split(" / ")[1])
+      .attr('patternUnits', 'userSpaceOnUse')
+      .attr('width', (d) => pattern(xValue(d).split(" / ")[1]))
+      .attr('height', (d) => pattern(xValue(d).split(" / ")[1]))
+    .append('path')
+      .attr('d', 'M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2')
+      .attr('stroke', '#000000')
+      .attr('stroke-width', 1);
+
     // D3 EXIT
     // If exits need to happen, apply a transition and remove DOM elements
     // when the transition has finished
     bars.exit()
       .remove();
+
+    barsPattern.exit()
+      .remove();
+  };
+
+  exports.drawErrorBars = function() {
+      /*const errorBarsContainer = container.select('g.errorBars');
+      
+      const errorBars = errorBarsContainer.selectAll('path').data((c) => c.values);
+
+    // D3 ENTER
+     errorBars.enter()
+        .append("path")
+        .attr('y', (d) => yScale(yValue(d)))
+        .attr('x', (d) => xScale(xValue(d)))
+        .attr('height', (d) => Math.abs(yScale(d.max-d.min)))
+        //.attr('width', xScale.rangeBand())
+        .attr("class", "errorBar")
+        .attr("stroke", "red")
+        .attr("stroke-width", 1.5)
+    errorBars.exit()
+      .remove();*/
+
+       const errorBarsContainer = container.select('g.errorBars');
+    const errorBars = errorBarsContainer.selectAll('rect').data((c) => c.values);
+
+
+    // D3 UPDATE
+    errorBars.transition().duration(1000)
+      .attr('class', (d) => xValue(d))
+      .attr('y', (d) => yScale(yValue(d)+(d.max-d.min) - (d.value - d.min)))
+      .attr('x', (d) => xScale(xValue(d))+(xScale.rangeBand()/2)-(errorBarWidth/2)) //.attr('x', (d) => xScale(xValue(d)))
+      .attr('height', (d) => Math.abs(yScale(d.max) - yScale(d.min)))
+      .attr('width', errorBarWidth)
+      .style('fill', "#d3d3d3");
+
+
+
+
+    // D3 ENTER
+    errorBars.enter()
+      .append('rect')
+      .attr('class', (d) => xValue(d))
+      .attr('y', (d) => yScale(yValue(d)+(d.max-d.min) - (d.value - d.min)))
+      .attr('x', (d) => xScale(xValue(d))+(xScale.rangeBand()/2)-(errorBarWidth/2)) //.attr('x', (d) => xScale(xValue(d)))
+      .attr('height', (d) => Math.abs(yScale(d.max) - yScale(d.min)))
+      .attr('width', errorBarWidth)
+      .style('fill', "#d3d3d3");
+      
+    // D3 EXIT
+    // If exits need to happen, apply a transition and remove DOM elements
+    // when the transition has finished
+    errorBars.exit()
+      .remove();
+    
+    
+
   };
 
   d3.rebind(exports, dispatch, 'on');

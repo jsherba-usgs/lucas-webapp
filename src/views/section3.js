@@ -20,8 +20,8 @@ const parentContainer = document.getElementById('three');
 const hbarsContainer = parentContainer.querySelector('.chart.pathways');
 let timeseriesChart;
 let pathwaysChart;
-let loading1;
-let loading2;
+let loading;
+
 
 
 
@@ -88,7 +88,7 @@ const view = {
       return false;
     }
     
-  console.log(timeseriesData)
+ 
     const transitionPathways = timeseriesData
       .filter(filterTransitionPathways)
       .map((series) => {
@@ -194,11 +194,11 @@ const view = {
     switch (status) {
       case 'loading':
         //loading1 = new Spinner().spin(timeseriesContainer);
-        loading2 = new Spinner().spin(hbarsContainer);
+        loading = new Spinner().spin(hbarsContainer);
         break;
       case 'loaded':
         //loading1.stop();
-        loading2.stop();
+        loading.stop();
         break;
       default:
        // timeseriesContainer.classList.remove('no-data');
