@@ -34,9 +34,10 @@ function getOptionVals(selection) {
 
 function removeOptions(selectbox) {
   for (let i = 0; i < selectbox.options.length; i++) {
-    if (selectbox.options[i].value !== 'All') {
-      selectbox.remove(i);
-    }
+    //if (selectbox.options[i].value !== 'All') {
+      selectbox.remove(i)
+      i--
+    //}
   }
 }
 
@@ -66,6 +67,7 @@ function updateFields() {
   details = projects.getDetailsForId(projectId).details;
 
   if (details) {
+
     // Populate scenario select box
     scenarioSelect = filtersContainer.querySelector('select[name=scenario]');
     removeOptions(scenarioSelect);
@@ -148,6 +150,7 @@ model.init = () => {
   projectSelect.onchange = updateFields;
   projectSelect.onchange();
 
+  
   scenarioSelect.onchange = updateIterationInput;
   scenarioSelect.onchange();
 
@@ -157,7 +160,7 @@ model.init = () => {
   // Create a custom event that is dispatched when Update button on form is clicked
   const form =  filtersContainer.querySelector('.filterform');//document.querySelectorAll('form.update')filtersContainer.querySelector('form');
   const form2 = filtersContainer2.querySelector('form')
-
+ 
   
   //const form2 = filtersContainer2.querySelector('form');
   form.onsubmit = function (e) {
@@ -171,7 +174,7 @@ model.init = () => {
 
   };
 
-  
+
  form2.onsubmit = function (e) {
     // prevent default
     e.preventDefault();
@@ -181,6 +184,7 @@ model.init = () => {
       detail: model.getValues()
     });
   };
+
 
   triggerEvent(document, 'filters.change', {
     detail: model.getValues()

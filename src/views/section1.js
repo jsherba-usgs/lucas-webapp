@@ -52,7 +52,7 @@ const view = {
       .xDomain([new Date(2011, 0), new Date(2061, 0)])
       .yAxisAnnotation('Area (square kilometers)')
      // .color(stateclassColorScale);
-
+     let sliderYear = 2011
     // Init date slider
     slider = chroniton()
       // TODO: Refactor - get range of years from data, instead of hardcoding values below
@@ -66,15 +66,18 @@ const view = {
       .on('change', (d) => {
         // Get year from date object
         const year = d.getFullYear();
+        
         // Update leaflet map for year 1 or every 10th year
         // TODO: Refactor - replace hardcoded values below
        // if ([2001, 2011, 2021, 2031, 2041, 2051, 2061].indexOf(year) > -1) {
-      if (sliderVals.indexOf(year) > -1) {
+      if (sliderVals.indexOf(year) > -1 && year!==sliderYear) {
+        
+          sliderYear = year
           leafletMap.updateRaster({ year });
         }
         timeseriesChart.moveTooltip(year);
       })
-      .playbackRate(0.2);
+      .playbackRate(.2);
 
     // Create slider
     // TODO: Set slider domain and change function after data comes back from API,;
@@ -220,7 +223,6 @@ const view = {
     leafletMap.resizeMap()
   },
   updateMap(options) {
-
     leafletMap.updateRaster(options);
   },
   updateIndividualMap(options) {

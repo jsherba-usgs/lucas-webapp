@@ -81,10 +81,13 @@ document.addEventListener('DOMContentLoaded', () => {
   overlayOpenBtn.addEventListener('click', overlayOpen);
   overlayCloseBtn.addEventListener('click', overlayClose);
   
-function updateLineandBarLegend(params, lookupDictionary){
+function updateLineandBarLegend(params, lookupDictionary, selection){
   //update stateclass legend
-    b = (typeof b !== 'undefined') ?  b : 1;
+    //b = (typeof b !== 'undefined') ?  b : 1;
 
+    stateclassLegends = d3.selectAll(selection);
+    legendWidth = stateclassLegends.node().getBoundingClientRect().width;
+    
     let stateclassRange = []
     let stateclassDomain = []
     
@@ -92,11 +95,11 @@ function updateLineandBarLegend(params, lookupDictionary){
         stateclassRange.push(lookupDictionary[stateclassValue])
         stateclassDomain.push(stateclassValue)
     });
-
+    
     const stateclassColorScale = d3.scale.ordinal().domain(stateclassDomain).range(stateclassRange)
   
    d3.selectAll(".legend-stateclass > *").remove();
-
+ 
    stateclassLegends
       .append('svg')
       .attr('width', legendWidth)
@@ -112,9 +115,12 @@ function updateLineandBarLegend(params, lookupDictionary){
       .orient('horizontal')
       .title('State Classes (area in square kilometers):')
       .scale(stateclassColorScale);
+    
 
     stateclassLegends.select('.legendOrdinal')
       .call(stateclassOrdinal);
+
+   
 }
   
   /*
@@ -137,8 +143,8 @@ function updateLineandBarLegend(params, lookupDictionary){
   */
   // State type legend
   const legend = d3.legend.color()
-  const stateclassLegends = d3.selectAll('.legend-stateclass');
-  const legendWidth = stateclassLegends.node().getBoundingClientRect().width;
+  let stateclassLegends = d3.selectAll('.legend-stateclass');
+  let legendWidth = stateclassLegends.node().getBoundingClientRect().width;
 
 
   stateclassLegends
@@ -288,6 +294,7 @@ function updateLineandBarLegend(params, lookupDictionary){
     }
 
   addEventListener(document, 'filters.change', (e) => {
+    console.log("test1")
     document.getElementById("one").style.display = 'block';
     document.getElementById("two").style.display = 'block';
     document.getElementById("three").style.display = 'block';
@@ -310,36 +317,6 @@ function updateLineandBarLegend(params, lookupDictionary){
     minPercentile = String(100 - parseInt(e.detail.iteration))
     maxPercentile = e.detail.iteration
     // Setup query params for fetching data from API
-   
-   /* if (variableHasChanged(e)){
-      
-      d3.selectAll(".legend-stateclass > *").remove();
-      d3.selectAll("svg.multiLinePlusArea").remove();
-
-     stateclassLegends
-        .append('svg')
-        .attr('width', legendWidth)
-        .append('g')
-        .attr('class', 'legendOrdinal')
-        .attr('transform', 'translate(25,20)');
-
-      stateclassOrdinal = legend
-        .shapePadding(legendWidth / colorScaleDicLegend[e.detail.variable][1])
-        .shapeWidth(25)
-         .shape("rect")
-          .useClass(false)
-        .orient('horizontal')
-        .title('State Classes (area in square kilometers):')
-        .scale(colorScaleDicLegend[e.detail.variable][0]);
-
-
-  
-      stateclassLegends.select('.legendOrdinal')
-        .call(stateclassOrdinal);
-
-
-        
-    }*/
 
     if (e.detail.variable ==="Land-Cover State"){
       section1.chartStatus('loading');
@@ -413,7 +390,7 @@ function updateLineandBarLegend(params, lookupDictionary){
           console.log(error);
         });
 
-        updateLineandBarLegend(params.state_label_x, stateClassLegendLookup)
+        updateLineandBarLegend(params.state_label_x, stateClassLegendLookup, '.legend-stateclass')
 
     }
     if (e.detail.variable ==="Carbon Stock"){
@@ -482,7 +459,7 @@ function updateLineandBarLegend(params, lookupDictionary){
             console.log(error);
           });
 
-          updateLineandBarLegend(params.stock_type, stockLegendLookup)
+          updateLineandBarLegend(params.stock_type, stockLegendLookup, '.legend-stateclass')
     }
     if (e.detail.variable ==="Land-Cover Transition"){
       section1.chartStatus('loading');
@@ -526,15 +503,6 @@ function updateLineandBarLegend(params, lookupDictionary){
 
               });
               
-              
-            // Group data by stateclass and year, calculate total area (amount)
-           
-           /* const totalAreaByYear = d3.nest()
-              .key((d) => d.TransitionGroup+":"+d.ScenarioID)
-              .key((d) => d.TransitionGroup)
-              .key((d) => d.Timestep)
-               .rollup((v) => d3.sum(v, (d) => d.Mean))
-              .entries(renameTotalAreaByYear);*/
 
            const totalAreaByYearAll = d3.nest()
               .key((d) => d.TransitionGroup+" / "+d.ScenarioID)
@@ -569,9 +537,8 @@ function updateLineandBarLegend(params, lookupDictionary){
             }
             console.log(error);
           });
-          console.log(e.detail.variable_detail)
-          console.log(transitionClassLegendLookup)
-          updateLineandBarLegend(e.detail.variable_detail, transitionClassLegendLookup)
+         
+          updateLineandBarLegend(e.detail.variable_detail, transitionClassLegendLookup, '.legend-stateclass.legend-section1')
     }
     // Fetch data for transitions and update charts
    /* service.loadTransitions(params)

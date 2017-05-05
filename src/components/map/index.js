@@ -27,6 +27,7 @@ let mapContainer;
 let settings;
 let feature;
 let tempLayer;
+let project;
 const modal = document.getElementById('myModal');
 const span = document.getElementsByClassName("close")[0];
 
@@ -112,7 +113,8 @@ function pairs(arr) {
 /**
 * PUBLIC FUNCTIONS
 **/
-model.init = ({ selector, lat = 22.234262, lng = -159.784857, scenario = '6368', iteration = '1', year = '2011' }) => {
+model.init = ({ selector, lat = 22.234262, lng = -159.784857, scenario = '6368', iteration = '1', year = '2011', project = '7096' }) => {
+  //model.init = ({ selector, lat = 43.5754794945, lng = -125.260128026, scenario = '6368', iteration = '1', year = '2011' }) => {
   // Initialize container
   if (!selector) {
     mapContainer = document.getElementById('map');
@@ -134,16 +136,18 @@ model.init = ({ selector, lat = 22.234262, lng = -159.784857, scenario = '6368',
     attributionControl: true,
     touchZoom: false,
     scrollWheelZoom: false,
-    layers: [CartoDB_DarkMatterNoLabels, stateclassTiles, Stamen_TonerLabels],
+    layers: [CartoDB_DarkMatterNoLabels, stateclassTiles],
   });
 
   maps = [map]
 
   settings = {
+    project: project.toString(),
     year: year.toString(),
     scenario: scenario.toString(),
     iteration: iteration.toString(),
     secondary_stratum: '',
+    stratum: '',
     iteration_number: leftPad(iteration.toString()),
   };
   
@@ -185,8 +189,10 @@ model.updateRaster = (...args) => {
     }
     if (args[0].secondary_stratum && args[0].secondary_stratum !== settings.secondary_stratum) {
       settings.secondary_stratum = args[0].secondary_stratum;
-      const project = projects.getDetailsForId(args[0].project);
-      const feature = project.details.secondary_stratum.find((item) => item.id === args[0].secondary_stratum);
+      project = projects.getDetailsForId(args[0].project);
+      
+      //const feature = project.details.secondary_stratum.find((item) => item.id === args[0].secondary_stratum);
+      feature = project.details.jsonlayer.sec_strata.features.find((item) => item.properties.name === args[0].secondary_stratum);
       /*if (feature.geom) {
         const tempLayer = L.geoJson(feature.geom);
         map.fitBounds(tempLayer.getBounds());
@@ -204,7 +210,7 @@ model.updateRaster = (...args) => {
       mapscenario = scenarios[i]
 
       
-      const url = `http://stage.landcarbon.org/tiles/s${mapscenario}-it${settings.iteration_number}-ts${settings.year}-sc/{z}/{x}/{y}.png?style=lulc`;
+      const url = `http://127.0.0.1:8000/tiles/s${mapscenario}-it${settings.iteration_number}-ts${settings.year}-sc/{z}/{x}/{y}.png?style=lulc`;
       
       selectYearNode(maps[i], 'Year: ' + settings.year)
      
@@ -217,9 +223,9 @@ model.updateRaster = (...args) => {
     
       tilelayer.setUrl(url);
        if (args[0].secondary_stratum && args[0].secondary_stratum !== settings.secondary_stratum) {
-          if (feature && feature.geom){
+          if (feature && feature.geometry){
 
-              const tempLayer = L.geoJson(feature.geom);
+              const tempLayer = L.geoJson(feature.geometry);
               maps[i].fitBounds(tempLayer.getBounds());
           }
         }
@@ -275,7 +281,7 @@ model.updateIndividualRaster = (...args) => {
       let scenario = args[0].scenario
      
       
-      const url = `http://stage.landcarbon.org/tiles/s${scenario}-it${iteration}-ts${year}-sc/{z}/{x}/{y}.png?style=lulc`;
+      const url = `http://127.0.0.1:8000/tiles/s${scenario}-it${iteration}-ts${year}-sc/{z}/{x}/{y}.png?style=lulc`;
       
       //selectYearNode(maps[individualMap], 'Year: ' + settings.year)
       selectYearNode(maps[individualMap], 'Year: ' + args[0].year)
@@ -297,7 +303,8 @@ model.resizeMap = () => {
 };
 
 model.reloadMap = (...args) => {
- 
+
+  console.log(args[0])
   let update = true;
   if (args && args[0]) {
     if (args[0].year && args[0].year !== settings.year) {
@@ -312,14 +319,22 @@ model.reloadMap = (...args) => {
       settings.iteration = args[0].iteration;
       update = true;
     }
+    if (args[0].stratum && args[0].stratum !== settings.stratum) {
+      settings.stratum = args[0].stratum;
+      project = projects.getDetailsForId(args[0].project);      
+      feature = project.details.jsonlayer.strata.features.find((item) => item.properties.name === args[0].stratum);
+      update = true;
+    }
     if (args[0].secondary_stratum && args[0].secondary_stratum !== settings.secondary_stratum) {
       settings.secondary_stratum = args[0].secondary_stratum;
-      const project = projects.getDetailsForId(args[0].project);
-      feature = project.details.secondary_stratum.find((item) => item.id === args[0].secondary_stratum);
-      /*if (feature.geom) {
-        tempLayer = L.geoJson(feature.geom);
-        map.fitBounds(tempLayer.getBounds());
-      }*/
+      project = projects.getDetailsForId(args[0].project);      
+      feature = project.details.jsonlayer.sec_strata.features.find((item) => item.properties.name === args[0].secondary_stratum);
+      update = true;
+    }
+    if (args[0].project && args[0].project !== settings.project) {
+      settings.project = args[0].project;
+      project = projects.getDetailsForId(args[0].project);      
+      feature = project.details.jsonlayer.sec_strata.features.find((item) => item.properties.name === args[0].secondary_stratum);
       update = true;
     }
   }
@@ -327,7 +342,8 @@ model.reloadMap = (...args) => {
 
 if (update) {
   
- 
+  console.log(args[0].secondary_stratum)
+  
    d3.selectAll("#map > *").remove();
   mapContainer = document.getElementById('map');
   settings.iteration_number = leftPad("1")
@@ -369,7 +385,7 @@ if (update) {
 });
 
 
-  const stateclassTiles = L.tileLayer('http://stage.landcarbon.org/tiles/s6368-it0001-ts2011-sc/{z}/{x}/{y}.png', {
+  const stateclassTiles = L.tileLayer('http://127.0.0.1:8000/tiles/s6368-it0001-ts2011-sc/{z}/{x}/{y}.png', {
   attribution: 'LULC: <a href="http://landcarbon.org">LandCarbon</a>',
   maxZoom: 19,
   //scenario: '6368',
@@ -388,14 +404,16 @@ if (update) {
 
  
   maps[i] =  L.map(id, {
-      center: ["22.234262", "-159.784857"],
+      //center: ["22.234262", "-159.784857"],
+      center: ["43.5754794945", "-125.260128026"],
+      
       zoom: 9,
       minZoom: 5,
       maxZoom: 19,
       attributionControl: true,
       touchZoom: false,
       scrollWheelZoom: false,
-      layers: [CartoDB_DarkMatterNoLabels, stateclassTiles, Stamen_TonerLabels],
+      layers: [CartoDB_DarkMatterNoLabels, stateclassTiles],
       });
 
   
@@ -410,7 +428,7 @@ if (update) {
         }).addTo(maps[i]);*/
 
     
-  const url = `http://stage.landcarbon.org/tiles/s${mapscenario}-it${settings.iteration_number}-ts${settings.year}-sc/{z}/{x}/{y}.png?style=lulc`;
+  const url = `http://127.0.0.1:8000/tiles/s${mapscenario}-it${settings.iteration_number}-ts${settings.year}-sc/{z}/{x}/{y}.png?style=lulc`;
   
   stateclassTiles.setUrl(url);
  // stateclassTiles2.addTo(maps[i])
@@ -418,8 +436,9 @@ if (update) {
           attribution: 'USGS'
         }).addTo(maps[i]);*/
 
-    if (feature.geom) {
-      tempLayer = L.geoJson(feature.geom);
+    if (feature.geometry) {
+      console.log("test3")
+      tempLayer = L.geoJson(feature.geometry);
         maps[i].fitBounds(tempLayer.getBounds());
     }
       
