@@ -46,18 +46,40 @@ const projectDetails = [
           years: [2011,2061],
         },
       ],
+      iteration: [
+      
+        {
+          id:'single_iteration',
+          name:'iteration',
+          type: 'number',
+          min:"1",
+          max:"10",
+          value:"1"
+        },
+         {
+          id:'percentile',
+          name:'iteration',
+          type: 'number',
+          min:'51',
+          max:'99',
+          value:"95"
+        },
+      ],
       variable: [
         {
           id: 'Land-Cover State',
           variable_detail: [
           {
+            id: 'Agriculture',
+          },
+          {
+            id: 'Developed',
+          },
+          {
             id: 'Forest',
           },
           {
             id: 'Grassland',
-          },
-          {
-            id: 'Agriculture',
           },
         ],
           
@@ -252,19 +274,42 @@ const projectDetails = [
           years: [2001,2001]
         },
       ],
+      iteration: [
+      
+        {
+          id:'single_iteration',
+          name:'iteration',
+          type: 'number',
+          min:"1",
+          max:"20",
+          value:"1"
+        },
+         {
+          id:'percentile',
+          name:'iteration',
+          type: 'number',
+          min:'51',
+          max:'99',
+          value:"95"
+        },
+      ],
       variable: [
         {
           id: 'Land-Cover State',
           variable_detail: [
+          {
+            id: 'Agriculture',
+          },
+          {
+            id: 'Developed',
+          },
           {
             id: 'Forest',
           },
           {
             id: 'Grassland',
           },
-          {
-            id: 'Agriculture',
-          },
+          
         ],
           
         },

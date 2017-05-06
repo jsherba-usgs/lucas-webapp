@@ -17,6 +17,7 @@ let stratumSelect;
 let variableSelect;
 let iterationInput;
 let variableDetail;
+let iterationTypeSelect;
 let strataOverlayOpenBtn
 let strataOverlayCloseBtn
 
@@ -42,9 +43,15 @@ function removeOptions(selectbox) {
 }
 
 function updateIterationInput() {
-  //const id = scenarioSelect.value;
-  //const scenarioDetail = details.scenario.find((item) => item.id === id);
-  //iterationInput.max = scenarioDetail.iterations;
+ 
+  const id = iterationTypeSelect.value;
+  const getIterationDetail = details.iteration.find((item) => item.id === id);
+  //const input = document.createElement('input');
+  iterationInput.name = getIterationDetail.name
+  iterationInput.type = getIterationDetail.type
+  iterationInput.min =  getIterationDetail.min
+  iterationInput.max =  getIterationDetail.max
+  iterationInput.value = getIterationDetail.value
 }
 
 function updateVariableDetail() {
@@ -59,6 +66,7 @@ function updateVariableDetail() {
     });
     variableDetail[0].selected = true
     variableDetail.disabled = false;
+    variableDetail.setAttribute('size',variableDetail.childElementCount);
   }
 
 
@@ -79,6 +87,8 @@ function updateFields() {
     });
     scenarioSelect[0].selected = true
     scenarioSelect.disabled = false;
+
+    scenarioSelect.setAttribute('size',scenarioSelect.childElementCount);
 
     // Populate secondary stratum select box
     secStratumSelect = filtersContainer.querySelector('select[name=secondary_stratum]');
@@ -114,12 +124,16 @@ function updateFields() {
     variableSelect.disabled = false;
 
     // Populate iteration input box
+    iterationTypeSelect = filtersContainer.querySelector('select[name=iteration_type]');
+    iterationTypeSelect.disabled = false;
 
     iterationInput = filtersContainer.querySelector('input[name=iteration]');
     iterationInput.disabled = false;
 
     variableDetail = filtersContainer.querySelector('select[name=variable_detail]');
     variableDetail.disabled = false;
+
+    
 
   }
 }
@@ -150,9 +164,11 @@ model.init = () => {
   projectSelect.onchange = updateFields;
   projectSelect.onchange();
 
-  
   scenarioSelect.onchange = updateIterationInput;
   scenarioSelect.onchange();
+
+  iterationTypeSelect.onchange = updateIterationInput;
+  iterationTypeSelect.onchange();
 
   variableSelect.onchange = updateVariableDetail;
   variableSelect.onchange();
@@ -294,6 +310,7 @@ model.getValues = () => (
     stratum: stratumSelect.value,
     secondary_stratum: secStratumSelect.value,
     iteration: iterationInput.value,
+    iteration_type: iterationTypeSelect.value,
     variable: variableSelect.value,
     variable_detail: getOptionVals(variableDetail)
 

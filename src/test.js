@@ -314,16 +314,48 @@ function updateLineandBarLegend(params, lookupDictionary, selection){
 
     section1.reloadMap(e.detail);
 
+
+
     minPercentile = String(100 - parseInt(e.detail.iteration))
     maxPercentile = e.detail.iteration
+    
+
+    
     // Setup query params for fetching data from API
 
     if (e.detail.variable ==="Land-Cover State"){
       section1.chartStatus('loading');
       section2.chartStatus('loading');
       document.getElementById("three").style.display = 'none';
-
       let params = {
+        scenario: e.detail.scenario,
+        iteration: e.detail.iteration,
+        secondary_stratum: e.detail.secondary_stratum,
+        stratum: e.detail.stratum,
+        timestep: year,
+        pagesize: 1000,
+      };
+      if (e.detail.iteration_type==='single_iteration'){
+
+          params.iteration =  e.detail.iteration
+          params.group_by="Timestep,StateLabelX,Iteration,IDScenario"
+       /* params = {
+          scenario: e.detail.scenario,
+          iteration: e.detail.iteration,
+          secondary_stratum: e.detail.secondary_stratum,
+          stratum: e.detail.stratum,
+          state_label_x: e.detail.variable_detail,
+          group_by:"Timestep,StateLabelX,Iteration,IDScenario",
+          //percentile: "Iteration, "+maxPercentile,
+          timestep: year,
+          pagesize: 1000,*/
+      
+    }else{
+      console.log("test43")
+      
+        params.group_by="Timestep,StateLabelX,Iteration,IDScenario"
+        params.percentile = "Iteration, "+maxPercentile
+     /* params = {
         scenario: e.detail.scenario,
         //iteration: e.detail.iteration,
         secondary_stratum: e.detail.secondary_stratum,
@@ -333,14 +365,17 @@ function updateLineandBarLegend(params, lookupDictionary, selection){
         percentile: "Iteration, "+maxPercentile,
         timestep: year,
         pagesize: 1000,
-      };
+      };*/
+
+    }
       if (params.stratum === 'All') {
         delete params.stratum;
       };
       if (params.secondary_stratum === 'All') {
         delete params.secondary_stratum;
       }
-
+      console.log(params)
+      console.log("test32")
       // Fetch data for state class and update charts
       service.loadStates(params)
 
@@ -348,6 +383,17 @@ function updateLineandBarLegend(params, lookupDictionary, selection){
           const renameTotalAreaByYear = d3.nest()
             .entries(data)
             .map(function(group) {
+              if (e.detail.iteration_type==='single_iteration'){
+              return {
+                StateLabelX: group.StateLabelX,
+                ScenarioID: group.IDScenario,
+                Timestep: group.Timestep,
+                max: group.sum,
+                min: group.sum,
+                Mean: group.sum,
+                
+              }
+            }else{
               return {
                 StateLabelX: group.StateLabelX,
                 ScenarioID: group.IDScenario,
@@ -356,12 +402,14 @@ function updateLineandBarLegend(params, lookupDictionary, selection){
                 min: group["pc(sum, "+minPercentile+")"],
                 Mean:   group["pc(sum, 50)"],
                 
-              }
+
+            }
+          }
             });
 
           
           // Group data by stateclass and year, calculate total area (amount)
-         
+         console.log(renameTotalAreaByYear)
           const totalAreaByYear = d3.nest()
             .key((d) => d.StateLabelX+" / "+d.ScenarioID)
             .key((d) => d.Timestep)
@@ -389,7 +437,8 @@ function updateLineandBarLegend(params, lookupDictionary, selection){
           }
           console.log(error);
         });
-
+        console.log(params)
+        console.log("test22")
         updateLineandBarLegend(params.state_label_x, stateClassLegendLookup, '.legend-stateclass')
 
     }
