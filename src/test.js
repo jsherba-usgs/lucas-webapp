@@ -292,9 +292,44 @@ function updateLineandBarLegend(params, lookupDictionary, selection){
     for (var i = 2011; i <= 2061; i++) {
        year.push(i);
     }
+  function setParams(e, variableType){
+    const variableApiTypes = {
+      'state_label_x': 'StateLabelX',
+      'stock_type': 'StockType',
+      'transition_group': 'TransitionGroup'
+    }
+
+    let group_by_values = "Timestep,Iteration,IDScenario," +  variableApiTypes[variableType]
+    let params = {
+        scenario: e.detail.scenario,
+        secondary_stratum: e.detail.secondary_stratum,
+        stratum: e.detail.stratum,
+        timestep: year,
+        pagesize: 1000,
+      };
+    if (variableType !== 'transition_group'){
+      params[variableType] = e.detail.variable_detail
+    }
+    params.group_by=group_by_values 
+    if (e.detail.iteration_type==='single_iteration'){
+          params.iteration =  e.detail.iteration
+      
+    }else{
+        params.percentile = "Iteration, "+maxPercentile
+
+    }
+      if (params.stratum === 'All') {
+        delete params.stratum;
+      };
+      if (params.secondary_stratum === 'All') {
+        delete params.secondary_stratum;
+      }
+      console.log(params)
+    return params
+  }
 
   addEventListener(document, 'filters.change', (e) => {
-    console.log("test1")
+    
     document.getElementById("one").style.display = 'block';
     document.getElementById("two").style.display = 'block';
     document.getElementById("three").style.display = 'block';
@@ -327,56 +362,10 @@ function updateLineandBarLegend(params, lookupDictionary, selection){
       section1.chartStatus('loading');
       section2.chartStatus('loading');
       document.getElementById("three").style.display = 'none';
-      let params = {
-        scenario: e.detail.scenario,
-        iteration: e.detail.iteration,
-        secondary_stratum: e.detail.secondary_stratum,
-        stratum: e.detail.stratum,
-        timestep: year,
-        pagesize: 1000,
-      };
-      if (e.detail.iteration_type==='single_iteration'){
-
-          params.iteration =  e.detail.iteration
-          params.group_by="Timestep,StateLabelX,Iteration,IDScenario"
-       /* params = {
-          scenario: e.detail.scenario,
-          iteration: e.detail.iteration,
-          secondary_stratum: e.detail.secondary_stratum,
-          stratum: e.detail.stratum,
-          state_label_x: e.detail.variable_detail,
-          group_by:"Timestep,StateLabelX,Iteration,IDScenario",
-          //percentile: "Iteration, "+maxPercentile,
-          timestep: year,
-          pagesize: 1000,*/
+      let params = setParams(e, 'state_label_x')
       
-    }else{
-      console.log("test43")
-      
-        params.group_by="Timestep,StateLabelX,Iteration,IDScenario"
-        params.percentile = "Iteration, "+maxPercentile
-     /* params = {
-        scenario: e.detail.scenario,
-        //iteration: e.detail.iteration,
-        secondary_stratum: e.detail.secondary_stratum,
-        stratum: e.detail.stratum,
-        state_label_x: e.detail.variable_detail,
-        group_by:"Timestep,StateLabelX,Iteration,IDScenario",
-        percentile: "Iteration, "+maxPercentile,
-        timestep: year,
-        pagesize: 1000,
-      };*/
-
-    }
-      if (params.stratum === 'All') {
-        delete params.stratum;
-      };
-      if (params.secondary_stratum === 'All') {
-        delete params.secondary_stratum;
-      }
-      console.log(params)
-      console.log("test32")
       // Fetch data for state class and update charts
+
       service.loadStates(params)
 
         .then((data) => {
@@ -409,7 +398,7 @@ function updateLineandBarLegend(params, lookupDictionary, selection){
 
           
           // Group data by stateclass and year, calculate total area (amount)
-         console.log(renameTotalAreaByYear)
+         
           const totalAreaByYear = d3.nest()
             .key((d) => d.StateLabelX+" / "+d.ScenarioID)
             .key((d) => d.Timestep)
@@ -417,7 +406,7 @@ function updateLineandBarLegend(params, lookupDictionary, selection){
             .entries(renameTotalAreaByYear);
           
           // Update section 1 charts
-         
+        
           section1.updateChart(totalAreaByYear, colorScaleDic[e.detail.variable][0]);
       
           // Update section 2 charts
@@ -437,32 +426,16 @@ function updateLineandBarLegend(params, lookupDictionary, selection){
           }
           console.log(error);
         });
-        console.log(params)
-        console.log("test22")
+       
         updateLineandBarLegend(params.state_label_x, stateClassLegendLookup, '.legend-stateclass')
-
+       
     }
     if (e.detail.variable ==="Carbon Stock"){
       section1.chartStatus('loading');
       section2.chartStatus('loading');
       document.getElementById("three").style.display = 'none';
-      let params = {
-          scenario: e.detail.scenario,
-          //iteration: e.detail.iteration,
-          secondary_stratum: e.detail.secondary_stratum,
-          stratum: e.detail.stratum,
-          stock_type: e.detail.variable_detail,
-          group_by:"Timestep,StockType,Iteration,IDScenario",
-          percentile: "Iteration, 95",
-          timestep: year,
-          pagesize: 1000,
-        };
-        if (params.stratum === 'All') {
-          delete params.stratum;
-        }
-        if (params.secondary_stratum === 'All') {
-          delete params.secondary_stratum;
-        }
+     
+        let params = setParams(e, 'stock_type')
 
         // Fetch data for state class and update charts
         service.loadCarbonStocks(params)
@@ -470,15 +443,29 @@ function updateLineandBarLegend(params, lookupDictionary, selection){
             const renameTotalAreaByYear = d3.nest()
               .entries(data)
               .map(function(group) {
-                return {
-                  StockType: group.StockType,
-                  ScenarioID: group.IDScenario,
-                  Timestep: group.Timestep,
-                  max: group["pc(sum, 95)"],
-                  min: group["pc(sum, 5)"],
-                  Mean:   group["pc(sum, 50)"],
-                  
-                }
+               
+             if (e.detail.iteration_type==='single_iteration'){
+              return {
+                StockType: group.StockType,
+                ScenarioID: group.IDScenario,
+                Timestep: group.Timestep,
+                max: group.sum,
+                min: group.sum,
+                Mean: group.sum,
+                
+              }
+            }else{
+              return {
+                StockType: group.StockType,
+                ScenarioID: group.IDScenario,
+                Timestep: group.Timestep,
+                max: group["pc(sum, "+maxPercentile+")"],
+                min: group["pc(sum, "+minPercentile+")"],
+                Mean:   group["pc(sum, 50)"],
+                
+
+            }
+          }
               });
               
               
@@ -515,8 +502,8 @@ function updateLineandBarLegend(params, lookupDictionary, selection){
       section3.chartStatus('loading');
       document.getElementById("two").style.display = 'none';
 
-     
-      let params = {
+     let params = setParams(e, 'transition_group')
+      /*let params = {
           scenario: e.detail.scenario,
           //iteration: e.detail.iteration,
           secondary_stratum: e.detail.secondary_stratum,
@@ -532,7 +519,7 @@ function updateLineandBarLegend(params, lookupDictionary, selection){
         }
         if (params.secondary_stratum === 'All') {
           delete params.secondary_stratum;
-        }
+        }*/
 
         // Fetch data for state class and update charts
         service.loadTransitions(params)
@@ -540,7 +527,7 @@ function updateLineandBarLegend(params, lookupDictionary, selection){
             const renameTotalAreaByYear = d3.nest()
               .entries(data)
               .map(function(group) {
-                return {
+                /*return {
                   TransitionGroup: group.TransitionGroup,
                   ScenarioID: group.IDScenario,
                   Timestep: group.Timestep,
@@ -548,7 +535,29 @@ function updateLineandBarLegend(params, lookupDictionary, selection){
                   min: group["pc(sum, 5)"],
                   Mean:   group["pc(sum, 50)"],
                   
-                }
+                }*/
+            if (e.detail.iteration_type==='single_iteration'){
+              return {
+                TransitionGroup: group.TransitionGroup,
+                ScenarioID: group.IDScenario,
+                Timestep: group.Timestep,
+                max: group.sum,
+                min: group.sum,
+                Mean: group.sum,
+                
+              }
+            }else{
+              return {
+                TransitionGroup: group.TransitionGroup,
+                ScenarioID: group.IDScenario,
+                Timestep: group.Timestep,
+                max: group["pc(sum, "+maxPercentile+")"],
+                min: group["pc(sum, "+minPercentile+")"],
+                Mean:   group["pc(sum, 50)"],
+                
+
+            }
+          }
 
               });
               

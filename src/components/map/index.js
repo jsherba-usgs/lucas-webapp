@@ -304,7 +304,7 @@ model.resizeMap = () => {
 
 model.reloadMap = (...args) => {
 
-  console.log(args[0])
+  
   let update = true;
   if (args && args[0]) {
     if (args[0].year && args[0].year !== settings.year) {
@@ -341,8 +341,6 @@ model.reloadMap = (...args) => {
   
 
 if (update) {
-  
-  console.log(args[0].secondary_stratum)
   
    d3.selectAll("#map > *").remove();
   mapContainer = document.getElementById('map');
@@ -437,7 +435,7 @@ if (update) {
         }).addTo(maps[i]);*/
 
     if (feature.geometry) {
-      console.log("test3")
+      
       tempLayer = L.geoJson(feature.geometry);
         maps[i].fitBounds(tempLayer.getBounds());
     }
