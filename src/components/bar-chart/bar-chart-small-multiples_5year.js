@@ -15,8 +15,7 @@ const chart = () => {
   let chartClass = 'barchart';
   let yAxisAnnotation = 'Linear Scale';
   let xAxisAnnotation = 'Ordinal Scale';
-  //let xValue = function(d) { return d.name; };
-  let xValue = function(d) { return d.year; };
+  let xValue = function(d) { return d.name; };
   let yValue = function(d) { return +d.value; };
   let errorBarWidth = 4
 
@@ -29,7 +28,7 @@ const chart = () => {
   let xRoundBands = 0.2;
   const tooltip = d3.tip()
     .attr('class', 'd3-tip')
-    .html((d) => `${d.year}: ${d.value} km<sup>2</sup>`);
+    .html((d) => `${d.name}: ${d.value} km<sup>2</sup>`);
 
   // X scale
   const xScale = d3.scale.ordinal();
@@ -40,7 +39,7 @@ const chart = () => {
   // X Axis on bottom of chart
   const xAxis = d3.svg.axis()
     .scale(xScale)
-    .tickFormat((d) => d.substring(0, 5));
+    .tickFormat((d) => d.substring(0, 2));
 
   // First Y axis on the left side of chart
   const yAxis = d3.svg.axis()
@@ -64,15 +63,13 @@ const chart = () => {
       // Setup scales
       xScale
         .rangeRoundBands([0, chartW], xRoundBands)
-        //.domain(data[0].values.map((d) => xValue(d)));
         .domain(data[0].values.map((d) => xValue(d)));
-      // .domain(["2011","2061"])
 
       const maxY = d3.max(data, (c) => d3.max(c.values, (d) => yValue(d)));
       let minY = d3.min(data, (c) => d3.min(c.values, (d) => yValue(d)));
 
       // If all values are +ve, force a 0 baseline for y axis
-     if (minY > 0) {
+      if (minY > 0) {
         minY = 0;
       }
       yScale
@@ -224,11 +221,8 @@ const chart = () => {
 
   exports.render = function () {
     exports.drawAxes();
- 
     exports.drawLabels();
-   
     container.each(exports.drawErrorBars);
- 
     container.each(exports.drawBars);
     
   };
@@ -278,7 +272,8 @@ const chart = () => {
       '6370',
       '6385'
     ]);
-     
+
+
     // D3 UPDATE
     bars.transition().duration(1000)
       .attr('class', (d) => xValue(d))
@@ -286,8 +281,7 @@ const chart = () => {
       .attr('x', (d) => xScale(xValue(d)))
       .attr('height', (d) => Math.abs(yScale(yValue(d)) - yScale(0)))
       .attr('width', xScale.rangeBand())
-      //.style('fill', (d) => color(xValue(d).split(" / ")[0]));
-       .style('fill', (d) => color( d.state));
+      .style('fill', (d) => color(xValue(d).split(" / ")[0]));
 
     barsPattern.transition().duration(1000)
       .attr('class', (d) => xValue(d))
@@ -295,8 +289,20 @@ const chart = () => {
       .attr('x', (d) => xScale(xValue(d)))
       .attr('height', (d) => Math.abs(yScale(yValue(d)) - yScale(0)))
       .attr('width', xScale.rangeBand())
-     // .attr('fill', (d) => 'url('+'#'+'diagonalHatch'+d.name.split(" / ")[1]+')');
-      .attr('fill', (d) => 'url('+'#'+'diagonalHatch'+d.scenario+')');
+      .attr('fill', (d) => 'url('+'#'+'diagonalHatch'+xValue(d).split(" / ")[1]+')');
+  
+   
+/* bars.transition()
+      .append('defs')
+    .append('pattern')
+      .attr('id', (d) => 'diagonalHatch'+xValue(d).split(" / ")[1])
+      .attr('patternUnits', 'userSpaceOnUse')
+      .attr('width', (d) => pattern(xValue(d).split(" / ")[1]))
+      .attr('height', (d) => pattern(xValue(d).split(" / ")[1]))
+    .append('path')
+      .attr('d', 'M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2')
+      .attr('stroke', '#000000')
+      .attr('stroke-width', 1);*/
 
     // D3 ENTER
     bars.enter()
@@ -306,8 +312,8 @@ const chart = () => {
       .attr('x', (d) => xScale(xValue(d)))
       .attr('height', (d) => Math.abs(yScale(yValue(d)) - yScale(0)))
       .attr('width', xScale.rangeBand())
-      //.style('fill', (d) => color(xValue(d).split(" / ")[0]))
-      .style('fill', (d) => color(d.state))
+      .style('fill', (d) => color(xValue(d).split(" / ")[0]))
+      .on('mouseover', tooltip.show)
       .on('mouseout', tooltip.hide);
 
     barsPattern.enter()
@@ -317,8 +323,7 @@ const chart = () => {
       .attr('x', (d) => xScale(xValue(d)))
       .attr('height', (d) => Math.abs(yScale(yValue(d)) - yScale(0)))
       .attr('width', xScale.rangeBand())
-      //.attr('fill', (d) => 'url('+'#'+'diagonalHatch'+xValue(d).split(" / ")[1]+')')
-       .attr('fill', (d) => 'url('+'#'+'diagonalHatch'+d.scenario+')')
+      .attr('fill', (d) => 'url('+'#'+'diagonalHatch'+xValue(d).split(" / ")[1]+')')
       .on('mouseover', tooltip.show)
       .on('mouseout', tooltip.hide);
 
@@ -326,18 +331,15 @@ const chart = () => {
     barsPattern.enter()
     .append('defs')
     .append('pattern')
-      //.attr('id', (d) => 'diagonalHatch'+xValue(d).split(" / ")[1])
-      .attr('id', (d) => 'diagonalHatch'+d.scenario)
+      .attr('id', (d) => 'diagonalHatch'+xValue(d).split(" / ")[1])
       .attr('patternUnits', 'userSpaceOnUse')
-     // .attr('width', (d) => pattern(xValue(d).split(" / ")[1]))
-     // .attr('height', (d) => pattern(xValue(d).split(" / ")[1]))
-     .attr('width', (d) => pattern(d.scenario))
-     .attr('height', (d) => pattern(d.scenario))
+      .attr('width', (d) => pattern(xValue(d).split(" / ")[1]))
+      .attr('height', (d) => pattern(xValue(d).split(" / ")[1]))
     .append('path')
       .attr('d', 'M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2')
       .attr('stroke', '#000000')
       .attr('stroke-width', 1);
- 
+
     // D3 EXIT
     // If exits need to happen, apply a transition and remove DOM elements
     // when the transition has finished
@@ -349,8 +351,24 @@ const chart = () => {
   };
 
   exports.drawErrorBars = function() {
- 
-    const errorBarsContainer = container.select('g.errorBars');
+      /*const errorBarsContainer = container.select('g.errorBars');
+      
+      const errorBars = errorBarsContainer.selectAll('path').data((c) => c.values);
+
+    // D3 ENTER
+     errorBars.enter()
+        .append("path")
+        .attr('y', (d) => yScale(yValue(d)))
+        .attr('x', (d) => xScale(xValue(d)))
+        .attr('height', (d) => Math.abs(yScale(d.max-d.min)))
+        //.attr('width', xScale.rangeBand())
+        .attr("class", "errorBar")
+        .attr("stroke", "red")
+        .attr("stroke-width", 1.5)
+    errorBars.exit()
+      .remove();*/
+
+       const errorBarsContainer = container.select('g.errorBars');
     const errorBars = errorBarsContainer.selectAll('rect').data((c) => c.values);
 
 
@@ -358,8 +376,7 @@ const chart = () => {
     errorBars.transition().duration(1000)
       .attr('class', (d) => xValue(d))
       .attr('y', (d) => yScale(yValue(d)+(d.max-d.min) - (d.value - d.min)))
-      .attr('x', (d) => xScale(xValue(d))+(xScale.rangeBand()/2)-(errorBarWidth/2)) 
-    // .attr('x', (d) => xScale(d.name)+(xScale.rangeBand()/2)-(errorBarWidth/2)) 
+      .attr('x', (d) => xScale(xValue(d))+(xScale.rangeBand()/2)-(errorBarWidth/2)) //.attr('x', (d) => xScale(xValue(d)))
       .attr('height', (d) => Math.abs(yScale(d.max) - yScale(d.min)))
       .attr('width', errorBarWidth)
       .style('fill', "#d3d3d3");
@@ -373,11 +390,10 @@ const chart = () => {
       .attr('class', (d) => xValue(d))
       .attr('y', (d) => yScale(yValue(d)+(d.max-d.min) - (d.value - d.min)))
       .attr('x', (d) => xScale(xValue(d))+(xScale.rangeBand()/2)-(errorBarWidth/2)) //.attr('x', (d) => xScale(xValue(d)))
-     //.attr('x', (d) => xScale(d.name)+(xScale.rangeBand()/2)-(errorBarWidth/2)) 
       .attr('height', (d) => Math.abs(yScale(d.max) - yScale(d.min)))
       .attr('width', errorBarWidth)
       .style('fill', "#d3d3d3");
-     console.log("test3") 
+      
     // D3 EXIT
     // If exits need to happen, apply a transition and remove DOM elements
     // when the transition has finished

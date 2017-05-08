@@ -34,59 +34,76 @@ const view = {
     // Filter nested data
     // Filter function returns true for year 1, and then every 10th year
     function yearFilter(row, idx) {
-      if (idx === 0 || (idx % 10 === 0)) {
+      if (idx === 0 || idx === 50) {//(idx % 10 === 0)) {
         return true;
       }
       return false;
     }
-   
+
+
     const decadalData = [];
+  
+
     nestedData.forEach((series) => {
       const filteredValues = series.values.filter(yearFilter);
       filteredValues.forEach((row) => {
         decadalData.push(
           {
-            name: series.key,
+            
+            year: row.key + " / " + series.key.split(' / ')[0],
             value: row.values[0].Mean,
             max:row.values[0].max,
             min:row.values[0].min,
-            year: row.key,
+            name:series.key,
+            yearval: row.key,
+            scenario: series.key.split(' / ')[1],
+            state:series.key.split(' / ')[0],
+            
           }
         );
       });
     });
-    const barChartTotals = d3.nest()
-      .key((d) => d.year)
-      .entries(decadalData);
-
     
+    const barChartTotals = d3.nest()
+      .key((d) => d.name.split(' / ')[1])
+      .entries(decadalData);
+console.log(barChartTotals)
     // Caluclate Net change
     const decadalChange = [];
     function calculateChange(currentRow, idx, arr) {
+
       const nextRow = arr.find((record) => {
-        if (parseInt(record.year) === (parseInt(currentRow.year) + 10) &&
+        if (parseInt(record.year.split(' / ')[0]) === (parseInt(currentRow.year.split(' / ')[0]) + 50) &&
             record.name === currentRow.name) {
           return true;
         }
         return false;
       });
       if (nextRow) {
+
         decadalChange.push(
           {
             name: currentRow.name,
+           // name: `${nextRow.year} - ${currentRow.year}`,
             value: nextRow.value - currentRow.value,
             min: nextRow.min -  currentRow.value,
             max: nextRow.max -  currentRow.value,
-            year: `${nextRow.year} - ${currentRow.year}`,
+           // year: currentRow.name,
+            state:currentRow.state,
+            year: `${currentRow.yearval.substring(2,4)}-${nextRow.yearval.substring(2,4)} / ${currentRow.state}`
+            //year: `${nextRow.year}`,
           }
         );
       }
     }
+
+
     decadalData.forEach(calculateChange);
-    const barChartChange = d3.nest()
-      .key((d) => d.year)
-      .entries(decadalChange);
     
+    const barChartChange = d3.nest()
+      .key((d) => d.name.split(' / ')[1])
+      .entries(decadalChange);
+    console.log(barChartChange)
     showTotals.onclick = () => {
       // Call bar charts - small multiples
 
@@ -98,6 +115,7 @@ const view = {
     };
 
     showChange.onclick = () => {
+
       // Call bar charts - small multiples
       d3.select(chartContainer)
         .datum(barChartChange)
