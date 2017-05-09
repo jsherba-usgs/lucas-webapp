@@ -27,25 +27,31 @@ const view = {
 
   },
   updateChart(nestedData, colorScale) {
-    
+    console.log(nestedData)
     this.chartStatus('loaded');
     chartContainer.classList.remove('no-data');
-
+    let maxY = d3.max(nestedData[0].values, (d) => d.key);
+    let minY = d3.min(nestedData[0].values, (d) => d.key);
+    let diff = maxY-minY
+    console.log(maxY)
     // Filter nested data
     // Filter function returns true for year 1, and then every 10th year
-    function yearFilter(row, idx) {
-      if (idx === 0 || idx === 50) {//(idx % 10 === 0)) {
+   
+    /*function yearFilter(row, idx) {
+      if (idx === 0 || idx === totalY) {
         return true;
       }
       return false;
-    }
-
-
+    }*/
+   
     const decadalData = [];
   
 
     nestedData.forEach((series) => {
-      const filteredValues = series.values.filter(yearFilter);
+      
+  
+      const filteredValues = series.values.filter(function (el) {return el.key === minY || el.key === maxY});
+      
       filteredValues.forEach((row) => {
         decadalData.push(
           {
@@ -67,13 +73,14 @@ const view = {
     const barChartTotals = d3.nest()
       .key((d) => d.name.split(' / ')[1])
       .entries(decadalData);
-console.log(barChartTotals)
+
     // Caluclate Net change
     const decadalChange = [];
     function calculateChange(currentRow, idx, arr) {
 
       const nextRow = arr.find((record) => {
-        if (parseInt(record.year.split(' / ')[0]) === (parseInt(currentRow.year.split(' / ')[0]) + 50) &&
+        
+        if (parseInt(record.year.split(' / ')[0]) === (parseInt(currentRow.year.split(' / ')[0]) + diff) &&
             record.name === currentRow.name) {
           return true;
         }
@@ -89,6 +96,7 @@ console.log(barChartTotals)
             min: nextRow.min -  currentRow.value,
             max: nextRow.max -  currentRow.value,
            // year: currentRow.name,
+            scenario: currentRow.scenario,
             state:currentRow.state,
             year: `${currentRow.yearval.substring(2,4)}-${nextRow.yearval.substring(2,4)} / ${currentRow.state}`
             //year: `${nextRow.year}`,
@@ -103,7 +111,7 @@ console.log(barChartTotals)
     const barChartChange = d3.nest()
       .key((d) => d.name.split(' / ')[1])
       .entries(decadalChange);
-    console.log(barChartChange)
+   
     showTotals.onclick = () => {
       // Call bar charts - small multiples
 

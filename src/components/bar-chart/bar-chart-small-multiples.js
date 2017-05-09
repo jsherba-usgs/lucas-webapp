@@ -18,6 +18,8 @@ const chart = () => {
   //let xValue = function(d) { return d.name; };
   let xValue = function(d) { return d.year; };
   let yValue = function(d) { return +d.value; };
+  let yMaxValue = function(d) { return +d.max; };
+  let yMinValue = function(d) { return +d.min; };
   let errorBarWidth = 4
 
   /**
@@ -67,10 +69,16 @@ const chart = () => {
         //.domain(data[0].values.map((d) => xValue(d)));
         .domain(data[0].values.map((d) => xValue(d)));
       // .domain(["2011","2061"])
+      console.log(data)
+      let maxY = d3.max(data, (c) => d3.max(c.values, (d) => yMaxValue(d)));
+      let minY = d3.min(data, (c) => d3.min(c.values, (d) => yMinValue(d)));
 
-      const maxY = d3.max(data, (c) => d3.max(c.values, (d) => yValue(d)));
-      let minY = d3.min(data, (c) => d3.min(c.values, (d) => yValue(d)));
-
+      if (minY < 0 && maxY <0){
+        maxY=0
+      }
+      /*if (minY===maxY){
+        maxY=0
+      }*/
       // If all values are +ve, force a 0 baseline for y axis
      if (minY > 0) {
         minY = 0;
@@ -169,6 +177,8 @@ const chart = () => {
 /**
   * PUBLIC GETTERS AND SETTERS
   **/
+
+  
 
   exports.width = function (_) {
     if (!_) return width;
