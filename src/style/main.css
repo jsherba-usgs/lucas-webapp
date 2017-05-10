@@ -2406,3 +2406,10 @@
 .multiselect{
 	height: 100%;
 }
+
+.area.active {
+    box-shadow: inset 0 0 0 2px #c9d4b2;
+}
+.group.active {
+    box-shadow: inset 0 0 0 2px #c9d4b2;
+}

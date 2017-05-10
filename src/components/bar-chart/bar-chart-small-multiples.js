@@ -9,8 +9,8 @@ const chart = () => {
   **/
 
   let margin = { top: 30, right: 40, bottom: 20, left: 60 };
-  let width = 300;
-  let height = 200;
+  let width = 400;
+  let height = 250;
   let color = d3.scale.category10();
   let chartClass = 'barchart';
   let yAxisAnnotation = 'Linear Scale';
@@ -69,7 +69,7 @@ const chart = () => {
         //.domain(data[0].values.map((d) => xValue(d)));
         .domain(data[0].values.map((d) => xValue(d)));
       // .domain(["2011","2061"])
-      console.log(data)
+      
       let maxY = d3.max(data, (c) => d3.max(c.values, (d) => yMaxValue(d)));
       let minY = d3.min(data, (c) => d3.min(c.values, (d) => yMinValue(d)));
 
@@ -178,7 +178,7 @@ const chart = () => {
   * PUBLIC GETTERS AND SETTERS
   **/
 
-  
+
 
   exports.width = function (_) {
     if (!_) return width;
@@ -387,7 +387,7 @@ const chart = () => {
       .attr('height', (d) => Math.abs(yScale(d.max) - yScale(d.min)))
       .attr('width', errorBarWidth)
       .style('fill', "#d3d3d3");
-     console.log("test3") 
+
     // D3 EXIT
     // If exits need to happen, apply a transition and remove DOM elements
     // when the transition has finished

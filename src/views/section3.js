@@ -18,6 +18,8 @@ import hbarChart from './../components/horizontal-bar-chart/horizontal-bar-chart
 const parentContainer = document.getElementById('three');
 //const timeseriesContainer = parentContainer.querySelector('.chart.timeseries');
 const hbarsContainer = parentContainer.querySelector('.chart.pathways');
+const groupScenario = parentContainer.querySelector('.group_scenario');
+const groupClass = parentContainer.querySelector('.group_class');
 let timeseriesChart;
 let pathwaysChart;
 let loading;
@@ -116,7 +118,7 @@ const view = {
 
     
      
-   dataset = transitionPathwaysNested.map(function(d) {
+  let transitionPathwaysNestedMap = transitionPathwaysNested.map(function(d) {
     return d.values.map(function (t) {
           return t.values.map(function (o) {
             return [{
@@ -130,31 +132,47 @@ const view = {
       })
 
     stack = d3.layout.stack();
-    dataset.forEach(function(groupval){
+    transitionPathwaysNestedMap.forEach(function(groupval){
       groupval.forEach(function(groupval2){
       stack(groupval2)
       })
     })
-    //stack(dataset);
-
-    var dataset = dataset.map(function (transgroups) {
+  
+let  groupByScenario = true
+function  totalArea(transitionPathwaysNestedMap, groupByScenario){
+    var dataset = transitionPathwaysNestedMap.map(function (transgroups) {
       return transgroups.map(function (pathways){
         return pathways.map(function (groups){
 
     //return groups.map(function (d, i) {
+        if (groupByScenario === true){
           return  {
+            x: groups[0].y,
+            y: groups[0].group,
+            x0: groups[0].y0,
+            group: groups[0].x,
+            pathway: groups[0].pathway
+          }
+            
+      }else{
+           return  {
             // Invert the x and y values, and y0 becomes x0
             x: groups[0].y,
             y: groups[0].x,
             x0: groups[0].y0,
             group: groups[0].group,
             pathway: groups[0].pathway
-            
-        };
+          }
+      }
       })  
-    })  
-  })
+    })
 
+  })
+  return dataset  
+}
+console.log(transitionPathwaysNestedMap)
+ let dataset = totalArea(transitionPathwaysNestedMap, groupByScenario)
+console.log(dataset)
  dataset = [].concat.apply([], dataset)
  dataset = [].concat.apply([], dataset)
 
@@ -163,7 +181,48 @@ const view = {
       .sortKeys(d3.ascending)
       .entries(dataset); 
    
-  
+   groupScenario.onclick = () => {
+      groupScenario.classList.add("active");
+      groupClass.classList.remove("active")
+      groupByScenario = true
+
+      let dataset = totalArea(transitionPathwaysNestedMap, groupByScenario)
+     dataset = [].concat.apply([], dataset)
+     dataset = [].concat.apply([], dataset)
+
+  dataset= d3.nest()
+      .key((d) => d.group)
+      .sortKeys(d3.ascending)
+      .entries(dataset); 
+
+      d3.select(hbarsContainer)
+      .datum(dataset)
+      .call(pathwaysChart);
+      
+    };
+
+  groupClass.onclick = () => {
+      groupScenario.classList.remove("active");
+      groupClass.classList.add("active")
+      groupByScenario = false
+      
+      let dataset = totalArea(transitionPathwaysNestedMap, groupByScenario)
+     dataset = [].concat.apply([], dataset)
+     dataset = [].concat.apply([], dataset)
+
+  dataset= d3.nest()
+      .key((d) => d.group)
+      .sortKeys(d3.ascending)
+      .entries(dataset); 
+
+        d3.select(hbarsContainer)
+      .datum(dataset)
+      .call(pathwaysChart);
+
+      
+    };
+
+
         // Call horizontal bar charts - small multiples
     d3.select(hbarsContainer)
       .datum(dataset)

@@ -8,6 +8,7 @@ import projects from './../../helpers/project-details';
 const model = {};
 
 let filtersContainer;
+let filtersContainer2;
 let projectId;
 let details;
 let projectSelect;
@@ -71,9 +72,11 @@ function updateVariableDetail() {
 
 
 function updateFields() {
+  const headerContentContainer = document.getElementById('header_content');
   projectId = this.options[this.selectedIndex].value;
-  details = projects.getDetailsForId(projectId).details;
 
+  details = projects.getDetailsForId(projectId).details;
+  headerContentContainer.innerHTML = details.header_description; //update header description
   if (details) {
 
     // Populate scenario select box
@@ -161,8 +164,12 @@ model.init = () => {
     projectSelect.add(option);
   });
   
+  
+
   projectSelect.onchange = updateFields;
   projectSelect.onchange();
+
+  
 
   scenarioSelect.onchange = updateIterationInput;
   scenarioSelect.onchange();
@@ -241,7 +248,9 @@ window.onclick = function(event) {
     }
 }
 
-jsonstrata = projects.getDetailsForId(projectId).details.jsonlayer.strata
+jsonstrata = projects.getDetailsForId(projectId).details.jsonlayer.sec_strata
+
+jsonstrata.features.shift();
 
 var stratamap = new L.Map('strata-leaflet', {
   'center': [37.8, -96],

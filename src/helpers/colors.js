@@ -76,7 +76,7 @@ export const carbonstockColorScale = d3.scale.ordinal()
     
   ]);
 
-export const colorScaleDic = {"Land-Cover State": [stateclassColorScale, 20], "Carbon Stock": [carbonstockColorScale, 18], "Land-Cover Transition":[transitionColorScale, 7], "Land-Cover Transition Types":[transitionTypeColorScale] };
+export const colorScaleDic = {"Land-Cover State": [stateclassColorScale, 30], "Carbon Stock": [carbonstockColorScale, 30], "Land-Cover Transition":[transitionColorScale, 30], "Land-Cover Transition Types":[transitionTypeColorScale] };
 
 export const dashed = d3.scale.ordinal()
     .domain(["6370", "6385"])

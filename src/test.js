@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function updateLineandBarLegend(params, lookupDictionary, selection){
   //update stateclass legend
     //b = (typeof b !== 'undefined') ?  b : 1;
-
+    console.log(params)
     stateclassLegends = d3.selectAll(selection);
     legendWidth = stateclassLegends.node().getBoundingClientRect().width;
     
@@ -108,7 +108,7 @@ function updateLineandBarLegend(params, lookupDictionary, selection){
       .attr('transform', 'translate(25,20)');
 
     stateclassOrdinal = legend
-      .shapePadding(legendWidth / 20)
+      .shapePadding(legendWidth / 4)
       .shapeWidth(25)
        .shape("rect")
         .useClass(false)
@@ -623,7 +623,9 @@ function updateLineandBarLegend(params, lookupDictionary, selection){
   });
 
   // Intializing the filters starts the app on page load
+
   filters.init();
   leafletFilters.init();
+
 });
 

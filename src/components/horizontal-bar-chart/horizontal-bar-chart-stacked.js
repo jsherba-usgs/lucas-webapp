@@ -303,7 +303,11 @@ const chart = () => {
         .attr('class', 'value')
         .attr('x', (d) => xScale(d.x) + 2)
         .attr('y', (d) => yScale(d.y) + (barHeight / 2))
-        .text((d) => `${d.pathway}`)
+        //.text((d) => `${d.pathway}`)
+        .text(function(d) {
+            if (xScale(d.x) > 100) {return `${d.pathway}`}
+            else  { return "" }
+        ;})
         .style('font-size', '10px')
         .style('font-family', 'sans-serif')
         .style('text-anchor', 'middle');
@@ -326,7 +330,10 @@ const chart = () => {
         .attr('class', 'value')
         .attr('x', (d) => xScale(d.x0 + d.x/2))
         .attr('y', (d) => yScale(d.y) + (barHeight / 2))
-        .text((d) => `${d.pathway}`)
+        .text(function(d) {
+            if (xScale(d.x) > 100) {return `${d.pathway}`}
+            else  { return "" }
+        ;})
         .style('font-size', '10px')
         .style('font-family', 'sans-serif')
         .style('text-anchor', 'middle');

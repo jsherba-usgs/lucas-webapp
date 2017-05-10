@@ -48,6 +48,7 @@ function updateYearInput() {
   details = projects.getDetailsForId(projectId).details;
   const id = scenarioSelect.value;
   const scenarioDetail = details.scenario.find((item) => item.id === id);
+
   yearInput.max = scenarioDetail.years[1];
   yearInput.min = scenarioDetail.years[0];
 }
