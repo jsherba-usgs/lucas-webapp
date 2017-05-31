@@ -19,21 +19,21 @@
   stroke: rgba(129, 140, 158, 0.5);
   fill: none;
   stroke-dasharray: 3,3;
-  stroke-width: 0.2%;
+  stroke-width: 1px;
 }
 
 .y-axis-group-1.axis path {
   stroke: rgba(129, 140, 158, 0.5);
   fill: none;
-  stroke-dasharray: 3,3;
-  stroke-width: 0.2%;
+ /* stroke-dasharray: 3,3;*/
+  stroke-width: 1px;
 }
 
 .y-axis-group-1.axis line {
   stroke: rgba(129, 140, 158, 0.5);
   fill: none;
   stroke-dasharray: 3,3;
-  stroke-width: 0.2%;
+  stroke-width: 1px;
 }
 
 .y-axis-group-2.axis path {

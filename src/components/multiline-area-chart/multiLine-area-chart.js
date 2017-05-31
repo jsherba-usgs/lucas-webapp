@@ -6,9 +6,9 @@ const chart = () => {
   * PUBLIC VARIABLES
   **/
 
-  let margin = { top: 15, right: 40, bottom: 20, left: 30 };
+  let margin = { top: 15, right: 20, bottom: 20, left: 80 };
   let width = 1000;
-  let height = 480;
+  let height = 200;
   const chartClass = 'multiLinePlusArea';
   //let xValue = (d) => d.date;
   //let yValue = (d) => +d.value;
@@ -36,7 +36,7 @@ const chart = () => {
   // X Axis on top of chart
   const xAxis = d3.svg.axis()
     .scale(xScale)
-    .orient('top')
+    .orient('bottom')
     .tickFormat(d3.time.format('%Y'))
     .tickValues([new Date(2011, 0), new Date(2021, 0), new Date(2031, 0), new Date(2041, 0), new Date(2051, 0), new Date(2061, 0)])
 
@@ -47,13 +47,13 @@ const chart = () => {
   // First Y axis on the left side of chart
   const yAxis1 = d3.svg.axis()
     .scale(yScale)
-    .orient('right');
+    .orient('left');
   // Second Y axis on the right side of chart
   // Second Y axis uses the same yScale as first one
-  const yAxis2 = d3.svg.axis()
+  /*const yAxis2 = d3.svg.axis()
     .scale(yScale)
     .outerTickSize(0)
-    .orient('left');
+    .orient('left');*/
   // Line function
   const line = d3.svg.line()
     .x((d) => xScale(xValue(d)))
@@ -99,8 +99,8 @@ const area = d3.svg.area()
         .domain(yDomain);
 
       // Update tick size for x and y axis
-      xAxis.tickSize(chartH);
-      yAxis1.tickSize(chartW);
+      xAxis.tickSize(-chartH);
+      yAxis1.tickSize(-chartW);
 
       // Select the s*vg element, if it exists.
       svg = d3.select(this).selectAll('svg').data([_data]);
@@ -166,25 +166,25 @@ const area = d3.svg.area()
       // Add Y axis label to annotation
       annotation.append('text')
           .attr('transform', 'rotate(-90)')
-          .attr('y', 0 - margin.left)
+          .attr('y', 0 - (margin.left - 20))
           .attr('x', 0 - (chartH / 2))
           .attr('dy', '1em')
           .style('text-anchor', 'middle')
           .classed('y-axis-label', true);
 
       // Hover line for click events
-/*      container.append('g')
+      container.append('g')
         .append('line')
           .classed('hover-line', true)
           .attr('x1', 0)
           .attr('x2', 0)
           .attr('y1', 0)
           .attr('y2', chartH)
-          .style('stroke-opacity', 0);*/
+          .style('stroke-opacity', 0);
 
       // Invisible rect for mouse tracking since you
       // can't catch mouse events on a g element
-/*      container.append('svg:rect')
+     container.append('svg:rect')
         .attr('width', chartW)
         .attr('height', chartH)
         .attr('fill', 'none')
@@ -196,7 +196,7 @@ const area = d3.svg.area()
           const mouse = d3.mouse(this);
           // Dispatch click event
           dispatch.click(mouse, xScale);
-        });*/
+        });
 
 
 
@@ -321,8 +321,8 @@ const area = d3.svg.area()
       .call(yAxis2);*/
 
     // Update y axis label
-/*    svg.select('.y-axis-label')
-      .text(yAxisAnnotation);*/
+   svg.select('.y-axis-label')
+      .text(yAxisAnnotation);
 
     // Update the x-axis.
     svg.select('.x-axis-group.axis')

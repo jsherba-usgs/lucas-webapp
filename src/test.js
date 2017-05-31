@@ -230,11 +230,11 @@ function updateLineandBarLegend(params, lookupDictionary, selection){
 
   // Add event listener to document for filters.change event
 
-  const mapExpandButton = document.getElementById('mapexpand');
+  /*const mapExpandButton = document.getElementById('mapexpand');
   mapExpandButton.addEventListener("click", expandmap);
 
   const chartExpandButton = document.getElementById('chartexpand');
-  chartExpandButton.addEventListener("click", expandchart);
+  chartExpandButton.addEventListener("click", expandchart);*/
 
   function expandmap(){
       
@@ -339,8 +339,24 @@ function updateLineandBarLegend(params, lookupDictionary, selection){
     //section2.chartStatus('loading');
     //section3.chartStatus('loading');
    // leafletFilters.init();
+   function addframe(){
+   
+    let scenarios = e.detail.scenario
+    let lastScenario = scenarios.split(",").slice(-1).pop()
+    e.detail.scenario = e.detail.scenario + "," + lastScenario
+    section1.reloadMap(e.detail);
+  }
+  function removeframe(){
+    let scenarios = e.detail.scenario.split(",").slice(0,-1).join(",")
+     e.detail.scenario = scenarios
 
-
+    
+  
+    
+    section1.reloadMap(e.detail);
+  }
+  document.getElementById("addframe").onclick = addframe;
+  document.getElementById("removeframe").onclick = removeframe;
     // Update ul element
     updateFiltersLegend(e.detail);
     
@@ -623,6 +639,10 @@ function updateLineandBarLegend(params, lookupDictionary, selection){
   });
 
   // Intializing the filters starts the app on page load
+
+
+
+  
 
   filters.init();
   leafletFilters.init();

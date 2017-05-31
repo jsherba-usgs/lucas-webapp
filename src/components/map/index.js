@@ -7,7 +7,7 @@ import 'leaflet/dist/leaflet.css';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 
 // Import helpers
-import { cartoDBPositronLabelsOnly, stateclassTiles, CartoDB_DarkMatterNoLabels, Stamen_TonerLabels } from './../../helpers/leaflet-layers';
+import { cartoDBPositron, cartoDBPositronLabelsOnly, stateclassTiles, CartoDB_DarkMatterNoLabels, Stamen_TonerLabels } from './../../helpers/leaflet-layers';
 import projects from './../../helpers/project-details';
 
 /**
@@ -136,7 +136,7 @@ model.init = ({ selector, lat = 22.234262, lng = -159.784857, scenario = '6368',
     attributionControl: true,
     touchZoom: false,
     scrollWheelZoom: false,
-    layers: [CartoDB_DarkMatterNoLabels, stateclassTiles],
+    layers: [cartoDBPositron, stateclassTiles],
   });
 
   maps = [map]
@@ -364,8 +364,8 @@ if (update) {
       m.style.height = "100%"
       m.style.width = "50%"
     }else if (maps.length >=3){
-      m.style.height = "50%"
-      m.style.width = "50%"
+      m.style.height = "100%"
+      m.style.width = "33.3333%"
      
     }else{
        m.style.height = "100%"
@@ -381,6 +381,13 @@ if (update) {
   subdomains: 'abcd',
   maxZoom: 19
 });
+
+  const cartoDBPositron = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
+  attribution: 'Data: <a href="http://www.openstreetmap.org/copyright">OSM</a>, Map Tiles: <a href="http://cartodb.com/attributions">CartoDB</a>',
+  subdomains: 'abcd',
+  maxZoom: 19,
+});
+
 
 
   const stateclassTiles = L.tileLayer('http://127.0.0.1:8000/tiles/s6368-it0001-ts2011-sc/{z}/{x}/{y}.png', {
@@ -411,7 +418,7 @@ if (update) {
       attributionControl: true,
       touchZoom: false,
       scrollWheelZoom: false,
-      layers: [CartoDB_DarkMatterNoLabels, stateclassTiles],
+      layers: [cartoDBPositron, stateclassTiles],
       });
 
   

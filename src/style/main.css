@@ -295,6 +295,17 @@
     justify-content: center;
  	align-items: center;
   }
+  .col.onefive {
+    flex: calc(100% * 0.20);
+    justify-content: center;
+ 	align-items: center;
+  }
+
+  .col.oneeigth {
+    flex: calc(100% * 0.125);
+    justify-content: center;
+ 	align-items: center;
+  }
 
   .col.threefour {
     flex: calc(100% * 0.75);
@@ -2042,6 +2053,8 @@
 **********************************/
 #one #map {
 	height: 550px;
+	margin-left:20px;
+	margin-right:20px;
 }
 
 /**********************************
@@ -2100,7 +2113,7 @@
 
 /* Charts */
 .chart {
-	height: 500px;
+	height: 280px;
 	background-color: #fff;
   position: relative;
 }
@@ -2364,7 +2377,7 @@
   visibility: hidden !important;
 }
 #chartarticle{
-	max-width: 50%;
+	/*max-width: 50%;*/
 }
 
 
@@ -2407,9 +2420,31 @@
 	height: 100%;
 }
 
+
+
 .area.active {
     box-shadow: inset 0 0 0 2px #c9d4b2;
 }
 .group.active {
     box-shadow: inset 0 0 0 2px #c9d4b2;
+}
+.controlscontainer{
+	width:190px;
+}
+.quantity-container
+{
+  width: 150px;
+}
+
+.center{
+  width: 150px;
+  margin: 40px auto;
+  
+}
+.framenumberinput{
+	font-size: .75em;
+}
+.mapcontrols{
+	margin-left:20px;
+	margin-right:20px;
 }
