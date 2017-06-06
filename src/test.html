@@ -80,7 +80,7 @@
                     The map below shows the change in State Type over the simulation period (2001 -2061) in 10 year intervals for selected combination of scenario, iteration, moisture zone (stratum) and island (secondary stratum). The chart below displays the total landscape area in each LULC class per year. Use the play, pause and stop controls or move the slider to see the changes.
                   </p>-->
                 </div>
-                <div class="row mapcontrols">
+                <!--<div class="row mapcontrols">
 
 
                  <article class="controlscontainer">
@@ -101,16 +101,16 @@
                            +
                         </button>
 
-                      <!-- <div style="overflow: hidden">
+                       <div style="overflow: hidden">
                          <input type="text" name="quant[1]" class="form-control input-number framenumberinput" value="1" min="1" max="4" size="1">
                        
-                       </div>-->
+                       </div>
                        
                        
                      
                    </article>
                   
-                </div>
+                </div>-->
                 <div class="row">
                  
                   <article id="maparticle" class="col">
@@ -121,8 +121,8 @@
                         </div>
                       <!-- <button class="btn btn-info pull-left" id='mapexpand' type="button"> <i id="mapexpandicon" class="fa fa-expand" aria-hidden="true"></i> </button>-->
 
-                       <div id="mapslider" class="placeholdclass1" ></div>
-                      <div id="mapslidercontrol" class="placeholdclass1" ></div>
+                       <!--<div id="mapslider" class="placeholdclass1" ></div>
+                      <div id="mapslidercontrol" class="placeholdclass1" ></div>-->
                       </div>
                      
                       <div id="myModal" class="modal">
@@ -145,16 +145,49 @@
                     <div class="box largechartbox">
 
                       <div class="chart"></div>
-                      <div class="chroniton-slider"></div>
-                      <div class="controls"></div>
-                      <!--<button class="btn btn-info pull-right" id='chartexpand' type="button"> <i id="chartexpandicon" class="fa fa-expand" aria-hidden="true"></i> </button>-->
-
+                
                     </div>
                      
                   </article>
+                  <article id="controlsarticle" class="col half">
+                      <div class="row">
+                        <article class="controlscontainer">
+                          <div class="controls"></div>
+                          
+                        </article>
+                        <article class="col half">
+                          <div class="chroniton-slider"></div>
+                        </article>
+                      </div>
+                      <br>
+                      <div class="row">
+                       <article class="framecontainer">
+                            
+                              <button id="removeframe" type="button" class="small" data-type="minus" data-field="quant[1]">
+                                  -
+                            </button>
+                             <button id="addframe" type="button" class="small" data-type="plus" data-field="quant[1]">
+                               +
+                            </button>
+                            Add or remove map frame
+                       </article>
+                      </div>
+                      <br>
+                      <div class="row">
 
+                                <div class="legend-stateclass legend-section1"></div>
+                                
+                                 <div class="legend-scenario"></div>
+                               
+                       </div>
+
+
+                  </article>
+                   
+                 
                 </div>
-                <div class="row">
+                
+             <!--  <div class="row">
                     <div class="col half">
                     </div>
                     <div class="col half">
@@ -162,10 +195,9 @@
                     <div class="legend-stateclass legend-section1"></div>
                     <br>
                      <div class="legend-scenario"></div>
-                    <!--<div class="legend-stateclass col threefour legend-section1"></div>
-                     <div class="legend-scenario col onefour"></div>-->
+                   
                    </div>
-                  </div>
+                  </div>-->
                  <br><br>
                 <div class="legend-filters inline-list"></div>
                  <hr/>

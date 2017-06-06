@@ -184,7 +184,7 @@ const area = d3.svg.area()
 
       // Invisible rect for mouse tracking since you
       // can't catch mouse events on a g element
-     container.append('svg:rect')
+    /* container.append('svg:rect')
         .attr('width', chartW)
         .attr('height', chartH)
         .attr('fill', 'none')
@@ -196,7 +196,7 @@ const area = d3.svg.area()
           const mouse = d3.mouse(this);
           // Dispatch click event
           dispatch.click(mouse, xScale);
-        });
+        });*/
 
 
 
@@ -405,6 +405,7 @@ const area = d3.svg.area()
   };
 
   exports.drawMouseOverElements = function () {
+    console.log("draw")
     // Mouse over effect
     const mouseG = svg.select('g.mouse-over-effects');
 
@@ -457,7 +458,8 @@ const area = d3.svg.area()
         d3.selectAll('.mouse-per-line text')
           .style('opacity', '1');
       })
-      .on('mousemove', function () { // mouse moving over canvas
+      .on('mousemove', function () { 
+        console.log("test")// mouse moving over canvas
         const mouse = d3.mouse(this);
         d3.select('.mouse-line')
           .attr('d', () => {
@@ -495,6 +497,7 @@ const area = d3.svg.area()
   };
 
   exports.moveTooltip = function (year) {
+
     d3.select('.mouse-line')
       .style('opacity', '1');
     d3.selectAll('.mouse-per-line circle')

@@ -516,7 +516,7 @@ function updateLineandBarLegend(params, lookupDictionary, selection){
     if (e.detail.variable ==="Land-Cover Transition"){
       section1.chartStatus('loading');
       section3.chartStatus('loading');
-      document.getElementById("two").style.display = 'none';
+      //document.getElementById("two").style.display = 'none';
 
      let params = setParams(e, 'transition_group')
       /*let params = {
@@ -596,7 +596,7 @@ function updateLineandBarLegend(params, lookupDictionary, selection){
             section1.updateChart(totalAreaAll2, colorScaleDic[e.detail.variable][0]);
         
             // Update section 2 charts
-            //section2.updateChart(totalAreaAll2, colorScaleDic[e.detail.variable][0]);
+            section2.updateChart(totalAreaAll2, colorScaleDic[e.detail.variable][0]);
 
             //section3.updateChart(totalAreaByYear, e.detail.variable_detail);
             //section3.chartStatus('loading');

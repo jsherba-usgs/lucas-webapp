@@ -2097,7 +2097,7 @@
 	height:100px;
 	width: 100%;
 	display: flex;
-	justify-content: center;
+	justify-content: left;
 	text-align: center;
 	margin-top: 0em;
 }
@@ -2377,7 +2377,7 @@
   visibility: hidden !important;
 }
 #chartarticle{
-	/*max-width: 50%;*/
+	max-width: 50%;
 }
 
 
