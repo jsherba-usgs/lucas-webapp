@@ -7,17 +7,20 @@ const chart = () => {
   **/
 
   let margin = { top: 15, right: 20, bottom: 20, left: 80 };
-  let width = 1000;
-  let height = 200;
-  const chartClass = 'multiLinePlusArea';
+  let width = 400;
+  let height = 250;
+  const chartClass = 'multiLinePlusAreaSmallMultiple';
+  let container;
+
   //let xValue = (d) => d.date;
   //let yValue = (d) => +d.value;
   let xDomain = [new Date(2011, 1), new Date(2061, 1)];
+  let yAxisAnnotation = 'Area (square kilometers)'
   let yDomain = [0, 100];
   //let color = d3.scale.category10();
-  let yAxisAnnotation = 'Ordinal Scale';
+  //let yAxisAnnotation = 'Ordinal Scale';
   let xAxisAnnotation = 'Time Scale';
-
+  
   /**
   * PRIVATE VARIABLES
   **/
@@ -45,7 +48,7 @@ const chart = () => {
     .scale(xScaleBrush)
     .orient('bottom');
   // First Y axis on the left side of chart
-  const yAxis1 = d3.svg.axis()
+  let yAxis1 = d3.svg.axis()
     .scale(yScale)
     .orient('left');
   // Second Y axis on the right side of chart
@@ -82,7 +85,11 @@ const area = d3.svg.area()
 
 
   function exports(_selection) {
+
     _selection.each(function (_data) {
+
+
+     
       chartW = width - margin.left - margin.right;
       chartH = height - margin.top - margin.bottom;
 
@@ -103,13 +110,35 @@ const area = d3.svg.area()
       yAxis1.tickSize(-chartW);
 
       // Select the s*vg element, if it exists.
+    
+      const div = d3.select(this).selectAll(`.${chartClass}`).data(_data);
+
+      data = _data;
+
+      div.enter()
+        .append('div')
+          .attr('class', chartClass);
+          
+
+      div.exit()
+        .remove();
+
+      div.selectAll('svg').data([]).exit().remove();
+
+      svg = div.append('svg').attr('width', 400).attr('height', 250);
+
+      // Add a group element called Container that hold all elements in the chart
+      svg.append('g')
+          .attr('class', 'container')
+          .attr("transform", "translate(80, 15)");
+          
+
+      container = svg.selectAll('g.container');   
+
       svg = d3.select(this).selectAll('svg').data([_data]);
       data = _data;
 
-      /**
-      * Append the elements which need to be inserted only once to svgEnter
-      * Following is a list of elements that area inserted into the svg once
-      **/
+      
       const svgEnter = svg.enter()
           .append('svg')
           .classed(chartClass, true);
@@ -141,9 +170,9 @@ const area = d3.svg.area()
 
 
       // Add a group element called Container that hold all elements in the chart
-      const container = svgEnter
+      /*container = svgEnter
         .append('g')
-        .classed('', true);
+        .classed('', true);*/
 
       // Add group element to Container for x axis
       container.append('g').classed('x-axis-group axis', true);
@@ -209,18 +238,19 @@ const area = d3.svg.area()
       *  Following actions happen every time the svg is generated
       */
       // Update the outer dimensions.
+
       svg.transition()
         .attr('width', width)
         .attr('height', height);
 
       // Update the inner dimensions.
-      svg.select('g')
+      svg.selectAll('g.container')
         .attr({ transform: `translate(${margin.left}, ${margin.top})` });
 
       // Update the x-axis.
-      svg.select('.x-axis-group.axis')
+      container.select('.x-axis-group.axis')
         .attr({ transform: `translate(0, ${chartH})` });
-
+        
       // Call render chart function
       exports.render();
     });
@@ -295,10 +325,13 @@ const area = d3.svg.area()
   };*/
 
   exports.render = function () {
-    this.drawAxes();
-    this.drawArea();
-    this.drawLines();
-    this.drawMouseOverElements();
+  
+   // exports.drawAxes();
+    container.each(exports.drawAxes);
+    container.each(exports.drawArea);
+    container.each(exports.drawLines)
+    container.each(exports.drawMouseOverElements);
+   // exports.drawMouseOverElements();
   };
 
 
@@ -311,7 +344,36 @@ const area = d3.svg.area()
 
   exports.drawAxes = function () {
     // Update the y-axis.
-    svg.select('.y-axis-group-1.axis')
+
+
+   let lineGroupContainer = container.select('g.timeseries-line');
+   let lineGroups = lineGroupContainer.selectAll('path.line').data((c) => c.values);
+
+    //console.log(lineGroups)
+// Set y domain
+    const domainRange = [];
+  console.log(lineGroups.data((c) => c.values))
+    data.forEach((series) =>
+      //series.values.forEach((d) => domainRange.push(d.values))
+      //series.values.forEach((d) => d.values.forEach((f) => domainRange.push(f.min, f.max)))
+
+      series.values.forEach((d) => domainRange.push(d.min, d.max))
+    );
+
+    //timeseriesChart.yDomain([d3.min(domainRange), d3.max(domainRange)]);
+
+    yDomain = [d3.min(domainRange), d3.max(domainRange)]
+    console.log(yDomain)
+    yScale
+        .rangeRound([chartH, 0])
+        .domain(yDomain);
+
+
+    yAxis1 = d3.svg.axis()
+    .scale(yScale)
+    .orient('left');
+
+    container.select('.y-axis-group-1.axis')
       .transition().duration(1000)
       .call(yAxis1);
 
@@ -321,50 +383,48 @@ const area = d3.svg.area()
       .call(yAxis2);*/
 
     // Update y axis label
-   svg.select('.y-axis-label')
+   container.select('.y-axis-label')
       .text(yAxisAnnotation);
 
     // Update the x-axis.
-    svg.select('.x-axis-group.axis')
+    container.select('.x-axis-group.axis')
       .transition().duration(1000)
       .call(xAxis);
   };
 
   exports.drawLines = function () {
    
-    const lineData = data.filter((series) => {
-        return series;
-    });
-
-    const lineGroupContainer = svg.select('g.timeseries-line');
-    //const lineGroups = lineGroupContainer.selectAll('g').data(lineData);
-    const lineGroups = lineGroupContainer.selectAll('path.line').data(lineData);
-    const lineLabels = lineGroupContainer.selectAll('text').data(lineData);
-
-
+    let lineGroupContainer = container.select('g.timeseries-line');
+    let lineGroups = lineGroupContainer.selectAll('path.line').data((c) => c.values);
+    let lineLabels = lineGroupContainer.selectAll('text').data((c) => c.values);
+   
+   
     // Add a group element for every timeseries. The path (line) for each time series
     // is added to this group element. This is useful for changing the drawing order of
     // lines on hover or click events.
-   
+
     // D3 UPDATE
-
-
     lineGroups.transition().duration(1000)
       .attr('class', 'line')
       .attr('d', (d) => line(d.values))
-      .style("stroke-dasharray", (d) => (dashed(d.name.split(" / ")[1])))
-      .style('stroke', (d) => color(d.name.split(" / ")[0]));
+      //.style("stroke-dasharray", (d) => (dashed(d.name.split(" / ")[1])))
+      .style("stroke-dasharray", (d) => (dashed(d.values[0].scenario)))
+      //.style('stroke', (d) => color(d.name.split(" / ")[0]));
+      .style('stroke', (d) => color(d.key));
 
     // D3 ENTER
     lineGroups.enter()
       .append('g')
-        .attr('class', (d) => d.name)
+        //.attr('class', (d) => d.name)
+        .attr('class', (d) => d.state)
       .append('path')
         .attr('class', 'line')
         .attr('d', (d) => line(d.values))
         //.style("stroke-dasharray", (d) => (dashed(d.name.split(":")[1])))
-        .style("stroke-dasharray", (d) => (dashed(d.name.split(" / ")[1])))
-        .style('stroke', (d) => color(d.name.split(" / ")[0]));
+        //.style("stroke-dasharray", (d) => (dashed(d.name.split(" / ")[1])))
+        //.style('stroke', (d) => color(d.name.split(" / ")[0]));
+        .style("stroke-dasharray", (d) => (dashed(d.values[0].scenario)))
+        .style('stroke', (d) => color(d.key));
 
     // D3 EXIT
     // If exits need to happen, apply a transition and remove DOM elements
@@ -373,16 +433,16 @@ const area = d3.svg.area()
       .remove();
     lineLabels.exit()
       .remove();
+    
+    
   };
 
    exports.drawArea = function () {
-    
-    const areaData = data.filter((series) => {
-        return series;
-    });
 
-    const areaGroupContainer = svg.select('g.timeseries-area');
-    const areaGroups = areaGroupContainer.selectAll('path.area').data(areaData);
+    const areaGroupContainer = container.select('g.timeseries-area');
+    const areaGroups = areaGroupContainer.selectAll('path.area').data((c) => c.values);
+
+
   
     // D3 UPDATE
     areaGroups.transition().duration(1000)
@@ -392,7 +452,7 @@ const area = d3.svg.area()
     // D3 ENTER
     areaGroups.enter()
       .append('g')
-        .attr('class', (d) => d.name)
+        .attr('class', (d) => d.state)
       .append('path')
         .attr('class', 'area')
         .attr('d', (d) => area(d.values));
@@ -400,14 +460,17 @@ const area = d3.svg.area()
     // D3 EXIT
     // If exits need to happen, apply a transition and remove DOM elements
     // when the transition has finished
+
+
     areaGroups.exit()
       .remove();
+
   };
 
   exports.drawMouseOverElements = function () {
    
     // Mouse over effect
-    const mouseG = svg.select('g.mouse-over-effects');
+    const mouseG = container.select('g.mouse-over-effects');
 
     // Add black vertical line to follow mouse
     mouseG.append('path') 
@@ -421,7 +484,8 @@ const area = d3.svg.area()
 
     // Add circles at intersection of all plotted lines and black vertical line
     const mousePerLine = mouseG.selectAll('.mouse-per-line')
-      .data(data)
+      //.data(data)
+      .data((c) => c.values)
       .enter()
       .append('g')
       .attr('class', 'mouse-per-line');

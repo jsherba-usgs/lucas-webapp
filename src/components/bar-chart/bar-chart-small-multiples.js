@@ -240,6 +240,8 @@ const chart = () => {
     container.each(exports.drawErrorBars);
  
     container.each(exports.drawBars);
+
+
     
   };
 
@@ -274,6 +276,7 @@ const chart = () => {
 
 
   exports.drawBars = function () {
+    
     const barsContainer = container.select('g.bars');
     const bars = barsContainer.selectAll('rect').data((c) => c.values);
 

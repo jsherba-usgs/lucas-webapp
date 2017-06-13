@@ -11,6 +11,8 @@ import { stateclassColorScale, carbonstockColorScale } from './../helpers/colors
 
 // Import Components
 import barChart from './../components/bar-chart/bar-chart-small-multiples';
+import chart from './../components/multiline-area-chart/multiLine-area-chart';
+import chartSmallMultiples from './../components/multiline-area-chart/multiLine-area-chart-small-multiples';
 
 
 /*
@@ -26,9 +28,144 @@ let loading;
 
 const view = {
   init() {
-
+    
   },
   updateChart(nestedData, colorScale) {
+
+    timeseriesChart = chartSmallMultiples()
+     
+      //.width(chartContainer.offsetWidth)
+      //.height(chartContainer.offsetHeight || 400)
+     // .xDomain([new Date(2011, 0), new Date(2061, 0)])
+     // .yAxisAnnotation('Area (square kilometers)')
+
+  const timeseriesData= nestedData.map((series) => (
+      {
+        name: series.key,
+        type: 'line',
+        //values: series.values,
+        values: series.values.map(function(dd){
+                key = dd.key
+                values = dd.values[0].Mean
+                min = dd.values[0].min
+                max = dd.values[0].max
+                return {key:key, min:min, max:max, values:values}
+              })
+      }
+    ));
+
+
+  /*const timeseriesData = nestedData.map((series) => (
+      {
+        key: series.key.split(' / ')[1],
+       
+        //values: series.values,
+        values: series.values.map(function(dd){
+
+              
+                values= dd.values[0].Mean
+                max =dd.values[0].max
+                min=dd.values[0].min
+                year= dd.values[0].Timestep + " / " + dd.values[0].StateLabelX
+                name=series.key
+                yearval= dd.values[0].Timestep.toString()
+                key= dd.values[0].Timestep.toString()
+                scenario= dd.values[0].ScenarioID
+                state=dd.values[0].StateLabelX
+
+               
+                return {year:year, min:min, max:max, values:values, name:name, name:name, yearval:yearval,key:key,scenario:scenario, state:state}
+              })
+      }
+    ));*/
+
+
+
+
+
+    let groupByScenario = true
+    function  totalAreaLine(nestedData, groupByScenario){
+      let lineData = [];
+      
+      nestedData.forEach((series) => {
+      
+
+    let filteredValues = series.values.filter(function (el) {return el.key >= minY || el.key <= maxY});
+        
+        if (groupByScenario === true){
+          filteredValues .forEach((row) => {
+            lineData.push(
+              {
+                year: row.key + " / " + series.key.split(' / ')[0],
+                values: row.values[0].Mean,
+                max:row.values[0].max,
+                min:row.values[0].min,
+                name:series.key,
+                yearval: row.key,
+                key: row.key,
+                scenario: series.key.split(' / ')[1],
+                state:series.key.split(' / ')[0],
+                
+              }
+            );
+          });
+       }else{
+         filteredValues.forEach((row) => {
+            lineData.push(
+              {
+                year: row.key + " / " +  series.key.split(' / ')[1],
+                value: row.values[0].Mean,
+                max:row.values[0].max,
+                min:row.values[0].min,
+                name:series.key,
+                yearval: row.key,
+                key: row.key,
+                scenario: series.key.split(' / ')[1],
+                state:series.key.split(' / ')[0],
+                
+              }
+            );
+          });
+       }
+      });
+    return lineData 
+   }
+   
+    // Set x and y accessors for timeseries chart
+    const yAccessor = function (d) { return +d.values; };
+    //const yAccessor = function (d) { return d.values, function (d) { return +d.values;}};
+    const xAccessor = function (d) { return new Date(d.key, 0, 1); };
+
+   
+    timeseriesChart.yValue(yAccessor);
+    timeseriesChart.xValue(xAccessor);
+    console.log( timeseriesData )
+    // Set y domain
+  /* const domainRange = [];
+  
+    timeseriesData.forEach((series) =>
+      //series.values.forEach((d) => domainRange.push(d.values))
+      //series.values.forEach((d) => d.values.forEach((f) => domainRange.push(f.min, f.max)))
+
+      series.values.forEach((d) => domainRange.push(d.min, d.max))
+    );
+
+    timeseriesChart.yDomain([d3.min(domainRange), d3.max(domainRange)]);*/
+
+    timeseriesChart.color(colorScale);
+    
+    // Call timeseries chart
+    /*d3.select(chartContainer)
+      .datum(timeseriesData)
+      .transition()
+      .call(timeseriesChart);*/
+
+    /*d3.select(chartContainer)
+        .datum(barChartTotals)
+        .call(barChart()
+          .color(colorScale)
+        );*/
+
 
     this.chartStatus('loaded');
     chartContainer.classList.remove('no-data');
@@ -46,7 +183,7 @@ const view = {
       return false;
     }*/
    
-    let groupByScenario = true
+    
   
     function  totalArea(nestedData, groupByScenario){
       let decadalData = [];
@@ -90,15 +227,29 @@ const view = {
       });
     return decadalData
    }
+   allLine = totalAreaLine(nestedData, groupByScenario)
+   console.log(allLine)
+
+   /*groupByScenario = false
+   allLine = totalAreaLine(nestedData, groupByScenario)*/
+   console.log(allLine)
    decadalData = totalArea(nestedData, groupByScenario)
-   
+
+  
   let barChartTotals = d3.nest()
       //.key((d) => d.name.split(' / ')[1])
        //.key((d) => d.scenario)
       .key((d) => d.scenario)
       .entries(decadalData);
 
-   
+  let lineChartTotals = d3.nest()
+      //.key((d) => d.name.split(' / ')[1])
+       //.key((d) => d.scenario)
+      .key((d) => d.scenario)
+      .key((d) => d.state)
+      .entries(allLine);
+  
+ 
 
     // Caluclate Net change
     let decadalChange = [];
@@ -169,6 +320,14 @@ const view = {
       showChange.classList.remove("active")
       // Call bar charts - small multiples
       isTotals = true
+
+      
+      d3.select(chartContainer)
+      .datum(lineChartTotals)
+      .transition()
+      .call(timeseriesChart);
+
+
       d3.select(chartContainer)
         .datum(barChartTotals)
         .call(barChart()
@@ -198,6 +357,17 @@ const view = {
       
 
       if (isTotals === true){
+        
+
+        lineChartTotals = d3.nest()
+          .key((d) => d.state)
+          .key((d) => d.scenario)
+          .entries(allLine);
+
+         d3.select(chartContainer)
+          .datum(lineChartTotals)
+          .transition()
+          .call(timeseriesChart);
 
         barChartTotals = d3.nest()
         .key((d) => d.scenario)
@@ -212,6 +382,8 @@ const view = {
       }else{
         decadalChange = [];
         decadalData.forEach(calculateChangeScenario);
+
+
 
         barChartChange = d3.nest()
           .key((d) => d.scenario)
@@ -236,6 +408,17 @@ const view = {
       
 
       if (isTotals === true){
+
+          lineChartTotals = d3.nest()
+          .key((d) => d.scenario)
+          .key((d) => d.state)
+          .entries(allLine);
+
+         d3.select(chartContainer)
+          .datum(lineChartTotals)
+          .transition()
+          .call(timeseriesChart);
+
         barChartTotals = d3.nest()
           .key((d) => d.state)
           .entries(decadalData);
@@ -270,6 +453,11 @@ const view = {
 
     // First time
     // Call bar charts - small multiples
+    
+    d3.select(chartContainer)
+      .datum(lineChartTotals)
+      .transition()
+      .call(timeseriesChart);
     
     d3.select(chartContainer)
       .datum(barChartTotals)
