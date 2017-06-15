@@ -39,7 +39,7 @@ const view = {
      // .xDomain([new Date(2011, 0), new Date(2061, 0)])
      // .yAxisAnnotation('Area (square kilometers)')
 
-  const timeseriesData= nestedData.map((series) => (
+ /* const timeseriesData= nestedData.map((series) => (
       {
         name: series.key,
         type: 'line',
@@ -52,7 +52,7 @@ const view = {
                 return {key:key, min:min, max:max, values:values}
               })
       }
-    ));
+    ));*/
 
 
   /*const timeseriesData = nestedData.map((series) => (
@@ -83,6 +83,60 @@ const view = {
 
 
 
+    
+   
+    // Set x and y accessors for timeseries chart
+    const yAccessor = function (d) { return +d.values; };
+    //const yAccessor = function (d) { return d.values, function (d) { return +d.values;}};
+    const xAccessor = function (d) { return new Date(d.key, 0, 1); };
+
+   
+    timeseriesChart.yValue(yAccessor);
+    timeseriesChart.xValue(xAccessor);
+   
+    // Set y domain
+   /*const domainRange = [];
+  
+    timeseriesData.forEach((series) =>
+      //series.values.forEach((d) => domainRange.push(d.values))
+      //series.values.forEach((d) => d.values.forEach((f) => domainRange.push(f.min, f.max)))
+
+      series.values.forEach((d) => domainRange.push(d.min, d.max))
+    );
+
+    timeseriesChart.yDomain([d3.min(domainRange), d3.max(domainRange)]);*/
+
+    timeseriesChart.color(colorScale);
+    
+    // Call timeseries chart
+    /*d3.select(chartContainer)
+      .datum(timeseriesData)
+      .transition()
+      .call(timeseriesChart);*/
+
+    /*d3.select(chartContainer)
+        .datum(barChartTotals)
+        .call(barChart()
+          .color(colorScale)
+        );*/
+
+
+    this.chartStatus('loaded');
+    chartContainer.classList.remove('no-data');
+    let maxY = d3.max(nestedData[0].values, (d) => d.key);
+    let minY = d3.min(nestedData[0].values, (d) => d.key);
+    let diff = maxY-minY
+
+    // Filter nested data
+    // Filter function returns true for year 1, and then every 10th year
+   
+    /*function yearFilter(row, idx) {
+      if (idx === 0 || idx === totalY) {
+        return true;
+      }
+      return false;
+    }*/
+   
     let groupByScenario = true
     function  totalAreaLine(nestedData, groupByScenario){
       let lineData = [];
@@ -130,60 +184,6 @@ const view = {
       });
     return lineData 
    }
-   
-    // Set x and y accessors for timeseries chart
-    const yAccessor = function (d) { return +d.values; };
-    //const yAccessor = function (d) { return d.values, function (d) { return +d.values;}};
-    const xAccessor = function (d) { return new Date(d.key, 0, 1); };
-
-   
-    timeseriesChart.yValue(yAccessor);
-    timeseriesChart.xValue(xAccessor);
-    console.log( timeseriesData )
-    // Set y domain
-  /* const domainRange = [];
-  
-    timeseriesData.forEach((series) =>
-      //series.values.forEach((d) => domainRange.push(d.values))
-      //series.values.forEach((d) => d.values.forEach((f) => domainRange.push(f.min, f.max)))
-
-      series.values.forEach((d) => domainRange.push(d.min, d.max))
-    );
-
-    timeseriesChart.yDomain([d3.min(domainRange), d3.max(domainRange)]);*/
-
-    timeseriesChart.color(colorScale);
-    
-    // Call timeseries chart
-    /*d3.select(chartContainer)
-      .datum(timeseriesData)
-      .transition()
-      .call(timeseriesChart);*/
-
-    /*d3.select(chartContainer)
-        .datum(barChartTotals)
-        .call(barChart()
-          .color(colorScale)
-        );*/
-
-
-    this.chartStatus('loaded');
-    chartContainer.classList.remove('no-data');
-    let maxY = d3.max(nestedData[0].values, (d) => d.key);
-    let minY = d3.min(nestedData[0].values, (d) => d.key);
-    let diff = maxY-minY
-
-    // Filter nested data
-    // Filter function returns true for year 1, and then every 10th year
-   
-    /*function yearFilter(row, idx) {
-      if (idx === 0 || idx === totalY) {
-        return true;
-      }
-      return false;
-    }*/
-   
-    
   
     function  totalArea(nestedData, groupByScenario){
       let decadalData = [];
@@ -227,34 +227,14 @@ const view = {
       });
     return decadalData
    }
-   allLine = totalAreaLine(nestedData, groupByScenario)
-   console.log(allLine)
-
-   /*groupByScenario = false
-   allLine = totalAreaLine(nestedData, groupByScenario)*/
-   console.log(allLine)
-   decadalData = totalArea(nestedData, groupByScenario)
-
   
-  let barChartTotals = d3.nest()
-      //.key((d) => d.name.split(' / ')[1])
-       //.key((d) => d.scenario)
-      .key((d) => d.scenario)
-      .entries(decadalData);
-
-  let lineChartTotals = d3.nest()
-      //.key((d) => d.name.split(' / ')[1])
-       //.key((d) => d.scenario)
-      .key((d) => d.scenario)
-      .key((d) => d.state)
-      .entries(allLine);
   
  
 
     // Caluclate Net change
-    let decadalChange = [];
+     let decadalChange = [];
     function calculateChangeScenario(currentRow, idx, arr) {
-
+     
       let nextRow = arr.find((record) => {
         
         if (parseInt(record.year.split(' / ')[0]) === (parseInt(currentRow.year.split(' / ')[0]) + diff) &&
@@ -277,7 +257,61 @@ const view = {
           }
         );
       }
+      
     }
+    let lineChange = []
+    let sumValue = 0
+    let sumMax = 0
+    let sumMin = 0
+    function calculateLineChangeScenario(currentRow, idx, arr) {
+       let nextRow = arr.find((record) => {
+        console.log(record)
+        console.log(minY)
+        console.log(parseInt(currentRow.year.split(' / ')[0]))
+        if (parseInt(currentRow.year.split(' / ')[0]) === parseInt(minY) &
+            record.name === currentRow.name) {
+            lineChange.push(
+              { 
+              name: currentRow.name,
+              value: 0,
+              min: 0,
+              max: 0,
+              scenario: currentRow.scenario,
+              state:currentRow.state,
+              year: currentRow.year,
+              });
+
+          return false;
+        }
+        else if (parseInt(currentRow.year.split(' / ')[0]) < parseInt(maxY) &&
+            record.name === currentRow.name) {
+          return true;
+        }
+        return false;
+      });
+      if (nextRow) {
+        console.log("test")
+        let valuechange = sumValue + (nextRow.value - currentRow.value)
+        let minchange = sumMin + (nextRow.min - currentRow.min)
+        let maxchange = sumMax + (nextRow.max - currentRow.max)
+        decadalChange.push(
+          {
+            name: currentRow.name,
+            value: valuechange,
+            min: minchange,
+            max: maxchange,
+            scenario: currentRow.scenario,
+            state:currentRow.state,
+            year: currentRow.year,
+          }
+        );
+      }
+      
+    }
+
+
+
+
 
     function calculateChangeState(currentRow, idx, arr) {
 
@@ -306,9 +340,14 @@ const view = {
       }
     }
 
+    totalLine = totalAreaLine(nestedData, groupByScenario)
+    console.log(totalLine)
+    totalBar = totalArea(nestedData, groupByScenario)
 
+    totalBar.forEach(calculateChangeScenario);
+    totalLine.forEach(calculateLineChangeScenario);
 
-    decadalData.forEach(calculateChangeScenario);
+    console.log(lineChange)
     
     let barChartChange = d3.nest()
       .key((d) => d.scenario)
@@ -353,16 +392,16 @@ const view = {
       groupScenario.classList.add("active");
       groupClass.classList.remove("active")
       groupByScenario = true
-      decadalData = totalArea(nestedData, groupByScenario)
+      totalBar = totalArea(nestedData, groupByScenario)
       
 
       if (isTotals === true){
         
-
         lineChartTotals = d3.nest()
-          .key((d) => d.state)
           .key((d) => d.scenario)
-          .entries(allLine);
+          .key((d) => d.state)
+          .entries(totalLine);
+        
 
          d3.select(chartContainer)
           .datum(lineChartTotals)
@@ -371,7 +410,7 @@ const view = {
 
         barChartTotals = d3.nest()
         .key((d) => d.scenario)
-        .entries(decadalData);
+        .entries(totalBar);
 
         d3.select(chartContainer)
           .datum(barChartTotals)
@@ -381,7 +420,7 @@ const view = {
           return barChartTotals
       }else{
         decadalChange = [];
-        decadalData.forEach(calculateChangeScenario);
+        totalBar.forEach(calculateChangeScenario);
 
 
 
@@ -404,15 +443,17 @@ const view = {
       groupScenario.classList.remove("active");
       groupClass.classList.add("active")
       groupByScenario = false
-      decadalData = totalArea(nestedData, groupByScenario)
+      totalBar = totalArea(nestedData, groupByScenario)
       
 
       if (isTotals === true){
 
           lineChartTotals = d3.nest()
-          .key((d) => d.scenario)
           .key((d) => d.state)
-          .entries(allLine);
+          .key((d) => d.scenario)
+          .entries(totalLine);
+
+          
 
          d3.select(chartContainer)
           .datum(lineChartTotals)
@@ -421,7 +462,7 @@ const view = {
 
         barChartTotals = d3.nest()
           .key((d) => d.state)
-          .entries(decadalData);
+          .entries(totalBar);
 
         d3.select(chartContainer)
           .datum(barChartTotals)
@@ -433,7 +474,7 @@ const view = {
         
         decadalChange = [];
     
-        decadalData.forEach(calculateChangeState);
+        totalBar.forEach(calculateChangeState);
         
 
         barChartChange = d3.nest()
@@ -453,6 +494,23 @@ const view = {
 
     // First time
     // Call bar charts - small multiples
+
+
+
+
+  
+  let barChartTotals = d3.nest()
+      //.key((d) => d.name.split(' / ')[1])
+       //.key((d) => d.scenario)
+      .key((d) => d.scenario)
+      .entries(totalBar);
+
+  let lineChartTotals = d3.nest()
+      //.key((d) => d.name.split(' / ')[1])
+       //.key((d) => d.scenario)
+      .key((d) => d.scenario)
+      .key((d) => d.state)
+      .entries(totalLine);
     
     d3.select(chartContainer)
       .datum(lineChartTotals)

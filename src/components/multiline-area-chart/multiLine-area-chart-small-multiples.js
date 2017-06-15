@@ -11,7 +11,7 @@ const chart = () => {
   let height = 250;
   const chartClass = 'multiLinePlusAreaSmallMultiple';
   let container;
-
+  let domainRange;
   //let xValue = (d) => d.date;
   //let yValue = (d) => +d.value;
   let xDomain = [new Date(2011, 1), new Date(2061, 1)];
@@ -24,7 +24,6 @@ const chart = () => {
   /**
   * PRIVATE VARIABLES
   **/
-
   let svg;
   let data;
   let chartW;
@@ -326,12 +325,13 @@ const area = d3.svg.area()
 
   exports.render = function () {
   
-   // exports.drawAxes();
-    container.each(exports.drawAxes);
+    exports.drawAxes();
+   //container.each(exports.drawAxes);
     container.each(exports.drawArea);
     container.each(exports.drawLines)
-    container.each(exports.drawMouseOverElements);
-   // exports.drawMouseOverElements();
+     
+    //container.each(exports.drawMouseOverElements);
+    exports.drawMouseOverElements();
   };
 
 
@@ -344,73 +344,106 @@ const area = d3.svg.area()
 
   exports.drawAxes = function () {
     // Update the y-axis.
+   
+  let indexval = 0
+  container.each(function(d, i) {
+        
+        domainRange = [];
+       
+           
+             d.values.forEach(function(element2) {
+
+                element2.values.forEach(function(element3) {
+
+                  
+                  domainRange.push(element3.min, element3.max)
+                
+             })
+          })
+       
+   
+        yDomain = [d3.min(domainRange), d3.max(domainRange)]
+    
+        yScale
+            .rangeRound([chartH, 0])
+            .domain(yDomain);
+
+        yAxis1 = d3.svg.axis()
+        .scale(yScale)
+        .orient('left');
+
+     
+      let filtercon = d3.select(container[indexval][0])
+       
+     
+         filtercon.select('.y-axis-group-1.axis')
+          .transition().duration(1000)
+          .call(yAxis1);
+        
+          indexval += 1
+  
+
+        
+
+    })
+
+  // Update y axis label
+       container.select('.y-axis-label')
+          .text(yAxisAnnotation);
+
+        // Update the x-axis.
+        container.select('.x-axis-group.axis')
+          .transition().duration(1000)
+          .call(xAxis);
 
 
-   let lineGroupContainer = container.select('g.timeseries-line');
-   let lineGroups = lineGroupContainer.selectAll('path.line').data((c) => c.values);
-
-    //console.log(lineGroups)
-// Set y domain
-    const domainRange = [];
-  console.log(lineGroups.data((c) => c.values))
-    data.forEach((series) =>
-      //series.values.forEach((d) => domainRange.push(d.values))
-      //series.values.forEach((d) => d.values.forEach((f) => domainRange.push(f.min, f.max)))
-
-      series.values.forEach((d) => domainRange.push(d.min, d.max))
-    );
-
-    //timeseriesChart.yDomain([d3.min(domainRange), d3.max(domainRange)]);
-
-    yDomain = [d3.min(domainRange), d3.max(domainRange)]
-    console.log(yDomain)
-    yScale
-        .rangeRound([chartH, 0])
-        .domain(yDomain);
-
-
-    yAxis1 = d3.svg.axis()
-    .scale(yScale)
-    .orient('left');
-
-    container.select('.y-axis-group-1.axis')
-      .transition().duration(1000)
-      .call(yAxis1);
-
-    // Update second y axis
-    /*svg.select('.y-axis-group-2.axis')
-      .transition().duration(1000)
-      .call(yAxis2);*/
-
-    // Update y axis label
-   container.select('.y-axis-label')
-      .text(yAxisAnnotation);
-
-    // Update the x-axis.
-    container.select('.x-axis-group.axis')
-      .transition().duration(1000)
-      .call(xAxis);
   };
 
   exports.drawLines = function () {
-   
-    let lineGroupContainer = container.select('g.timeseries-line');
-    let lineGroups = lineGroupContainer.selectAll('path.line').data((c) => c.values);
-    let lineLabels = lineGroupContainer.selectAll('text').data((c) => c.values);
-   
-   
+
     // Add a group element for every timeseries. The path (line) for each time series
     // is added to this group element. This is useful for changing the drawing order of
     // lines on hover or click events.
 
     // D3 UPDATE
-    lineGroups.transition().duration(1000)
+    let indexval = 0
+    container.each(function(d, i) {
+
+      let filtercon = d3.select(container[indexval][0])
+
+      const lineGroupContainer = filtercon.select('g.timeseries-line');
+      const lineGroups = lineGroupContainer.selectAll('path.line').data((c) => c.values);
+       const lineLabels = lineGroupContainer.selectAll('text').data((c) => c.values);
+        
+        domainRange = [];
+       
+           
+             d.values.forEach(function(element2) {
+
+                element2.values.forEach(function(element3) {
+
+                  
+                  domainRange.push(element3.min, element3.max)
+                
+             })
+          })
+       
+   
+        yDomain = [d3.min(domainRange), d3.max(domainRange)]
+
+       
+    yScale
+      .domain(yDomain)
+
+     
+     lineGroups.transition().duration(1000)
       .attr('class', 'line')
+      
       .attr('d', (d) => line(d.values))
       //.style("stroke-dasharray", (d) => (dashed(d.name.split(" / ")[1])))
       .style("stroke-dasharray", (d) => (dashed(d.values[0].scenario)))
       //.style('stroke', (d) => color(d.name.split(" / ")[0]));
-      .style('stroke', (d) => color(d.key));
+      .style('stroke', (d) => color(d.values[0].state));
 
     // D3 ENTER
     lineGroups.enter()
@@ -418,13 +451,14 @@ const area = d3.svg.area()
         //.attr('class', (d) => d.name)
         .attr('class', (d) => d.state)
       .append('path')
+          
         .attr('class', 'line')
         .attr('d', (d) => line(d.values))
         //.style("stroke-dasharray", (d) => (dashed(d.name.split(":")[1])))
         //.style("stroke-dasharray", (d) => (dashed(d.name.split(" / ")[1])))
         //.style('stroke', (d) => color(d.name.split(" / ")[0]));
         .style("stroke-dasharray", (d) => (dashed(d.values[0].scenario)))
-        .style('stroke', (d) => color(d.key));
+        .style('stroke', (d) => color(d.values[0].state));
 
     // D3 EXIT
     // If exits need to happen, apply a transition and remove DOM elements
@@ -433,15 +467,50 @@ const area = d3.svg.area()
       .remove();
     lineLabels.exit()
       .remove();
+
+       indexval += 1
+
+    })
+    
+
+   
     
     
   };
 
    exports.drawArea = function () {
 
-    const areaGroupContainer = container.select('g.timeseries-area');
-    const areaGroups = areaGroupContainer.selectAll('path.area').data((c) => c.values);
+     let indexval = 0
+    container.each(function(d, i) {
 
+      let filtercon = d3.select(container[indexval][0])
+
+      const lineGroupContainer = filtercon.select('g.timeseries-line');
+      const areaGroupContainer = filtercon.select('g.timeseries-area');
+      const areaGroups = areaGroupContainer.selectAll('path.area').data((c) => c.values);
+        
+        domainRange = [];
+       
+           
+             d.values.forEach(function(element2) {
+
+                element2.values.forEach(function(element3) {
+
+                  
+                  domainRange.push(element3.min, element3.max)
+                
+             })
+          })
+       
+   
+        yDomain = [d3.min(domainRange), d3.max(domainRange)]
+
+       
+    yScale
+      .domain(yDomain)
+
+
+    
 
   
     // D3 UPDATE
@@ -465,25 +534,54 @@ const area = d3.svg.area()
     areaGroups.exit()
       .remove();
 
+      indexval += 1
+      })
+    
+
   };
 
   exports.drawMouseOverElements = function () {
+
+
+
+    let indexval = 0
+    container.each(function(d, i) {
+
+
+     domainRange = [];
+       
+           
+             d.values.forEach(function(element2) {
+
+                element2.values.forEach(function(element3) {
+
+                  
+                  domainRange.push(element3.min, element3.max)
+                
+             })
+          })
+       
+   
+      let  yDomain = [d3.min(domainRange), d3.max(domainRange)]
+
+
+      let filtercon = d3.select(container[indexval][0])
    
     // Mouse over effect
-    const mouseG = container.select('g.mouse-over-effects');
+    let mouseG = filtercon.select('g.mouse-over-effects');
 
     // Add black vertical line to follow mouse
     mouseG.append('path') 
-      .attr('class', 'mouse-line')
+      .attr('class', 'mouse-line2')
       .style('stroke', 'black')
       .style('stroke-width', '1px')
       .style('opacity', '0');
 
     // Select all plotted lines
-    const lines = d3.selectAll('.line');
+    let lines =mouseG.selectAll('.line');
 
     // Add circles at intersection of all plotted lines and black vertical line
-    const mousePerLine = mouseG.selectAll('.mouse-per-line')
+    let mousePerLine = mouseG.selectAll('.mouse-per-line')
       //.data(data)
       .data((c) => c.values)
       .enter()
@@ -507,38 +605,38 @@ const area = d3.svg.area()
       .attr('fill', 'none')
       .attr('pointer-events', 'all')
       .on('mouseout', function () { // on mouse out hide line, circles and text
-        d3.select('.mouse-line')
+        mouseG.select('.mouse-line2')
           .style('opacity', '0');
-        d3.selectAll('.mouse-per-line circle')
+        mouseG.selectAll('g.mouse-per-line circle')
           .style('opacity', '0');
-        d3.selectAll('.mouse-per-line text')
+        mouseG.selectAll('g.mouse-per-line text')
           .style('opacity', '0');
       })
       .on('mouseover', function () { // on mouse in show line, circles and text
-        d3.select('.mouse-line')
+        mouseG.select('.mouse-line2')
           .style('opacity', '1');
-        d3.selectAll('.mouse-per-line circle')
+        mouseG.selectAll('g.mouse-per-line circle')
           .style('opacity', '1');
-        d3.selectAll('.mouse-per-line text')
+        mouseG.selectAll('g.mouse-per-line text')
           .style('opacity', '1');
       })
       .on('mousemove', function () { 
    // mouse moving over canvas
-        const mouse = d3.mouse(this);
-        d3.select('.mouse-line')
+        let mouse = d3.mouse(this);
+        mouseG.select('.mouse-line2')
           .attr('d', () => {
             let d = `M${mouse[0]}, ${chartH}`;
             d += ` ${mouse[0]}, 0`;
             return d;
           });
 
-        d3.selectAll('.mouse-per-line')
+        mouseG.selectAll('g.mouse-per-line')
           .attr('transform', function (d) {
-            const x0 = xScale.invert(mouse[0]).getFullYear();
-            const bisect = d3.bisector((c) => parseInt(c.key)).right;
-            const idx = bisect(d.values, x0);
-            const d0 = d.values[idx - 1];
-            const d1 = d.values[idx];
+            let x0 = xScale.invert(mouse[0]).getFullYear();
+            let bisect = d3.bisector((c) => parseInt(c.key)).right;
+            let idx = bisect(d.values, x0);
+            let d0 = d.values[idx - 1];
+            let d1 = d.values[idx];
             let datum;
           //  let variablename = d.name.split(" / ")[0]
            // let scenario = d.name.split(" / ")[1]
@@ -552,32 +650,35 @@ const area = d3.svg.area()
             d3.select(this).select('text')
               .text(datum.values)
              // .style('fill', textcolor);
-
+           
+             yScale
+              .domain(yDomain)
               
-             
             return `translate(${mouse[0]}, ${yScale(datum.values)})`;
           });
       });
+      indexval += 1
+    })
   };
 
-  exports.moveTooltip = function (year) {
+  /*exports.moveTooltip = function (year) {
 
-    d3.select('.mouse-line')
+    mouseG.select('.mouse-line2')
       .style('opacity', '1');
-    d3.selectAll('.mouse-per-line circle')
+    mouseG.selectAll('.mouse-per-line circle')
       .style('opacity', '1');
-    d3.selectAll('.mouse-per-line text')
+    mouseG.selectAll('.mouse-per-line text')
       .style('opacity', '1');
 
     const mouse = xScale(new Date(year, 0, 1));
-    d3.select('.mouse-line')
+    mouseG.select('.mouse-line2')
       .attr('d', () => {
         let d = `M${mouse}, ${chartH}`;
         d += ` ${mouse}, 0`;
         return d;
       });
 
-    d3.selectAll('.mouse-per-line')
+    mouseG.selectAll('.mouse-per-line')
       .attr('transform', function (d) {
         const x0 = year;
         const bisect = d3.bisector((c) => parseInt(c.key)).right;
@@ -596,7 +697,7 @@ const area = d3.svg.area()
   
         return `translate(${mouse}, ${yScale(datum.values)})`;
       });
-  };
+  };*/
 
 
   d3.rebind(exports, dispatch, 'on');
