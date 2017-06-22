@@ -9,7 +9,7 @@ const chart = () => {
   * PUBLIC VARIABLES
   **/
 
-  let margin = { top: 30, right: 50, bottom: 20, left: 150 };
+  let margin = { top: 30, right: 20, bottom: 20, left: 150 };
   let width = 300;
   let height = 200;
   let color = d3.scale.ordinal()

@@ -2,7 +2,7 @@
 
 .barchart .axis text {
   font: 10px sans-serif;
-  fill: rgba(129, 140, 158, 0.5);;
+  /*fill: rgba(129, 140, 158, 0.5);;*/
 }
 
 .barchart .axis path, .axis line {
@@ -13,7 +13,9 @@
 
 .barchart .x-axis-group.axis path {
   fill: none;
-  stroke: none;
+  stroke: rgba(129, 140, 158, 0.5);
+  stroke-width: 1;
+  shape-rendering: crispEdges;
 }
 
 .barchart .x-axis-group.axis line {

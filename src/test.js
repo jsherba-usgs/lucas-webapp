@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function updateLineandBarLegend(params, lookupDictionary, selection){
   //update stateclass legend
     //b = (typeof b !== 'undefined') ?  b : 1;
-    console.log(params)
+ 
     stateclassLegends = d3.selectAll(selection);
     legendWidth = stateclassLegends.node().getBoundingClientRect().width;
     
@@ -324,7 +324,7 @@ function updateLineandBarLegend(params, lookupDictionary, selection){
       if (params.secondary_stratum === 'All') {
         delete params.secondary_stratum;
       }
-      console.log(params)
+      
     return params
   }
 
@@ -517,8 +517,9 @@ function updateLineandBarLegend(params, lookupDictionary, selection){
       section1.chartStatus('loading');
       section3.chartStatus('loading');
       //document.getElementById("two").style.display = 'none';
-
+     let transitionGroups = e.detail.variable_detail.split(",")
      let params = setParams(e, 'transition_group')
+
       /*let params = {
           scenario: e.detail.scenario,
           //iteration: e.detail.iteration,
@@ -600,7 +601,7 @@ function updateLineandBarLegend(params, lookupDictionary, selection){
 
             //section3.updateChart(totalAreaByYear, e.detail.variable_detail);
             //section3.chartStatus('loading');
-            section3.updateChart(totalAreaAll3);
+            section3.updateChart(totalAreaAll3, colorScaleDic["Land-Cover Transition Types"][0], transitionGroups);
           })
           .catch((error) => {
             if (error.message.indexOf('No data') > -1) {

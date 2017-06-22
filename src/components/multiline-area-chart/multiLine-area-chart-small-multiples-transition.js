@@ -6,8 +6,7 @@ const chart = () => {
   * PUBLIC VARIABLES
   **/
 
-  let margin = { top: 15, right: 20, bottom: 20, left:80 };
-  
+  let margin = { top: 15, right: 20, bottom: 20, left: 80 };
   let width = 400;
   let height = 250;
   const chartClass = 'multiLinePlusAreaSmallMultiple';
@@ -129,14 +128,12 @@ const area = d3.svg.area()
 
       div.selectAll('svg').data([]).exit().remove();
 
-      svg = div.append('svg').attr('width', width).attr('height', height);
+      svg = div.append('svg').attr('width', 400).attr('height', 250);
 
       // Add a group element called Container that hold all elements in the chart
       svg.append('g')
           .attr('class', 'container')
-          .attr({ transform: `translate(${margin.left}, ${margin.top})`});
-          //.attr("transform", "translate(80, 15)");
-        // .attr("transform","translate(${margin.left}, ${margin.top})");
+          .attr("transform", "translate(80, 15)");
           
 
       container = svg.selectAll('g.container');   
@@ -207,15 +204,6 @@ const area = d3.svg.area()
           .style('text-anchor', 'middle')
           .classed('y-axis-label', true);
 
-
-      // Add Y axis label to annotation
-      annotation.append('text')
-        .attr('y', 0 - margin.top)
-        .attr('x', (chartW / 2))
-        .attr('dy', '1em')
-        .style('text-anchor', 'middle')
-        .classed('year-label', true);
-
       // Hover line for click events
       container.append('g')
         .append('line')
@@ -260,7 +248,7 @@ const area = d3.svg.area()
 
       // Update the inner dimensions.
       svg.selectAll('g.container')
-        .attr({ transform: `translate(${margin.left}, ${margin.top})`});
+        .attr({ transform: `translate(${margin.left}, ${margin.top})` });
 
       // Update the x-axis.
       container.select('.x-axis-group.axis')
@@ -345,7 +333,6 @@ const area = d3.svg.area()
   exports.render = function () {
   
     exports.drawAxes();
-    exports.drawLabels();
    //container.each(exports.drawAxes);
     container.each(exports.drawArea);
     container.each(exports.drawLines)
@@ -425,14 +412,6 @@ const area = d3.svg.area()
 
 
   };
-
-  exports.drawLabels = function () {
-    container.select('.year-label')
-      .transition().duration(1000)
-      .text('')
-      .text((d) => d.key);
-  };
-
 
   exports.drawLines = function () {
 

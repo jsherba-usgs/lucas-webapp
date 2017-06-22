@@ -11,7 +11,7 @@ import { stateclassColorScale, carbonstockColorScale } from './../helpers/colors
 
 // Import Components
 import barChart from './../components/bar-chart/bar-chart-small-multiples';
-import chart from './../components/multiline-area-chart/multiLine-area-chart';
+//import chart from './../components/multiline-area-chart/multiLine-area-chart';
 import chartSmallMultiples from './../components/multiline-area-chart/multiLine-area-chart-small-multiples';
 
 
@@ -25,7 +25,13 @@ const showChange = parentContainer.querySelector('.change');
 const groupScenario = parentContainer.querySelector('.group_scenario');
 const groupClass = parentContainer.querySelector('.group_class');
 let loading;
-
+let yearGroup;
+let groupByScenario = true
+let decadalChange = [];
+let lineChange = []
+let sumValue = 0
+let sumMax = 0
+let sumMin = 0
 const view = {
   init() {
     
@@ -33,12 +39,6 @@ const view = {
   updateChart(nestedData, colorScale) {
 
     timeseriesChart = chartSmallMultiples()
-     
-      //.width(chartContainer.offsetWidth)
-      //.height(chartContainer.offsetHeight || 400)
-     // .xDomain([new Date(2011, 0), new Date(2061, 0)])
-     // .yAxisAnnotation('Area (square kilometers)')
-
  /* const timeseriesData= nestedData.map((series) => (
       {
         name: series.key,
@@ -87,7 +87,6 @@ const view = {
    
     // Set x and y accessors for timeseries chart
     const yAccessor = function (d) { return +d.values; };
-    //const yAccessor = function (d) { return d.values, function (d) { return +d.values;}};
     const xAccessor = function (d) { return new Date(d.key, 0, 1); };
 
    
@@ -108,18 +107,6 @@ const view = {
 
     timeseriesChart.color(colorScale);
     
-    // Call timeseries chart
-    /*d3.select(chartContainer)
-      .datum(timeseriesData)
-      .transition()
-      .call(timeseriesChart);*/
-
-    /*d3.select(chartContainer)
-        .datum(barChartTotals)
-        .call(barChart()
-          .color(colorScale)
-        );*/
-
 
     this.chartStatus('loaded');
     chartContainer.classList.remove('no-data');
@@ -127,24 +114,14 @@ const view = {
     let minY = d3.min(nestedData[0].values, (d) => d.key);
     let diff = maxY-minY
 
-    // Filter nested data
-    // Filter function returns true for year 1, and then every 10th year
-   
-    /*function yearFilter(row, idx) {
-      if (idx === 0 || idx === totalY) {
-        return true;
-      }
-      return false;
-    }*/
-   
-    let groupByScenario = true
+
     function  totalAreaLine(nestedData, groupByScenario){
       let lineData = [];
-      
+     
       nestedData.forEach((series) => {
       
 
-    let filteredValues = series.values.filter(function (el) {return el.key >= minY || el.key <= maxY});
+        let filteredValues = series.values.filter(function (el) {return el.key >= minY || el.key <= maxY});
         
         if (groupByScenario === true){
           filteredValues .forEach((row) => {
@@ -168,7 +145,7 @@ const view = {
             lineData.push(
               {
                 year: row.key + " / " +  series.key.split(' / ')[1],
-                value: row.values[0].Mean,
+                values: row.values[0].Mean,
                 max:row.values[0].max,
                 min:row.values[0].min,
                 name:series.key,
@@ -186,7 +163,7 @@ const view = {
    }
   
     function  totalArea(nestedData, groupByScenario){
-      let decadalData = [];
+      let decadalData = []
       nestedData.forEach((series) => {
         
     
@@ -227,93 +204,64 @@ const view = {
       });
     return decadalData
    }
-  
-  
- 
+    
+    function calculateLineChange(currentRow, idx, arr) {
+       
+       const nextRow = arr.find((record) => {
 
-    // Caluclate Net change
-     let decadalChange = [];
-    function calculateChangeScenario(currentRow, idx, arr) {
-     
-      let nextRow = arr.find((record) => {
-        
-        if (parseInt(record.year.split(' / ')[0]) === (parseInt(currentRow.year.split(' / ')[0]) + diff) &&
-            record.name === currentRow.name) {
-          return true;
-        }
-        return false;
-      });
-      if (nextRow) {
-
-        decadalChange.push(
-          {
-            name: currentRow.name,
-            value: nextRow.value - currentRow.value,
-            min: nextRow.min -  currentRow.value,
-            max: nextRow.max -  currentRow.value,
-            scenario: currentRow.scenario,
-            state:currentRow.state,
-            year: `${currentRow.yearval.substring(2,4)}-${nextRow.yearval.substring(2,4)} / ${currentRow.state}`,
-          }
-        );
-      }
-      
-    }
-    let lineChange = []
-    let sumValue = 0
-    let sumMax = 0
-    let sumMin = 0
-    function calculateLineChangeScenario(currentRow, idx, arr) {
-       let nextRow = arr.find((record) => {
-        console.log(record)
-        console.log(minY)
-        console.log(parseInt(currentRow.year.split(' / ')[0]))
-        if (parseInt(currentRow.year.split(' / ')[0]) === parseInt(minY) &
-            record.name === currentRow.name) {
-            lineChange.push(
+        if (parseInt(record.yearval) === (parseInt(currentRow.yearval) + 1) &&
+            record.name === currentRow.name && parseInt(currentRow.yearval) === parseInt(minY)) {
+           sumValue = 0
+           sumMax = 0
+           sumMin = 0
+           lineChange.push(
               { 
               name: currentRow.name,
-              value: 0,
+              values: 0,
               min: 0,
               max: 0,
               scenario: currentRow.scenario,
               state:currentRow.state,
               year: currentRow.year,
+              yearval: currentRow.key,
+              key: currentRow.key,
               });
+          return true
+          
+        }else if (parseInt(record.yearval) === (parseInt(currentRow.yearval) + 1) &&
+            record.name === currentRow.name){
+            return true
 
-          return false;
         }
-        else if (parseInt(currentRow.year.split(' / ')[0]) < parseInt(maxY) &&
-            record.name === currentRow.name) {
-          return true;
-        }
+       
         return false;
       });
       if (nextRow) {
-        console.log("test")
-        let valuechange = sumValue + (nextRow.value - currentRow.value)
-        let minchange = sumMin + (nextRow.min - currentRow.min)
-        let maxchange = sumMax + (nextRow.max - currentRow.max)
-        decadalChange.push(
+        
+        sumValue += (nextRow.values - currentRow.values)
+        sumMax = sumValue + (currentRow.max - currentRow.values)
+        sumMin = sumValue - (currentRow.values - currentRow.min)
+        //sumMin += (nextRow.min - currentRow.values)
+        //sumMax += (nextRow.max - currentRow.values)
+        lineChange.push(
           {
             name: currentRow.name,
-            value: valuechange,
-            min: minchange,
-            max: maxchange,
-            scenario: currentRow.scenario,
-            state:currentRow.state,
-            year: currentRow.year,
+            values: sumValue,
+            min: sumMin,
+            max: sumMax,
+            scenario: nextRow.scenario,
+            state:nextRow.state,
+            year: nextRow.year,
+            yearval: nextRow.key,
+            key: nextRow.key,
           }
         );
       }
       
     }
 
-
-
-
-
-    function calculateChangeState(currentRow, idx, arr) {
+    
+    function calculateBarChange(currentRow, idx, arr) {
 
       let nextRow = arr.find((record) => {
         
@@ -325,6 +273,14 @@ const view = {
         return false;
       });
       if (nextRow) {
+        
+       
+        if (groupByScenario){
+          
+          yearGroup = `${currentRow.yearval.substring(2,4)}-${nextRow.yearval.substring(2,4)} / ${currentRow.state}`
+        }else{
+          yearGroup = `${currentRow.yearval.substring(2,4)}-${nextRow.yearval.substring(2,4)} / ${currentRow.scenario}`
+        }
 
         decadalChange.push(
           {
@@ -334,44 +290,71 @@ const view = {
             max: nextRow.max -  currentRow.value,
             scenario: currentRow.scenario,
             state:currentRow.state,
-            year: `${currentRow.yearval.substring(2,4)}-${nextRow.yearval.substring(2,4)} / ${currentRow.scenario}`,
+            year: yearGroup,
           }
         );
       }
     }
 
+
     totalLine = totalAreaLine(nestedData, groupByScenario)
-    console.log(totalLine)
     totalBar = totalArea(nestedData, groupByScenario)
 
-    totalBar.forEach(calculateChangeScenario);
-    totalLine.forEach(calculateLineChangeScenario);
-
-    console.log(lineChange)
-    
-    let barChartChange = d3.nest()
-      .key((d) => d.scenario)
-      .entries(decadalChange);
 
     let isTotals = true
     showTotals.onclick = () => {
       showTotals.classList.add("active");
       showChange.classList.remove("active")
-      // Call bar charts - small multiples
       isTotals = true
+      totalBar = totalArea(nestedData, groupByScenario)
+      totalLine = totalAreaLine(nestedData, groupByScenario)
+      if (groupByScenario === true){  
+        lineChartTotals = d3.nest()
+          .key((d) => d.scenario)
+          .key((d) => d.state)
+          .entries(totalLine);
+        
 
-      
-      d3.select(chartContainer)
-      .datum(lineChartTotals)
-      .transition()
-      .call(timeseriesChart);
+         d3.select(chartContainer)
+          .datum(lineChartTotals)
+          .transition()
+          .call(timeseriesChart);
 
+        barChartTotals = d3.nest()
+        .key((d) => d.scenario)
+        .entries(totalBar);
 
-      d3.select(chartContainer)
-        .datum(barChartTotals)
-        .call(barChart()
-          .color(colorScale)
+        d3.select(chartContainer)
+          .datum(barChartTotals)
+          .call(barChart()
+            .color(colorScale)
         );
+
+        }else{
+
+          lineChartTotals = d3.nest()
+          .key((d) => d.state)
+          .key((d) => d.scenario)
+          .entries(totalLine);
+        
+
+         d3.select(chartContainer)
+          .datum(lineChartTotals)
+          .transition()
+          .call(timeseriesChart);
+
+        barChartTotals = d3.nest()
+        .key((d) => d.state)
+        .entries(totalBar);
+
+        d3.select(chartContainer)
+          .datum(barChartTotals)
+          .call(barChart()
+            .color(colorScale)
+        );
+
+        }
+      
     };
 
     showChange.onclick = () => {
@@ -379,11 +362,66 @@ const view = {
       showChange.classList.add("active")
       isTotals = false
       // Call bar charts - small multiples
+      if (groupByScenario === true){
+      lineChange = []
+        sumValue = 0
+        sumMax = 0
+        sumMin = 0
+        totalLine.forEach(calculateLineChange);
+
+        decadalChange = [];
+        totalBar.forEach(calculateBarChange);
+
+        lineChartChange = d3.nest()
+          .key((d) => d.scenario)
+          .key((d) => d.state)
+          .entries(lineChange);
+
+        barChartChange = d3.nest()
+          .key((d) => d.scenario)
+          .entries(decadalChange);
+            
+      d3.select(chartContainer)
+      .datum(lineChartChange)
+      .transition()
+      .call(timeseriesChart);
+
       d3.select(chartContainer)
         .datum(barChartChange)
         .call(barChart()
           .color(colorScale)
         );
+      }else{
+        lineChange = []
+        sumValue = 0
+        sumMax = 0
+        sumMin = 0
+        totalLine.forEach(calculateLineChange);
+
+        decadalChange = [];
+        totalBar.forEach(calculateBarChange);
+
+        lineChartChange = d3.nest()
+          .key((d) => d.state)
+          .key((d) => d.scenario)
+          .entries(lineChange);
+
+        barChartChange = d3.nest()
+          .key((d) => d.state)
+          .entries(decadalChange);
+            
+      d3.select(chartContainer)
+      .datum(lineChartChange)
+      .transition()
+      .call(timeseriesChart);
+
+      d3.select(chartContainer)
+        .datum(barChartChange)
+        .call(barChart()
+          .color(colorScale)
+        );
+
+      }
     };
 
 
@@ -393,7 +431,7 @@ const view = {
       groupClass.classList.remove("active")
       groupByScenario = true
       totalBar = totalArea(nestedData, groupByScenario)
-      
+      totalLine = totalAreaLine(nestedData, groupByScenario)
 
       if (isTotals === true){
         
@@ -419,14 +457,29 @@ const view = {
         );
           return barChartTotals
       }else{
+
+        lineChange = []
+        sumValue = 0
+        sumMax = 0
+        sumMin = 0
+        totalLine.forEach(calculateLineChange);
+
         decadalChange = [];
-        totalBar.forEach(calculateChangeScenario);
+        totalBar.forEach(calculateBarChange);
 
-
+        lineChartChange = d3.nest()
+          .key((d) => d.scenario)
+          .key((d) => d.state)
+          .entries(lineChange);
 
         barChartChange = d3.nest()
           .key((d) => d.scenario)
           .entries(decadalChange);
+
+         d3.select(chartContainer)
+          .datum(lineChartChange)
+          .transition()
+          .call(timeseriesChart);
 
         d3.select(chartContainer)
         .datum(barChartChange)
@@ -444,16 +497,14 @@ const view = {
       groupClass.classList.add("active")
       groupByScenario = false
       totalBar = totalArea(nestedData, groupByScenario)
-      
-
+      totalLine = totalAreaLine(nestedData, groupByScenario)
+  
       if (isTotals === true){
 
           lineChartTotals = d3.nest()
           .key((d) => d.state)
           .key((d) => d.scenario)
           .entries(totalLine);
-
-          
 
          d3.select(chartContainer)
           .datum(lineChartTotals)
@@ -472,14 +523,30 @@ const view = {
           return barChartTotals
       }else{
         
+        lineChange = []
+        sumValue = 0
+        sumMax = 0
+        sumMin = 0
+        totalLine.forEach(calculateLineChange);
+
         decadalChange = [];
-    
-        totalBar.forEach(calculateChangeState);
-        
+        totalBar.forEach(calculateBarChange);
+
+
+        lineChartChange = d3.nest()
+          .key((d) => d.state)
+          .key((d) => d.scenario)
+          .entries(lineChange);
 
         barChartChange = d3.nest()
           .key((d) => d.state)
           .entries(decadalChange);
+
+        d3.select(chartContainer)
+          .datum(lineChartChange)
+          .transition()
+          .call(timeseriesChart);
+
 
         d3.select(chartContainer)
         .datum(barChartChange)
@@ -494,20 +561,12 @@ const view = {
 
     // First time
     // Call bar charts - small multiples
-
-
-
-
   
   let barChartTotals = d3.nest()
-      //.key((d) => d.name.split(' / ')[1])
-       //.key((d) => d.scenario)
       .key((d) => d.scenario)
       .entries(totalBar);
 
   let lineChartTotals = d3.nest()
-      //.key((d) => d.name.split(' / ')[1])
-       //.key((d) => d.scenario)
       .key((d) => d.scenario)
       .key((d) => d.state)
       .entries(totalLine);

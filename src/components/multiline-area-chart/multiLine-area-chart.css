@@ -10,8 +10,8 @@
 
 .x-axis-group.axis path {
   fill: none;
-  stroke: #fff;
-  stroke-width: 0;
+  stroke: rgba(129, 140, 158, 0.5);
+  stroke-width: 1;
   shape-rendering: crispEdges;
 }
 

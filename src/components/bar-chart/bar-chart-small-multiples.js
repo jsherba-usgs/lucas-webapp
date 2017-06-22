@@ -8,12 +8,13 @@ const chart = () => {
   * PUBLIC VARIABLES
   **/
 
-  let margin = { top: 30, right: 40, bottom: 20, left: 60 };
+  let margin = { top: 30, right: 20, bottom: 20, left: 60 };
+
   let width = 400;
   let height = 250;
   let color = d3.scale.category10();
   let chartClass = 'barchart';
-  let yAxisAnnotation = 'Linear Scale';
+  let yAxisAnnotation = 'Area (square kilometers)';
   let xAxisAnnotation = 'Ordinal Scale';
   //let xValue = function(d) { return d.name; };
   let xValue = function(d) { return d.year; };
@@ -40,13 +41,16 @@ const chart = () => {
   const yScale = d3.scale.linear();
 
   // X Axis on bottom of chart
-  const xAxis = d3.svg.axis()
+  let xAxis = d3.svg.axis()
     .scale(xScale)
+    .orient('bottom')
+    .tickSize(5)
     .tickFormat((d) => d.substring(0, 5));
 
   // First Y axis on the left side of chart
-  const yAxis = d3.svg.axis()
+  let yAxis = d3.svg.axis()
     .scale(yScale)
+    .tickSize(3)
     .orient('left');
 
   // Events
@@ -70,22 +74,20 @@ const chart = () => {
         .domain(data[0].values.map((d) => xValue(d)));
       // .domain(["2011","2061"])
       
-      let maxY = d3.max(data, (c) => d3.max(c.values, (d) => yMaxValue(d)));
+    /*  let maxY = d3.max(data, (c) => d3.max(c.values, (d) => yMaxValue(d)));
       let minY = d3.min(data, (c) => d3.min(c.values, (d) => yMinValue(d)));
 
       if (minY < 0 && maxY <0){
         maxY=0
       }
-      /*if (minY===maxY){
-        maxY=0
-      }*/
+     
       // If all values are +ve, force a 0 baseline for y axis
      if (minY > 0) {
         minY = 0;
-      }
+      }*/
       yScale
         .range([chartH, 0]).nice()
-        .domain([minY, maxY]);
+        //.domain([minY, maxY]);
 
       // Create a div and an SVG element for each element in
       // our data array. Note that data is a nested array
@@ -158,6 +160,7 @@ const chart = () => {
         .attr('height', height);
 
       // Update the inner dimensions.
+     
       svg.selectAll('g.container')
         .attr({ transform: `translate(${margin.left}, ${margin.top})` });
 
@@ -247,10 +250,50 @@ const chart = () => {
 
 
   exports.drawAxes = function () {
+
+    let indexval = 0
+    container.each(function(d, i) {
+      
+
+    let maxY = d3.max(d.values, (c) => yMaxValue(c));
+      let minY = d3.min(d.values, (c) => yMinValue(c));
+      
+
+      if (minY < 0 && maxY <0){
+        maxY=0
+
+      }
+      /*if (minY===maxY){
+        maxY=0
+      }*/
+      // If all values are +ve, force a 0 baseline for y axis
+     if (minY > 0) {
+        minY = 0;
+      }
+
+
+      yScale
+        .domain([minY, maxY]);
+
+      yAxis  
+      .scale(yScale)
+      .orient('left');
+
+    let filtercon = d3.select(container[indexval][0])
+
     // Update the y-axis.
-    container.select('.y-axis-group.axis')
+    filtercon.select('.y-axis-group.axis')
       .transition().duration(1000)
       .call(yAxis);
+
+
+
+     indexval += 1
+
+    });
+
+    container.select('.y-axis-label')
+          .text(yAxisAnnotation);
 
     // Draw x axis with category labels
     container.select('.x-axis-group.axis')
@@ -258,11 +301,12 @@ const chart = () => {
       .call(xAxis);
 
     // Draw 0 x axis only if data has negative values
-    if (d3.min(yScale.domain()) < 0) {
+ /*   if (d3.min(yScale.domain()) < 0) {
       container.select('.x-axis-0-group.axis')
         .transition().duration(1000)
-        .call(xAxis.tickFormat('').tickSize(0));
-    }
+       // .attr("transform", "translate(0," + "-" + chartH + ")")
+        .call(xAxis);
+    }*/
   };
 
   
@@ -276,11 +320,39 @@ const chart = () => {
 
 
   exports.drawBars = function () {
+
+    let indexval = 0
+    container.each(function(d, i) {
+      
+
+    let maxY = d3.max(d.values, (c) => yMaxValue(c));
+      let minY = d3.min(d.values, (c) => yMinValue(c));
+      
+
+      if (minY < 0 && maxY <0){
+        maxY=0
+      }
+      /*if (minY===maxY){
+        maxY=0
+      }*/
+      // If all values are +ve, force a 0 baseline for y axis
+     if (minY > 0) {
+        minY = 0;
+      }
+      yScale
+        .domain([minY, maxY]);
+
+
+    let filtercon = d3.select(container[indexval][0])
+
+    // Update the y-axis.
+
+
     
-    const barsContainer = container.select('g.bars');
+    const barsContainer = filtercon.select('g.bars');
     const bars = barsContainer.selectAll('rect').data((c) => c.values);
 
-    const barsContainerPattern = container.select('g.barsPattern');
+    const barsContainerPattern = filtercon.select('g.barsPattern');
     const barsPattern = barsContainerPattern.selectAll('rect').data((c) => c.values);
 
     const pattern = d3.scale.ordinal()
@@ -359,11 +431,39 @@ const chart = () => {
 
     barsPattern.exit()
       .remove();
+
+     indexval += 1
+
+    })
   };
 
   exports.drawErrorBars = function() {
+
+    let indexval = 0
+    container.each(function(d, i) {
+      
+
+    let maxY = d3.max(d.values, (c) => yMaxValue(c));
+      let minY = d3.min(d.values, (c) => yMinValue(c));
+      
+
+      if (minY < 0 && maxY <0){
+        maxY=0
+      }
+      /*if (minY===maxY){
+        maxY=0
+      }*/
+      // If all values are +ve, force a 0 baseline for y axis
+     if (minY > 0) {
+        minY = 0;
+      }
+      yScale
+        .domain([minY, maxY]);
+
+
+    let filtercon = d3.select(container[indexval][0])
  
-    const errorBarsContainer = container.select('g.errorBars');
+    const errorBarsContainer = filtercon .select('g.errorBars');
     const errorBars = errorBarsContainer.selectAll('rect').data((c) => c.values);
 
 
@@ -397,7 +497,9 @@ const chart = () => {
     errorBars.exit()
       .remove();
     
-    
+     indexval += 1
+
+    })
 
   };
 
