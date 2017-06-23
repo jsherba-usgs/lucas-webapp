@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
   */
   // Intialize smooth scrolling
  
+
   smoothScroll.init({
     updateURL: false,
     easing: 'easeInOutCubic',
