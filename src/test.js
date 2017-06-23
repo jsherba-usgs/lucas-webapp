@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
   */
   // Intialize smooth scrolling
  
-
+$('#collapseExample').collapse('show');
   smoothScroll.init({
     updateURL: false,
     easing: 'easeInOutCubic',
@@ -85,9 +85,9 @@ document.addEventListener('DOMContentLoaded', () => {
 function updateLineandBarLegend(params, lookupDictionary, selection){
   //update stateclass legend
     //b = (typeof b !== 'undefined') ?  b : 1;
- 
+    $('#collapseExample').collapse('show');
     stateclassLegends = d3.selectAll(selection);
-    legendWidth = stateclassLegends.node().getBoundingClientRect().width;
+    //legendWidth = stateclassLegends.node().getBoundingClientRect().width;
     
     let stateclassRange = []
     let stateclassDomain = []
@@ -103,17 +103,17 @@ function updateLineandBarLegend(params, lookupDictionary, selection){
  
    stateclassLegends
       .append('svg')
-      .attr('width', legendWidth)
+      .attr('width', 350)
       .append('g')
       .attr('class', 'legendOrdinal')
       .attr('transform', 'translate(25,20)');
 
     stateclassOrdinal = legend
-      .shapePadding(legendWidth / 4)
+      .shapePadding(10)
       .shapeWidth(25)
        .shape("rect")
         .useClass(false)
-      .orient('horizontal')
+     // .orient('horizontal')
       .title('State Classes (area in square kilometers):')
       .scale(stateclassColorScale);
     
@@ -147,10 +147,10 @@ function updateLineandBarLegend(params, lookupDictionary, selection){
   let stateclassLegends = d3.selectAll('.legend-stateclass');
   let legendWidth = stateclassLegends.node().getBoundingClientRect().width;
 
-
+ 
   stateclassLegends
     .append('svg')
-    .attr('width', legendWidth)
+    .attr('width', 350)
     .append('g')
     .attr('class', 'legendOrdinal')
     .attr('transform', 'translate(25,20)');
@@ -159,31 +159,32 @@ function updateLineandBarLegend(params, lookupDictionary, selection){
   let stateclassOrdinal = legend
     .shapePadding(legendWidth / 20)
     .shapeWidth(25)
-    .orient('horizontal')
+   // .orient('horizontal')
     .title('State Classes (area in square kilometers):')
     .scale(colorScaleDicLegend["Land-Cover State"][0]);
 
-  
+
   stateclassLegends.select('.legendOrdinal')
     .call(stateclassOrdinal);
+
 
 // Scenario Legend
  const scenarioLegends = d3.selectAll('.legend-scenario');
 
  scenarioLegends
     .append('svg')
-    .attr('width', legendWidth)
+    .attr('width', 150)
     .append('g')
     .attr('class', 'legendScenario')
     .attr('transform', 'translate(25,20)');
 
  let scenarioOrdinal = legend
-    .shapePadding(legendWidth / 20)
+    .shapePadding(25)
     .shapeWidth(36)
     .shape('line')
-    .labelOffset(20)
+    //.labelOffset(20)
     .useClass(true)
-    .orient('horizontal')
+    //.orient('horizontal')
     .title('Scenario:')
     .scale(dashedLegend);
 
@@ -236,6 +237,7 @@ function updateLineandBarLegend(params, lookupDictionary, selection){
 
   const chartExpandButton = document.getElementById('chartexpand');
   chartExpandButton.addEventListener("click", expandchart);*/
+
 
   function expandmap(){
       
@@ -648,6 +650,7 @@ function updateLineandBarLegend(params, lookupDictionary, selection){
 
   filters.init();
   leafletFilters.init();
+
 
 });
 

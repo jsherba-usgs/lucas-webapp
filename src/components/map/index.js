@@ -28,11 +28,11 @@ let settings;
 let feature;
 let tempLayer;
 let project;
-const modal = document.getElementById('myModal');
-const span = document.getElementsByClassName("close")[0];
+//const modal = document.getElementById('myModal');
+//const span = document.getElementsByClassName("close")[0];
 
 // When the user clicks on <span> (x), close the modal
-span.onclick = function() {
+/*span.onclick = function() {
     modal.style.display = "none";
 }
 
@@ -41,7 +41,7 @@ window.onclick = function(event) {
     if (event.target == modal) {
         modal.style.display = "none";
     }
-}
+}*/
 
 const info = L.control();
 
@@ -50,7 +50,7 @@ info.onAdd = function (test) {
   this._div = L.DomUtil.create('div', 'info leaflet-bar leaflet-control leaflet-control-custom');
   this._div.onclick = function(){
    
-    modal.style.display = "block";
+   // modal.style.display = "block";
     individualMap=parseInt(test._container.id.split("_")[1])
 
     
@@ -269,7 +269,7 @@ model.updateIndividualRaster = (...args) => {
       update = true;
     }
   }*/
-  modal.style.display = "none";
+ // modal.style.display = "none";
   update = true;
   if (update) {
       
