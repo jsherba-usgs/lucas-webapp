@@ -40,12 +40,14 @@ const view = {
     // Init map
     leafletMap.init(mapContainer);
 
+   
+
     //leafletFilters.init();
     let sliderVals = []
-    for(var i=2011; i<2061;i=i+5) {
+    for(var i=2011; i<=2061;i=i+5) {
     sliderVals.push(i);
     }
-    
+    let initiateChart = true
     timeseriesChart = chart()
       .width(chartContainer.offsetWidth)
       .height(chartContainer.offsetHeight || 400)
@@ -64,24 +66,74 @@ const view = {
       // instead of hardcoding values below
       .tapAxis((axis) => axis.tickValues([new Date(2011, 0), new Date(2021, 0), new Date(2031, 0), new Date(2041, 0), new Date(2051, 0), new Date(2061, 0)]))
       .on('change', (d) => {
-        // Get year from date object
+       /* if (initiateChart === false){
+          slider.playPause()
+        }*/
+       
+        
         const year = d.getFullYear();
         
-        // Update leaflet map for year 1 or every 10th year
-        // TODO: Refactor - replace hardcoded values below
-       // if ([2001, 2011, 2021, 2031, 2041, 2051, 2061].indexOf(year) > -1) {
-      if (sliderVals.indexOf(year) > -1 && year!==sliderYear) {
-          console.log("test3")
-          sliderYear = year
-          leafletMap.updateRaster({ year });
+        let loadAll = function(slider,d){
+
+          if (initiateChart === false){
+          leafletMap.preLoadRasters(slider, d)
+          }
+          initiateChart=false
+
         }
+
+          
+        let updateRasterOpacity = function(){
+            sliderYear = year
+            if (sliderVals.indexOf(year) > -1 && year!==sliderYear) {
+              leafletMap.updateRaster({ year })
+             }
+            
+        } 
+
+        
+        loadAll(slider, d)
+        //updateRasterOpacity()
+
+       
+
+            if (sliderVals.indexOf(year) > -1 && year!==sliderYear) {
+              leafletMap.updateRaster({ year })
+              sliderYear = year
+             }
+         
+          
+       // updateRasterOpacity(year, sliderVals, leafletMap)
+          
+           
+
+        
+
+    
+     
+        if (slider.isAtEnd()){slider.pause()}
         timeseriesChart.moveTooltip(year);
+
+          //loadAll()
+          //updateRasterOpacity()
+
+          
+              
+              
+
+        
       })
       .playbackRate(.5);
 
+
+   document.getElementById("map").onclick = function () {
+    console.log("test")
+      leafletMap.removeTimeSeriesRasters()
+   }
     // Create slider
     // TODO: Set slider domain and change function after data comes back from API,;
     //       move create slider to update function
+   
    
     d3.select(sliderContainer)
       .call(slider);
@@ -91,7 +143,7 @@ const view = {
         .append('button')
         .html('<i class="icon fa-play"></i>')
         .attr('class', 'small')
-        .on('click', () => slider.play(leafletMap.preLoadRasters()));
+        .on('click', () => slider.play());
 
     d3.select(controlsContainer)
         .append('button')
@@ -123,7 +175,7 @@ const view = {
         .append('button')
         .html('<i class="icon fa-play"></i>')
         .attr('class', 'small')
-        .on('click', () => slider.play(loadRasters()));
+        .on('click', () => slider.play());
 
     d3.select(controlsContainer)
         .append('button')

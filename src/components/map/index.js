@@ -110,6 +110,12 @@ function pairs(arr) {
           res.push([arr[i], arr[j]]);
       return res;
 }
+
+function range(start, stop, step){
+        var a=[start], b=start;
+        while(b<stop){b+=step;a.push(b)}
+        return a;
+      };
 /**
 * PUBLIC FUNCTIONS
 **/
@@ -161,55 +167,86 @@ mapInfo = ['Year: ' + settings.year, 'Scenario: '+ settings.scenario, 'Iteration
 
 };
 
-model.preLoadRasters = (...args) => {
-
-   console.log("test")
-    scenarios = settings.scenario.split(',')
+model.removeTimeSeriesRasters = (...args) => {
+  scenarios = settings.scenario.split(',')
     
     //let startYear = parseInt(args[0].year)
     for (i = 0; i < maps.length; i++) {
       
       mapscenario = scenarios[i]
 
-      function range(start, stop, step){
-        var a=[start], b=start;
-        while(b<stop){b+=step;a.push(b)}
-        return a;
-      };
-      let yearArray = range(2011,2061,5)
-      console.log(yearArray)
-    let stateclassLayers = []
-    for (var j = 0; j < yearArray.length; j++) {
-       console.log("test2")
+      //let layerKeys = Object.keys(maps[i]._layers)
+
+      maps[i].eachLayer(function(layer){
+        console.log(settings.year)
+        if (layer.options && layer.options.id && layer.options.id !== settings.year.toString()){
+          
+          maps[i].removeLayer(layer);
+        }
+      });
+ 
+
+ }
+}
+model.preLoadRasters = (slider,d) => {
   
-        let yearstring = yearArray[j].toString()
+   let yearArray = range(2011,2061,5)
+
+   let layerKeys = Object.keys(maps[0]._layers)
+   if (layerKeys.length < yearArray.length){
+   slider.playbackRate(0)
+  
+   let loadRasters = function(slider, d){
+   
+
+    scenarios = settings.scenario.split(',')
+    
+    //let startYear = parseInt(args[0].year)
+    for (i = 0; i < maps.length; i++) {
+    
+      mapscenario = scenarios[i]
         
-         const url = `http://127.0.0.1:8000/tiles/s${mapscenario}-it0001-ts${yearstring}-sc/{z}/{x}/{y}.png?style=lulc`;
-      
+      let stateclassLayers = []
+
+      for (var j = 0; j < yearArray.length; j++) {
         
+    
+          let yearstring = yearArray[j].toString()
+          
+          const url = `http://127.0.0.1:8000/tiles/s${mapscenario}-it0001-ts${yearstring}-sc/{z}/{x}/{y}.png?style=lulc`;
         
-       let stateclassTiles = L.tileLayer(url, {
-          attribution: 'LULC: <a href="http://landcarbon.org">LandCarbon</a>',
-          maxZoom: 19,
-          opacity: 0,
-          //scenario: '6368',
-          //iteration: '0001',
-          id: yearstring,
-          });
-      
+          
+          
+         let stateclassTiles = L.tileLayer(url, {
+            attribution: 'LULC: <a href="http://landcarbon.org">LandCarbon</a>',
+            maxZoom: 19,
+            opacity: 0,
+            //scenario: '6368',
+            //iteration: '0001',
+            id: yearstring,
+            });
         
-        stateclassLayers.push(stateclassTiles)
+          
+          stateclassLayers.push(stateclassTiles)
+        }
+       
+        var streets = new L.layerGroup(stateclassLayers).addTo(maps[i]);
+     
+        stateclassLayers[10].on("load",function() { console.log('layersloaded'), slider.playbackRate(.5)});
+       // stateclassLayers.addTo(maps[i]);
+
+     
+        
+       
       }
-      console.log(stateclassLayers)
-      var streets = new L.layerGroup(stateclassLayers).addTo(maps[i]);
-     // stateclassLayers.addTo(maps[i]);
+    }
+
+   loadRasters(slider, d)
 
    
-      
-     
-    }
-  
-  
+
+  }
+
 }
 
 model.updateRaster = (...args) => {
@@ -257,36 +294,6 @@ model.updateRaster = (...args) => {
     for (i = 0; i < maps.length; i++) {
       
       mapscenario = scenarios[i]
-       /*function range(start, stop, step){
-        var a=[start], b=start;
-        while(b<stop){b+=step;a.push(b)}
-        return a;
-      };
-
-      for (year in range(2011,2050,5)){
-       
-
-        let yearstring = year.toString()
-         const url = `http://127.0.0.1:8000/tiles/s${mapscenario}-it${settings.iteration_number}-ts${settings.year}-sc/{z}/{x}/{y}.png?style=lulc`;
-      
-        selectYearNode(maps[i], 'Year: ' + yearstring)
-       
-        selectIterationNode(maps[i], 'Iteration: ' + settings.iteration_number)
-
-        selectScenarioNode(maps[i], 'Scenario: ' + mapscenario)
-        
-       let stateclassTiles = L.tileLayer(url, {
-          attribution: 'LULC: <a href="http://landcarbon.org">LandCarbon</a>',
-          maxZoom: 19,
-          opacity: 0,
-          //scenario: '6368',
-          //iteration: '0001',
-          //year: '2001'
-          });
-      
-        stateclassTiles.addTo(maps[i]);
-     
-      }*/
       
       const url = `http://127.0.0.1:8000/tiles/s${mapscenario}-it${settings.iteration_number}-ts${settings.year}-sc/{z}/{x}/{y}.png?style=lulc`;
       
@@ -295,32 +302,20 @@ model.updateRaster = (...args) => {
       selectIterationNode(maps[i], 'Iteration: ' + settings.iteration_number)
 
       selectScenarioNode(maps[i], 'Scenario: ' + mapscenario)
-      console.log(parseInt(settings.year))
-      let layerKeys = Object.keys(maps[i]._layers)
-      console.log(maps[i]._layers)
-      for (j = 0; j < layerKeys.length; j++) {
-        // console.log(maps[i]._layers[layerKeys[j]])
-      //info.update(settings.year);
-       
+      
+       maps[i].eachLayer(function(layer){
         
         
-        if (maps[i]._layers[layerKeys[j]].options && maps[i]._layers[layerKeys[j]].options.id && maps[i]._layers[layerKeys[j]].options.id === settings.year.toString()){
-          console.log("test2")
-            maps[i]._layers[layerKeys[j]].setOpacity(1)
+        if (layer.options && layer.options.id && layer.options.id === settings.year.toString()){
+         
+            layer.setOpacity(1)
             
 
+        }else if (layer.options && layer.options.id){
+          layer.setOpacity(0)
         }
-      }
+      })
      
-     /* console.log(maps[i])
-     var tilelayer = maps[i]._layers[Object.keys(maps[i]._layers)[1]]
-      tilelayer.setUrl(url);
-
-      let test = parseInt(settings.year) + 2
-      let urlNext = `http://127.0.0.1:8000/tiles/s${mapscenario}-it${settings.iteration_number}-ts${test}-sc/{z}/{x}/{y}.png?style=lulc`;
-       var tilelayer2 = maps[i]._layers[Object.keys(maps[i]._layers)[1]]
-       tilelayer2.setUrl(urlNext);*/
-
 
        if (args[0].secondary_stratum && args[0].secondary_stratum !== settings.secondary_stratum) {
           if (feature && feature.geometry){
@@ -334,6 +329,7 @@ model.updateRaster = (...args) => {
     }
   
   }
+ 
 };
 
 
@@ -525,6 +521,7 @@ if (update) {
       layers: [cartoDBPositron, stateclassTiles],
       });
 
+ 
   
   mapInfo = ['Year: ' + settings.year, 'Scenario: '+ mapscenario, 'Iteration: ' +settings.iteration_number]
   for (j = 0; j < mapInfo.length; j++) {
