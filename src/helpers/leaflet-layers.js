@@ -44,6 +44,13 @@ const stateclassTiles = L.tileLayer('http://127.0.0.1:8000/tiles/s6368-it0001-ts
   //iteration: '0001',
   //year: '2001'
 });
+const stateclassTilesNext = L.tileLayer('http://127.0.0.1:8000/tiles/s6368-it0001-ts2012-sc/{z}/{x}/{y}.png', {
+  attribution: 'LULC: <a href="http://landcarbon.org">LandCarbon</a>',
+  maxZoom: 19,
+  //scenario: '6368',
+  //iteration: '0001',
+  //year: '2001'
+});
 
 
-export { cartoDBPositron, cartoDBPositronLabelsOnly, cartoDBDarkMatter, CartoDB_DarkMatterNoLabels, Stamen_TonerLabels, stateclassTiles, caEcoregions};
+export { cartoDBPositron, cartoDBPositronLabelsOnly, cartoDBDarkMatter, CartoDB_DarkMatterNoLabels, Stamen_TonerLabels, stateclassTiles, stateclassTilesNext,caEcoregions};

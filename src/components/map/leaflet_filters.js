@@ -185,7 +185,7 @@ scenarioSelect.onchange();
   // Create a custom event that is dispatched when Update button on form is clicked
   const form3 =  filtersContainer.querySelector('.mapform');//document.querySelectorAll('form.update')filtersContainer.querySelector('form');
   
-  form3.onsubmit = function (e) {
+  form3.onchange = function (e) {
     // prevent default
     e.preventDefault();
     // dispatch custom event
@@ -194,6 +194,7 @@ scenarioSelect.onchange();
     });
     
   };
+
 };
 
 

@@ -42,7 +42,7 @@ const view = {
 
     //leafletFilters.init();
     let sliderVals = []
-    for(var i=2011; i<2061;i=i+2) {
+    for(var i=2011; i<2061;i=i+5) {
     sliderVals.push(i);
     }
     
@@ -71,17 +71,18 @@ const view = {
         // TODO: Refactor - replace hardcoded values below
        // if ([2001, 2011, 2021, 2031, 2041, 2051, 2061].indexOf(year) > -1) {
       if (sliderVals.indexOf(year) > -1 && year!==sliderYear) {
-        
+          console.log("test3")
           sliderYear = year
           leafletMap.updateRaster({ year });
         }
         timeseriesChart.moveTooltip(year);
       })
-      .playbackRate(.2);
+      .playbackRate(.5);
 
     // Create slider
     // TODO: Set slider domain and change function after data comes back from API,;
     //       move create slider to update function
+   
     d3.select(sliderContainer)
       .call(slider);
 
@@ -90,7 +91,7 @@ const view = {
         .append('button')
         .html('<i class="icon fa-play"></i>')
         .attr('class', 'small')
-        .on('click', () => slider.play());
+        .on('click', () => slider.play(leafletMap.preLoadRasters()));
 
     d3.select(controlsContainer)
         .append('button')
@@ -122,7 +123,7 @@ const view = {
         .append('button')
         .html('<i class="icon fa-play"></i>')
         .attr('class', 'small')
-        .on('click', () => slider.play());
+        .on('click', () => slider.play(loadRasters()));
 
     d3.select(controlsContainer)
         .append('button')
@@ -147,7 +148,7 @@ const view = {
 
     
   },
-  
+ 
   resizeChart() {
     // update width
     d3.selectAll(".halo").remove();

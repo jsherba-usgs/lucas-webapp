@@ -1,23 +1,20 @@
 <div class="inner">
   <section>
    <form class="mapform">
-      <div class="field">
-        <label for="year">Year</label>
-        <input name="year" type="number" min="2011" max="2061" step="1" value="2011" disabled/> 
+      <div class="form-group field-full">
+        <label for="year" class="control-label" >Year:</label>
+        <input class="mapfilters" name="year" type="number" min="2011" max="2061" step="1" value="2011" disabled/> 
       </div>
-      <div class="field">
-        <label for="mapscenario">Scenario:</label>
-        <div class="select-wrapper">
-          <select name="mapscenario" disabled>
+      <div class="form-group field-full">
+        <label for="mapscenario" class="control-label" >Scenario:</label>
+        <div class="select-wrapper mapselect-wrapper">
+          <select class="mapfilters" name="mapscenario" disabled>
           </select>
         </div>       
       </div>
-       <div class="field">
-        <label for="iteration">Iteration</label>
-        <input name="iteration" type="number" min="1" max="10" step="1" value="1" disabled/> 
-      </div>
-      <div class="field-full update">
-        <input type="submit" value="Update Map" />
+       <div class="form-group field-full">
+        <label for="iteration" class="control-label" >Iteration:</label>
+        <input class="mapfilters" name="iteration" type="number" min="1" max="10" step="1" value="1" disabled/> 
       </div>
      </form>
   </section>
