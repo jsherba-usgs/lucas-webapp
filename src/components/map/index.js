@@ -43,16 +43,16 @@ window.onclick = function(event) {
     }
 }*/
 
-const info = L.control();
+/*const info = L.control();
 
 info.onAdd = function (test) {
 
   this._div = L.DomUtil.create('div', 'info leaflet-bar leaflet-control leaflet-control-custom');
   this._div.onclick = function(){
    
-   // modal.style.display = "block";
+ 
     individualMap=parseInt(test._container.id.split("_")[1])
-
+    
     
 
     let scenarioOptions = document.querySelector('select[name=mapscenario]')
@@ -60,7 +60,7 @@ info.onAdd = function (test) {
     for(var i = 0; i < scenarioOptions.length; i++){
       scenarioOptions[i].selected = false;
     }
-
+    
     scenarioOptions.options.item(individualMap).selected = true;
     
     }
@@ -82,7 +82,7 @@ selectIterationNode = function(inputMap, iteration){
 info.update = function (year) {
 
   this._div.innerHTML = year || 2011;
-};
+};*/
 
 /**
 * PRIVATE FUNCTIONS
@@ -155,14 +155,15 @@ model.init = ({ selector, lat = 22.234262, lng = -159.784857, scenario = '6368',
     secondary_stratum: '',
     stratum: '',
     iteration_number: leftPad(iteration.toString()),
+    iteration_array: [leftPad(iteration.toString())],
   };
   
  //info.addTo(maps[0]);
-mapInfo = ['Year: ' + settings.year, 'Scenario: '+ settings.scenario, 'Iteration: ' +settings.iteration_number]
+/*mapInfo = ['Year: ' + settings.year, 'Scenario: '+ settings.scenario, 'Iteration: ' +settings.iteration_number]
   for (j = 0; j < mapInfo.length; j++) {
        info.addTo(maps[0]);
        info.update(mapInfo[j]);
-  }
+  }*/
  
 
 };
@@ -178,8 +179,8 @@ model.removeTimeSeriesRasters = (...args) => {
       //let layerKeys = Object.keys(maps[i]._layers)
 
       maps[i].eachLayer(function(layer){
-        console.log(settings.year)
-        if (layer.options && layer.options.id && layer.options.id !== settings.year.toString()){
+       
+        if (layer.options && layer.options.id){ //&& layer.options.id !== settings.year.toString()){
           
           maps[i].removeLayer(layer);
         }
@@ -203,7 +204,8 @@ model.preLoadRasters = (slider,d) => {
     
     //let startYear = parseInt(args[0].year)
     for (i = 0; i < maps.length; i++) {
-    
+      iterationval = settings.iteration_array[i]
+      console.log(iterationval)
       mapscenario = scenarios[i]
         
       let stateclassLayers = []
@@ -213,7 +215,7 @@ model.preLoadRasters = (slider,d) => {
     
           let yearstring = yearArray[j].toString()
           
-          const url = `http://127.0.0.1:8000/tiles/s${mapscenario}-it0001-ts${yearstring}-sc/{z}/{x}/{y}.png?style=lulc`;
+          const url = `http://127.0.0.1:8000/tiles/s${mapscenario}-it${iterationval}-ts${yearstring}-sc/{z}/{x}/{y}.png?style=lulc`;
         
           
           
@@ -295,13 +297,14 @@ model.updateRaster = (...args) => {
       
       mapscenario = scenarios[i]
       
-      const url = `http://127.0.0.1:8000/tiles/s${mapscenario}-it${settings.iteration_number}-ts${settings.year}-sc/{z}/{x}/{y}.png?style=lulc`;
       
-      selectYearNode(maps[i], 'Year: ' + settings.year)
+      //const url = `http://127.0.0.1:8000/tiles/s${mapscenario}-it${iterationval}-ts${settings.year}-sc/{z}/{x}/{y}.png?style=lulc`;
+      
+      /*selectYearNode(maps[i], 'Year: ' + settings.year)
      
       selectIterationNode(maps[i], 'Iteration: ' + settings.iteration_number)
 
-      selectScenarioNode(maps[i], 'Scenario: ' + mapscenario)
+      selectScenarioNode(maps[i], 'Scenario: ' + mapscenario)*/
       
        maps[i].eachLayer(function(layer){
         
@@ -336,7 +339,7 @@ model.updateRaster = (...args) => {
 model.updateIndividualRaster = (...args) => {
  //settings.iteration_number = leftPad(settings.iteration_number)
  
- /*let update = false;
+/* let update = false;
   if (args && args[0]) {
     if (args[0].year && args[0].year !== settings.year) {
       settings.year = args[0].year;
@@ -366,26 +369,33 @@ model.updateIndividualRaster = (...args) => {
     }
   }*/
  // modal.style.display = "none";
-  update = true;
+
+   update = true;
   if (update) {
       
-      scenarios = settings.scenario.split(',')
+      let individualMap = args[0].index_val
+      let scenarios = settings.scenario.split(',')
       //scenario = args[0].value
-      mapscenario = scenarios[individualMap]
+      //let mapscenario = scenarios[individualMap]
       let iteration =  leftPad(args[0].iteration_number)
       let year = args[0].year
       let scenario = args[0].scenario
-     
       
+      //settings.iteration_number = args[0].iteration_number
+      settings.iteration_array[individualMap] = leftPad(args[0].iteration_number.toString())
+      settings.year = args[0].year
+      scenarios[individualMap] = args[0].scenario
+      settings.scenario = scenarios.toString()
+
       const url = `http://127.0.0.1:8000/tiles/s${scenario}-it${iteration}-ts${year}-sc/{z}/{x}/{y}.png?style=lulc`;
       
       //selectYearNode(maps[individualMap], 'Year: ' + settings.year)
-      selectYearNode(maps[individualMap], 'Year: ' + args[0].year)
-     // selectIterationNode(maps[individualMap], 'Iteration: ' + settings.iteration_number)
-       selectIterationNode(maps[individualMap], 'Iteration: ' + args[0].iteration_number)
+      /*selectYearNode(maps[individualMap], 'Year: ' + year)
+     
+       selectIterationNode(maps[individualMap], 'Iteration: ' + iteration)
 
-       selectScenarioNode(maps[individualMap], 'Scenario: ' + args[0].scenario)
-      //info.update(settings.year);
+       selectScenarioNode(maps[individualMap], 'Scenario: ' + scenario)*/
+      
       var tilelayer = maps[individualMap]._layers[Object.keys(maps[individualMap]._layers)[1]]
     
       tilelayer.setUrl(url);
@@ -523,11 +533,11 @@ if (update) {
 
  
   
-  mapInfo = ['Year: ' + settings.year, 'Scenario: '+ mapscenario, 'Iteration: ' +settings.iteration_number]
+ /* mapInfo = ['Year: ' + settings.year, 'Scenario: '+ mapscenario, 'Iteration: ' +settings.iteration_number]
   for (j = 0; j < mapInfo.length; j++) {
        info.addTo(maps[i]);
        info.update(mapInfo[j]);
-  }
+  }*/
     
  /* L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
           attribution: 'Stamen'

@@ -13,7 +13,6 @@ import { addEventListener, triggerEvent } from './helpers/utils';
 
 // Import Components
 import filters from './components/filters/filters';
-import leafletMap from './components/map/index';
 import leafletFilters from './components/map/leaflet_filters'
 
 // Import views
@@ -226,7 +225,7 @@ function updateLineandBarLegend(params, lookupDictionary, selection){
       }
 
   addEventListener(document, 'mapfilters.change', (e) => {
-
+    section1.removeLayers()
     section1.updateIndividualMap(e.detail)
   })
 
@@ -352,10 +351,6 @@ function updateLineandBarLegend(params, lookupDictionary, selection){
   function removeframe(){
     let scenarios = e.detail.scenario.split(",").slice(0,-1).join(",")
      e.detail.scenario = scenarios
-
-    
-  
-    
     section1.reloadMap(e.detail);
   }
   document.getElementById("addframe").onclick = addframe;
@@ -649,7 +644,7 @@ function updateLineandBarLegend(params, lookupDictionary, selection){
   
 
   filters.init();
-  leafletFilters.init();
+  //leafletFilters.init();
 
 
 });

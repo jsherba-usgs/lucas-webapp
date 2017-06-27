@@ -1,9 +1,7 @@
 import content from './leaflet_filters.html';
 import { triggerEvent } from './../../helpers/utils';
 import projects from './../../helpers/project-details';
-
 const model = {};
-
 let filtersContainer;
 let projectId;
 let details;
@@ -14,8 +12,6 @@ let stratumSelect;
 let variableSelect;
 let iterationInput;
 let variableDetail;
-
-
 function getOptionVals(selection) {
   let details = [];
   Object.keys(selection).forEach((key) => {
@@ -26,7 +22,6 @@ function getOptionVals(selection) {
   detailsString = details.join(",")
   return detailsString
 };
-
 function removeOptions(selectbox) {
   for (let i = 0; i < selectbox.options.length; i++) {
     if (selectbox.options[i].value !== 'All') {
@@ -34,36 +29,25 @@ function removeOptions(selectbox) {
     }
   }
 }
-
 function updateIterationInput() {
   
   details = projects.getDetailsForId(projectId).details;
   const id = scenarioSelect.value;
   const scenarioDetail = details.scenario.find((item) => item.id === id);
-  iterationInput.forEach((iterationDiv) => {iterationDiv.max = scenarioDetail.iterations;});
-
-  //iterationInput.max = scenarioDetail.iterations;
-
+  iterationInput.max = scenarioDetail.iterations;
 }
-
 function updateYearInput() {
   
   details = projects.getDetailsForId(projectId).details;
   const id = scenarioSelect.value;
   const scenarioDetail = details.scenario.find((item) => item.id === id);
-  yearInput.forEach((yearDiv) => {yearDiv.max = scenarioDetail.years[1], yearDiv.min = scenarioDetail.years[0]});
-  //yearInput.max = scenarioDetail.years[1];
-  //yearInput.min = scenarioDetail.years[0];
-  
+  yearInput.max = scenarioDetail.years[1];
+  yearInput.min = scenarioDetail.years[0];
 }
-
 function updateVariableDetail() {
- 
-
   variableDetail.options.length = 0
   const id = variableSelect.value;
   const getvariableDetail = details.variable.find((item) => item.id === id);
- // console.log(getvariableDetail)
   getvariableDetail.variable_detail.forEach((item) => {
       const option = document.createElement('option');
       option.text = item.id;
@@ -73,7 +57,6 @@ function updateVariableDetail() {
     variableDetail[0].selected = true
     variableDetail.disabled = false;
   }
-
 function updateFields() {
  
  
@@ -89,22 +72,17 @@ function updateFields() {
     });
     scenarioSelect[0].selected = true
     scenarioSelect.disabled = false;*/
-
   //  variableDetail = allFiltersContainer.querySelector('select[name=variable_detail]');
    // variableDetail.disabled = false;
     
-
  // }
 }
-
 function GetSelectValues(select) {
   var result = [];
   var options = select && select.options;
   var opt;
-
   for (var i=0, iLen=options.length; i<iLen; i++) {
     opt = options[i];
-
     if (opt.selected) {
      
       result.push({'id':opt.value, 'name':opt.text});
@@ -112,19 +90,14 @@ function GetSelectValues(select) {
   }
   return result;
 }
-
 model.update = () =>{
-  
+ 
   filtersContainer = document.getElementById('mapfilters');
   filtersContainer.innerHTML = content;
-
   mapscenarioSelect = filtersContainer.querySelector('select[name=mapscenario]');
-
  filtersContainer2 = document.getElementById('filters');
   scenarioSelect = filtersContainer2.querySelector('select[name=scenario]');
-
   scenarios = GetSelectValues(scenarioSelect) 
-
   scenarios.forEach((scenario) => {
     
     const option = document.createElement('option');
@@ -134,86 +107,49 @@ model.update = () =>{
     mapscenarioSelect.add(option);
   });
  mapscenarioSelect.disabled = false;
-
  // Populate iteration input box
 iterationInput = filtersContainer.querySelector('input[name=iteration]');
 iterationInput.disabled = false;
-
 }
-
-model.init = (options) => {
+model.init = () => {
   // Initialize container
  
-
- let scenarioOptions = options.scenario.split(",")
-
- filtersContainer = document.getElementById('mapfilters');
-
-while (filtersContainer.hasChildNodes()) {
-    filtersContainer.removeChild(filtersContainer.lastChild);
-}
- scenarioOptions.forEach((scenarioval) => {filtersContainer.innerHTML += content});
-
- mapscenarioSelect = filtersContainer.querySelectorAll('select[name=mapscenario]');
  
+ filtersContainer = document.getElementById('mapfilters');
+ filtersContainer.innerHTML = content;
+ mapscenarioSelect = filtersContainer.querySelector('select[name=mapscenario]');
  filtersContainer2 = document.getElementById('filters');
  scenarioSelect = filtersContainer2.querySelector('select[name=scenario]');
-
  filtersContainer3 = document.getElementById('filters_project');
  projectSelect = filtersContainer3.querySelector('select[name=project]');
-
  scenarios = GetSelectValues(scenarioSelect) 
  selectedProjects = GetSelectValues(projectSelect)
  projectId = selectedProjects[0].id
-
- /*scenarios.forEach((scenario) => {
+ scenarios.forEach((scenario) => {
    
     const option = document.createElement('option');
     option.text = scenario.name;
     option.value = scenario.id;
    // option.selected = true
-    mapscenarioSelect.forEach((scenarioDiv) => {scenarioDiv.add(option), scenarioDiv.disabled=false});
- });*/
-
-scenarios.forEach((scenario, indexval) => {
-  mapscenarioSelect.forEach((scenarioDiv, indexval2) => {
-    const option = document.createElement('option');
-    option.text = scenario.name;
-    option.value = scenario.id;
-    if (indexval === indexval2){
-      option.selected = true
-    }
-    scenarioDiv.add(option), scenarioDiv.disabled=false
-  })
-})
-
- //mapscenarioSelect.disabled = false;
-
-iterationInput = filtersContainer.querySelectorAll('input[name=iteration]');
-iterationInput.forEach((iterationDiv) => {iterationDiv.disabled = false;});
-//iterationInput.disabled = false;
-
-yearInput = filtersContainer.querySelectorAll('input[name=year]');
-yearInput.forEach((yearDiv) => {yearDiv.disabled = false;});
+    mapscenarioSelect.add(option);
+ });
+ mapscenarioSelect.disabled = false;
+iterationInput = filtersContainer.querySelector('input[name=iteration]');
+iterationInput.disabled = false;
+yearInput = filtersContainer.querySelector('input[name=year]');
 yearInput.disabled = false;
-
 scenarioSelect.onchange = updateYearInput;
 scenarioSelect.onchange();
-
 scenarioSelect.onchange = updateIterationInput;
 scenarioSelect.onchange();
-
-mapscenarioSelect.onchange = updateFields;
-mapscenarioSelect.onchange();
-
+ mapscenarioSelect.onchange = updateFields;
+ mapscenarioSelect.onchange();
   //updateFields()
   //updateVariableDetail()
   // Create a custom event that is dispatched when Update button on form is clicked
-  const form3 =  filtersContainer.querySelectorAll('.mapform');//document.querySelectorAll('form.update')filtersContainer.querySelector('form');
+  const form3 =  filtersContainer.querySelector('.mapform');//document.querySelectorAll('form.update')filtersContainer.querySelector('form');
   
-  /*form3.onchange = function (e) {
-    console.log(e)
-    console.log("test")
+  form3.onchange = function (e) {
     // prevent default
     e.preventDefault();
     // dispatch custom event
@@ -221,33 +157,14 @@ mapscenarioSelect.onchange();
       detail: model.getValues()
     });
     
-  };*/
- 
-  form3.forEach((filterform, i) => {
-      filterform.onchange = function (e) {
-   
-    // prevent default
-    e.preventDefault();
-    // dispatch custom event
-    triggerEvent(document, 'mapfilters.change', {
-      detail: model.getValues(i)
-    });
-    
-  }
-  })
-
+  };
 };
-
-
-
-model.getValues = (i) => (
+model.getValues = () => (
   {
     
-    scenario: mapscenarioSelect[i].value,
-    iteration_number: iterationInput[i].value,
-    year: yearInput[i].value,
-    index_val: i
+    scenario: mapscenarioSelect.value,
+    iteration_number: iterationInput.value,
+    year: yearInput.value
   }
 );
-
 export default model;

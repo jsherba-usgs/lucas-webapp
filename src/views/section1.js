@@ -105,29 +105,19 @@ const view = {
           
        // updateRasterOpacity(year, sliderVals, leafletMap)
           
-           
-
-        
-
-    
      
         if (slider.isAtEnd()){slider.pause()}
         timeseriesChart.moveTooltip(year);
 
           //loadAll()
           //updateRasterOpacity()
-
-          
-              
-              
-
         
       })
       .playbackRate(.5);
 
 
    document.getElementById("map").onclick = function () {
-    console.log("test")
+    
       leafletMap.removeTimeSeriesRasters()
    }
     // Create slider
@@ -272,6 +262,9 @@ const view = {
 
 
   },
+  removeLayers(){
+    leafletMap.removeTimeSeriesRasters()
+  },
   resizeMap(){
     leafletMap.resizeMap()
   },
@@ -282,7 +275,7 @@ const view = {
     leafletMap.updateIndividualRaster(options);
   },
   reloadMap(options) {
-    leafletFilters.init();
+    leafletFilters.init(options);
     leafletMap.reloadMap(options);
   },
   chartStatus(status) {
