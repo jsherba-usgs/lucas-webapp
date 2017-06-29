@@ -1,6 +1,6 @@
 // Import Node modules
 import L from 'leaflet';
-
+import Spinner from 'spin';
 import 'leaflet.sync'
 // Import Styles
 import 'leaflet/dist/leaflet.css';
@@ -21,6 +21,8 @@ const model = {};
 **/
 let map;
 let maps;
+let stateclassGroup
+let stateclassGroups
 let individualMap;
 let mapInfo;
 let mapContainer;
@@ -87,6 +89,20 @@ info.update = function (year) {
 /**
 * PRIVATE FUNCTIONS
 **/
+function mapStatus (status){
+  //mapContainer = document.getElementById('map');
+    switch (status) {
+      case 'loading':
+        maploading = new Spinner().spin( mapContainer);
+        break;
+      case 'loaded':
+        maploading.stop();
+        break;
+      default:
+        mapContainer.classList.add('no-data');
+    }
+  }
+
 function leftPad(val = 1, length = 4) {
   const str = val.toString();
   return `${'0'.repeat(length - str.length)}${str}`;
@@ -100,6 +116,16 @@ function createMapVariables(input){
   }
 
   return accounts;
+}
+
+function  createGroupVariables(scenarios){
+  var groups = [];
+
+  for (var i = 0; i < scenarios.length; i++) {
+      groups[i] =  new L.layerGroup()
+  }
+
+  return groups;
 }
 
 function pairs(arr) {
@@ -131,7 +157,9 @@ model.init = ({ selector, lat = 22.234262, lng = -159.784857, scenario = '6368',
   
   //console.log(scenarios)
   
-  
+  stateclassGroup = new L.layerGroup()
+
+  stateclassGroups = [stateclassGroup]
   
   // Intialize Map object
  map = L.map(mapContainer, {
@@ -179,18 +207,28 @@ model.removeTimeSeriesRasters = (...args) => {
       //let layerKeys = Object.keys(maps[i]._layers)
 
       maps[i].eachLayer(function(layer){
+
+        stateclassGroups[i].clearLayers()
        
-        if (layer.options && layer.options.id){ //&& layer.options.id !== settings.year.toString()){
+        /*if (layer.options && layer.options.id){ //&& layer.options.id !== settings.year.toString()){
           
           maps[i].removeLayer(layer);
-        }
+        }*/
       });
  
 
  }
 }
-model.preLoadRasters = (slider,d) => {
+
+model.mapLayers = () =>{
   
+   let groupLength = stateclassGroups[0].getLayers().length
+   
+    return groupLength
+}
+model.preLoadRasters = (slider,d) => {
+   
+
    let yearArray = range(2011,2061,5)
 
    let layerKeys = Object.keys(maps[0]._layers)
@@ -198,14 +236,15 @@ model.preLoadRasters = (slider,d) => {
    slider.playbackRate(0)
   
    let loadRasters = function(slider, d){
-   
+    mapStatus('loading')
 
     scenarios = settings.scenario.split(',')
     
     //let startYear = parseInt(args[0].year)
     for (i = 0; i < maps.length; i++) {
+     
       iterationval = settings.iteration_array[i]
-      console.log(iterationval)
+      
       mapscenario = scenarios[i]
         
       let stateclassLayers = []
@@ -228,14 +267,17 @@ model.preLoadRasters = (slider,d) => {
             id: yearstring,
             });
         
-          
-          stateclassLayers.push(stateclassTiles)
+          stateclassGroups[i].addLayer(stateclassTiles)
+          //stateclassLayers.push(stateclassTiles)
         }
        
-        var streets = new L.layerGroup(stateclassLayers).addTo(maps[i]);
-     
-        stateclassLayers[10].on("load",function() { console.log('layersloaded'), slider.playbackRate(.5)});
+       // var streets = new L.layerGroup(stateclassLayers).addTo(maps[i]);
+        stateclassGroups[i].addTo(maps[i]);
+        //stateclassLayers[10].on("load",function() { console.log('layersloaded'), slider.playbackRate(.5)});
+        
+        stateclassGroups[i].getLayers()[10].on("load",function() {mapStatus('loaded'), slider.playbackRate(.5)});
        // stateclassLayers.addTo(maps[i]);
+
 
      
         
@@ -244,10 +286,11 @@ model.preLoadRasters = (slider,d) => {
     }
 
    loadRasters(slider, d)
-
+   
    
 
   }
+
 
 }
 
@@ -291,10 +334,15 @@ model.updateRaster = (...args) => {
 
   if (update) {
     scenarios = settings.scenario.split(',')
+    let filtersContainer = document.getElementById('mapfilters');
+    let yearInput = filtersContainer.querySelectorAll('input[name=year]');
+    yearInput.forEach((inputYearVal) => {
 
-    
+        inputYearVal.value = settings.year.toString()
+
+      })
     for (i = 0; i < maps.length; i++) {
-      
+
       mapscenario = scenarios[i]
       
       
@@ -310,7 +358,7 @@ model.updateRaster = (...args) => {
         
         
         if (layer.options && layer.options.id && layer.options.id === settings.year.toString()){
-         
+            
             layer.setOpacity(1)
             
 
@@ -459,8 +507,11 @@ if (update) {
   scenarios = settings.scenario.split(',')
  
   maps = createMapVariables(scenarios)
+  stateclassGroups = createGroupVariables(scenarios)
   
   for (i = 0; i < maps.length; i++) {
+
+    settings.iteration_array[i] = settings.iteration_number
 
     var id = "map_"+ i.toString();
     var test = "test_"+ i.toString();
@@ -485,13 +536,13 @@ if (update) {
   mapContainer.appendChild(m)
 
   const CartoDB_DarkMatterNoLabels = L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png', {
-  attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
+ // attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
   subdomains: 'abcd',
   maxZoom: 19
 });
 
   const cartoDBPositron = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
-  attribution: 'Data: <a href="http://www.openstreetmap.org/copyright">OSM</a>, Map Tiles: <a href="http://cartodb.com/attributions">CartoDB</a>',
+ // attribution: 'Data: <a href="http://www.openstreetmap.org/copyright">OSM</a>, Map Tiles: <a href="http://cartodb.com/attributions">CartoDB</a>',
   subdomains: 'abcd',
   maxZoom: 19,
 });
@@ -499,7 +550,7 @@ if (update) {
 
 
   const stateclassTiles = L.tileLayer('http://127.0.0.1:8000/tiles/s6368-it0001-ts2011-sc/{z}/{x}/{y}.png', {
-  attribution: 'LULC: <a href="http://landcarbon.org">LandCarbon</a>',
+ // attribution: 'LULC: <a href="http://landcarbon.org">LandCarbon</a>',
   maxZoom: 19,
   opacity: 1,
   //scenario: '6368',

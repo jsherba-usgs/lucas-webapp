@@ -1,9 +1,10 @@
+<article class="col onethird">
 <div class="inner">
   <section>
    <form class="mapform">
       <div class="form-group field-full">
         <label for="year" class="control-label" >Year:</label>
-        <input class="mapfilters" name="year" type="number" min="2011" max="2061" step="1" value="2011" disabled/> 
+        <input class="mapfilters" id="test" name="year" type="number" min="2011" max="2061" step="1" value="2011" disabled/> 
       </div>
       <div class="form-group field-full">
         <label for="mapscenario" class="control-label" >Scenario:</label>
@@ -16,6 +17,28 @@
         <label for="iteration" class="control-label" >Iteration:</label>
         <input class="mapfilters" name="iteration" type="number" min="1" max="10" step="1" value="1" disabled/> 
       </div>
+      <div class="form-group field-full">
+
+        <p>
+          <a class = "legendcollapsenametext" data-toggle="collapse" href="#collapseExample">
+            Show graph legend
+          </a>
+          
+        </p>
+        <div class="collapsedivs" id="collapseExample">
+               
+             <div class="legend-stateclass-all"></div>                 
+        <!-- <div id="legends">
+         
+             <div class="inline legend-stateclass legend-section1"></div>
+            <div class="inline legend-scenario"></div>
+          </div>-->
+                               
+                                       
+        </div>
+
+      </div>
      </form>
   </section>
 </div>
+</article> 

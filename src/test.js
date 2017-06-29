@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Intialize smooth scrolling
  
 $('#collapseExample').collapse('show');
+
   smoothScroll.init({
     updateURL: false,
     easing: 'easeInOutCubic',
@@ -113,7 +114,7 @@ function updateLineandBarLegend(params, lookupDictionary, selection){
        .shape("rect")
         .useClass(false)
      // .orient('horizontal')
-      .title('State Classes (area in square kilometers):')
+      .title('State Classes (km²):')
       .scale(stateclassColorScale);
     
 
@@ -142,8 +143,8 @@ function updateLineandBarLegend(params, lookupDictionary, selection){
   * ADD COMMON LEGEND ELEMENTS
   */
   // State type legend
-  const legend = d3.legend.color()
-  let stateclassLegends = d3.selectAll('.legend-stateclass');
+  
+  /*let stateclassLegends = d3.selectAll('.legend-stateclass');
   let legendWidth = stateclassLegends.node().getBoundingClientRect().width;
 
  
@@ -164,10 +165,38 @@ function updateLineandBarLegend(params, lookupDictionary, selection){
 
 
   stateclassLegends.select('.legendOrdinal')
-    .call(stateclassOrdinal);
+    .call(stateclassOrdinal);*/
+const legend = d3.legend.color()
+const stateclassColorScale = colorScaleDic["Land-Cover State"][0]
+function addMapLegends(){
+
+//stateclassLegendAll
+  let stateclassLegendsAll = d3.selectAll('.legend-stateclass-all');
+
+  stateclassLegendsAll
+    .append('svg')
+    .attr('width', 350)
+    .append('g')
+    .attr('class', 'legendOrdinal')
+    .attr('transform', 'translate(25,20)');
+
+  stateclassOrdinalAll = legend
+    .shapePadding(10)
+    .shapeWidth(25)
+     .shape("rect")
+      .useClass(false)
+   // .orient('horizontal')
+    .title('State Classes (km²):')
+    .scale(stateclassColorScale);
 
 
+  stateclassLegendsAll.select('.legendOrdinal')
+    .call(stateclassOrdinalAll);
+
+}
 // Scenario Legend
+
+
  const scenarioLegends = d3.selectAll('.legend-scenario');
 
  scenarioLegends
@@ -225,6 +254,7 @@ function updateLineandBarLegend(params, lookupDictionary, selection){
       }
 
   addEventListener(document, 'mapfilters.change', (e) => {
+   
     section1.removeLayers()
     section1.updateIndividualMap(e.detail)
   })
@@ -336,22 +366,18 @@ function updateLineandBarLegend(params, lookupDictionary, selection){
     document.getElementById("two").style.display = 'block';
     document.getElementById("three").style.display = 'block';
     
-    // Change chart state to loading
-    //section1.chartStatus('loading');
-    //section2.chartStatus('loading');
-    //section3.chartStatus('loading');
-   // leafletFilters.init();
+    
    function addframe(){
    
     let scenarios = e.detail.scenario
     let lastScenario = scenarios.split(",").slice(-1).pop()
     e.detail.scenario = e.detail.scenario + "," + lastScenario
-    section1.reloadMap(e.detail);
+    section1.reloadMap(e.detail, addMapLegends);
   }
   function removeframe(){
     let scenarios = e.detail.scenario.split(",").slice(0,-1).join(",")
      e.detail.scenario = scenarios
-    section1.reloadMap(e.detail);
+    section1.reloadMap(e.detail, addMapLegends);
   }
   document.getElementById("addframe").onclick = addframe;
   document.getElementById("removeframe").onclick = removeframe;
@@ -361,7 +387,7 @@ function updateLineandBarLegend(params, lookupDictionary, selection){
     // Update section 1 map
     //section1.updateMap(e.detail);
 
-    section1.reloadMap(e.detail);
+    section1.reloadMap(e.detail, addMapLegends)
 
 
 
@@ -641,7 +667,7 @@ function updateLineandBarLegend(params, lookupDictionary, selection){
 
 
 
-  
+ 
 
   filters.init();
   //leafletFilters.init();

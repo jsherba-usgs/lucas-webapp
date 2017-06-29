@@ -15,7 +15,7 @@ import './../components/multiline-area-chart/multiLine-area-chart.css';
 import leafletMap from './../components/map/index';
 import leafletFilters from './../components/map/leaflet_filters'
 import chart from './../components/multiline-area-chart/multiLine-area-chart';
-
+import { triggerEvent } from './../helpers/utils';
 
 /*
 * PRIVATE VARIABLES
@@ -69,19 +69,22 @@ const view = {
        /* if (initiateChart === false){
           slider.playPause()
         }*/
-       
+        
         
         const year = d.getFullYear();
         
         let loadAll = function(slider,d){
-
+        
           if (initiateChart === false){
+
+          
           leafletMap.preLoadRasters(slider, d)
+          
           }
           initiateChart=false
 
         }
-
+     
           
         let updateRasterOpacity = function(){
             sliderYear = year
@@ -115,10 +118,18 @@ const view = {
       })
       .playbackRate(.5);
 
+   
 
    document.getElementById("map").onclick = function () {
-    
+      
+      let layerLength = leafletMap.mapLayers()
+     
+      if (layerLength > 0){
       leafletMap.removeTimeSeriesRasters()
+      leafletFilters.triggerChange()
+
+
+    }
    }
     // Create slider
     // TODO: Set slider domain and change function after data comes back from API,;
@@ -213,6 +224,7 @@ const view = {
     // do the actual resize...
       },
   updateChart(nestedData, colorscale) {
+    
     this.chartStatus('loaded');
     chartContainer.classList.remove('no-data');
     
@@ -274,8 +286,8 @@ const view = {
   updateIndividualMap(options) {
     leafletMap.updateIndividualRaster(options);
   },
-  reloadMap(options) {
-    leafletFilters.init(options);
+  reloadMap(options, addMapLegend) {
+    leafletFilters.init(options, addMapLegend)
     leafletMap.reloadMap(options);
   },
   chartStatus(status) {
@@ -290,6 +302,7 @@ const view = {
         chartContainer.classList.add('no-data');
     }
   }
+
 };
 
 export default view;

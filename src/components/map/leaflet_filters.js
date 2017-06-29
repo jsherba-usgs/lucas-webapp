@@ -141,10 +141,10 @@ iterationInput.disabled = false;
 
 }
 
-model.init = (options) => {
+model.init = (options, addMapLegends) => {
   // Initialize container
  
-
+ //const addMapLegends2 = addMapLegends()
  let scenarioOptions = options.scenario.split(",")
 
  filtersContainer = document.getElementById('mapfilters');
@@ -152,7 +152,30 @@ model.init = (options) => {
 while (filtersContainer.hasChildNodes()) {
     filtersContainer.removeChild(filtersContainer.lastChild);
 }
- scenarioOptions.forEach((scenarioval) => {filtersContainer.innerHTML += content});
+ scenarioOptions.forEach((scenarioval) => {
+
+  filtersContainer.innerHTML += content
+ /* $('#collapseExample2').collapse('show'),
+  addMapLegends()*/
+
+ });
+ legendInput = filtersContainer.querySelectorAll('a');
+ legendInputDiv = filtersContainer.querySelectorAll('div.collapsedivs');
+ 
+ legendInput.forEach((legendDiv, index_val) => {
+  index_string = index_val.toString()
+  legendInput[index_val].hash = legendInput[index_val].hash+index_string, 
+  legendInputDiv[index_val].id = legendInputDiv[index_val].id+index_string
+  //$('#collapseExample'+index_string).collapse('toggle')
+  //console.log(legendInputDiv[index_val])//.collapse('show')
+ });
+ addMapLegends()
+ legendInputDiv.forEach((legendDiv, index_val) => {
+  console.log(index_val)
+  console.log($('#collapseExample'+index_val.toString()))
+  $('#collapseExample'+index_val.toString()).collapse('toggle');
+  })
+
 
  mapscenarioSelect = filtersContainer.querySelectorAll('select[name=mapscenario]');
  
@@ -238,7 +261,16 @@ mapscenarioSelect.onchange();
 
 };
 
-
+model.triggerChange = () => {
+  //const form3 =  filtersContainer.querySelectorAll('.mapform');//document.querySelectorAll('form.update')filtersContainer.querySelector('form');
+  const form3 =  filtersContainer.querySelectorAll('.mapform');
+ form3.forEach((filterform, i) => {
+    triggerEvent(document, 'mapfilters.change', {
+      detail: model.getValues(i)
+    });
+    
+ });
+}
 
 model.getValues = (i) => (
   {
