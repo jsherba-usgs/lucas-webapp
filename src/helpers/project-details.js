@@ -10,6 +10,7 @@ const projectList = [
     }
 ];
 
+
 const projectDetails = [
   {
     id: '7096',
@@ -30,6 +31,40 @@ const projectDetails = [
           type: 'Sensitivity Test',
           iterations: 20,
           years: [2011,2061],
+        },
+      ],
+      layer:[
+       {
+          id:1,
+          name:"STATECLASS"
+        },
+        {
+          id:7129,
+          name:"AGRICULTURAL CONTRACTION"
+        },
+        {
+          id:7134,
+          name:"AGRICULTURAL EXPANSION"
+        },
+        {
+          id:7141,
+          name:"MOISTURE ZONE: Dry->Mesic"
+        },
+        {
+          id:7148,
+          name:"MOISTURE ZONE: Mesic->Dry"
+        },
+        {
+          id:7151,
+          name:"MOISTURE ZONE: Mesic->Wet"
+        },
+        {
+          id:7158,
+          name:"MOISTURE ZONE: Wet->Mesic"
+        },
+        {
+          id:7171,
+          name:"URBANIZATION"
         },
       ],
       iteration: [

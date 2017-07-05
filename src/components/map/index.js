@@ -170,6 +170,7 @@ model.init = ({ selector, lat = 22.234262, lng = -159.784857, scenario = '6368',
     attributionControl: true,
     touchZoom: false,
     scrollWheelZoom: false,
+    subdomains: 'abc',
     layers: [cartoDBPositron, stateclassTiles],
   });
 
@@ -182,6 +183,7 @@ model.init = ({ selector, lat = 22.234262, lng = -159.784857, scenario = '6368',
     iteration: iteration.toString(),
     secondary_stratum: '',
     stratum: '',
+    layer: [1],
     iteration_number: leftPad(iteration.toString()),
     iteration_array: [leftPad(iteration.toString())],
   };
@@ -239,9 +241,14 @@ model.preLoadRasters = (slider,d) => {
     mapStatus('loading')
 
     scenarios = settings.scenario.split(',')
+
+    
     
     //let startYear = parseInt(args[0].year)
     for (i = 0; i < maps.length; i++) {
+      console.log(settings)
+
+      layer = settings.layer[i].toString()
      
       iterationval = settings.iteration_array[i]
       
@@ -254,14 +261,24 @@ model.preLoadRasters = (slider,d) => {
     
           let yearstring = yearArray[j].toString()
           
-          const url = `http://127.0.0.1:8000/tiles/s${mapscenario}-it${iterationval}-ts${yearstring}-sc/{z}/{x}/{y}.png?style=lulc`;
-        
+          //const url = `http://127.0.0.1:8000/tiles/s${mapscenario}-it${iterationval}-ts${yearstring}-sc/{z}/{x}/{y}.png?style=lulc`;
+         let url
+          if (layer === "1"){
+
+           url = `http://127.0.0.1:8000/tiles/s${mapscenario}-it${iterationval}-ts${yearstring}-sc/{z}/{x}/{y}.png?style=lulc`;
+           
+          }else{
+           
+           url = 'http://127.0.0.1:8000/tiles/s'+mapscenario.toString()+'-it0000-ts'+yearstring.toString()+'-tgap'+layer.toString()+'/{z}/{x}/{y}.png?style='+layer.toString();;
+             
+          }
           
           
          let stateclassTiles = L.tileLayer(url, {
             attribution: 'LULC: <a href="http://landcarbon.org">LandCarbon</a>',
             maxZoom: 19,
             opacity: 0,
+            subdomains: 'abcd',
             //scenario: '6368',
             //iteration: '0001',
             id: yearstring,
@@ -333,6 +350,7 @@ model.updateRaster = (...args) => {
   }
 
   if (update) {
+
     scenarios = settings.scenario.split(',')
     let filtersContainer = document.getElementById('mapfilters');
     let yearInput = filtersContainer.querySelectorAll('input[name=year]');
@@ -428,24 +446,31 @@ model.updateIndividualRaster = (...args) => {
       let iteration =  leftPad(args[0].iteration_number)
       let year = args[0].year
       let scenario = args[0].scenario
+      let layer = args[0].layer
       
       //settings.iteration_number = args[0].iteration_number
       settings.iteration_array[individualMap] = leftPad(args[0].iteration_number.toString())
       settings.year = args[0].year
       scenarios[individualMap] = args[0].scenario
       settings.scenario = scenarios.toString()
-
-      const url = `http://127.0.0.1:8000/tiles/s${scenario}-it${iteration}-ts${year}-sc/{z}/{x}/{y}.png?style=lulc`;
-      
-      //selectYearNode(maps[individualMap], 'Year: ' + settings.year)
-      /*selectYearNode(maps[individualMap], 'Year: ' + year)
+      settings.layer[individualMap] = args[0].layer
      
-       selectIterationNode(maps[individualMap], 'Iteration: ' + iteration)
 
-       selectScenarioNode(maps[individualMap], 'Scenario: ' + scenario)*/
+      let url
+      if (layer === "1"){
+
+       url = `http://127.0.0.1:8000/tiles/s${scenario}-it${iteration}-ts${year}-sc/{z}/{x}/{y}.png?style=lulc`;
+       
+      }else{
+       
+       url = 'http://127.0.0.1:8000/tiles/s'+scenario.toString()+'-it0000-ts'+year.toString()+'-tgap'+layer.toString()+'/{z}/{x}/{y}.png?style='+layer.toString();
+         
+      }
+     
       
-      var tilelayer = maps[individualMap]._layers[Object.keys(maps[individualMap]._layers)[1]]
-    
+      
+      let tilelayer = maps[individualMap]._layers[Object.keys(maps[individualMap]._layers)[1]]
+
       tilelayer.setUrl(url);
   
   }
@@ -511,6 +536,8 @@ if (update) {
   
   for (i = 0; i < maps.length; i++) {
 
+    settings.layer[i] = 1
+
     settings.iteration_array[i] = settings.iteration_number
 
     var id = "map_"+ i.toString();
@@ -553,6 +580,7 @@ if (update) {
  // attribution: 'LULC: <a href="http://landcarbon.org">LandCarbon</a>',
   maxZoom: 19,
   opacity: 1,
+  subdomains: 'abcd',
   //scenario: '6368',
   //iteration: '0001',
   //year: '2001'
@@ -582,27 +610,10 @@ if (update) {
       layers: [cartoDBPositron, stateclassTiles],
       });
 
- 
-  
- /* mapInfo = ['Year: ' + settings.year, 'Scenario: '+ mapscenario, 'Iteration: ' +settings.iteration_number]
-  for (j = 0; j < mapInfo.length; j++) {
-       info.addTo(maps[i]);
-       info.update(mapInfo[j]);
-  }*/
-    
- /* L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
-          attribution: 'Stamen'
-        }).addTo(maps[i]);*/
-
     
   const url = `http://127.0.0.1:8000/tiles/s${mapscenario}-it${settings.iteration_number}-ts${settings.year}-sc/{z}/{x}/{y}.png?style=lulc`;
   
   stateclassTiles.setUrl(url);
-  
- // stateclassTiles2.addTo(maps[i])
-   /* L.tileLayer(url, {
-          attribution: 'USGS'
-        }).addTo(maps[i]);*/
 
     if (feature.geometry) {
       
@@ -615,16 +626,6 @@ if (update) {
       pair[0].sync(pair[1])
       pair[1].sync(pair[0])
     });
-
- 
-  // Intialize Map object
- 
-
-  
-    //console.log(leftPad(settings.iteration))
-    //const url = `http://stage.landcarbon.org/tiles/s${settings.scenario}-it${leftPad(settings.iteration)}-ts${settings.year}-sc/{z}/{x}/{y}.png?style=lulc`;
-    
-   
 
   }
 

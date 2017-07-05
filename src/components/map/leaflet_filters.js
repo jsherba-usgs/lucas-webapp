@@ -14,6 +14,7 @@ let stratumSelect;
 let variableSelect;
 let iterationInput;
 let variableDetail;
+let layers;
 
 
 function getOptionVals(selection) {
@@ -143,7 +144,6 @@ iterationInput.disabled = false;
 
 model.init = (options, addMapLegends) => {
   // Initialize container
- 
  //const addMapLegends2 = addMapLegends()
  let scenarioOptions = options.scenario.split(",")
 
@@ -171,8 +171,7 @@ while (filtersContainer.hasChildNodes()) {
  });
  addMapLegends()
  legendInputDiv.forEach((legendDiv, index_val) => {
-  console.log(index_val)
-  console.log($('#collapseExample'+index_val.toString()))
+
   $('#collapseExample'+index_val.toString()).collapse('toggle');
   })
 
@@ -210,7 +209,22 @@ scenarios.forEach((scenario, indexval) => {
   })
 })
 
- //mapscenarioSelect.disabled = false;
+
+layers = projects.getDetailsForId(projectId).details.layer;
+
+layerInput = filtersContainer.querySelectorAll('select[name=maplayer]');
+
+layers.forEach((layer, indexval) => {
+  layerInput.forEach((layerDiv, indexval2) => {
+      const option = document.createElement('option');
+      option.text = layer.name;
+      option.value = layer.id;
+      if (indexval === 0){
+      option.selected = true
+      }
+      layerDiv.add(option), layerDiv.disabled=false
+    }) //mapscenarioSelect.disabled = false;
+  })
 
 iterationInput = filtersContainer.querySelectorAll('input[name=iteration]');
 iterationInput.forEach((iterationDiv) => {iterationDiv.disabled = false;});
@@ -278,6 +292,7 @@ model.getValues = (i) => (
     scenario: mapscenarioSelect[i].value,
     iteration_number: iterationInput[i].value,
     year: yearInput[i].value,
+    layer: layerInput[i].value,
     index_val: i
   }
 );
