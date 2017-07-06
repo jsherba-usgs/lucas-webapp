@@ -23,6 +23,125 @@ export const stateclassColorScale = d3.scale.ordinal()
     'Wetland'
   ]);
 
+export const ColorScale7171= d3.scale.ordinal()
+.range([
+   "rgb(224,224,224)",
+   "rgb(0,0,255)",
+   "rgb(0,255,255)",
+   "rgb(255,255,0)",
+   "rgb(255,128,0)",
+   "rgb(255,0,0)"
+  ]).domain([
+    '0',
+    '0-.03',
+    '.03-.06',
+    '.06-.09',
+    '.09-.12',
+    '.12-.16'
+  ]);
+
+export const ColorScale7129= d3.scale.ordinal()
+.range([
+   "rgb(224,224,224)",
+   "rgb(0,0,255)",
+   "rgb(0,255,255)",
+   "rgb(255,255,0)",
+   "rgb(255,128,0)",
+   "rgb(255,0,0)"
+  ]).domain([
+    '0',
+    '0-0.1',
+    '0.1-0.2',
+    '0.2-0.3',
+    '0.3-0.4',
+    '0.4-0.5'
+  ]);
+
+export const ColorScale7134= d3.scale.ordinal()
+.range([
+   "rgb(224,224,224)",
+   "rgb(0,0,255)",
+   "rgb(0,255,255)",
+   "rgb(255,255,0)",
+   "rgb(255,128,0)",
+   "rgb(255,0,0)"
+  ]).domain([
+    '0',
+    '0-0.1',
+    '0.1-0.2',
+    '0.2-0.3',
+    '0.3-0.4',
+    '0.4-0.5'
+  ]);
+
+export const ColorScale7141= d3.scale.ordinal()
+.range([
+   "rgb(224,224,224)",
+   "rgb(0,0,255)",
+   "rgb(0,255,255)",
+   "rgb(255,255,0)",
+   "rgb(255,128,0)",
+   "rgb(255,0,0)"
+  ]).domain([
+    '0',
+    '0-.07',
+    '.07-.14',
+    '.14-.21',
+    '.21-.28',
+    '.28-.35'
+  ]);
+
+export const ColorScale7148= d3.scale.ordinal()
+.range([
+   "rgb(224,224,224)",
+   "rgb(0,0,255)",
+   "rgb(0,255,255)",
+   "rgb(255,255,0)",
+   "rgb(255,128,0)",
+   "rgb(255,0,0)"
+  ]).domain([
+    '0',
+    '0-.07',
+    '.07-.14',
+    '.14-.21',
+    '.21-.28',
+    '.28-.35'
+  ]);
+
+export const ColorScale7151= d3.scale.ordinal()
+.range([
+   "rgb(224,224,224)",
+   "rgb(0,0,255)",
+   "rgb(0,255,255)",
+   "rgb(255,255,0)",
+   "rgb(255,128,0)",
+   "rgb(255,0,0)"
+  ]).domain([
+    '0',
+    '0-.07',
+    '.07-.14',
+    '.14-.21',
+    '.21-.28',
+    '.28-.35'
+  ]);
+
+export const ColorScale7158= d3.scale.ordinal()
+.range([
+   "rgb(224,224,224)",
+   "rgb(0,0,255)",
+   "rgb(0,255,255)",
+   "rgb(255,255,0)",
+   "rgb(255,128,0)",
+   "rgb(255,0,0)"
+  ]).domain([
+    '0',
+    '0-.07',
+    '.07-.14',
+    '.14-.21',
+    '.21-.28',
+    '.28-.35'
+  ]);
+
 export const transitionColorScale = d3.scale.ordinal()
   .range([
    '#7fc97f',
@@ -76,7 +195,9 @@ export const carbonstockColorScale = d3.scale.ordinal()
     
   ]);
 
-export const colorScaleDic = {"Land-Cover State": [stateclassColorScale, 30], "Carbon Stock": [carbonstockColorScale, 30], "Land-Cover Transition":[transitionColorScale, 30], "Land-Cover Transition Types":[transitionTypeColorScale] };
+export const transitiongroupColorScale = {"7171":[ColorScale7171,"Avg. Annual Prob."], "7129":[ColorScale7129,"Avg. Annual Prob."], "7134":[ColorScale7134,"Avg. Annual Prob."], "7141":[ColorScale7141,"Avg. Annual Prob."], "7148":[ColorScale7148,"Avg. Annual Prob."], "7151":[ColorScale7151,"Avg. Annual Prob."], "7158":[ColorScale7158,"Avg. Annual Prob."]}
+
+export const colorScaleDic = {"Land-Cover State": [stateclassColorScale, 30], "Carbon Stock": [carbonstockColorScale, 30], "Land-Cover Transition":[transitionColorScale, 30], "Land-Cover Transition Types":[transitionTypeColorScale]};
 
 export const dashed = d3.scale.ordinal()
     .domain(["6370", "6385"])

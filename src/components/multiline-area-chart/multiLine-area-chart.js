@@ -17,6 +17,8 @@ const chart = () => {
   //let color = d3.scale.category10();
   let yAxisAnnotation = 'Ordinal Scale';
   let xAxisAnnotation = 'Time Scale';
+  const alpha = 0.5;
+  const spacing = 12;
 
   /**
   * PRIVATE VARIABLES
@@ -79,7 +81,35 @@ const area = d3.svg.area()
 
   // TODO: Make it responsive
   // http://stackoverflow.com/questions/20010864/d3-axis-labels-become-too-fine-grained-when-zoomed-in
+ /*function relax(textLabels) {
+    again = false;
 
+    textLabels.each(function (d, i) {
+        a = this;
+        da = d3.select(a);
+        y1 = da.attr("y");
+        textLabels.each(function (d, j) {
+        b = this;
+        if (a == b) return;
+        db = d3.select(b);
+        if (da.attr("text-anchor") != db.attr("text-anchor")) return;
+        y2 = db.attr("y");
+        deltaY = y1 - y2;
+      
+        if (Math.abs(deltaY) > spacing) return;
+        again = true;
+        sign = deltaY > 0 ? 1 : -1;
+        adjust = sign * alpha;
+        da.attr("y",+y1 + adjust);
+        db.attr("y",+y2 - adjust);
+      })
+    })
+    if(again) {
+     
+
+        relax()
+    }
+  }*/
 
   function exports(_selection) {
     _selection.each(function (_data) {
@@ -417,8 +447,9 @@ const area = d3.svg.area()
       .style('opacity', '0');
 
     // Select all plotted lines
-    const lines = d3.selectAll('.line');
-
+    const lines = d3.select('#one').selectAll('.line');
+  
+    //const verticleBar= mouseG.select('.mouse-line')
     // Add circles at intersection of all plotted lines and black vertical line
     const mousePerLine = mouseG.selectAll('.mouse-per-line')
       .data(data)
@@ -435,7 +466,14 @@ const area = d3.svg.area()
 
     mousePerLine.append('text')
       .attr('transform', 'translate(10,3)');
-
+      
+    mouseG.append('svg:rect')
+       .attr("class","legendrct")
+      .attr('width', 150) // can't catch mouse events on a g element
+      .attr('height', 100)
+      .attr('fill', 'red')
+      .style('opacity', '0');
+      
     // Append a rect to catch mouse movements on canvas
     mouseG.append('svg:rect')
       .attr('width', chartW) // can't catch mouse events on a g element
@@ -443,56 +481,82 @@ const area = d3.svg.area()
       .attr('fill', 'none')
       .attr('pointer-events', 'all')
       .on('mouseout', function () { // on mouse out hide line, circles and text
-        d3.select('.mouse-line')
+        d3.select('#one').select('.mouse-line')
           .style('opacity', '0');
-        d3.selectAll('.mouse-per-line circle')
+        d3.select('#one').select('.legendrct')
           .style('opacity', '0');
-        d3.selectAll('.mouse-per-line text')
+        d3.select('#one').selectAll('.mouse-per-line circle')
+          .style('opacity', '0');
+        d3.select('#one').selectAll('.mouse-per-line text')
           .style('opacity', '0');
       })
       .on('mouseover', function () { // on mouse in show line, circles and text
-        d3.select('.mouse-line')
+        d3.select('#one').select('.mouse-line')
           .style('opacity', '1');
-        d3.selectAll('.mouse-per-line circle')
+        d3.select('#one').select('.legendrct')
           .style('opacity', '1');
-        d3.selectAll('.mouse-per-line text')
+        d3.select('#one').selectAll('.mouse-per-line circle')
           .style('opacity', '1');
+        d3.select('#one').selectAll('.mouse-per-line text')
+          .style('opacity', '1');
+
+
       })
       .on('mousemove', function () { 
    // mouse moving over canvas
+        
         const mouse = d3.mouse(this);
-        d3.select('.mouse-line')
+        d3.select('#one').select('.mouse-line')
           .attr('d', () => {
             let d = `M${mouse[0]}, ${chartH}`;
             d += ` ${mouse[0]}, 0`;
             return d;
           });
+          
 
-        d3.selectAll('.mouse-per-line')
+        const mouseHor = mouse[0]+10
+        const mouseVer = (chartH/2)-50
+
+        d3.select('#one').select('.legendrct')
+          
+          .attr("transform", function(d) { return "translate("+mouseHor+","+mouseVer+")"});
+
+          
+
+      d3.select('#one').selectAll('.mouse-per-line')
           .attr('transform', function (d) {
             const x0 = xScale.invert(mouse[0]).getFullYear();
             const bisect = d3.bisector((c) => parseInt(c.key)).right;
             const idx = bisect(d.values, x0);
             const d0 = d.values[idx - 1];
             const d1 = d.values[idx];
+            
             let datum;
           //  let variablename = d.name.split(" / ")[0]
            // let scenario = d.name.split(" / ")[1]
             //let textcolor = color(d.name.split(" / ")[0])
+
             if (d1) {
               datum = x0 - parseInt(d0.key) > parseInt(d1.key) - x0 ? d1 : d0;
             } else {
               datum = d0;
             }
+            //console.log(datum)
             //let textval = variablename + " " + scenario + " " + datum.values
             d3.select(this).select('text')
               .text(datum.values)
+
+
              // .style('fill', textcolor);
 
               
              
             return `translate(${mouse[0]}, ${yScale(datum.values)})`;
+
           });
+         
+
+          
       });
   };
 

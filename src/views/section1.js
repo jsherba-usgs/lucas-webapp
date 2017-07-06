@@ -284,6 +284,8 @@ const view = {
     leafletMap.updateRaster(options);
   },
   updateIndividualMap(options) {
+    //leafletFilters.init(options, addMapLegend)
+    leafletFilters.updateIndividualLegend(options)
     leafletMap.updateIndividualRaster(options);
   },
   reloadMap(options, addMapLegend) {

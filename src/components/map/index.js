@@ -246,7 +246,7 @@ model.preLoadRasters = (slider,d) => {
     
     //let startYear = parseInt(args[0].year)
     for (i = 0; i < maps.length; i++) {
-      console.log(settings)
+      
 
       layer = settings.layer[i].toString()
      

@@ -256,7 +256,7 @@ function addMapLegends(){
   addEventListener(document, 'mapfilters.change', (e) => {
    
     section1.removeLayers()
-    section1.updateIndividualMap(e.detail)
+    section1.updateIndividualMap(e.detail, addMapLegends)
   })
 
   // Add event listener to document for filters.change event

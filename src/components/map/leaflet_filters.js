@@ -1,6 +1,8 @@
 import content from './leaflet_filters.html';
 import { triggerEvent } from './../../helpers/utils';
 import projects from './../../helpers/project-details';
+import {transitiongroupColorScale, colorScaleDicLegend, colorScaleDic, dashed,dashedLegend, stateClassLegendLookup, stockLegendLookup, transitionClassLegendLookup} from '../../helpers/colors';
+import d3 from 'd3';
 
 const model = {};
 
@@ -58,6 +60,33 @@ function updateYearInput() {
   
 }
 
+function updateLayerLegend(addMapLegends){
+
+  legendInput.forEach((legendDiv, index_val) => {
+  index_string = index_val.toString()
+  legendInput[index_val].hash = legendInput[index_val].hash+index_string, 
+  legendInputDiv[index_val].id = legendInputDiv[index_val].id+index_string
+  //$('#collapseExample'+index_string).collapse('toggle')
+  //console.log(legendInputDiv[index_val])//.collapse('show')
+ });
+ addMapLegends()
+ /*legendInputDiv.forEach((legendDiv, index_val) => {
+
+  $('#collapseExample'+index_val.toString()).collapse('toggle');
+  })*/
+
+ let collapseDiv = document.getElementById('collapseExample0');
+
+//collapseDiv.classList.add("in");
+
+
+legendInputDiv.forEach((legendDiv, index_val) => {
+  let collapseDiv = document.getElementById('collapseExample'+index_val.toString());
+  collapseDiv.classList.remove("in");
+  })
+//$('#collapseExample0').collapse('hide');
+}
+
 function updateVariableDetail() {
  
 
@@ -76,8 +105,7 @@ function updateVariableDetail() {
   }
 
 function updateFields() {
- 
- 
+
   //if (details) {
     // Populate scenario select box
   /*  scenarioSelect = filtersContainer.querySelector('select[name=scenario]');
@@ -114,32 +142,60 @@ function GetSelectValues(select) {
   return result;
 }
 
-model.update = () =>{
-  
-  filtersContainer = document.getElementById('mapfilters');
-  filtersContainer.innerHTML = content;
+model.updateIndividualLegend = (options) =>{
+let collapseDiv = document.getElementById('collapseExample'+options.index_val.toString());
+collapseDiv.classList.add("in");
 
-  mapscenarioSelect = filtersContainer.querySelector('select[name=mapscenario]');
+d3.select(d3.selectAll(".legend-stateclass-all > *")[0][options.index_val]).remove();
+const legend = d3.legend.color()
+//$('#collapseExample0').collapse('show');
+function addMapLegends(stateclassColorScale, legendTitle){
 
- filtersContainer2 = document.getElementById('filters');
-  scenarioSelect = filtersContainer2.querySelector('select[name=scenario]');
+//stateclassLegendAll
+  //let stateclassLegendsAll = d3.selectAll('.legend-stateclass-all');
+  let stateclassLegendsAll = d3.select(d3.selectAll('.legend-stateclass-all')[0][options.index_val])
 
-  scenarios = GetSelectValues(scenarioSelect) 
+  stateclassLegendsAll
+    .append('svg')
+    .attr('width', 350)
+    .append('g')
+    .attr('class', 'legendOrdinal')
+    .attr('transform', 'translate(25,20)');
 
-  scenarios.forEach((scenario) => {
-    
-    const option = document.createElement('option');
-    option.text = scenario.name;
-    option.value = scenario.id;
-    option.selected = true
-    mapscenarioSelect.add(option);
-  });
- mapscenarioSelect.disabled = false;
+  stateclassOrdinalAll = legend
+    .shapePadding(10)
+    .shapeWidth(25)
+     .shape("rect")
+      .useClass(false)
+   // .orient('horizontal')
+    .title(legendTitle)
+    .scale(stateclassColorScale);
 
- // Populate iteration input box
-iterationInput = filtersContainer.querySelector('input[name=iteration]');
-iterationInput.disabled = false;
 
+  stateclassLegendsAll.select('.legendOrdinal')
+    .call(stateclassOrdinalAll);
+}
+
+if (options.layer==="1"){
+let legendTitle = 'State Classes (km²):'
+const stateclassColorScale = colorScaleDic["Land-Cover State"][0]
+addMapLegends(stateclassColorScale, legendTitle)
+
+
+}else{
+let legendTitle = transitiongroupColorScale[options.layer][1]
+const stateclassColorScale = transitiongroupColorScale[options.layer][0]
+addMapLegends(stateclassColorScale, legendTitle)
+  }
+//collapseDiv.classList.remove("in");
+
+
+collapseDiv.classList.remove("in");
+
+/*let collapseDiv = document.getElementById('collapseExample0');
+collapseDiv.classList.remove("in");
+console.log(collapseDiv.classList)
+$('#collapseExample0').collapse('hide');*/
 }
 
 model.init = (options, addMapLegends) => {
@@ -162,7 +218,7 @@ while (filtersContainer.hasChildNodes()) {
  legendInput = filtersContainer.querySelectorAll('a');
  legendInputDiv = filtersContainer.querySelectorAll('div.collapsedivs');
  
- legendInput.forEach((legendDiv, index_val) => {
+ /*legendInput.forEach((legendDiv, index_val) => {
   index_string = index_val.toString()
   legendInput[index_val].hash = legendInput[index_val].hash+index_string, 
   legendInputDiv[index_val].id = legendInputDiv[index_val].id+index_string
@@ -173,7 +229,7 @@ while (filtersContainer.hasChildNodes()) {
  legendInputDiv.forEach((legendDiv, index_val) => {
 
   $('#collapseExample'+index_val.toString()).collapse('toggle');
-  })
+  })*/
 
 
  mapscenarioSelect = filtersContainer.querySelectorAll('select[name=mapscenario]');
@@ -243,6 +299,9 @@ scenarioSelect.onchange();
 mapscenarioSelect.onchange = updateFields;
 mapscenarioSelect.onchange();
 
+layerInput.onchange = updateLayerLegend(addMapLegends);
+
+//layerInput.onchange(addMapLegends);
   //updateFields()
   //updateVariableDetail()
   // Create a custom event that is dispatched when Update button on form is clicked
@@ -268,6 +327,7 @@ mapscenarioSelect.onchange();
     // dispatch custom event
     triggerEvent(document, 'mapfilters.change', {
       detail: model.getValues(i)
+
     });
     
   }
