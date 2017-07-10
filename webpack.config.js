@@ -11,6 +11,7 @@ module.exports = {
   entry: {
     lucas: './test.js',
     theme: './index.js',
+    download: './download.js',
     vendor: ['smooth-scroll', 'd3', 'leaflet', 'bootstrap']
   },
   output: {

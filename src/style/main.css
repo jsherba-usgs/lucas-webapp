@@ -2177,7 +2177,7 @@
 .controls {
 	text-align: center;
 	margin-top: 15px;
-	margin-left:25px;
+	margin-left:90px;
 }
 
 /* Chart tooltip */
@@ -2240,6 +2240,7 @@
 /* Year slider */
 .chroniton {
   font: 10px sans-serif;
+  height:60px;
   outline:none;
 }
 .chroniton .play-button {
@@ -2499,9 +2500,7 @@ margin:10px;
 		margin: 1em 0em 1em 0em;
 		float: right;
 	}
-#legends{
-	margin-left:3em;
-}
+
 .legendcollapsenametext{
 	font-size: .9em;
 }
@@ -2524,9 +2523,31 @@ input.mapfilters, select.mapfilters{
 	font-size: 12pt;
 	border:none;
 	height: 1.5em;
-	border-bottom: 3px solid #c9d4b2;
+	border-bottom: 1px solid #c9d4b2;
 	
 }
+
+input.mapfilters[type="text"]:focus,
+input.mapfilters[type="password"]:focus,
+input.mapfilters[type="email"]:focus,
+input.mapfilters[type="tel"]:focus,
+input.mapfilters[type="number"]:focus,
+		select:focus,
+		textarea:focus {
+			border-color: none;
+			box-shadow: none;
+		}
+input.downloadfilters, select.downloadfilters{
+	font-size: 12pt;
+	border:none;
+	height: 1.5em;
+	border-bottom: 1px solid #c9d4b2;
+	
+}
+
+.multiselect.downloadfilters{
+height: auto;
+	}
 
 .control-label{
 	float:left;
@@ -2535,10 +2556,10 @@ input.mapfilters, select.mapfilters{
 	padding-top:0px;
 	margin:0px;
 }
-form .field-full{
+form .form-group{
 	margin-top:.1em;
-	margin-bottom:.1em;
-	margin-left:0px;
+	margin-bottom:.5em;
+	margin-left:.2em;
 	margin-right:0px;
 }
 .mapselect-wrapper::before{
@@ -2575,3 +2596,12 @@ margin-right: 20px;
 .framebutton:focus {
 			box-shadow: inset 0 0 0 0px #c9d4b2;
 		}
+
+.legends{
+	float: right;
+}
+#banner.download-banner{
+height:auto;
+    min-height: none;
+}
+

@@ -562,15 +562,12 @@ svg{
 .california{
   color:#F2AE72 ;
 }
- .divitem:hover {
+/* .divitem:hover {
     background-color: #8C4646;
  }
  .divitem:hover .text-muted{
     color: white;
  }
-/*.divitem:hover .pacificnorthwest, .california, .conus, .hawaiianislands{
-    color: white;
-  }*/
  
  .divitem:hover .pacificnorthwest{
     color: white;
@@ -583,7 +580,7 @@ svg{
   }
   .divitem:hover .hawaiianislands{
     color: white;
-  }
+  }*/
 .lucaslogo{
   width:100px;
   height:100px;

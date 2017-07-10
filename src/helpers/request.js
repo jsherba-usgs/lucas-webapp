@@ -64,4 +64,64 @@ function makeRequest(opts) {
   });
 }
 
-export default makeRequest;
+function makeRequestCSV(opts) {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+
+    let params = opts.params;
+    
+    if (params && typeof params === 'object') {
+      // Encode params for get request
+      if (opts.method === 'GET') {
+        params = Object.keys(params).map((key) =>
+          `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`
+        ).join('&');
+
+      // Stringify object for post request
+      } else {
+        params = JSON.stringify(params);
+      }
+    }
+
+    xhr.onload = () => {
+      if (xhr.status >= 200 && xhr.status < 300) {
+        resolve(xhr.response)
+        //resolve(JSON.parse(xhr.response));
+      } else {
+        reject({
+          status: xhr.status,
+          statusText: xhr.statusText,
+        });
+      }
+    };
+
+    xhr.onerror = () => {
+      reject({
+        status: xhr.status,
+        statusText: xhr.statusText,
+      });
+    };
+
+    // Send get request
+    if (opts.method === 'GET') {
+      if (params) {
+        xhr.open(opts.method, `${opts.url}?${params}`);
+      } else {
+        xhr.open(opts.method, opts.url);
+      }
+      if (opts.headers) {
+        Object.keys(opts.headers).forEach((key) => xhr.setRequestHeader(key, opts.headers[key]));
+      }
+      xhr.send();
+    // Send post request
+    } else {
+      xhr.open(opts.method, opts.url);
+      if (opts.headers) {
+        Object.keys(opts.headers).forEach((key) => xhr.setRequestHeader(key, opts.headers[key]));
+      }
+      xhr.send(params);
+    }
+  });
+}
+
+export {makeRequest, makeRequestCSV};

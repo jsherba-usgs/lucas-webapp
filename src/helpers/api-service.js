@@ -4,7 +4,7 @@
  */
 
 import config from './api-config';
-import makeRequest from './request';
+import {makeRequest, makeRequestCSV} from './request';
 
 const apiEndpoint = config.apiEndpoint;
 const service = {};
@@ -34,10 +34,25 @@ function getAllRecords(urlWithParams) {
           return null;
         });
     };
-
+   
     recursivelyGetPages(urlWithParams);
   });
 }
+ function downloadFile(urlToSend) {
+     var req = new XMLHttpRequest();
+     req.open("GET", urlToSend, true);
+     req.responseType = "blob";
+     req.onload = function (event) {
+        
+         window.location.assign(urlToSend);
+        
+      
+     };
+
+     req.send();
+ }
+
+
 
 service.loadStates = (params) => {
   let url = `${apiEndpoint}stateclasses/`;
@@ -58,6 +73,25 @@ service.loadStates = (params) => {
         }
       });
   });
+};
+
+service.loadStatesCSV = (params) => {
+  let url = `${apiEndpoint}stateclasses/`;
+  let csvType = "&format=csv"
+  if (params && typeof params === 'object') {
+    params = Object.keys(params).map((key) =>
+      `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`).join('&');
+
+    url = `${url}?${params}${csvType}`;
+  }
+  
+  downloadFile(url)
+ /*getCSV(url).then(function(response) {
+  console.log("Success!", response);
+}, function(error) {
+  console.error("Failed!", error);
+})*/
+  
 };
 
 service.loadCarbonStocks = (params) => {

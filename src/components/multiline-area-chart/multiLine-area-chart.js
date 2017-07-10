@@ -81,35 +81,129 @@ const area = d3.svg.area()
 
   // TODO: Make it responsive
   // http://stackoverflow.com/questions/20010864/d3-axis-labels-become-too-fine-grained-when-zoomed-in
- /*function relax(textLabels) {
-    again = false;
 
+ function addY(textLabels, yScale){
+    textLabels.each(function (d, i) {
+       m = this;
+       dm = d3.select(m);
+        
+       //yvalue1 = yScale(parseFloat(da[0][0].textContent));
+       dm.attr("y", "0");
+
+ })
+}
+ function relax(textLabels, yScale) {
+    again = false;
+   
     textLabels.each(function (d, i) {
         a = this;
         da = d3.select(a);
+        
+        //yvalue1 = yScale(parseFloat(da[0][0].textContent));
+        
         y1 = da.attr("y");
+
+        //y1 = yvalue1
         textLabels.each(function (d, j) {
         b = this;
-        if (a == b) return;
+        
+        if (a.innerHTML == b.innerHTML) return;
         db = d3.select(b);
         if (da.attr("text-anchor") != db.attr("text-anchor")) return;
+        //yvalue2 = yScale(parseFloat(db[0][0].textContent));
         y2 = db.attr("y");
+        //y2 = yvalue2
+        //console.log(y1)
+        //console.log(y2)
         deltaY = y1 - y2;
-      
+       console.log(y1)
+       console.log(y2)
         if (Math.abs(deltaY) > spacing) return;
         again = true;
         sign = deltaY > 0 ? 1 : -1;
         adjust = sign * alpha;
         da.attr("y",+y1 + adjust);
         db.attr("y",+y2 - adjust);
+         //sign = deltaY > 0 ? 1 : -1;
+        //adjust = sign * alpha;
+        
+        //atty1 = yScale(y1 + adjust)
+        //atty2 = yScale(y2 - adjust)
+     /*   yvalue1 = parseFloat(da[0][0].textContent);
+        yvalue2 = parseFloat(db[0][0].textContent);
+        
+        
+        if (yvalue1 >= yvalue2 ){
+          
+         
+          const y1val = parseFloat(y1)-parseFloat(alpha)
+          const y2val = parseFloat(y2)+parseFloat(alpha)
+          
+            da.attr("y",y2val);
+            db.attr("y",y1val);
+          
+        }else if(yvalue1 < yvalue2 ){
+         
+        
+          const y1val = parseFloat(y2)+parseFloat(alpha)
+          const y2val = parseFloat(y1)-parseFloat(alpha)
+          
+            da.attr("y",y1val);
+            db.attr("y",y2val);
+        }
+
+       // da.attr("y",+y1 + adjust);
+       // db.attr("y",+y2 - adjust);
+        //da.attr("y",atty1);
+        //db.attr("y",atty2);*/
       })
     })
     if(again) {
-     
 
-        relax()
+        relax(textLabels, yScale)
     }
-  }*/
+  }
+
+function arrangeLabels(textLabels) {
+  var move = 1;
+  while(move > 0) {
+    move = 0;
+    //svg.selectAll(".place-label")
+    textLabels
+       .each(function() {
+         var that = this,
+             a = this.getBoundingClientRect();
+         //svg.selectAll(".place-label")
+         textLabels
+            .each(function() {
+              if(this != that) {
+                var b = this.getBoundingClientRect();
+                /*if((Math.abs(a.left - b.left) * 2 < (a.width + b.width)) &&
+                   (Math.abs(a.top - b.top) * 2 < (a.height + b.height))) {*/
+                 if (Math.abs(a.top - b.top) * 2 < (a.height + b.height)) {
+                  // overlap, move labels
+                 /* var dx = (Math.max(0, a.right - b.left) +
+                           Math.min(0, a.left - b.right)) * 0.01,*/
+                     var dy = (Math.max(0, a.bottom - b.top) +
+                           Math.min(0, a.top - b.bottom)) * 0.02,
+                      tt = d3.transform(d3.select(this).attr("transform")),
+                      to = d3.transform(d3.select(that).attr("transform"));
+                  //move += Math.abs(dx) + Math.abs(dy);
+                  move += Math.abs(dy);
+                
+                 // to.translate = [ to.translate[0] + dx, to.translate[1] + dy ];
+                  //tt.translate = [ tt.translate[0] - dx, tt.translate[1] - dy ];
+                  to.translate = [ to.translate[0], to.translate[1] + dy ];
+                  tt.translate = [ tt.translate[0], tt.translate[1] - dy ];
+                  d3.select(this).attr("transform", "translate(" + tt.translate + ")");
+                  d3.select(that).attr("transform", "translate(" + to.translate + ")");
+                  a = this.getBoundingClientRect();
+                }
+              }
+            });
+       });
+  }
+}
 
   function exports(_selection) {
     _selection.each(function (_data) {
@@ -437,6 +531,7 @@ const area = d3.svg.area()
   exports.drawMouseOverElements = function () {
    
     // Mouse over effect
+
     const mouseG = svg.select('g.mouse-over-effects');
 
     // Add black vertical line to follow mouse
@@ -451,11 +546,14 @@ const area = d3.svg.area()
   
     //const verticleBar= mouseG.select('.mouse-line')
     // Add circles at intersection of all plotted lines and black vertical line
+    mouseG.selectAll('.mouse-per-line').remove()
+
     const mousePerLine = mouseG.selectAll('.mouse-per-line')
       .data(data)
       .enter()
       .append('g')
       .attr('class', 'mouse-per-line');
+
 
     mousePerLine.append('circle')
       .attr('r', 3)
@@ -465,14 +563,17 @@ const area = d3.svg.area()
       .style('opacity', '0');
 
     mousePerLine.append('text')
-      .attr('transform', 'translate(10,3)');
-      
-    mouseG.append('svg:rect')
+      .attr("class","valueLabel")
+      .attr('transform', 'translate(10,3)')
+      .attr('y', '0');
+    
+
+   /* mouseG.append('svg:rect')
        .attr("class","legendrct")
       .attr('width', 150) // can't catch mouse events on a g element
       .attr('height', 100)
       .attr('fill', 'red')
-      .style('opacity', '0');
+      .style('opacity', '0');*/
       
     // Append a rect to catch mouse movements on canvas
     mouseG.append('svg:rect')
@@ -483,8 +584,8 @@ const area = d3.svg.area()
       .on('mouseout', function () { // on mouse out hide line, circles and text
         d3.select('#one').select('.mouse-line')
           .style('opacity', '0');
-        d3.select('#one').select('.legendrct')
-          .style('opacity', '0');
+       /* d3.select('#one').select('.legendrct')
+          .style('opacity', '0');*/
         d3.select('#one').selectAll('.mouse-per-line circle')
           .style('opacity', '0');
         d3.select('#one').selectAll('.mouse-per-line text')
@@ -493,8 +594,8 @@ const area = d3.svg.area()
       .on('mouseover', function () { // on mouse in show line, circles and text
         d3.select('#one').select('.mouse-line')
           .style('opacity', '1');
-        d3.select('#one').select('.legendrct')
-          .style('opacity', '1');
+       /* d3.select('#one').select('.legendrct')
+          .style('opacity', '1');*/
         d3.select('#one').selectAll('.mouse-per-line circle')
           .style('opacity', '1');
         d3.select('#one').selectAll('.mouse-per-line text')
@@ -514,12 +615,12 @@ const area = d3.svg.area()
           });
           
 
-        const mouseHor = mouse[0]+10
+      /*  const mouseHor = mouse[0]+10
         const mouseVer = (chartH/2)-50
 
         d3.select('#one').select('.legendrct')
           
-          .attr("transform", function(d) { return "translate("+mouseHor+","+mouseVer+")"});
+          .attr("transform", function(d) { return "translate("+mouseHor+","+mouseVer+")"});*/
 
           
 
@@ -554,30 +655,35 @@ const area = d3.svg.area()
             return `translate(${mouse[0]}, ${yScale(datum.values)})`;
 
           });
-         
 
+          let textLabels = d3.select('#one').selectAll('text.valueLabel')
+          textLabels
+            .attr('transform', 'translate(10,3)')
+          //addY(textLabels, yScale)
+          arrangeLabels(textLabels)
+          //relax2(textLabels, yScale)
           
       });
   };
 
   exports.moveTooltip = function (year) {
 
-    d3.select('.mouse-line')
+    d3.select('#one').select('.mouse-line')
       .style('opacity', '1');
-    d3.selectAll('.mouse-per-line circle')
+    d3.select('#one').selectAll('.mouse-per-line circle')
       .style('opacity', '1');
-    d3.selectAll('.mouse-per-line text')
+    d3.select('#one').selectAll('.mouse-per-line text')
       .style('opacity', '1');
 
     const mouse = xScale(new Date(year, 0, 1));
-    d3.select('.mouse-line')
+    d3.select('#one').select('.mouse-line')
       .attr('d', () => {
         let d = `M${mouse}, ${chartH}`;
         d += ` ${mouse}, 0`;
         return d;
       });
 
-    d3.selectAll('.mouse-per-line')
+    d3.select('#one').selectAll('.mouse-per-line')
       .attr('transform', function (d) {
         const x0 = year;
         const bisect = d3.bisector((c) => parseInt(c.key)).right;
@@ -593,7 +699,7 @@ const area = d3.svg.area()
 
         d3.select(this).select('text')
           .text(datum.values);
-  
+        
         return `translate(${mouse}, ${yScale(datum.values)})`;
       });
   };

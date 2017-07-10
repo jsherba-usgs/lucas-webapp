@@ -1,0 +1,99 @@
+<div class="inner">
+ <!-- <h2>Select Variable to Explore</h2>-->
+  <section>
+   <form>
+      <div class="field-full">
+        <label for="variable">Variable</label>
+        <div class="select-wrapper">
+          <select name="variable" class="downloadfilters" disabled>
+          </select>
+        </div>
+      </div>
+     </form>
+  </section>
+  
+  <section>
+   <form>
+      <div class="field">
+        <label for="scenario">Scenario</label>
+        <div>
+          <select class='multiselect downloadfilters' name="scenario" multiple disabled>
+          </select>
+        </div>       
+      </div>
+      <div class="field">
+        <label for="variable_detail">Class</label>
+        <div>
+          <select class='multiselect downloadfilters' id="variableSelect" name="variable_detail" multiple disabled>
+          </select>
+        </div>
+      </div>
+     </form>
+  </section>
+ 
+  <section>
+    <form>
+      <div class="field">
+        <label for="secondary_stratum">Island <a id="strataoverlayOpen" href="#strata-overlay">(Choose on Map)</a></label>
+
+        <div class="select-wrapper">
+          <select name="secondary_stratum" class="downloadfilters" disabled>
+            
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label for="stratum">Moisture Zone <a>(Choose on Map)<a/></label>
+        <div class="select-wrapper">
+          <select name="stratum" class="downloadfilters" disabled>
+            <option value="All">All</option>
+          </select>
+        </div>
+      </div>
+  </section>
+  
+  <section>
+   <form class='filterform'>
+      <div class="field">
+        <label for="iteration_type">Iteration type</label>
+        <div class="select-wrapper">
+          <select name="iteration_type" class="downloadfilters" disabled>
+            <option value="percentile">Percentile</option>
+            <option value="single_iteration">Single Iteration</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label for="iteration">Iteration value</label>
+        <input name="iteration" type="number" min="1" max="100" step="1" value="95" class="downloadfilters" disabled/> 
+      </div>
+      <div class="field-full update">
+        <input type="submit" value="Download" />
+      </div>
+     </form>
+    
+  </section>
+</div>
+
+ <div id="strataModal" class="modal">
+
+          <!-- Modal content -->
+          <div class="modal-content">
+            <span class="close">&times;</span>
+            <br>
+             <div id="strata-leaflet"></div>
+            
+          </div>
+
+ </div>
+ <div id="secstrataModal" class="modal">
+
+          <!-- Modal content -->
+          <div class="modal-content">
+            <span class="close">&times;</span>
+            <br>
+             <div id="secstrata-leaflet"></div>
+            
+          </div>
+
+ </div>

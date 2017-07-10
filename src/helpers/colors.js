@@ -274,4 +274,8 @@ export const stockLegendLookup = {'Agriculture':'#ff8040',
           'SOC':'#f0027f',
           'Living Biomass':'#bf5b17'}
 
+export const scenarioLegendLookup = {
+         "6370":"Scenario6370", 
+         "6385":"Scenario6385" }
+
 export const colorScaleDicLegend = {"Land-Cover State": [stateclassColorScale, 20], "Carbon Stock": [carbonstockColorScale, 18], "Land-Cover Transition":[transitionColorScale, 7]};
