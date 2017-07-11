@@ -2,7 +2,7 @@
  <!-- <h2>Select Variable to Explore</h2>-->
   <div class="row">
 
-    <article class="col half download-article">
+    <article class="col half download-article effect1">
     <div class="download-field field-full">
       <header class="major download-header">
                 <h3>Tabular Download</h3>
@@ -64,12 +64,12 @@
      <form class='download-form'>
         <div class="field download-field">
 
-          <label for="timestep-begin">Timestep Start</label>
+          <label for="timestep-begin">Date Begin</label>
            <input name="timestep-begin" type="number" min="2011" max="2100" step="1" value="2011" class="downloadfilters" disabled/> 
 
         </div>
         <div class="field download-field">
-          <label for="timestep-end">Timestep End</label>
+          <label for="timestep-end">Date End</label>
           <input name="timestep-end" type="number" min="2011" max="2100" step="1" value="2011" class="downloadfilters" disabled/> 
         </div>
        
@@ -87,9 +87,13 @@
             </select>
           </div>
         </div>
-        <div class="field-full download-field">
-          <label for="iteration">Iteration value</label>
+        <div class="field-full download-field" id="iteration1">
+          <label for="iteration" id="iteration1Label">Percentile of Iterations</label>
           <input name="iteration" type="number" min="1" max="100" step="1" value="95" class="downloadfilters" disabled/> 
+        </div>
+         <div class="field download-field" id="iteration2" style="display:none">
+          <label for="iteration-end">Iteration End</label>
+          <input name="iteration-end" type="number" min="1" max="10" step="1" value="10" class="downloadfilters" disabled/> 
         </div>
         <div class="field-full update">
           <input type="submit" value="Download" />
@@ -104,7 +108,7 @@
      
                  
  
-  <article class="col half download-article">
+  <article class="col half download-article effect1">
     <div class="download-field field-full">
       <header class="major download-header">
                 <h3>Spatial Download</h3>

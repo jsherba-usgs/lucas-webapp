@@ -4,7 +4,7 @@
  */
 
 import config from './api-config';
-import {makeRequest, makeRequestCSV} from './request';
+import makeRequest from './request';
 
 const apiEndpoint = config.apiEndpoint;
 const service = {};
@@ -38,20 +38,31 @@ function getAllRecords(urlWithParams) {
     recursivelyGetPages(urlWithParams);
   });
 }
- function downloadFile(urlToSend) {
-     var req = new XMLHttpRequest();
-     req.open("GET", urlToSend, true);
-     req.responseType = "blob";
-     req.onload = function (event) {
-        
-         window.location.assign(urlToSend);
-        
-      
-     };
 
-     req.send();
- }
-
+function getAllRecordsCSV(urlWithParams) {
+  return new Promise((resolve, reject) => {
+    let series = [];
+    const opts = {};
+    console.log("test")
+    
+      opts.method = 'GET';
+      opts.headers = {
+        Accept: 'text/csv; charset=utf-8',
+      };
+      opts.url = urlWithParams;
+      makeRequest(opts)
+        .then((response) => {
+          if (!response) {
+            reject(Error('No response from server'));
+          }
+          return null;
+        });
+    
+   
+    
+  });
+}
+ 
 
 
 service.loadStates = (params) => {
@@ -75,8 +86,34 @@ service.loadStates = (params) => {
   });
 };
 
-service.loadStatesCSV = (params) => {
-  let url = `${apiEndpoint}stateclasses/`;
+
+
+ function downloadFile(urlToSend) {
+  
+     var req = new XMLHttpRequest();
+     req.open("GET", urlToSend, true);
+     req.responseType = "blob";
+     req.onload = function (event) {
+        
+        var blob = req.response;
+        
+        var link=document.createElement('a');
+        link.href=window.URL.createObjectURL(blob);
+        link.download="lucas_download" + ".csv";
+        document.body.appendChild(link)
+        link.click();
+         //window.location = urlToSend;
+       // window.open(urlToSend, '_blank')
+      
+     };
+
+     req.send();
+ }
+
+
+service.loadCSV = (params, variableType) => {
+  let url = apiEndpoint+variableType;
+  
   let csvType = "&format=csv"
   if (params && typeof params === 'object') {
     params = Object.keys(params).map((key) =>
@@ -84,13 +121,9 @@ service.loadStatesCSV = (params) => {
 
     url = `${url}?${params}${csvType}`;
   }
-  
-  downloadFile(url)
- /*getCSV(url).then(function(response) {
-  console.log("Success!", response);
-}, function(error) {
-  console.error("Failed!", error);
-})*/
+ 
+ downloadFile(url)
+ 
   
 };
 

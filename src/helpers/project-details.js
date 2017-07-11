@@ -72,6 +72,8 @@ const projectDetails = [
         {
           id:'single_iteration',
           name:'iteration',
+          nameend:'iteration-end',
+          label: 'Iteration Begin',
           type: 'number',
           min:"1",
           max:"10",
@@ -80,6 +82,7 @@ const projectDetails = [
          {
           id:'percentile',
           name:'iteration',
+          label: 'Percentile of Iterations',
           type: 'number',
           min:'51',
           max:'99',
@@ -311,6 +314,8 @@ const projectDetails = [
         {
           id:'single_iteration',
           name:'iteration',
+          nameend:'iteration-end',
+          label: 'Iteration Begin',
           type: 'number',
           min:"1",
           max:"20",
@@ -319,6 +324,7 @@ const projectDetails = [
          {
           id:'percentile',
           name:'iteration',
+          label: 'Percentile of Iterations',
           type: 'number',
           min:'51',
           max:'99',
@@ -329,6 +335,7 @@ const projectDetails = [
         {
           id:'timestep',
           name:'timestep',
+          label: 'Percentile of Iterations',
           type: 'number',
           min:"2011",
           max:"2100",

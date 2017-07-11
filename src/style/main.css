@@ -414,6 +414,11 @@
 			flex-basis: calc(100% * 0.5 - 2em);
 		}
 
+		form .field-empty {
+			margin: 0; 
+			flex-basis: 0%;
+		}
+
 		@media screen and (max-width: 736px) {
 
 			form .field {
@@ -2624,3 +2629,12 @@ form .download-field{
 .download-wrapper:before {
 			line-height: 1.5em;
 		}
+.effect1{
+	box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);;
+}
+
+header.download-header > :first-child::after{
+	background-color:grey;
+	width:95%;
+	
+}

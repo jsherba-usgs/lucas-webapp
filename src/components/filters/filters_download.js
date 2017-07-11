@@ -25,6 +25,27 @@ let strataOverlayOpenBtn
 let strataOverlayCloseBtn
 
 
+function hasClass(el, className) {
+  if (el.classList)
+    return el.classList.contains(className)
+  else
+    return !!el.className.match(new RegExp('(\\s|^)' + className + '(\\s|$)'))
+}
+
+function addClass(el, className) {
+  if (el.classList)
+    el.classList.add(className)
+  else if (!hasClass(el, className)) el.className += " " + className
+}
+
+function removeClass(el, className) {
+  if (el.classList)
+    el.classList.remove(className)
+  else if (hasClass(el, className)) {
+    var reg = new RegExp('(\\s|^)' + className + '(\\s|$)')
+    el.className=el.className.replace(reg, ' ')
+  }
+}
 
 function getOptionVals(selection) {
   let details = [];
@@ -57,13 +78,38 @@ function onScenarioChangeSpatial() {
 function updateIterationInput() {
  
   const id = iterationTypeSelect.value;
-  const getIterationDetail = details.iteration.find((item) => item.id === id);
-  //const input = document.createElement('input');
-  iterationInput.name = getIterationDetail.name
-  iterationInput.type = getIterationDetail.type
-  iterationInput.min =  getIterationDetail.min
-  iterationInput.max =  getIterationDetail.max
-  iterationInput.value = getIterationDetail.value
+  if (id === 'percentile'){
+    removeClass(iteration1, 'field')  
+    addClass(iteration1, 'field-full')  
+    iteration2.style.display = "none"
+    const getIterationDetail = details.iteration.find((item) => item.id === id);
+    iteration1Label.innerHTML = getIterationDetail.label
+    //const input = document.createElement('input');
+    iterationInput.name = getIterationDetail.name
+    iterationInput.type = getIterationDetail.type
+    iterationInput.min =  getIterationDetail.min
+    iterationInput.max =  getIterationDetail.max
+    iterationInput.value = getIterationDetail.value
+
+  }else if (id === "single_iteration"){
+    removeClass(iteration1, 'field-full')
+    addClass(iteration1, 'field')  
+    iteration2.style.display = "block"
+    
+    const getIterationDetail = details.iteration.find((item) => item.id === id);
+    iteration1Label.innerHTML = getIterationDetail.label
+    iterationInput.name = getIterationDetail.name
+    iterationInput.type = getIterationDetail.type
+    iterationInput.min =  getIterationDetail.min
+    iterationInput.max =  getIterationDetail.max
+    iterationInput.value = getIterationDetail.min
+     
+    iterationInputEnd.name = getIterationDetail.name
+    iterationInputEnd.type = getIterationDetail.type
+    iterationInputEnd.min =  getIterationDetail.min
+    iterationInputEnd.max =  getIterationDetail.max
+    iterationInputEnd.value = getIterationDetail.max
+  }
 }
 function updateIterationInputSpatial(){
   const id = "single_iteration"
@@ -253,8 +299,9 @@ function updateFields() {
 
 model.init = () => {
 
-
-  // Initialize container
+  let iteration1 = document.getElementById('iteration1');
+  let iteration2 = document.getElementById('iteration2');
+  let iteration1Label = document.getElementById("iteration1Label")
   filtersContainer = document.getElementById('filters');
   filtersContainer.innerHTML = content;
 
@@ -263,6 +310,9 @@ model.init = () => {
 
   iterationInput = filtersContainer.querySelector('input[name=iteration]');
   iterationInput.disabled = false;
+
+  iterationInputEnd = filtersContainer.querySelector('input[name=iteration-end]');
+  iterationInputEnd.disabled = false;
 
   iterationInputSpatial = filtersContainer.querySelector('input[name=iteration-spatial]');
   iterationInputSpatial.disabled = false;
@@ -329,11 +379,13 @@ model.init = () => {
   
   //const form2 = filtersContainer2.querySelector('form');
   form.onsubmit = function (e) {
+
     // prevent default
     e.preventDefault();
     // dispatch custom event
      triggerEvent(document, 'filters.change', {
       detail: model.getValues()
+
     });
 
 
@@ -462,9 +514,12 @@ model.getValues = () => (
     stratum: stratumSelect.value,
     secondary_stratum: secStratumSelect.value,
     iteration: iterationInput.value,
+    iteration_end: iterationInputEnd.value,
     iteration_type: iterationTypeSelect.value,
     variable: variableSelect.value,
-    variable_detail: getOptionVals(variableDetail)
+    variable_detail: getOptionVals(variableDetail),
+    timestep_begin: timestepBegin.value,
+    timestep_end: timestepEnd.value
 
   }
 );

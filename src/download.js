@@ -92,64 +92,85 @@ $('#collapseExample').collapse('show');
   
 
   addEventListener(document, 'filters.change', (e) => {
- 
-  minPercentile = String(100 - parseInt(e.detail.iteration))
-  maxPercentile = e.detail.iteration 
+    console.log(e.detail)
+    
 
-  const year = []
+    timestepBegin= parseInt(e.detail.timestep_begin)
+    timestepEnd= parseInt(e.detail.timestep_end)
 
-    for (var i = 2011; i <= 2061; i++) {
-       year.push(i);
-    }
-  function setParams(e, variableType){
-    const variableApiTypes = {
-      'state_label_x': 'StateLabelX',
-      'stock_type': 'StockType',
-      'transition_group': 'TransitionGroup'
-    }
+    const year = []
 
-    let group_by_values = "Timestep,Iteration,IDScenario," +  variableApiTypes[variableType]
-    let params = {
-        scenario: e.detail.scenario,
-        secondary_stratum: e.detail.secondary_stratum,
-        stratum: e.detail.stratum,
-        timestep: year,
-        pagesize: 10000,
-      };
-    if (variableType !== 'transition_group'){
-      params[variableType] = e.detail.variable_detail
-    }
-    params.group_by=group_by_values 
-    if (e.detail.iteration_type==='single_iteration'){
-          params.iteration =  e.detail.iteration
-      
-    }else{
-        params.percentile = "Iteration, "+maxPercentile
-
-    }
-      if (params.stratum === 'All') {
-        delete params.stratum;
-      };
-      if (params.secondary_stratum === 'All') {
-        delete params.secondary_stratum;
+      for (var i = timestepBegin; i <= timestepEnd; i++) {
+         year.push(i);
       }
-      
-    return params
-  }
-    //updateFiltersLegend(e.detail);
+    function setParams(e, variableType){
+      const variableApiTypes = {
+        'state_label_x': 'StateLabelX',
+        'stock_type': 'StockType',
+        'transition_group': 'TransitionGroup'
+      }
+
+      let group_by_values = "Timestep,Iteration,IDScenario," +  variableApiTypes[variableType]
+      let params = {
+          scenario: e.detail.scenario,
+          secondary_stratum: e.detail.secondary_stratum,
+          stratum: e.detail.stratum,
+          timestep: year,
+          pagesize: 10000,
+        };
+      if (variableType !== 'transition_group'){
+        params[variableType] = e.detail.variable_detail
+      }
+      params.group_by=group_by_values 
+      if (e.detail.iteration_type==='single_iteration'){
+            iterationBegin= parseInt(e.detail.iteration)
+            iterationEnd= parseInt(e.detail.iteration_end)
+
+            const iterations = []
+
+              for (var i = iterationBegin; i <= iterationEnd; i++) {
+                 iterations.push(i);
+              }
+            params.iteration =  iterations
+            
+      }else{
+          minPercentile = String(100 - parseInt(e.detail.iteration))
+          maxPercentile = e.detail.iteration 
+          params.percentile = "Iteration, "+maxPercentile
+
+      }
+        if (params.stratum === 'All') {
+          delete params.stratum;
+        };
+        if (params.secondary_stratum === 'All') {
+          delete params.secondary_stratum;
+        }
+        
+      return params
+      }
+      //updateFiltersLegend(e.detail);
     if (e.detail.variable ==="Land-Cover State"){
       
       let params = setParams(e, 'state_label_x')
-      console.log(params)
+      
       // Fetch data for state class and update charts
-      
-      service.loadStatesCSV(params)
+      let variableType= 'stateclasses/'
+      service.loadCSV(params, variableType)
+         
+      }
+    if (e.detail.variable ==="Carbon Stock"){
 
-        
-       
-      
-       
+      let params = setParams(e, 'stock_type')
+      let variableType= 'stocktypes/'
+      service.loadCSV(params, variableType)
     }
+    if (e.detail.variable ==="Land-Cover Transition"){
+    
+     let params = setParams(e, 'transition_group')
+     let variableType= 'transitions/'
+     service.loadCSV(params, variableType)
+
+   }
   });
 
   // Intializing the filters starts the app on page load
