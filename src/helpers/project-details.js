@@ -86,6 +86,16 @@ const projectDetails = [
           value:"95"
         },
       ],
+      timestep: [
+        {
+          id:'timestep',
+          name:'timestep',
+          type: 'number',
+          min:"2011",
+          max:"2061",
+          step:"1"
+        },
+      ],
       variable: [
         {
           id: 'Land-Cover State',
@@ -313,6 +323,16 @@ const projectDetails = [
           min:'51',
           max:'99',
           value:"95"
+        },
+      ],
+      timestep: [
+        {
+          id:'timestep',
+          name:'timestep',
+          type: 'number',
+          min:"2011",
+          max:"2100",
+          step:"1"
         },
       ],
       variable: [

@@ -1,26 +1,25 @@
 // Import Node Modules
 import d3 from 'd3';
 import chroniton from 'chroniton';
-import 'd3-svg-legend';
+//import 'd3-svg-legend';
 import Spinner from 'spin';
 
 // Import Styles
-import './../components/multiline-area-chart/multiLine-area-chart.css';
+import './../components/multiline-area-chart/multiLine-area-chart.//css';
 
 // Import Helpers
 //import { stateclassColorScale } from './../helpers/colors';
 
 
 // Import Components
-import leafletMap from './../components/map/index';
-import leafletFilters from './../components/map/leaflet_filters'
-import chart from './../components/multiline-area-chart/multiLine-area-chart';
+//import leafletMap from './../components/map/index';
+//import leafletFilters from './../components/map/leaflet_filters'//mport chart from './../components/multiline-area-chart/multiLine-area-chart';
 import { triggerEvent } from './../helpers/utils';
 
 /*
 * PRIVATE VARIABLES
 */
-const parentContainer = document.getElementById('one');
+/*const parentContainer = document.getElementById('one');
 const mapContainer = document.getElementById('map');
 const filtersContainer = document.getElementById('mapfilters');
 let sliderContainer = parentContainer.querySelector('.chroniton-slider');
@@ -28,7 +27,7 @@ let slider;
 let controlsContainer = parentContainer.querySelector('.controls');
 const chartContainer = parentContainer.querySelector('.chart');
 let timeseriesChart;
-let loading;
+let loading;*/
 
 /*
 * EXPORT OBJECT
@@ -37,89 +36,7 @@ let loading;
 
 const view = {
   init() {
-    // Init map
-    leafletMap.init(mapContainer);
-
    
-
-    //leafletFilters.init();
-    let sliderVals = []
-    for(var i=2011; i<=2061;i=i+5) {
-    sliderVals.push(i);
-    }
-    let initiateChart = true
-    timeseriesChart = chart()
-      .width(chartContainer.offsetWidth)
-      .height(chartContainer.offsetHeight || 400)
-      .xDomain([new Date(2011, 0), new Date(2061, 0)])
-      .yAxisAnnotation('Area (km²)')
-     // .color(stateclassColorScale);
-     let sliderYear = 2011
-    // Init date slider
-    slider = chroniton()
-      // TODO: Refactor - get range of years from data, instead of hardcoding values below
-      .domain([new Date(2011, 0), new Date(2061, 0)])
-      .labelFormat(d3.time.format('%Y'))
-      .width(sliderContainer.offsetWidth)
-      .margin({ top: 10, right: 20, bottom: 20, left: 80})
-      // TODO: Refactor axis tick values to add ticks every n years
-      // instead of hardcoding values below
-      .tapAxis((axis) => axis.tickValues([new Date(2011, 0), new Date(2021, 0), new Date(2031, 0), new Date(2041, 0), new Date(2051, 0), new Date(2061, 0)]))
-      .on('change', (d) => {
-       /* if (initiateChart === false){
-          slider.playPause()
-        }*/
-        
-        
-        const year = d.getFullYear();
-        
-        let loadAll = function(slider,d){
-        
-          if (initiateChart === false){
-
-          
-          leafletMap.preLoadRasters(slider, d)
-          
-          }
-          initiateChart=false
-
-        }
-     
-          
-        let updateRasterOpacity = function(){
-            sliderYear = year
-            if (sliderVals.indexOf(year) > -1 && year!==sliderYear) {
-              leafletMap.updateRaster({ year })
-             }
-            
-        } 
-
-        
-        loadAll(slider, d)
-        //updateRasterOpacity()
-
-       
-
-            if (sliderVals.indexOf(year) > -1 && year!==sliderYear) {
-              leafletMap.updateRaster({ year })
-              sliderYear = year
-             }
-         
-          
-       // updateRasterOpacity(year, sliderVals, leafletMap)
-          
-     
-        if (slider.isAtEnd()){slider.pause()}
-        timeseriesChart.moveTooltip(year);
-
-          //loadAll()
-          //updateRasterOpacity()
-        
-      })
-      .playbackRate(.5);
-
-   
-
    document.getElementById("map").onclick = function () {
       
       let layerLength = leafletMap.mapLayers()
@@ -131,32 +48,10 @@ const view = {
 
     }
    }
-    // Create slider
-    // TODO: Set slider domain and change function after data comes back from API,;
-    //       move create slider to update function
+  
    
    
-    d3.select(sliderContainer)
-      .call(slider);
-
-     // Add slider controls
-    d3.select(controlsContainer)
-        .append('button')
-        .html('<i class="icon fa-play"></i>')
-        .attr('class', 'small')
-        .on('click', () => slider.play());
-
-    d3.select(controlsContainer)
-        .append('button')
-        .html('<i class="icon fa-pause"></i>')
-        .attr('class', 'small')
-        .on('click', () => slider.pause());
-
-    d3.select(controlsContainer)
-        .append('button')
-        .html('<i class="icon fa-stop"></i>')
-        .attr('class', 'small')
-        .on('click', () => slider.stop());
+   
   },
   sliderinit(){
     sliderContainer = parentContainer.querySelector('.chroniton-slider');

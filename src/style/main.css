@@ -2539,9 +2539,9 @@ input.mapfilters[type="number"]:focus,
 		}
 input.downloadfilters, select.downloadfilters{
 	font-size: 12pt;
-	border:none;
-	height: 1.5em;
-	border-bottom: 1px solid #c9d4b2;
+	border:1px solid #c9d4b2;
+	height: 2em;
+	/*border-bottom: 1px solid #c9d4b2;*/
 	
 }
 
@@ -2605,3 +2605,22 @@ height:auto;
     min-height: none;
 }
 
+.download-article{
+	border: 1px solid;
+	border-color:#D3D3D3;
+	margin:2em;
+	padding-top:1em;
+}
+.download-form{
+	margin:0em;
+}
+.download-header{
+	margin-left:1em;
+}
+form .download-field{
+	margin-top:0em;
+	margin-bottom:.8em;
+}
+.download-wrapper:before {
+			line-height: 1.5em;
+		}

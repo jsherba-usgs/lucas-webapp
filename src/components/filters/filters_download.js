@@ -4,7 +4,6 @@ import percentileFilterContent from './filters_percentile_download.html';
 import { triggerEvent } from './../../helpers/utils';
 import projects from './../../helpers/project-details';
 
-
 const model = {};
 
 let filtersContainer;
@@ -15,12 +14,16 @@ let projectSelect;
 let scenarioSelect;
 let secStratumSelect;
 let stratumSelect;
+let secStratumSelectSpatial;
+let stratumSelectSpatial;
 let variableSelect;
 let iterationInput;
+let iterationInputSpatial;
 let variableDetail;
 let iterationTypeSelect;
 let strataOverlayOpenBtn
 let strataOverlayCloseBtn
+
 
 
 function getOptionVals(selection) {
@@ -42,6 +45,14 @@ function removeOptions(selectbox) {
     //}
   }
 }
+function onScenarioChange () {
+    updateIterationInput()
+    updateTimesteps()
+  }
+function onScenarioChangeSpatial() {
+    updateIterationInputSpatial();
+    updateTimestepsSpatial();
+  }
 
 function updateIterationInput() {
  
@@ -53,6 +64,46 @@ function updateIterationInput() {
   iterationInput.min =  getIterationDetail.min
   iterationInput.max =  getIterationDetail.max
   iterationInput.value = getIterationDetail.value
+}
+function updateIterationInputSpatial(){
+  const id = "single_iteration"
+  const getIterationDetail = details.iteration.find((item) => item.id === id);
+
+  iterationInputSpatial.name = getIterationDetail.name
+  iterationInputSpatial.type = getIterationDetail.type
+  iterationInputSpatial.min =  getIterationDetail.min
+  iterationInputSpatial.max =  getIterationDetail.max
+  iterationInputSpatial.value = getIterationDetail.value
+  
+}
+
+function updateTimesteps(){
+   const timestepDetails = (details.timestep[0])
+   timestepBegin.name = timestepDetails.name
+   timestepBegin.type = timestepDetails.type
+   timestepBegin.min =  timestepDetails.min
+   timestepBegin.max =  timestepDetails.max
+   timestepBegin.value = timestepDetails.min
+   timestepEnd.name = timestepDetails.name
+   timestepEnd.type = timestepDetails.type
+   timestepEnd.min =  timestepDetails.min
+   timestepEnd.max =  timestepDetails.max
+   timestepEnd.value = timestepDetails.max
+}
+
+function updateTimestepsSpatial(){
+   const timestepDetails = (details.timestep[0])
+   
+   timestepBeginSpatial.name = timestepDetails.name
+   timestepBeginSpatial.type = timestepDetails.type
+   timestepBeginSpatial.min =  timestepDetails.min
+   timestepBeginSpatial.max =  timestepDetails.max
+   timestepBeginSpatial.value = timestepDetails.min
+   timestepEndSpatial.name = timestepDetails.name
+   timestepEndSpatial.type = timestepDetails.type
+   timestepEndSpatial.min =  timestepDetails.min
+   timestepEndSpatial.max =  timestepDetails.max
+   timestepEndSpatial.value = timestepDetails.max
 }
 
 function updateVariableDetail() {
@@ -70,6 +121,21 @@ function updateVariableDetail() {
     variableDetail.setAttribute('size',variableDetail.childElementCount);
   }
 
+function updateVariableDetailSpatial(){
+  variableDetailSpatial.options.length = 0
+  const id = variableSelectSpatial.value;
+  const getvariableDetailSpatial = details.variable.find((item) => item.id === id);
+  getvariableDetailSpatial.variable_detail.forEach((item) => {
+      const option = document.createElement('option');
+      option.text = item.id;
+      option.value = item.id;
+      variableDetailSpatial.add(option);
+    });
+    variableDetailSpatial[0].selected = true
+    variableDetailSpatial.disabled = false;
+    variableDetailSpatial.setAttribute('size',variableDetailSpatial.childElementCount);
+  }
+
 
 function updateFields() {
   
@@ -78,6 +144,8 @@ function updateFields() {
   details = projects.getDetailsForId(projectId).details;
 
   if (details) {
+
+
 
     // Populate scenario select box
     scenarioSelect = filtersContainer.querySelector('select[name=scenario]');
@@ -93,6 +161,21 @@ function updateFields() {
 
     scenarioSelect.setAttribute('size',scenarioSelect.childElementCount);
 
+
+    // Populate scenario select box spatial
+    scenarioSelectSpatial = filtersContainer.querySelector('select[name=scenario-spatial]');
+    removeOptions(scenarioSelectSpatial);
+    details.scenario.forEach((item) => {
+      const option = document.createElement('option');
+      option.text = item.name;
+      option.value = item.id;
+      scenarioSelectSpatial.add(option);
+    });
+    scenarioSelectSpatial[0].selected = true
+    scenarioSelectSpatial.disabled = false;
+
+    scenarioSelectSpatial.setAttribute('size',scenarioSelectSpatial.childElementCount);
+
     // Populate secondary stratum select box
     secStratumSelect = filtersContainer.querySelector('select[name=secondary_stratum]');
     removeOptions(secStratumSelect);
@@ -103,6 +186,17 @@ function updateFields() {
       secStratumSelect.add(option);
     });
     secStratumSelect.disabled = false;
+
+    secStratumSelectSpatial = filtersContainer.querySelector('select[name=secondary_stratum-spatial]');
+    removeOptions(secStratumSelectSpatial);
+    details.secondary_stratum.forEach((item) => {
+      const option = document.createElement('option');
+      option.text = item.id;
+      option.value = item.id;
+      secStratumSelectSpatial.add(option);
+    });
+   
+    secStratumSelectSpatial.disabled = false;
 
     // Populate stratum select box
     stratumSelect = filtersContainer.querySelector('select[name=stratum]');
@@ -115,6 +209,18 @@ function updateFields() {
     });
     stratumSelect.disabled = false;
 
+    stratumSelectSpatial = filtersContainer.querySelector('select[name=stratum-spatial]');
+    removeOptions(stratumSelectSpatial);
+    details.stratum.forEach((item) => {
+      const option = document.createElement('option');
+      option.text = item.id;
+      option.value = item.id;
+      stratumSelectSpatial.add(option);
+    });
+    stratumSelectSpatial.disabled = false;
+
+   
+
      // Populate variable select box
     variableSelect = filtersContainer.querySelector('select[name=variable]');
     removeOptions(variableSelect);
@@ -126,33 +232,63 @@ function updateFields() {
     });
     variableSelect.disabled = false;
 
-    // Populate iteration input box
-    iterationTypeSelect = filtersContainer.querySelector('select[name=iteration_type]');
-    iterationTypeSelect.disabled = false;
+     // Populate variable select box
+    variableSelectSpatial = filtersContainer.querySelector('select[name=variable-spatial]');
+    removeOptions(variableSelectSpatial);
+    details.variable.forEach((item) => {
+      const option = document.createElement('option');
+      option.text = item.id;
+      option.value = item.id;
+      variableSelectSpatial.add(option);
+    });
+    variableSelectSpatial.disabled = false;
 
-    iterationInput = filtersContainer.querySelector('input[name=iteration]');
-    iterationInput.disabled = false;
-
-    variableDetail = filtersContainer.querySelector('select[name=variable_detail]');
-    variableDetail.disabled = false;
 
     
+    onScenarioChange();
+    onScenarioChangeSpatial();
 
   }
 }
 
 model.init = () => {
+
+
   // Initialize container
   filtersContainer = document.getElementById('filters');
   filtersContainer.innerHTML = content;
+
+  iterationTypeSelect = filtersContainer.querySelector('select[name=iteration_type]');
+  iterationTypeSelect.disabled = false;
+
+  iterationInput = filtersContainer.querySelector('input[name=iteration]');
+  iterationInput.disabled = false;
+
+  iterationInputSpatial = filtersContainer.querySelector('input[name=iteration-spatial]');
+  iterationInputSpatial.disabled = false;
+
+  timestepBegin = filtersContainer.querySelector('input[name=timestep-begin]');
+  timestepBegin.disabled = false;
+
+  timestepEnd = filtersContainer.querySelector('input[name=timestep-end]');
+  timestepEnd.disabled = false;
+
+  timestepBeginSpatial = filtersContainer.querySelector('input[name=timestep-begin-spatial]');
+  timestepBeginSpatial.disabled = false;
+
+  timestepEndSpatial = filtersContainer.querySelector('input[name=timestep-end-spatial]');
+  timestepEndSpatial.disabled = false;
+
+  variableDetail = filtersContainer.querySelector('select[name=variable_detail]');
+  variableDetail.disabled = false;
+
+  variableDetailSpatial = filtersContainer.querySelector('select[name=variable_detail-spatial]');
+  variableDetailSpatial.disabled = false;
 
   // Initialize container
   filtersContainer2 = document.getElementById('filters_project');
   filtersContainer2.innerHTML = projectFilterContent;
   
-
-  /*filtersContainer3 = document.getElementById('filters_percentile');
-  filtersContainer3.innerHTML = percentileFilterContent;*/
 
   // Add list of projects to content
   projectSelect = filtersContainer2.querySelector('select[name=project]');
@@ -164,25 +300,31 @@ model.init = () => {
     projectSelect.add(option);
   });
   
-  
+
+
+
 
   projectSelect.onchange = updateFields;
   projectSelect.onchange();
 
-  
-
-  scenarioSelect.onchange = updateIterationInput;
+  scenarioSelect.onchange = onScenarioChange//updateIterationInput;updateTimesteps;
+  scenarioSelectSpatial.onchange = onScenarioChangeSpatial//updateIterationInputSpatial;updateTimestepsSpatial;
+  //scenarioSelect.onchange = updateTimesteps;
+  //scenarioSelectSpatial.onchange = updateTimestepsSpatial;
   scenarioSelect.onchange();
+  scenarioSelectSpatial.onchange();
 
   iterationTypeSelect.onchange = updateIterationInput;
   iterationTypeSelect.onchange();
 
   variableSelect.onchange = updateVariableDetail;
+  variableSelectSpatial.onchange = updateVariableDetailSpatial;
   variableSelect.onchange();
+  variableSelectSpatial.onchange()
 
   // Create a custom event that is dispatched when Update button on form is clicked
   const form =  filtersContainer.querySelector('.filterform');//document.querySelectorAll('form.update')filtersContainer.querySelector('form');
-  const form2 = filtersContainer2.querySelector('form')
+  //const form2 = filtersContainer2.querySelector('form')
  
   
   //const form2 = filtersContainer2.querySelector('form');
@@ -190,7 +332,7 @@ model.init = () => {
     // prevent default
     e.preventDefault();
     // dispatch custom event
-    triggerEvent(document, 'filters.change', {
+     triggerEvent(document, 'filters.change', {
       detail: model.getValues()
     });
 
@@ -198,7 +340,7 @@ model.init = () => {
   };
 
 
- form2.onsubmit = function (e) {
+ /*form2.onsubmit = function (e) {
     // prevent default
     e.preventDefault();
     // dispatch custom event
@@ -206,7 +348,7 @@ model.init = () => {
     triggerEvent(document, 'filters.change', {
       detail: model.getValues()
     });
-  };
+  };*/
 
 
   /*triggerEvent(document, 'filters.change', {
@@ -214,6 +356,7 @@ model.init = () => {
 
   });*/
 
+  
   strataOverlayOpenBtn= document.getElementById('strataoverlayOpen');
   strataOverlayOpenBtn.addEventListener('click', strataoverlayOpen);
   // Open, close overlay

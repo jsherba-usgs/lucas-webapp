@@ -16,7 +16,7 @@ import filters from './components/filters/filters_download';
 
 
 // Import views
-import sectionDownload from './views/section_download';
+//import sectionDownload from './views/section_download';
 
 
 
@@ -92,7 +92,7 @@ $('#collapseExample').collapse('show');
   
 
   addEventListener(document, 'filters.change', (e) => {
-
+ 
   minPercentile = String(100 - parseInt(e.detail.iteration))
   maxPercentile = e.detail.iteration 
 
@@ -114,7 +114,7 @@ $('#collapseExample').collapse('show');
         secondary_stratum: e.detail.secondary_stratum,
         stratum: e.detail.stratum,
         timestep: year,
-        pagesize: 1000,
+        pagesize: 10000,
       };
     if (variableType !== 'transition_group'){
       params[variableType] = e.detail.variable_detail
@@ -142,19 +142,11 @@ $('#collapseExample').collapse('show');
       let params = setParams(e, 'state_label_x')
       console.log(params)
       // Fetch data for state class and update charts
-
+      
       service.loadStatesCSV(params)
 
         
-        .catch((error) => {
-          if (error.message.indexOf('No data') > -1) {
-            d3.selectAll('.chart')
-              .classed('no-data', true)
-              .select('svg')
-                .remove();
-          }
-          console.log(error);
-        });
+       
       
        
     }
