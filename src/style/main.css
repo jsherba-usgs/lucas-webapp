@@ -542,16 +542,16 @@
 
 	input[type="checkbox"],
 	input[type="radio"] {
-		-moz-appearance: none;
+		/*-moz-appearance: none;
 		-webkit-appearance: none;
 		-ms-appearance: none;
-		appearance: none;
+		appearance: none;*/
 		display: block;
 		float: left;
-		margin-right: -2em;
-		opacity: 0;
+		/*margin-right: -2em;*/
+		opacity: 1;
 		width: 1em;
-		z-index: -1;
+		z-index: -1
 	}
 
 		input[type="checkbox"] + label,
@@ -2637,4 +2637,7 @@ header.download-header > :first-child::after{
 	background-color:grey;
 	width:95%;
 	
+}
+.summaryToolsCollapseTest{
+	margin-left: 1em;
 }

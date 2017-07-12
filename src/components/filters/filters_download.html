@@ -76,8 +76,8 @@
        </form>
       
       </section>
-    <section>
-     <form class='filterform download-form'>
+   <!-- <section>
+     <form class='download-form'>
         <div class="field-full download-field">
           <label for="iteration_type">Iteration type</label>
           <div class="select-wrapper download-wrapper">
@@ -95,17 +95,73 @@
           <label for="iteration-end">Iteration End</label>
           <input name="iteration-end" type="number" min="1" max="10" step="1" value="10" class="downloadfilters" disabled/> 
         </div>
-        <div class="field-full update">
-          <input type="submit" value="Download" />
+       
+       </form>
+      
+      </section>-->
+       <form class='download-form'>
+        
+        <div class="field download-field" id="iteration1">
+          <label for="iteration" id="iteration1Label">Iteration Begin</label>
+          <input name="iteration" type="number" min="1" max="100" step="1" value="1" class="downloadfilters" disabled/> 
         </div>
+         <div class="field download-field" id="iteration2">
+          <label for="iteration-end">Iteration End</label>
+          <input name="iteration-end" type="number" min="1" max="10" step="1" value="10" class="downloadfilters" disabled/> 
+        </div>
+       
+       </form>
+      
+      </section>
+      <section>
+     <form class='download-form'>
+        <div class="summaryTools">
+           <p class="summaryToolsCollapse">
+                              <!--<div class="accordion-heading">-->
+                <a class = "summaryToolsCollapseTest accordion-toggle" data-toggle="collapse" href="#summaryToolsCollapse" data-parent="#accordion2">
+                  Summary Tools
+                </a>
+           </p>
+           <div class="accordion-body collapse in" id="summaryToolsCollapse">
+                                                 
+                <div id="accordion-toggle" class="test">
+                   
+                   
+                 
+                  <div class="field download-field">
+                    <!--<label for="iteration" id="iteration1Label">Iterations</label>-->
+                    <label><input type="checkbox" value="" id="iteration1Label" name="percentile-checkbox">Calculate Percentile of Iterations</label>
+                    <input name="iteration-percentile" type="number" min="50" max="100" step="1" value="95" class="downloadfilters" disabled/> 
+                  </div>
+                  <div class="field download-field">
+                    <!--<label for="iteration" id="iteration1Label">Iterations</label>-->
+                    <label><input type="checkbox" value="" name="sumby-checkbox">Sum by</label>
+                    <div class="select-wrapper download-wrapper">
+                      <select name="sumby" class="downloadfilters" disabled>
+                        
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                                   
+                                           
+          </div>
+        
+        </div>
+       
+       </form>
+      
+      </section>
+      <section>
+        <form class='filterform download-form'>
+          <div class="field-full update">
+            <input type="submit" value="Download" />
+          </div>
        </form>
       
       </section>
 
   </article>
-    
-
-     
                  
  
   <article class="col half download-article effect1">

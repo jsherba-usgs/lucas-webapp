@@ -67,6 +67,30 @@ const projectDetails = [
           name:"URBANIZATION"
         },
       ],
+      sumby: [
+      
+        {
+          id:'Timestep',
+          name:'Year'
+        
+        },
+         {
+          id:'Iteration',
+          name:"Iteration"
+        },
+        {
+          id:'ScenarioID',
+          name:"Scenario"
+        },
+        {
+        id:"Stratum",
+        name:"Moisuture Zone"
+        },
+        {
+        id:"SecondaryStratum",
+        name:"Island"
+        },
+      ],
       iteration: [
       
         {

@@ -103,6 +103,15 @@ $('#collapseExample').collapse('show');
       for (var i = timestepBegin; i <= timestepEnd; i++) {
          year.push(i);
       }
+
+    iterationBegin= parseInt(e.detail.iteration_begin)
+    iterationEnd= parseInt(e.detail.iteration_end)
+
+    const iterations = []
+
+      for (var i = iterationBegin; i <= iterationEnd; i++) {
+         iterations.push(i);
+      }
     function setParams(e, variableType){
       const variableApiTypes = {
         'state_label_x': 'StateLabelX',
@@ -110,35 +119,34 @@ $('#collapseExample').collapse('show');
         'transition_group': 'TransitionGroup'
       }
 
-      let group_by_values = "Timestep,Iteration,IDScenario," +  variableApiTypes[variableType]
+      let group_by_values = "Timestep,Iteration,IDScenario,Stratum,SecondaryStratum," +  variableApiTypes[variableType]
       let params = {
           scenario: e.detail.scenario,
           secondary_stratum: e.detail.secondary_stratum,
           stratum: e.detail.stratum,
           timestep: year,
+          iteration: iterations,
           pagesize: 10000,
         };
       if (variableType !== 'transition_group'){
         params[variableType] = e.detail.variable_detail
       }
-      params.group_by=group_by_values 
-      if (e.detail.iteration_type==='single_iteration'){
-            iterationBegin= parseInt(e.detail.iteration)
-            iterationEnd= parseInt(e.detail.iteration_end)
+        
+        if (e.detail.sumby_id==='custom_group'){
 
-            const iterations = []
+          params.group_by=e.detail.sumby
 
-              for (var i = iterationBegin; i <= iterationEnd; i++) {
-                 iterations.push(i);
-              }
-            params.iteration =  iterations
-            
-      }else{
-          minPercentile = String(100 - parseInt(e.detail.iteration))
-          maxPercentile = e.detail.iteration 
+        }else{
+          params.group_by=group_by_values 
+        }
+        if (e.detail.sumby_id==='custom_group'&&e.detail.iteration_id==='percentile'){
+              params.group_by+=',Iteration'
+        }
+        if (e.detail.iteration_id==='percentile'){
+          //minPercentile = String(100 - parseInt(e.detail.iteration_percentile))
+          maxPercentile = e.detail.iteration_percentile
           params.percentile = "Iteration, "+maxPercentile
-
-      }
+        }
         if (params.stratum === 'All') {
           delete params.stratum;
         };

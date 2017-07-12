@@ -75,7 +75,7 @@ function onScenarioChangeSpatial() {
     updateTimestepsSpatial();
   }
 
-function updateIterationInput() {
+/*function updateIterationInput() {
  
   const id = iterationTypeSelect.value;
   if (id === 'percentile'){
@@ -110,7 +110,26 @@ function updateIterationInput() {
     iterationInputEnd.max =  getIterationDetail.max
     iterationInputEnd.value = getIterationDetail.max
   }
-}
+}*/
+
+function updateIterationInput() {
+ 
+     const id = "single_iteration"
+    const getIterationDetail = details.iteration.find((item) => item.id === id);
+    
+    iterationInput.name = getIterationDetail.name
+    iterationInput.type = getIterationDetail.type
+    iterationInput.min =  getIterationDetail.min
+    iterationInput.max =  getIterationDetail.max
+    iterationInput.value = getIterationDetail.min
+     
+    iterationInputEnd.name = getIterationDetail.name
+    iterationInputEnd.type = getIterationDetail.type
+    iterationInputEnd.min =  getIterationDetail.min
+    iterationInputEnd.max =  getIterationDetail.max
+    iterationInputEnd.value = getIterationDetail.max
+  }
+
 function updateIterationInputSpatial(){
   const id = "single_iteration"
   const getIterationDetail = details.iteration.find((item) => item.id === id);
@@ -121,6 +140,30 @@ function updateIterationInputSpatial(){
   iterationInputSpatial.max =  getIterationDetail.max
   iterationInputSpatial.value = getIterationDetail.value
   
+}
+
+  function togglePercentileDropdown(){
+  if (percentileCheckbox.checked) {
+      iterationPercentile.disabled = false;
+      iterationPercentile.id = "percentile"
+      console.log(iterationPercentile.disabled)
+      console.log(iterationPercentile.type)
+  } else {
+      iterationPercentile.disabled = true;
+      iterationPercentile.id = "single_iteration"
+  }
+}
+
+function toggleSumbyDropdown(){
+  if (sumbyCheckbox.checked) {
+      sumby.disabled = false;
+      sumby.id = "custom_group"
+     
+  } else {
+      sumby.disabled = true;
+      sumby.id = "group"
+  }
+
 }
 
 function updateTimesteps(){
@@ -191,7 +234,17 @@ function updateFields() {
 
   if (details) {
 
-
+    sumby = filtersContainer.querySelector('select[name=sumby]')
+    sumby.id = "group"
+    removeOptions(sumby);
+    details.sumby.forEach((item) => {
+      console.log(item)
+      const option = document.createElement('option');
+      option.text = item.name;
+      option.value = item.id;
+      sumby.add(option);
+    });
+    
 
     // Populate scenario select box
     scenarioSelect = filtersContainer.querySelector('select[name=scenario]');
@@ -305,12 +358,19 @@ model.init = () => {
   filtersContainer = document.getElementById('filters');
   filtersContainer.innerHTML = content;
 
-  iterationTypeSelect = filtersContainer.querySelector('select[name=iteration_type]');
-  iterationTypeSelect.disabled = false;
+  /*iterationTypeSelect = filtersContainer.querySelector('select[name=iteration_type]');
+  iterationTypeSelect.disabled = false;*/
+  percentileCheckbox =filtersContainer.querySelector('input[name=percentile-checkbox]');
+  sumbyCheckbox =filtersContainer.querySelector('input[name=sumby-checkbox]');
 
   iterationInput = filtersContainer.querySelector('input[name=iteration]');
   iterationInput.disabled = false;
 
+  iterationPercentile = filtersContainer.querySelector('input[name=iteration-percentile]');
+  iterationPercentile.id = "single_iteration"
+
+  
+  
   iterationInputEnd = filtersContainer.querySelector('input[name=iteration-end]');
   iterationInputEnd.disabled = false;
 
@@ -364,13 +424,17 @@ model.init = () => {
   scenarioSelect.onchange();
   scenarioSelectSpatial.onchange();
 
-  iterationTypeSelect.onchange = updateIterationInput;
-  iterationTypeSelect.onchange();
+  /*iterationTypeSelect.onchange = updateIterationInput;
+  iterationTypeSelect.onchange();*/
 
   variableSelect.onchange = updateVariableDetail;
   variableSelectSpatial.onchange = updateVariableDetailSpatial;
   variableSelect.onchange();
   variableSelectSpatial.onchange()
+
+  percentileCheckbox.onchange = togglePercentileDropdown;
+  sumbyCheckbox.onchange = toggleSumbyDropdown;
+
 
   // Create a custom event that is dispatched when Update button on form is clicked
   const form =  filtersContainer.querySelector('.filterform');//document.querySelectorAll('form.update')filtersContainer.querySelector('form');
@@ -513,9 +577,12 @@ model.getValues = () => (
     scenario: getOptionVals(scenarioSelect),
     stratum: stratumSelect.value,
     secondary_stratum: secStratumSelect.value,
-    iteration: iterationInput.value,
+    iteration_percentile: iterationPercentile.value,
+    iteration_begin: iterationInput.value,
     iteration_end: iterationInputEnd.value,
-    iteration_type: iterationTypeSelect.value,
+    iteration_id: iterationPercentile.id,
+    sumby_id: sumby.id,
+    sumby:sumby.value,
     variable: variableSelect.value,
     variable_detail: getOptionVals(variableDetail),
     timestep_begin: timestepBegin.value,
