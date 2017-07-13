@@ -33,6 +33,51 @@ const projectDetails = [
           years: [2011,2061],
         },
       ],
+      layerDownload:[{
+       
+          name:"Landcover",
+          values:[
+        {
+          id:1,
+          type_code:"sc",
+          name:"STATECLASS"
+        },
+        {
+          id:7129,
+          type_code:"tgap",
+          name:"AGRICULTURAL CONTRACTION"
+        },
+        {
+          id:7134,
+          type_code:"tgap",
+          name:"AGRICULTURAL EXPANSION"
+        },
+        {
+          id:7141,
+          type_code:"tgap",
+          name:"MOISTURE ZONE: Dry->Mesic"
+        },
+        {
+          id:7148,
+          type_code:"tgap",
+          name:"MOISTURE ZONE: Mesic->Dry"
+        },
+        {
+          id:7151,
+          type_code:"tgap",
+          name:"MOISTURE ZONE: Mesic->Wet"
+        },
+        {
+          id:7158,
+          type_code:"tgap",
+          name:"MOISTURE ZONE: Wet->Mesic"
+        },
+        {
+          id:7171,
+          type_code:"tgap",
+          name:"URBANIZATION"
+        },
+      ]}],
       layer:[
        {
           id:1,
@@ -331,6 +376,64 @@ const projectDetails = [
           type: 'Business as Usual',
           iterations: 10,
           years: [2001,2001]
+        },
+      ],
+      layer:[
+       {
+          id:1,
+          name:"STATECLASS"
+        },
+        {
+          id:7129,
+          name:"AGRICULTURAL CONTRACTION"
+        },
+        {
+          id:7134,
+          name:"AGRICULTURAL EXPANSION"
+        },
+        {
+          id:7141,
+          name:"MOISTURE ZONE: Dry->Mesic"
+        },
+        {
+          id:7148,
+          name:"MOISTURE ZONE: Mesic->Dry"
+        },
+        {
+          id:7151,
+          name:"MOISTURE ZONE: Mesic->Wet"
+        },
+        {
+          id:7158,
+          name:"MOISTURE ZONE: Wet->Mesic"
+        },
+        {
+          id:7171,
+          name:"URBANIZATION"
+        },
+      ],
+      sumby: [
+      
+        {
+          id:'Timestep',
+          name:'Year'
+        
+        },
+         {
+          id:'Iteration',
+          name:"Iteration"
+        },
+        {
+          id:'ScenarioID',
+          name:"Scenario"
+        },
+        {
+        id:"Stratum",
+        name:"Moisuture Zone"
+        },
+        {
+        id:"SecondaryStratum",
+        name:"Island"
         },
       ],
       iteration: [

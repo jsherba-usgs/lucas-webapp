@@ -81,7 +81,10 @@ $('#collapseExample').collapse('show');
   overlayOpenBtn.addEventListener('click', overlayOpen);
   overlayCloseBtn.addEventListener('click', overlayClose);
 
-  
+  function leftPad(val = 1, length = 4) {
+  const str = val.toString();
+  return `${'0'.repeat(length - str.length)}${str}`;
+  }
   /*
   * INTIALIZATIONS FOR SECTION 1
   */
@@ -92,7 +95,7 @@ $('#collapseExample').collapse('show');
   
 
   addEventListener(document, 'filters.change', (e) => {
-    console.log(e.detail)
+    
     
 
     timestepBegin= parseInt(e.detail.timestep_begin)
@@ -163,23 +166,55 @@ $('#collapseExample').collapse('show');
       
       // Fetch data for state class and update charts
       let variableType= 'stateclasses/'
-      service.loadCSV(params, variableType)
+      service.tabularDownload(params, variableType)
          
       }
     if (e.detail.variable ==="Carbon Stock"){
 
       let params = setParams(e, 'stock_type')
       let variableType= 'stocktypes/'
-      service.loadCSV(params, variableType)
+      service.tabularDownload(params, variableType)
     }
     if (e.detail.variable ==="Land-Cover Transition"){
     
      let params = setParams(e, 'transition_group')
      let variableType= 'transitions/'
-     service.loadCSV(params, variableType)
+     service.tabularDownload(params, variableType)
 
    }
   });
+
+  addEventListener(document, 'filters-spatial.change', (e) => {
+    console.log(e.detail)
+    let variable_detail = JSON.parse(e.detail.variable_detail);
+    let params = {
+          scenario: e.detail.scenario,
+          secondary_stratum: e.detail.secondary_stratum,
+          stratum: e.detail.stratum,
+          timestep_begin: e.detail.timestep_begin,
+          timestep_end: e.detail.timestep_end,
+          variable_detail: variable_detail.id ,
+          variable_detail_type:variable_detail.type,
+          iteration: e.detail.iteration,
+          
+        };
+        console.log(params)
+
+      
+      let slug = "scenario-"+params.scenario.toString()+"-spatial-it"+leftPad(params.iteration)+"-"+params.variable_detail_type
+
+      if (params.variable_detail != "1"){
+          let transID = "-"+params.variable_detail
+          slug += (transID)
+      }
+      let dateBegin =params.timestep_begin + "-01-01"
+      let dateEnd = params.timestep_end + "-01-01"
+      let urlPath = slug + "/" +dateBegin+ "/" + dateEnd
+      
+      console.log(urlPath)
+        //scenario-6385-spatial-it0015-sc/2001-01-01/2010-01-01/
+      service.spatialDownload(urlPath)
+  })
 
   // Intializing the filters starts the app on page load
 

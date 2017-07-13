@@ -39,7 +39,7 @@ function getAllRecords(urlWithParams) {
   });
 }
 
-function getAllRecordsCSV(urlWithParams) {
+/*function getAllRecordsCSV(urlWithParams) {
   return new Promise((resolve, reject) => {
     let series = [];
     const opts = {};
@@ -61,7 +61,7 @@ function getAllRecordsCSV(urlWithParams) {
    
     
   });
-}
+}*/
  
 
 
@@ -88,7 +88,7 @@ service.loadStates = (params) => {
 
 
 
- function downloadFile(urlToSend) {
+ function downloadFile(urlToSend, extension) {
   
      var req = new XMLHttpRequest();
      req.open("GET", urlToSend, true);
@@ -99,7 +99,7 @@ service.loadStates = (params) => {
         
         var link=document.createElement('a');
         link.href=window.URL.createObjectURL(blob);
-        link.download="lucas_download" + ".csv";
+        link.download="lucas_download" + extension;
         document.body.appendChild(link)
         link.click();
          //window.location = urlToSend;
@@ -111,7 +111,7 @@ service.loadStates = (params) => {
  }
 
 
-service.loadCSV = (params, variableType) => {
+service.tabularDownload = (params, variableType) => {
   let url = apiEndpoint+variableType;
   
   let csvType = "&format=csv"
@@ -121,8 +121,20 @@ service.loadCSV = (params, variableType) => {
 
     url = `${url}?${params}${csvType}`;
   }
+ let extension= ".csv"
+ downloadFile(url, extension)
  
- downloadFile(url)
+  
+};
+
+service.spatialDownload = (urlPath) => {
+  let url = apiEndpoint+"series/"+urlPath;
+  
+  let tifType = "format=tif.zip"
+ 
+ url = `${url}?${tifType}`;
+ let extension= ".zip"
+ downloadFile(url, extension)
  
   
 };

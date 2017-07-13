@@ -134,8 +134,7 @@ scenarioParams.split(',').forEach(function(scenarioValue) {
         scenarioDomain.push(scenarioValue)
     });
 
-console.log(scenarioDomain)
-console.log(scenarioRange)
+
 const scenarioColorScale = d3.scale.ordinal().domain(scenarioDomain).range(scenarioRange)
  scenarioLegends
     .append('svg')
@@ -454,7 +453,7 @@ function addMapLegends(){
           }
             });
 
-          console.log(data)
+          
           // Group data by stateclass and year, calculate total area (amount)
          
           const totalAreaByYear = d3.nest()

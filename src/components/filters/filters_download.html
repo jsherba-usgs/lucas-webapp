@@ -188,14 +188,14 @@
         <div class="field-full download-field">
           <label for="scenario">Scenario</label>
           <div>
-            <select class='multiselect downloadfilters' name="scenario-spatial" multiple disabled>
+            <select class='downloadfilters' name="scenario-spatial" disabled>
             </select>
           </div>       
         </div>
         <div class="field-full download-field">
           <label for="variable_detail">Layer</label>
           <div>
-            <select class='multiselect downloadfilters' id="variableSelect" name="variable_detail-spatial" multiple disabled>
+            <select class='downloadfilters' name="variable_detail-spatial" disabled>
             </select>
           </div>
         </div>
@@ -205,7 +205,7 @@
     <section>
       <form class="download-form">
         <div class="field-full download-field">
-          <label for="secondary_stratum-spatial">Island <a id="strataoverlayOpen" href="#strata-overlay">(Choose on Map)</a></label>
+          <label for="secondary_stratum-spatial">Island <a id="strataoverlayOpen2" href="#strata-overlay2">(Choose on Map)</a></label>
 
           <div class="select-wrapper download-wrapper">
             <select name="secondary_stratum-spatial" class="downloadfilters" disabled>
@@ -234,16 +234,15 @@
           <label for="timestep-end-spatial">Timestep End</label>
           <input name="timestep-end-spatial" type="number" min="2011" max="2100" step="1" value="2011" class="downloadfilters" disabled/> 
         </div>
-       
-       </form>
-    </section>
-    <section>
-     <form class='download-form'>
-  
         <div class="field-full download-field">
           <label for="iteration-spatial">Iteration value</label>
           <input name="iteration-spatial" type="number" min="1" max="100" step="1" value="95" class="downloadfilters" disabled/> 
         </div>
+       
+       </form>
+    </section>
+    <section>
+     <form class='download-form filterform-spatial'>
         <div class="field-full update">
           <input type="submit" value="Download" />
         </div>

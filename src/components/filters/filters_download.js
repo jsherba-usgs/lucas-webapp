@@ -112,6 +112,22 @@ function onScenarioChangeSpatial() {
   }
 }*/
 
+function updateIterationSpatialByLayer(){
+  let variableDetailSpatialCode = JSON.parse(variableDetailSpatial.value);
+    if (variableDetailSpatialCode.id!="1"){
+      
+      //iterationInputSpatial.value="0"
+      iterationInputSpatial.disabled = true;
+      console.log(iterationInputSpatial.disabled)
+      console.log(iterationInputSpatial.value)
+    }else{
+
+      
+      iterationInputSpatial.disabled = false;
+    }
+}
+  
+
 function updateIterationInput() {
  
      const id = "single_iteration"
@@ -146,8 +162,7 @@ function updateIterationInputSpatial(){
   if (percentileCheckbox.checked) {
       iterationPercentile.disabled = false;
       iterationPercentile.id = "percentile"
-      console.log(iterationPercentile.disabled)
-      console.log(iterationPercentile.type)
+      
   } else {
       iterationPercentile.disabled = true;
       iterationPercentile.id = "single_iteration"
@@ -213,16 +228,22 @@ function updateVariableDetail() {
 function updateVariableDetailSpatial(){
   variableDetailSpatial.options.length = 0
   const id = variableSelectSpatial.value;
-  const getvariableDetailSpatial = details.variable.find((item) => item.id === id);
-  getvariableDetailSpatial.variable_detail.forEach((item) => {
+  const getvariableDetailSpatial = details.layerDownload.find((item) => item.name === id);
+
+  getvariableDetailSpatial.values.forEach((item) => {
+  let id = item.id
+  let type= item.type_code
+  value_object = JSON.stringify({"id":id,"type": type})
+  
       const option = document.createElement('option');
-      option.text = item.id;
-      option.value = item.id;
+      option.text = item.name;
+      option.value = value_object;
+      
       variableDetailSpatial.add(option);
     });
-    variableDetailSpatial[0].selected = true
+    //variableDetailSpatial[0].selected = true
     variableDetailSpatial.disabled = false;
-    variableDetailSpatial.setAttribute('size',variableDetailSpatial.childElementCount);
+    //variableDetailSpatial.setAttribute('size',variableDetailSpatial.childElementCount);
   }
 
 
@@ -238,7 +259,7 @@ function updateFields() {
     sumby.id = "group"
     removeOptions(sumby);
     details.sumby.forEach((item) => {
-      console.log(item)
+      
       const option = document.createElement('option');
       option.text = item.name;
       option.value = item.id;
@@ -270,10 +291,10 @@ function updateFields() {
       option.value = item.id;
       scenarioSelectSpatial.add(option);
     });
-    scenarioSelectSpatial[0].selected = true
+    //scenarioSelectSpatial[0].selected = true
     scenarioSelectSpatial.disabled = false;
 
-    scenarioSelectSpatial.setAttribute('size',scenarioSelectSpatial.childElementCount);
+    //scenarioSelectSpatial.setAttribute('size',scenarioSelectSpatial.childElementCount);
 
     // Populate secondary stratum select box
     secStratumSelect = filtersContainer.querySelector('select[name=secondary_stratum]');
@@ -334,10 +355,10 @@ function updateFields() {
      // Populate variable select box
     variableSelectSpatial = filtersContainer.querySelector('select[name=variable-spatial]');
     removeOptions(variableSelectSpatial);
-    details.variable.forEach((item) => {
+    details.layerDownload.forEach((item) => {
       const option = document.createElement('option');
-      option.text = item.id;
-      option.value = item.id;
+      option.text = item.name;
+      option.value = item.name;
       variableSelectSpatial.add(option);
     });
     variableSelectSpatial.disabled = false;
@@ -352,9 +373,9 @@ function updateFields() {
 
 model.init = () => {
 
-  let iteration1 = document.getElementById('iteration1');
+  /*let iteration1 = document.getElementById('iteration1');
   let iteration2 = document.getElementById('iteration2');
-  let iteration1Label = document.getElementById("iteration1Label")
+  let iteration1Label = document.getElementById("iteration1Label")*/
   filtersContainer = document.getElementById('filters');
   filtersContainer.innerHTML = content;
 
@@ -431,14 +452,16 @@ model.init = () => {
   variableSelectSpatial.onchange = updateVariableDetailSpatial;
   variableSelect.onchange();
   variableSelectSpatial.onchange()
-
+  
+  variableDetailSpatial.onchange = updateIterationSpatialByLayer
+  
   percentileCheckbox.onchange = togglePercentileDropdown;
   sumbyCheckbox.onchange = toggleSumbyDropdown;
 
 
   // Create a custom event that is dispatched when Update button on form is clicked
   const form =  filtersContainer.querySelector('.filterform');//document.querySelectorAll('form.update')filtersContainer.querySelector('form');
-  //const form2 = filtersContainer2.querySelector('form')
+  const formSpatial = filtersContainer.querySelector('.filterform-spatial')
  
   
   //const form2 = filtersContainer2.querySelector('form');
@@ -455,22 +478,56 @@ model.init = () => {
 
   };
 
+  formSpatial.onsubmit = function (e) {
 
- /*form2.onsubmit = function (e) {
     // prevent default
     e.preventDefault();
     // dispatch custom event
-    
-    triggerEvent(document, 'filters.change', {
-      detail: model.getValues()
+     triggerEvent(document, 'filters-spatial.change', {
+      detail: model.getValuesSpatial()
+
     });
-  };*/
 
 
-  /*triggerEvent(document, 'filters.change', {
-    detail: model.getValues()
+  };
 
-  });*/
+model.getValuesSpatial = () => (
+  {
+
+    project: projectSelect.value,
+    scenario: scenarioSelectSpatial.value,
+    stratum: stratumSelectSpatial.value,
+    secondary_stratum: secStratumSelectSpatial.value,
+    iteration: (iterationInputSpatial.disabled == true ? "0" : iterationInputSpatial.value),
+    variable: variableSelectSpatial.value,
+    variable_detail: variableDetailSpatial.value,
+    timestep_begin: timestepBeginSpatial.value,
+    timestep_end: timestepEndSpatial.value
+
+  }
+);
+
+
+model.getValues = () => (
+  {
+
+    project: projectSelect.value,
+    scenario: getOptionVals(scenarioSelect),
+    stratum: stratumSelect.value,
+    secondary_stratum: secStratumSelect.value,
+    iteration_percentile: iterationPercentile.value,
+    iteration_begin: iterationInput.value,
+    iteration_end: iterationInputEnd.value,
+    iteration_id: iterationPercentile.id,
+    sumby_id: sumby.id,
+    sumby:sumby.value,
+    variable: variableSelect.value,
+    variable_detail: getOptionVals(variableDetail),
+    timestep_begin: timestepBegin.value,
+    timestep_end: timestepEnd.value
+
+  }
+);
 
   
   strataOverlayOpenBtn= document.getElementById('strataoverlayOpen');
@@ -484,13 +541,6 @@ model.init = () => {
     stratamap.fitBounds(geojsonLayer.getBounds());
   }
   
-  /*strataOverlayCloseBtn = document.getElementById('strataoverlayClose');
-  strataOverlayCloseBtn.addEventListener('click', strataoverlayClose);
-  function strataoverlayClose() {
-    document.body.classList.remove('is-overlay-visible2');
-  }*/
- 
-
 
 const stratamodal = document.getElementById('strataModal');
 const strataspan = document.getElementsByClassName("close")[0];
@@ -568,27 +618,5 @@ var stratamap = new L.Map('strata-leaflet', {
 
 };
 
-
-
-model.getValues = () => (
-  {
-
-    project: projectSelect.value,
-    scenario: getOptionVals(scenarioSelect),
-    stratum: stratumSelect.value,
-    secondary_stratum: secStratumSelect.value,
-    iteration_percentile: iterationPercentile.value,
-    iteration_begin: iterationInput.value,
-    iteration_end: iterationInputEnd.value,
-    iteration_id: iterationPercentile.id,
-    sumby_id: sumby.id,
-    sumby:sumby.value,
-    variable: variableSelect.value,
-    variable_detail: getOptionVals(variableDetail),
-    timestep_begin: timestepBegin.value,
-    timestep_end: timestepEnd.value
-
-  }
-);
 
 export default model;
