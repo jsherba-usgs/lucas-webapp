@@ -2388,25 +2388,28 @@
     overflow: auto; /* Enable scroll if needed */
     background-color: rgb(0,0,0); /* Fallback color */
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-    z-index: 9999;
+    z-index: 100;
 }
 
 /* Modal Content/Box */
 .modal-content {
     background-color: #fefefe;
     margin: 15% auto; /* 15% from the top and centered */
-    padding: 20px;
     border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
+    width: 70%; /* Could be more or less, depending on screen size */
+    
 }
 
 /* The Close Button */
-.close {
+#closeModal {
     color: #aaa;
     float: right;
-    font-size: 28px;
+    font-size: 30px;
     font-weight: bold;
-}
+    text-align: center;
+	vertical-align: middle;
+	line-height: 30px;
+	}
 
 .close:hover,
 .close:focus {
@@ -2448,15 +2451,16 @@
 			box-shadow: none;
 			color: #87a449;
 }
-
+#mapid { height: 500px; }
 #choosefilterbtn{
 	margin-bottom: 0em;
 }
 
-#strata-leaflet, #secstrata-leaflet{
+#strata-leaflet{
 
-	height:400px;
+	height:500px;
 }
+
 
 .multiselect{
 	height: 100%;

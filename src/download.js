@@ -13,7 +13,7 @@ import { addEventListener, triggerEvent } from './helpers/utils';
 
 // Import Components
 import filters from './components/filters/filters_download';
-
+import projects from './helpers/project-details'
 
 // Import views
 //import sectionDownload from './views/section_download';
@@ -185,9 +185,10 @@ $('#collapseExample').collapse('show');
   });
 
   addEventListener(document, 'filters-spatial.change', (e) => {
-    console.log(e.detail)
+    
     let variable_detail = JSON.parse(e.detail.variable_detail);
     let params = {
+          project:e.detail.project,
           scenario: e.detail.scenario,
           secondary_stratum: e.detail.secondary_stratum,
           stratum: e.detail.stratum,
@@ -198,9 +199,16 @@ $('#collapseExample').collapse('show');
           iteration: e.detail.iteration,
           
         };
-        console.log(params)
+        
+        
+      let jsonSecondaryStrata
+      if (params.secondary_stratum==="All"){
+          jsonSecondaryStrata=false
+      }else{
+          jsonSecondaryStrata = projects.getDetailsForId(params.project).details.secondary_stratum.find((item) => item.id === params.secondary_stratum).geom
+          jsonSecondaryStrata =JSON.stringify(jsonSecondaryStrata)
 
-      
+      }
       let slug = "scenario-"+params.scenario.toString()+"-spatial-it"+leftPad(params.iteration)+"-"+params.variable_detail_type
 
       if (params.variable_detail != "1"){
@@ -211,9 +219,9 @@ $('#collapseExample').collapse('show');
       let dateEnd = params.timestep_end + "-01-01"
       let urlPath = slug + "/" +dateBegin+ "/" + dateEnd
       
-      console.log(urlPath)
+      //console.log(urlPath, )
         //scenario-6385-spatial-it0015-sc/2001-01-01/2010-01-01/
-      service.spatialDownload(urlPath)
+      service.spatialDownload(urlPath, jsonSecondaryStrata)
   })
 
   // Intializing the filters starts the app on page load

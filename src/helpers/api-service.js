@@ -127,12 +127,17 @@ service.tabularDownload = (params, variableType) => {
   
 };
 
-service.spatialDownload = (urlPath) => {
+service.spatialDownload = (urlPath, jsonStrata) => {
   let url = apiEndpoint+"series/"+urlPath;
   
-  let tifType = "format=tif.zip"
- 
- url = `${url}?${tifType}`;
+  let tifType = "&format=tif.zip"
+  let strataGeom = "g="+jsonStrata
+  if(jsonStrata){
+ url = `${url}?${strataGeom}${tifType}`;
+  }else{
+  url= `${url}?${tifType}`;
+}
+ console.log(url)
  let extension= ".zip"
  downloadFile(url, extension)
  

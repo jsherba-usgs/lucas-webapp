@@ -43,7 +43,8 @@
     <section>
       <form class="download-form">
         <div class="field-full download-field">
-          <label for="secondary_stratum">Island <a id="strataoverlayOpen" href="#strata-overlay">(Choose on Map)</a></label>
+         <label for="secondary_stratum">Island <a id="secStrataOverlayOpen" href="#strata-overlay">(Choose on Map)</a></label>
+         
 
           <div class="select-wrapper download-wrapper">
             <select name="secondary_stratum" class="downloadfilters" disabled>
@@ -52,7 +53,7 @@
           </div>
         </div>
         <div class="field-full download-field">
-          <label for="stratum">Moisture Zone <a>(Choose on Map)<a/></label>
+          <label for="stratum">Moisture Zone <a id="strataOverlayOpen" href="#strata-overlay">(Choose on Map)</a></label>
           <div class="select-wrapper download-wrapper">
             <select name="stratum" class="downloadfilters" disabled>
               <option value="All">All</option>
@@ -68,6 +69,7 @@
            <input name="timestep-begin" type="number" min="2011" max="2100" step="1" value="2011" class="downloadfilters" disabled/> 
 
         </div>
+
         <div class="field download-field">
           <label for="timestep-end">Date End</label>
           <input name="timestep-end" type="number" min="2011" max="2100" step="1" value="2011" class="downloadfilters" disabled/> 
@@ -164,7 +166,7 @@
   </article>
                  
  
-  <article class="col half download-article effect1">
+<article class="col half download-article effect1">
     <div class="download-field field-full">
       <header class="major download-header">
                 <h3>Spatial Download</h3>
@@ -205,7 +207,7 @@
     <section>
       <form class="download-form">
         <div class="field-full download-field">
-          <label for="secondary_stratum-spatial">Island <a id="strataoverlayOpen2" href="#strata-overlay2">(Choose on Map)</a></label>
+          <label for="secondary_stratum-spatial">Island <a id="strataoverlayOpen" href="#strata-overlay2">(Choose on Map)</a></label>
 
           <div class="select-wrapper download-wrapper">
             <select name="secondary_stratum-spatial" class="downloadfilters" disabled>
@@ -252,48 +254,29 @@
      
       </article>
     </div>
+    
 </div>
 
- <div id="strataModal" class="modal">
-
+ 
+<div id="strataModal" class="modal">
+          <!--<div class="container">
+            <div class="row">
+               <div class="modal-content">
+                <div class="col-xs-10">
+                  <div id="strata-leaflet"></div>
+                    
+                </div>
+                <div class="col-xs-2">
+                    <span class="close">&times;</span>
+                </div>
+              </div>
+            </div>
+        </div>-->
           <!-- Modal content -->
           <div class="modal-content">
-            <span class="close">&times;</span>
-            <br>
+           <!-- <span class="close">&times;</span>-->
+            
              <div id="strata-leaflet"></div>
-            
-          </div>
-
- </div>
- <div id="secstrataModal" class="modal">
-
-          <!-- Modal content -->
-          <div class="modal-content">
-            <span class="close">&times;</span>
-            <br>
-             <div id="secstrata-leaflet"></div>
-            
-          </div>
-
- </div>
- <div id="strataModal2" class="modal">
-
-          <!-- Modal content -->
-          <div class="modal-content">
-            <span class="close">&times;</span>
-            <br>
-             <div id="strata-leaflet"></div>
-            
-          </div>
-
- </div>
- <div id="secstrataModal2" class="modal">
-
-          <!-- Modal content -->
-          <div class="modal-content">
-            <span class="close">&times;</span>
-            <br>
-             <div id="secstrata-leaflet"></div>
             
           </div>
 

@@ -596,6 +596,52 @@ if (update) {
 });
 // https: also suppported.
 
+
+
+  var style = {
+        "clickable": true,
+        "color": "#00D",
+        "fillColor": "#00D",
+        "weight": 1.0,
+        "opacity": 0.3,
+        "fillOpacity": 0.2
+    };
+    var hoverStyle = {
+        "fillOpacity": 0.5
+    };
+
+    var geojsonURL = 'http://127.0.0.1:8000/vtiles/hi_islands/{z}/{x}/{y}.geojson';
+    var geojsonTileLayer = new L.TileLayer.GeoJSON(geojsonURL, {
+            clipTiles: true,
+            unique: function (feature) {
+                return feature.id; 
+            }
+        }, {
+            style: style,
+            onEachFeature: function (feature, layer) {
+                if (feature.properties) {
+                    var popupString = '<div class="popup">';
+                    for (var k in feature.properties) {
+                        var v = feature.properties[k];
+                        popupString += k + ': ' + v + '<br />';
+                    }
+                    popupString += '</div>';
+                    layer.bindPopup(popupString);
+                }
+                if (!(layer instanceof L.Point)) {
+                    layer.on('mouseover', function () {
+                        layer.setStyle(hoverStyle);
+                    });
+                    layer.on('mouseout', function () {
+                        layer.setStyle(style);
+                    });
+                }
+            }
+        }
+    );
+
+
+ 
  
   maps[i] =  L.map(id, {
       //center: ["22.234262", "-159.784857"],
@@ -610,7 +656,7 @@ if (update) {
       layers: [cartoDBPositron, stateclassTiles],
       });
 
-    
+  maps[i].addLayer(geojsonTileLayer); 
   const url = `http://127.0.0.1:8000/tiles/s${mapscenario}-it${settings.iteration_number}-ts${settings.year}-sc/{z}/{x}/{y}.png?style=lulc`;
   
   stateclassTiles.setUrl(url);
@@ -622,6 +668,7 @@ if (update) {
     }
       
   }
+
   pairs(maps).forEach(function(pair){
       pair[0].sync(pair[1])
       pair[1].sync(pair[0])
