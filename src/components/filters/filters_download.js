@@ -225,6 +225,7 @@ function updateVariableDetail() {
   }
 
 function updateVariableDetailSpatial(){
+
   variableDetailSpatial.options.length = 0
   const id = variableSelectSpatial.value;
   const getvariableDetailSpatial = details.layerDownload.find((item) => item.name === id);
@@ -293,7 +294,8 @@ function updateFields() {
     //scenarioSelectSpatial[0].selected = true
     scenarioSelectSpatial.disabled = false;
 
-    //scenarioSelectSpatial.setAttribute('size',scenarioSelectSpatial.childElementCount);
+    //Update secondary stratum label
+
 
     // Populate secondary stratum select box
     secStratumSelect = filtersContainer.querySelector('select[name=secondary_stratum]');
@@ -497,23 +499,24 @@ model.init = () => {
   };
 
 
- 
-  /*strataOverlayCloseBtn = document.getElementById('strataoverlayClose');
-  strataOverlayCloseBtn.addEventListener('click', strataoverlayClose);
-  function strataoverlayClose() {
-    document.body.classList.remove('is-overlay-visible2');
-  }*/
- 
-
-
   secStrataOverlayOpenBtn= document.getElementById('secStrataOverlayOpen');
   secStrataOverlayOpenBtn.addEventListener("click", function(){
-    strataOverlayOpen('secStrata');
+    strataOverlayOpen(['secondary_stratum','nonSpatial']);
 }, false);
   strataOverlayOpenBtn= document.getElementById('strataOverlayOpen');
   strataOverlayOpenBtn.addEventListener("click", function(){
-    strataOverlayOpen('Strata');
+    strataOverlayOpen(['stratum','nonSpatial']);
 }, false);
+
+  secStrataOverlayOpenSpatialBtn = document.getElementById('secStrataOverlayOpenSpatial');
+  secStrataOverlayOpenSpatialBtn.addEventListener("click", function(){
+    strataOverlayOpen(['secondary_stratum','spatial']);
+}, false);
+  strataOverlayOpenSpatialBtn=document.getElementById('strataOverlayOpenSpatial');
+  strataOverlayOpenSpatialBtn.addEventListener("click", function(){
+    strataOverlayOpen(['strata','spatial']);
+}, false);
+
   //strataOverlayOpenBtn= document.getElementById('strataOverlayOpen');
   //strataOverlayOpenBtn.addEventListener('click', strataOverlayOpen);
   // Open, close overlay
@@ -524,7 +527,7 @@ model.init = () => {
 
     let layerName
     let bbGeoJsonLayer
-    if (strataType==='secStrata'){
+    if (strataType[0]==='secondary_stratum'){
       layerName = details.jsonlayer.sec_strata.name;
       bbGeoJsonLayer = details.jsonlayer.sec_strata.bb
 
@@ -536,6 +539,7 @@ model.init = () => {
   
     
     var geojsonURL = `http://127.0.0.1:8000/vtiles/${layerName}/{z}/{x}/{y}.geojson`;
+    
         var style = {
         "clickable": true,
         "color": "#00D",
@@ -550,8 +554,7 @@ model.init = () => {
 
     
 
-
-
+  
 
 
 
@@ -562,8 +565,8 @@ model.init = () => {
     strataspan.onclick = function() {
         stratamodal.style.display = "none";
     }
-
-        var geojsonTileLayer = new L.TileLayer.GeoJSON(geojsonURL, {
+   
+    var geojsonTileLayer = new L.TileLayer.GeoJSON(geojsonURL, {
             clipTiles: true,
             unique: function (feature) {
                 return feature.id; 
@@ -577,54 +580,67 @@ model.init = () => {
                     
                     for (var k in feature.properties) {
                         var v = feature.properties[k];
-                        if (k==='slug'){
+                        if (k==='label'){
                           //popupString += k + ': ' + v + '<br />';
                           popupString += v + '<br />';
 
                         }
-                        
+
+                      
+                     
+                   
                     }
-                    //popupString += '</div>';
                     
+                    let stratum_type
+                    let spatial
+                    if (strataType[0]==='secondary_stratum'){
+                        stratum_type = 'secondary_stratum'
+                    }else{
+                        stratum_type = 'stratum'
+                    }
+                    if (strataType[1]==='spatial'){
+                        spatial = '-spatial'
+                    }else{
+                        spatial = ''
+                    }
+                    let selectBox =`select[name=${stratum_type}${spatial}]`
 
+                    layer.on('click', function (e) {
+                     let filterValue = e.target.feature.properties.label.split(" County")[0]
+                     filtersContainer.querySelector(selectBox).value = filterValue
+                     stratamodal.style.display = "none";
+                    
+                     
+                    });
+                   
+                   
+                }
+                if (!(layer instanceof L.Point)) {
+                     var popup = L.popup()
+                    layer.on('mouseover', function (e) {
+                        layer.setStyle(hoverStyle);
 
-
-                   /* layer.on('click', function(e) {
-                        stratamap.invalidateSize();
-                         var popup = L.popup()
+                        
+                        popup
                           .setLatLng([e.latlng.lat,e.latlng.lng])
                           .setContent(popupString)
                           .openOn(stratamap);
 
-              
-                          
                           
                         layer.bindPopup(popup);
                         $('.leaflet-popup').css({'bottom': '530px', 'z-index':'1000'})
-
-                  
-                      });*/
-                   
-                }
-                if (!(layer instanceof L.Point)) {
-                    layer.on('mouseover', function (e) {
-                        layer.setStyle(hoverStyle);
 
 
                     });
                     layer.on('mouseout', function () {
                         layer.setStyle(style);
+                        stratamap.closePopup(popup);
+                        
                     });
                 }
             }
         }
-    ).on('click', function (e) {
-      console.log("test")
-     filtersContainer.querySelector('select[name=secondary_stratum]').value = e.layer.feature.properties.slug
-     stratamodal.style.display = "none";
-      // Check for selected
-     
-    });
+    )
     cartoDBPositron.addTo(stratamap)
     geojsonTileLayer.addTo(stratamap)
     // 
@@ -650,19 +666,6 @@ window.onclick = function(event) {
     }
 }
 
-//jsonstrata = projects.getDetailsForId(projectId).details.jsonlayer.sec_strata
-
-//jsonstrata.features.shift();
-
-/*var stratamap = new L.Map('strata-leaflet', {
-  'center': [37.8, -96],
-  'zoom': 4,
-  'layers': [
-    L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
-  maxZoom: 18
-})
-  ]
-});*/
 
 let cartoDBPositron = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
  // attribution: 'Data: <a href="http://www.openstreetmap.org/copyright">OSM</a>, Map Tiles: <a href="http://cartodb.com/attributions">CartoDB</a>',
@@ -673,13 +676,13 @@ let cartoDBPositron = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabe
 var stratamap = new L.Map('strata-leaflet', {
       center: ["22.234262", "-159.784857"],
       
-      zoom: 8,
+      zoom: 4,
       //minZoom: 5,
       maxZoom: 19,
       attributionControl: true,
       touchZoom: true,
       scrollWheelZoom: false,
-      layers: [cartoDBPositron],
+      //layers: [cartoDBPositron],
       });
 
 var ourCustomControl = L.Control.extend({

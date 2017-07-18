@@ -199,29 +199,57 @@ $('#collapseExample').collapse('show');
           iteration: e.detail.iteration,
           
         };
-        
-        
-      let jsonSecondaryStrata
-      if (params.secondary_stratum==="All"){
-          jsonSecondaryStrata=false
-      }else{
-          jsonSecondaryStrata = projects.getDetailsForId(params.project).details.secondary_stratum.find((item) => item.id === params.secondary_stratum).geom
-          jsonSecondaryStrata =JSON.stringify(jsonSecondaryStrata)
+  
 
-      }
-      let slug = "scenario-"+params.scenario.toString()+"-spatial-it"+leftPad(params.iteration)+"-"+params.variable_detail_type
-
-      if (params.variable_detail != "1"){
-          let transID = "-"+params.variable_detail
-          slug += (transID)
-      }
-      let dateBegin =params.timestep_begin + "-01-01"
-      let dateEnd = params.timestep_end + "-01-01"
-      let urlPath = slug + "/" +dateBegin+ "/" + dateEnd
+  
+      let strataJson
       
-      //console.log(urlPath, )
-        //scenario-6385-spatial-it0015-sc/2001-01-01/2010-01-01/
-      service.spatialDownload(urlPath, jsonSecondaryStrata)
+      let selectedStata= params.secondary_stratum
+      selectedStata = selectedStata.replace(/'/g, "")
+
+      let url = `http://127.0.0.1:8000/locations/${selectedStata}/?format=json`
+     
+
+      
+       fetch(url)
+        .then((resp) => resp.json()) // Transform the data into json
+        .then(function(data) {
+           console.log("test")
+            strataJson = data
+
+            let jsonSecondaryStrata
+            if (params.secondary_stratum==="All"){
+                jsonSecondaryStrata=false
+            }else{
+                jsonSecondaryStrata = strataJson// projects.getDetailsForId(params.project).details.secondary_stratum.find((item) => item.id === params.secondary_stratum).geom
+                jsonSecondaryStrata =JSON.stringify(jsonSecondaryStrata)
+
+            }
+
+            let slug = "scenario-"+params.scenario.toString()+"-spatial-it"+leftPad(params.iteration)+"-"+params.variable_detail_type
+
+            if (params.variable_detail != "1"){
+                let transID = "-"+params.variable_detail
+                slug += (transID)
+            }
+            let dateBegin =params.timestep_begin + "-01-01"
+            let dateEnd = params.timestep_end + "-01-01"
+            let urlPath = slug + "/" +dateBegin+ "/" + dateEnd
+            
+            //console.log(urlPath, )
+              //scenario-6385-spatial-it0015-sc/2001-01-01/2010-01-01/
+              console.log(jsonSecondaryStrata)
+              service.spatialDownload(urlPath, jsonSecondaryStrata)
+
+
+
+
+
+
+          })
+       
+        
+      
   })
 
   // Intializing the filters starts the app on page load

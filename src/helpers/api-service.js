@@ -7,6 +7,7 @@ import config from './api-config';
 import makeRequest from './request';
 
 const apiEndpoint = config.apiEndpoint;
+const locationEndpoint = config.locationEndpoint;
 const service = {};
 
 function getAllRecords(urlWithParams) {
@@ -19,6 +20,7 @@ function getAllRecords(urlWithParams) {
       opts.headers = {
         Accept: 'application/json',
       };
+      console.log(url)
       opts.url = url;
       makeRequest(opts)
         .then((response) => {
@@ -38,6 +40,7 @@ function getAllRecords(urlWithParams) {
     recursivelyGetPages(urlWithParams);
   });
 }
+
 
 /*function getAllRecordsCSV(urlWithParams) {
   return new Promise((resolve, reject) => {
@@ -85,7 +88,31 @@ service.loadStates = (params) => {
       });
   });
 };
-
+/*service.loadLocation = (polygons, params) => {
+  console.log(polygons)
+  console.log(params)
+  let polygon = polygons
+  let url = `${locationEndpoint}${polygon}/`;
+  if (params && typeof params === 'object') {
+    params = Object.keys(params).map((key) =>
+      `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`).join('&');
+    url = `${url}`;
+  }
+  console.log(url)
+  return new Promise((resolve, reject) => {
+    getAllRecords(url)
+      .then((response) => {
+        
+        if (!response) {
+          reject(Error('No response from server'));
+        } else if (response.length === 0) {
+          reject(Error('No data'));
+        } else {
+          resolve(response);
+        }
+      });
+  });
+};*/
 
 
  function downloadFile(urlToSend, extension) {

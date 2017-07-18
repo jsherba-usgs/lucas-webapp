@@ -6,6 +6,7 @@
 
 const config = {
   apiEndpoint: 'http://127.0.0.1:8000/api/',
+  locationEndpoint: 'http://127.0.0.1:8000/locations/',
   tileurl: '',
 };
 

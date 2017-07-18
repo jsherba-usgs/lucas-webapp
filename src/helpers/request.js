@@ -9,7 +9,7 @@
 function makeRequest(opts) {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
-
+    
     let params = opts.params;
 
     if (params && typeof params === 'object') {
