@@ -268,7 +268,7 @@ function updateFields() {
     
 
     // Populate scenario select box
-    scenarioSelect = filtersContainer.querySelector('select[name=scenario]');
+    /*scenarioSelect = filtersContainer.querySelector('select[name=scenario]');
     removeOptions(scenarioSelect);
     details.scenario.forEach((item) => {
       const option = document.createElement('option');
@@ -279,7 +279,33 @@ function updateFields() {
     scenarioSelect[0].selected = true
     scenarioSelect.disabled = false;
 
-    scenarioSelect.setAttribute('size',scenarioSelect.childElementCount);
+    scenarioSelect.setAttribute('size',scenarioSelect.childElementCount);*/
+
+    scenarioSelect = filtersContainer.querySelector('div[name=scenario]');
+    while (scenarioSelect.firstChild) {
+    scenarioSelect.removeChild(scenarioSelect.firstChild);
+    }
+    details.scenario.forEach((item) => {
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.name = item.name;
+      checkbox.value = item.id;
+      checkbox.id =item.name;
+      //checkbox.checked = true;
+      scenarioSelect.appendChild(checkbox);
+
+      const label = document.createElement('label')
+      label.htmlFor = item.name;
+      label.appendChild(document.createTextNode(item.name));
+
+      scenarioSelect.appendChild(label);
+
+      scenarioSelect.appendChild(document.createElement("br"));   
+    });
+    //scenarioSelect[0].selected = true
+    scenarioSelect.disabled = false;
+
+    //scenarioSelect.setAttribute('size',scenarioSelect.childElementCount);
 
 
     // Populate scenario select box spatial
@@ -294,9 +320,11 @@ function updateFields() {
     //scenarioSelectSpatial[0].selected = true
     scenarioSelectSpatial.disabled = false;
 
+
+
     //Update secondary stratum label
-
-
+    let secStratumSelectLabel = filtersContainer.querySelector('label[name=secondary_stratum_label]');
+    secStratumSelectLabel.innerHTML = details.secondary_stratum_label
     // Populate secondary stratum select box
     secStratumSelect = filtersContainer.querySelector('select[name=secondary_stratum]');
     removeOptions(secStratumSelect);
@@ -307,6 +335,9 @@ function updateFields() {
       secStratumSelect.add(option);
     });
     secStratumSelect.disabled = false;
+
+    let secStratumSelectSpatialLabel = filtersContainer.querySelector('label[name=secondary_stratum_spatial_label]');
+    secStratumSelectSpatialLabel.innerHTML = details.secondary_stratum_label
 
     secStratumSelectSpatial = filtersContainer.querySelector('select[name=secondary_stratum-spatial]');
     removeOptions(secStratumSelectSpatial);
@@ -319,6 +350,9 @@ function updateFields() {
    
     secStratumSelectSpatial.disabled = false;
 
+    let stratumSelectLabel = filtersContainer.querySelector('label[name=stratum_label]');
+    stratumSelectLabel.innerHTML = details.stratum_label
+
     // Populate stratum select box
     stratumSelect = filtersContainer.querySelector('select[name=stratum]');
     removeOptions(stratumSelect);
@@ -329,6 +363,9 @@ function updateFields() {
       stratumSelect.add(option);
     });
     stratumSelect.disabled = false;
+
+    let stratumSelectSpatialLabel = filtersContainer.querySelector('label[name=stratum_spatial_label]');
+    stratumSelectSpatialLabel.innerHTML = details.stratum_label
 
     stratumSelectSpatial = filtersContainer.querySelector('select[name=stratum-spatial]');
     removeOptions(stratumSelectSpatial);

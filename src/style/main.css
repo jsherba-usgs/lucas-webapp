@@ -539,20 +539,33 @@
 	textarea {
 		padding: 0.75em 1em;
 	}
-
 	input[type="checkbox"],
 	input[type="radio"] {
-		/*-moz-appearance: none;
+		-moz-appearance: none;
 		-webkit-appearance: none;
 		-ms-appearance: none;
-		appearance: none;*/
+		appearance: none;
 		display: block;
 		float: left;
-		/*margin-right: -2em;*/
+		margin-right: -2em;
+		opacity: 0;
+		width: 1em;
+		z-index: -1;
+	}
+
+	/*input[type="checkbox"],
+	input[type="radio"] {
+		//-moz-appearance: none;
+		//-webkit-appearance: none;
+		//-ms-appearance: none;
+		appearance: none;
+		display: block;
+		float: left;
+		//margin-right: -2em;
 		opacity: 1;
 		width: 1em;
 		z-index: -1
-	}
+	}*/
 
 		input[type="checkbox"] + label,
 		input[type="radio"] + label {
@@ -564,6 +577,7 @@
 			padding-left: 2.65em;
 			padding-right: 0.75em;
 			position: relative;
+			
 		}
 
 			input[type="checkbox"] + label:before,
@@ -578,7 +592,8 @@
 
 			input[type="checkbox"] + label:before,
 			input[type="radio"] + label:before {
-				background: rgba(212, 212, 255, 0.035);
+				/*background: rgba(212, 212, 255, 0.035);*/
+				background: #c9d4b2;
 				content: '';
 				display: inline-block;
 				height: 1.65em;
