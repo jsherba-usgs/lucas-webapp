@@ -614,6 +614,13 @@
 			color: #fff;
 		}
 
+		input[type="checkbox"]:checked + label > img,
+		input[type="radio"]:checked + label > img {
+			outline: none;
+			    border-color: #646A59;
+			    box-shadow: 0 0 10px #646A59;
+		}
+
 		input[type="checkbox"]:focus + label:before,
 		input[type="radio"]:focus + label:before {
 			box-shadow: 0 0 0 2px #87A449;
@@ -2663,4 +2670,28 @@ header.download-header > :first-child::after{
 
 .checkbox_class{
 	margin-bottom:0em;
+}
+
+.variableLabel:before {
+  content: url("https://cdn1.iconfinder.com/data/icons/windows8_icons_iconpharm/26/unchecked_checkbox.png");
+  position: absolute;
+  z-index: 100;
+}
+:checked+.variableLabel:before {
+  content: url("https://cdn1.iconfinder.com/data/icons/windows8_icons_iconpharm/26/checked_checkbox.png");
+}
+
+/*pure cosmetics:*/
+img {
+  width: 150px;
+  height: 150px;
+}
+.variableLabel {
+  margin: 10px;
+}
+.checkbox_span{
+	word-wrap: break-word;
+width: 170px;
+display: block;
+
 }

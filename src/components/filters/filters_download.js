@@ -18,6 +18,7 @@ let stratumSelect;
 let secStratumSelectSpatial;
 let stratumSelectSpatial;
 let variableSelect;
+let variableSelectInput
 let iterationInput;
 let iterationInputSpatial;
 let variableDetail;
@@ -89,42 +90,6 @@ function onScenarioChangeSpatial() {
     updateTimestepsSpatial();
   }
 
-/*function updateIterationInput() {
- 
-  const id = iterationTypeSelect.value;
-  if (id === 'percentile'){
-    removeClass(iteration1, 'field')  
-    addClass(iteration1, 'field-full')  
-    iteration2.style.display = "none"
-    const getIterationDetail = details.iteration.find((item) => item.id === id);
-    iteration1Label.innerHTML = getIterationDetail.label
-    //const input = document.createElement('input');
-    iterationInput.name = getIterationDetail.name
-    iterationInput.type = getIterationDetail.type
-    iterationInput.min =  getIterationDetail.min
-    iterationInput.max =  getIterationDetail.max
-    iterationInput.value = getIterationDetail.value
-
-  }else if (id === "single_iteration"){
-    removeClass(iteration1, 'field-full')
-    addClass(iteration1, 'field')  
-    iteration2.style.display = "block"
-    
-    const getIterationDetail = details.iteration.find((item) => item.id === id);
-    iteration1Label.innerHTML = getIterationDetail.label
-    iterationInput.name = getIterationDetail.name
-    iterationInput.type = getIterationDetail.type
-    iterationInput.min =  getIterationDetail.min
-    iterationInput.max =  getIterationDetail.max
-    iterationInput.value = getIterationDetail.min
-     
-    iterationInputEnd.name = getIterationDetail.name
-    iterationInputEnd.type = getIterationDetail.type
-    iterationInputEnd.min =  getIterationDetail.min
-    iterationInputEnd.max =  getIterationDetail.max
-    iterationInputEnd.value = getIterationDetail.max
-  }
-}*/
 
 function updateIterationSpatialByLayer(){
   let variableDetailSpatialCode = JSON.parse(variableDetailSpatial.value);
@@ -226,12 +191,21 @@ function updateTimestepsSpatial(){
 
 function updateVariableDetailInput(){
   
-  variableDetailInput = document.querySelectorAll('input[name=variable_checkboxes]:checked')
+  variableDetailInput = document.querySelectorAll('input[name=variable__detail_checkboxes]:checked')
   
 }
 
+function updateVariableSelect (){
+
+  variableSelectInput = document.querySelectorAll('input[name=variable_checkboxes]:checked')
+  console.log(variableSelectInput)
+  updateVariableDetail()
+}
+
 function updateVariableDetail() {
-  const id = variableSelect.value;
+  
+
+  const id = getCheckBoxVals(variableSelectInput);
   const getvariableDetail = details.variable.find((item) => item.id === id);
 
     
@@ -243,7 +217,7 @@ function updateVariableDetail() {
     getvariableDetail.variable_detail.forEach((item) => {
       const checkbox = document.createElement("input");
       checkbox.type = "checkbox";
-      checkbox.name = "variable_checkboxes";//item.name;
+      checkbox.name = "variable_detail_checkboxes";//item.name;
       checkbox.value = item.id;
       checkbox.id =item.id;
       if (first){
@@ -263,18 +237,6 @@ function updateVariableDetail() {
     });
 
 
-  /*variableDetail.options.length = 0
-  const id = variableSelect.value;
-  const getvariableDetail = details.variable.find((item) => item.id === id);
-  getvariableDetail.variable_detail.forEach((item) => {
-      const option = document.createElement('option');
-      option.text = item.id;
-      option.value = item.id;
-      variableDetail.add(option);
-    });
-    variableDetail[0].selected = true
-    variableDetail.disabled = false;
-    variableDetail.setAttribute('size',variableDetail.childElementCount);*/
   }
 
 function updateVariableDetailSpatial(){
@@ -445,16 +407,48 @@ function updateFields() {
     });
     stratumSelectSpatial.disabled = false;
 
-   
+  
+
 
      // Populate variable select box
-    variableSelect = filtersContainer.querySelector('select[name=variable]');
-    removeOptions(variableSelect);
+
+     
+    variableSelect = filtersContainer.querySelector('div[name=variable]');
+    while (variableSelect.firstChild) {
+    variableSelect.removeChild(variableSelect.firstChild);
+    }
+    first = true
     details.variable.forEach((item) => {
-      const option = document.createElement('option');
-      option.text = item.id;
-      option.value = item.id;
-      variableSelect.add(option);
+      const checkbox = document.createElement("input");
+      checkbox.type = "radio";
+      checkbox.name = "variable_checkboxes";//item.name;
+      checkbox.value = item.id;
+      checkbox.id =item.id;
+      if (first){
+        checkbox.checked = true;
+      }
+      first = false;
+      variableSelect.appendChild(checkbox);
+
+
+      const label = document.createElement('label')
+      label.htmlFor = item.id;
+      label.classList.add('checkbox_class');
+
+      const img = document.createElement("img")
+      img.src = item.image_path
+
+      const span = document.createElement('span')
+      span.innerHTML = item.id;
+      span.classList.add('checkbox_span')
+
+      label.appendChild(img);
+      label.appendChild(document.createElement("br")); 
+      //label.appendChild(document.createTextNode(item.id));
+      label.appendChild(span); 
+
+      variableSelect.appendChild(label);
+
     });
     variableSelect.disabled = false;
 
@@ -516,6 +510,9 @@ model.init = () => {
   timestepEndSpatial = filtersContainer.querySelector('input[name=timestep-end-spatial]');
   timestepEndSpatial.disabled = false;
 
+  variableSelect = filtersContainer.querySelector('div[name=variable]');
+  variableSelect.disabled = false;
+
   variableDetail = filtersContainer.querySelector('div[name=variable_detail]');
   variableDetail.disabled = false;
 
@@ -553,8 +550,7 @@ model.init = () => {
 
   /*iterationTypeSelect.onchange = updateIterationInput;
   iterationTypeSelect.onchange();*/
-
-  variableSelect.onchange = updateVariableDetail;
+  variableSelect.onchange = updateVariableSelect//updateVariableDetail;
   variableSelectSpatial.onchange = updateVariableDetailSpatial;
   variableSelect.onchange();
   variableSelectSpatial.onchange()
@@ -812,33 +808,6 @@ var ourCustomControl = L.Control.extend({
 })
     
 stratamap.addControl(new ourCustomControl());
-
-   /* var selected
-    
-    // Create new geojson layer
-   var geojsonLayer = new L.GeoJSON(jsonstrata, {
-      // Set default style
-      'style': function () {
-        return {
-          'color': 'yellow',
-        }
-      }, 
-      onEachFeature: function(feature, layer) {
-            if (feature.properties && feature.properties.name) {
-                layer.bindPopup(feature.properties.name, {closeButton: false});
-                layer.on('mouseover', function() { layer.openPopup(); });
-                layer.on('mouseout', function() { layer.closePopup(); });
-            }
-        },
-    }).on('click', function (e) {
-      
-     filtersContainer.querySelector('select[name=secondary_stratum]').value = e.layer.feature.properties.name
-     stratamodal.style.display = "none";
-      // Check for selected
-     
-    }).addTo(stratamap)*/
-    
-
     
     
 };
@@ -872,7 +841,7 @@ model.getValues = () => (
     iteration_id: iterationPercentile.id,
     sumby_id: sumby.id,
     sumby:sumby.value,
-    variable: variableSelect.value,
+    variable: getCheckBoxVals(variableSelectInput),//variableSelect.value,
     variable_detail: getCheckBoxVals(variableDetailInput),
     timestep_begin: timestepBegin.value,
     timestep_end: timestepEnd.value

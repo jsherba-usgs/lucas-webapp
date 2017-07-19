@@ -171,6 +171,7 @@ const projectDetails = [
       variable: [
         {
           id: 'Land-Cover State',
+          image_path: '../../images/Asset 7.png',
           variable_detail: [
           {
             id: 'Agriculture',
@@ -189,6 +190,7 @@ const projectDetails = [
         },
         {
           id: 'Carbon Stock',
+          image_path: '../../images/Asset 9.png',
           variable_detail: [
           {
             id: 'Litter',
@@ -204,6 +206,7 @@ const projectDetails = [
         },
         {
           id: 'Land-Cover Transition',
+          image_path: '../../images/Asset 8.png',
           variable_detail: [
           {
             id: 'AGRICULTURAL CONTRACTION',
