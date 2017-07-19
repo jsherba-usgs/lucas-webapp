@@ -35,8 +35,10 @@
         <div class="field-full download-field">
           <label for="variable_detail">Class</label>
           <div>
-            <select class='multiselect downloadfilters' id="variableSelect" name="variable_detail" multiple disabled>
-            </select>
+            <!--<select class='multiselect downloadfilters' id="variableSelect" name="variable_detail" multiple disabled>
+            </select>-->
+            <div class='downloadfilters' id="variableSelect" name="variable_detail">
+            </div>
           </div>
         </div>
        </form>
@@ -133,13 +135,19 @@
                    
                  
                   <div class="field download-field">
-                    <!--<label for="iteration" id="iteration1Label">Iterations</label>-->
-                    <label><input type="checkbox" value="" id="iteration1Label" name="percentile-checkbox">Calculate Percentile of Iterations</label>
-                    <input name="iteration-percentile" type="number" min="50" max="100" step="1" value="95" class="downloadfilters" disabled/> 
+                    <input name="percentile-checkbox" value="100" id="PercentileIteration" type="checkbox">
+                    <label for="PercentileIteration">Calculate Percentile of Iterations</label>
+                     
+                     <!-- <label><input type="checkbox" value="" id="iteration1Label" name="percentile-checkbox">Calculate Percentile of Iterations</label>-->
+                     <div>
+                      <input name="iteration-percentile" type="number" min="50" max="100" step="1" value="95" class="downloadfilters" disabled/> 
+                      </div>
                   </div>
                   <div class="field download-field">
-                    <!--<label for="iteration" id="iteration1Label">Iterations</label>-->
-                    <label><input type="checkbox" value="" name="sumby-checkbox">Sum by</label>
+                   
+                    <!--<label><input type="checkbox" value="" name="sumby-checkbox">Sum by</label>-->
+                    <input name="sumby-checkbox" value="100" id="iteration2Label" type="checkbox">
+                    <label for="iteration2Label">Sum By</label>
                     <div class="select-wrapper download-wrapper">
                       <select name="sumby" class="downloadfilters" disabled>
                         

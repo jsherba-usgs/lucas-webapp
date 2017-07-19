@@ -596,14 +596,14 @@
 				background: #c9d4b2;
 				content: '';
 				display: inline-block;
-				height: 1.65em;
+				height: 1.5em;
 				left: 0;
 				letter-spacing: 0;
 				line-height: 1.58125em;
 				position: absolute;
 				text-align: center;
 				top: 0;
-				width: 1.65em;
+				width: 1.5em;
 			}
 
 		input[type="checkbox"]:checked + label:before,
@@ -2659,4 +2659,8 @@ header.download-header > :first-child::after{
 }
 .summaryToolsCollapseTest{
 	margin-left: 1em;
+}
+
+.checkbox_class{
+	margin-bottom:0em;
 }

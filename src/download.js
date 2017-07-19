@@ -131,6 +131,7 @@ $('#collapseExample').collapse('show');
           iteration: iterations,
           pagesize: 10000,
         };
+        console.log(params)
       if (variableType !== 'transition_group'){
         params[variableType] = e.detail.variable_detail
       }
