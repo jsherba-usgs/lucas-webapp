@@ -35,13 +35,21 @@ const projectDetails = [
       ],
       layerDownload:[{
        
-          name:"Landcover",
+          name:"Land-Cover State",
+          image_path: '../../images/Asset 8.png',
           values:[
         {
           id:1,
           type_code:"sc",
           name:"STATECLASS"
         },
+      ]},
+      {
+       
+          name:"Land-Cover Transition",
+          image_path: '../../images/Asset 7.png',
+          values:[
+        
         {
           id:7129,
           type_code:"tgap",
@@ -171,7 +179,7 @@ const projectDetails = [
       variable: [
         {
           id: 'Land-Cover State',
-          image_path: '../../images/Asset 7.png',
+          image_path: '../../images/Asset 8.png',
           variable_detail: [
           {
             id: 'Agriculture',
@@ -206,7 +214,7 @@ const projectDetails = [
         },
         {
           id: 'Land-Cover Transition',
-          image_path: '../../images/Asset 8.png',
+          image_path: '../../images/Asset 7.png',
           variable_detail: [
           {
             id: 'AGRICULTURAL CONTRACTION',
@@ -388,7 +396,8 @@ const projectDetails = [
       ],
       layerDownload:[{
        
-          name:"Landcover",
+          name:"Land-Cover State",
+          image_path: '../../images/Asset 7.png',
           values:[
         {
           id:1,
@@ -525,6 +534,7 @@ const projectDetails = [
       variable: [
         {
           id: 'Land-Cover State',
+          image_path: '../../images/Asset 7.png',
           variable_detail: [
             {
               id: 'Agriculture',
@@ -544,6 +554,7 @@ const projectDetails = [
         },
         {
           id: 'Land-Cover Transition',
+           image_path: '../../images/Asset 8.png',
           variable_detail: [
             {
               id: 'AGRICULTURAL CONTRACTION',
