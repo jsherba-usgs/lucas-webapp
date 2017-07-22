@@ -17,6 +17,7 @@ let variableSelect;
 let iterationInput;
 let variableDetail;
 let layers;
+let scenarios
 
 
 function getOptionVals(selection) {
@@ -29,6 +30,18 @@ function getOptionVals(selection) {
   detailsString = details.join(",")
   return detailsString
 };
+function getCheckBoxVals(selection) {
+
+  let selectedBoxesVals=[];
+  for (var i=0;i<selection.length;i++) {
+      
+      selectedBoxesVals.push(selection[i].value);
+      
+  }
+  selectedBoxString = selectedBoxesVals.join(",")
+  return selectedBoxString
+}
+
 
 function removeOptions(selectbox) {
   for (let i = 0; i < selectbox.options.length; i++) {
@@ -39,24 +52,34 @@ function removeOptions(selectbox) {
 }
 
 function updateIterationInput() {
-  
   details = projects.getDetailsForId(projectId).details;
-  const id = scenarioSelect.value;
-  const scenarioDetail = details.scenario.find((item) => item.id === id);
-  iterationInput.forEach((iterationDiv) => {iterationDiv.max = scenarioDetail.iterations;});
+  scenarios.forEach((scenario, indexval) => {
+    iterationInput.forEach((iterationDiv) => {
+       const id = scenario.id
+       const scenarioDetail = details.scenario.find((item) => item.id === id);
+       iterationDiv.max = scenarioDetail.iterations;
+    })
+ })
+
+  
+ 
 
   //iterationInput.max = scenarioDetail.iterations;
 
 }
 
+
+
 function updateYearInput() {
-  
+
   details = projects.getDetailsForId(projectId).details;
-  const id = scenarioSelect.value;
-  const scenarioDetail = details.scenario.find((item) => item.id === id);
-  yearInput.forEach((yearDiv) => {yearDiv.max = scenarioDetail.years[1], yearDiv.min = scenarioDetail.years[0]});
-  //yearInput.max = scenarioDetail.years[1];
-  //yearInput.min = scenarioDetail.years[0];
+  scenarios.forEach((scenario, indexval) => {
+    yearInput.forEach((yearDiv) => {
+       const id = scenario.id
+       const scenarioDetail = details.scenario.find((item) => item.id === id);
+       yearDiv.max = scenarioDetail.years[1], yearDiv.min = scenarioDetail.years[0]
+    })
+ })
   
 }
 
@@ -142,6 +165,18 @@ function GetSelectValues(select) {
   return result;
 }
 
+function getCheckBoxValuesList(selection) {
+  
+  let selectedBoxesVals=[];
+  for (var i=0;i<selection.length;i++) {
+      
+      selectedBoxesVals.push({'id':selection[i].value, 'name':selection[i].id});
+     
+  }
+
+  return selectedBoxesVals
+}
+
 model.updateIndividualLegend = (options) =>{
 let collapseDiv = document.getElementById('collapseExample'+options.index_val.toString());
 collapseDiv.classList.add("in");
@@ -192,17 +227,15 @@ addMapLegends(stateclassColorScale, legendTitle)
 
 collapseDiv.classList.remove("in");
 
-/*let collapseDiv = document.getElementById('collapseExample0');
-collapseDiv.classList.remove("in");
-console.log(collapseDiv.classList)
-$('#collapseExample0').collapse('hide');*/
 }
 
 model.init = (options, addMapLegends) => {
   // Initialize container
  //const addMapLegends2 = addMapLegends()
+ 
  let scenarioOptions = options.scenario.split(",")
 
+ 
  filtersContainer = document.getElementById('mapfilters');
 
 while (filtersContainer.hasChildNodes()) {
@@ -235,13 +268,18 @@ while (filtersContainer.hasChildNodes()) {
  mapscenarioSelect = filtersContainer.querySelectorAll('select[name=mapscenario]');
  
  filtersContainer2 = document.getElementById('filters');
- scenarioSelect = filtersContainer2.querySelector('select[name=scenario]');
+ scenarioSelect = document.querySelectorAll('input[name=scenario_checkboxes]:checked')
+ //scenarioSelect = filtersContainer2.querySelector('div[name=scenario]');
 
  filtersContainer3 = document.getElementById('filters_project');
  projectSelect = filtersContainer3.querySelector('select[name=project]');
+ 
+ scenarios = getCheckBoxValuesList(scenarioSelect) 
 
- scenarios = GetSelectValues(scenarioSelect) 
+
+
  selectedProjects = GetSelectValues(projectSelect)
+ 
  projectId = selectedProjects[0].id
 
  /*scenarios.forEach((scenario) => {

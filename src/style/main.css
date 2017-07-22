@@ -2488,7 +2488,7 @@
 	height: 100%;
 }
 
-
+.my-popup {pointer-events: none;}
 
 .area.active {
     box-shadow: inset 0 0 0 2px #c9d4b2;

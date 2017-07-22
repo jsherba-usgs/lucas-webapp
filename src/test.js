@@ -87,6 +87,9 @@ function updateLineandBarLegend(typeParams, typelLookupDictionary, scenarioParam
     //b = (typeof b !== 'undefined') ?  b : 1;
    // $('#collapseExample').collapse('show');
    // $('#collapseLineGraphSection2').collapse('show');
+    let collapsedivsgraphs = document.getElementById('section1-graph-collapse');
+    collapsedivsgraphs.classList.add("in");
+
     stateclassLegends = d3.selectAll('.legend-stateclass');
     //legendWidth = stateclassLegends.node().getBoundingClientRect().width;
     
@@ -156,7 +159,7 @@ const scenarioColorScale = d3.scale.ordinal().domain(scenarioDomain).range(scena
  scenarioLegends.select('.legendScenario')
     .call(scenarioOrdinal);
 
-  let collapsedivsgraphs = document.getElementById('section1-graph-collapse');
+  //let collapsedivsgraphs = document.getElementById('section1-graph-collapse');
 
    collapsedivsgraphs.classList.remove("in");
 }
@@ -378,7 +381,6 @@ function addMapLegends(){
   }
 
   addEventListener(document, 'filters.change', (e) => {
-    
     document.getElementById("one").style.display = 'block';
     document.getElementById("two").style.display = 'block';
     document.getElementById("three").style.display = 'block';

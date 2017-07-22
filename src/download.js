@@ -130,11 +130,12 @@ $('#collapseExample').collapse('show');
           timestep: year,
           iteration: iterations,
           pagesize: 10000,
+          
         };
-        console.log(params)
-      if (variableType !== 'transition_group'){
-        params[variableType] = e.detail.variable_detail
-      }
+       params[variableType] = e.detail.variable_detail
+      //if (variableType !== 'transition_group'){
+      //}
+     
         
         if (e.detail.sumby_id==='custom_group'){
 
@@ -180,6 +181,7 @@ $('#collapseExample').collapse('show');
     
      let params = setParams(e, 'transition_group')
      let variableType= 'transitions/'
+    
      service.tabularDownload(params, variableType)
 
    }
@@ -236,7 +238,7 @@ $('#collapseExample').collapse('show');
 
         let url = `http://127.0.0.1:8000/locations/${selectedStrata}/?format=json`
      
-        console.log(url)
+        
       
        fetch(url)
         .then((resp) => resp.json()) // Transform the data into json
@@ -244,7 +246,7 @@ $('#collapseExample').collapse('show');
            
             // projects.getDetailsForId(params.project).details.secondary_stratum.find((item) => item.id === params.secondary_stratum).geom
             strataJson =JSON.stringify(data)
-            console.log(strataJson)
+            
 
             let slug = "scenario-"+params.scenario.toString()+"-spatial-it"+leftPad(params.iteration)+"-"+params.variable_detail_type
 
@@ -257,7 +259,7 @@ $('#collapseExample').collapse('show');
             let urlPath = slug + "/" +dateBegin+ "/" + dateEnd
             
             
-            console.log(strataJson)
+       
             service.spatialDownload(urlPath, strataJson)
 
 

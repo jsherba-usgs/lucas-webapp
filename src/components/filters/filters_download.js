@@ -10,6 +10,8 @@ let filtersContainer;
 let filtersContainer2;
 let projectId;
 let details;
+let timestepBegin
+let timestepEnd
 let projectSelect;
 let scenarioSelect;
 let scenarioSelectInput
@@ -85,6 +87,7 @@ function removeOptions(selectbox) {
   }
 }
 function onScenarioChange () {
+
     scenarioSelectInput = document.querySelectorAll('input[name=scenario_checkboxes]:checked')
     updateIterationInput()
     updateTimesteps()
@@ -98,9 +101,10 @@ function onScenarioChangeSpatial() {
 
 
 function updateIterationSpatialByLayer(){
-  console.log(variableDetailInputSpatial[0].value)
+ 
   let variableDetailSpatialCode = JSON.parse(variableDetailInputSpatial[0].value);
-    if (variableDetailSpatialCode.id!="1"){
+
+    if (variableDetailSpatialCode.id!==1){
       
       //iterationInputSpatial.value="0"
       iterationInputSpatial.disabled = true;
@@ -182,18 +186,18 @@ function updateTimesteps(){
 }
 
 function updateTimestepsSpatial(){
-   const timestepDetails = (details.timestep[0])
+   const timestepDetailsSpatial = (details.timestep[0])
    
-   timestepBeginSpatial.name = timestepDetails.name
-   timestepBeginSpatial.type = timestepDetails.type
-   timestepBeginSpatial.min =  timestepDetails.min
-   timestepBeginSpatial.max =  timestepDetails.max
-   timestepBeginSpatial.value = timestepDetails.min
-   timestepEndSpatial.name = timestepDetails.name
-   timestepEndSpatial.type = timestepDetails.type
-   timestepEndSpatial.min =  timestepDetails.min
-   timestepEndSpatial.max =  timestepDetails.max
-   timestepEndSpatial.value = timestepDetails.max
+   timestepBeginSpatial.name = timestepDetailsSpatial.name
+   timestepBeginSpatial.type = timestepDetailsSpatial.type
+   timestepBeginSpatial.min =  timestepDetailsSpatial.min
+   timestepBeginSpatial.max =  timestepDetailsSpatial.max
+   timestepBeginSpatial.value = timestepDetailsSpatial.min
+   timestepEndSpatial.name = timestepDetailsSpatial.name
+   timestepEndSpatial.type = timestepDetailsSpatial.type
+   timestepEndSpatial.min =  timestepDetailsSpatial.min
+   timestepEndSpatial.max =  timestepDetailsSpatial.max
+   timestepEndSpatial.value = timestepDetailsSpatial.max
 }
 
 
@@ -202,17 +206,20 @@ function updateVariableSelect (){
 
   variableSelectInput = document.querySelectorAll('input[name=variable_checkboxes]:checked')
   updateVariableDetail()
+  updateVariableDetailInput()
 }
 
 function updateVariableSelectSpatial (){
 
   variableSelectInputSpatial = document.querySelectorAll('input[name=variable_checkboxes_spatial]:checked')
   updateVariableDetailSpatial()
+  updateVariableDetailInputSpatial()
+
 }
 
 function updateVariableDetailInput(){
-  
-  variableDetailInput = document.querySelectorAll('input[name=variable__detail_checkboxes]:checked')
+ 
+  variableDetailInput = document.querySelectorAll('input[name=variable_detail_checkboxes]:checked')
   
 }
 
@@ -254,10 +261,12 @@ function updateVariableDetail() {
   }
 
 function updateVariableDetailInputSpatial(){
-
-variableDetailInputSpatial = document.querySelectorAll('input[name=variable_detail_checkboxes_spatial]:checked')
+//const id = getCheckBoxVals(variableSelectInputSpatial);
+//const getvariableDetailSpatial = details.layerDownload.find((item) => item.name === id);
+//let vdcName= "vdc_"+getvariableDetailSpatial.tag+"_spatial"
+variableDetailInputSpatial = document.querySelectorAll(`input[name=variable_detail_input_spatial]:checked`)
 updateIterationSpatialByLayer()
-updateVariableDetailSpatial()
+//updateVariableDetailSpatial()
 }
 
 function updateVariableDetailSpatial() {
@@ -279,7 +288,8 @@ function updateVariableDetailSpatial() {
       let value_object = JSON.stringify({"id":id,"type": type})
       const checkbox = document.createElement("input");
       checkbox.type = "radio";
-      checkbox.name = "variable_detail_checkboxes_spatial";//item.name;
+      //checkbox.name = "vdc_"+getvariableDetailSpatial.tag+"_spatial";//item.name;
+      checkbox.name = "variable_detail_input_spatial"
       checkbox.value = value_object;
       checkbox.id =item.name+'_spatial';
       if (first){

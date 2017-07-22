@@ -232,8 +232,9 @@ model.preLoadRasters = (slider,d) => {
    
 
    let yearArray = range(2011,2061,5)
-
    let layerKeys = Object.keys(maps[0]._layers)
+   console.log(yearArray)
+   console.log(layerKeys)
    if (layerKeys.length < yearArray.length){
    slider.playbackRate(0)
   
@@ -266,10 +267,12 @@ model.preLoadRasters = (slider,d) => {
           if (layer === "1"){
 
            url = `http://127.0.0.1:8000/tiles/s${mapscenario}-it${iterationval}-ts${yearstring}-sc/{z}/{x}/{y}.png?style=lulc`;
+          //  url = `http://127.0.0.1:8000/tiles/s${mapscenario}-it${iterationval}-ts${yearstring}-sc/{z}/{x}/{y}.png`;
            
           }else{
            
-           url = 'http://127.0.0.1:8000/tiles/s'+mapscenario.toString()+'-it0000-ts'+yearstring.toString()+'-tgap'+layer.toString()+'/{z}/{x}/{y}.png?style='+layer.toString();;
+           url = 'http://127.0.0.1:8000/tiles/s'+mapscenario.toString()+'-it0000-ts'+yearstring.toString()+'-tgap'+layer.toString()+'/{z}/{x}/{y}.png?style='+layer.toString();
+          // url = 'http://127.0.0.1:8000/tiles/s'+mapscenario.toString()+'-it0000-ts'+yearstring.toString()+'-tgap'+layer.toString()+'/{z}/{x}/{y}.png';
              
           }
           
@@ -291,6 +294,7 @@ model.preLoadRasters = (slider,d) => {
        // var streets = new L.layerGroup(stateclassLayers).addTo(maps[i]);
         stateclassGroups[i].addTo(maps[i]);
         //stateclassLayers[10].on("load",function() { console.log('layersloaded'), slider.playbackRate(.5)});
+        stateclassGroups[i].setZIndex(4)
         
         stateclassGroups[i].getLayers()[10].on("load",function() {mapStatus('loaded'), slider.playbackRate(.5)});
        // stateclassLayers.addTo(maps[i]);
@@ -387,9 +391,9 @@ model.updateRaster = (...args) => {
      
 
        if (args[0].secondary_stratum && args[0].secondary_stratum !== settings.secondary_stratum) {
-          if (feature && feature.geometry){
+          if (feature && feature.geom){
 
-              const tempLayer = L.geoJson(feature.geometry);
+              const tempLayer = L.geoJson(feature.geom);
               maps[i].fitBounds(tempLayer.getBounds());
           }
         }
@@ -459,11 +463,13 @@ model.updateIndividualRaster = (...args) => {
       let url
       if (layer === "1"){
 
-       url = `http://127.0.0.1:8000/tiles/s${scenario}-it${iteration}-ts${year}-sc/{z}/{x}/{y}.png?style=lulc`;
+      url = `http://127.0.0.1:8000/tiles/s${scenario}-it${iteration}-ts${year}-sc/{z}/{x}/{y}.png?style=lulc`;
+     //url = `http://127.0.0.1:8000/tiles/s${scenario}-it${iteration}-ts${year}-sc/{z}/{x}/{y}.png`;
        
       }else{
        
        url = 'http://127.0.0.1:8000/tiles/s'+scenario.toString()+'-it0000-ts'+year.toString()+'-tgap'+layer.toString()+'/{z}/{x}/{y}.png?style='+layer.toString();
+       // url = 'http://127.0.0.1:8000/tiles/s'+scenario.toString()+'-it0000-ts'+year.toString()+'-tgap'+layer.toString()+'/{z}/{x}/{y}.png';
          
       }
      
@@ -501,15 +507,16 @@ model.reloadMap = (...args) => {
       update = true;
     }
     if (args[0].stratum && args[0].stratum !== settings.stratum) {
+      console.log("test")
       settings.stratum = args[0].stratum;
       project = projects.getDetailsForId(args[0].project);      
-      feature = project.details.jsonlayer.strata.features.find((item) => item.properties.name === args[0].stratum);
+      feature = project.details.stratum.find((item) => item.id === args[0].stratum);
       update = true;
     }
     if (args[0].secondary_stratum && args[0].secondary_stratum !== settings.secondary_stratum) {
       settings.secondary_stratum = args[0].secondary_stratum;
       project = projects.getDetailsForId(args[0].project);      
-      feature = project.details.jsonlayer.sec_strata.features.find((item) => item.properties.name === args[0].secondary_stratum);
+      feature = project.details.secondary_stratum.find((item) => item.id === args[0].secondary_stratum);
       update = true;
     }
     if (args[0].project && args[0].project !== settings.project) {
@@ -596,54 +603,7 @@ if (update) {
 });
 // https: also suppported.
 
-
-
-  var style = {
-        "clickable": true,
-        "color": "#00D",
-        "fillColor": "#00D",
-        "weight": 1.0,
-        "opacity": 0.3,
-        "fillOpacity": 0.2
-    };
-    var hoverStyle = {
-        "fillOpacity": 0.5
-    };
-
-    var geojsonURL = 'http://127.0.0.1:8000/vtiles/hi_islands/{z}/{x}/{y}.geojson';
-    var geojsonTileLayer = new L.TileLayer.GeoJSON(geojsonURL, {
-            clipTiles: true,
-            unique: function (feature) {
-                return feature.id; 
-            }
-        }, {
-            style: style,
-            onEachFeature: function (feature, layer) {
-                if (feature.properties) {
-                    var popupString = '<div class="popup">';
-                    for (var k in feature.properties) {
-                        var v = feature.properties[k];
-                        popupString += k + ': ' + v + '<br />';
-                    }
-                    popupString += '</div>';
-                    layer.bindPopup(popupString);
-                }
-                if (!(layer instanceof L.Point)) {
-                    layer.on('mouseover', function () {
-                        layer.setStyle(hoverStyle);
-                    });
-                    layer.on('mouseout', function () {
-                        layer.setStyle(style);
-                    });
-                }
-            }
-        }
-    );
-
-
- 
- 
-  maps[i] =  L.map(id, {
+maps[i] =  L.map(id, {
       //center: ["22.234262", "-159.784857"],
       center: ["43.5754794945", "-125.260128026"],
       
@@ -656,14 +616,172 @@ if (update) {
       layers: [cartoDBPositron, stateclassTiles],
       });
 
-  maps[i].addLayer(geojsonTileLayer); 
+var style = {
+    "clickable": true,
+    "color": "#00D",
+    "fillColor": "#00D",
+    "weight": 1.0,
+    "opacity": 0.3,
+    "fillOpacity": 0.2
+};
+var hoverStyle = {
+    "fillOpacity": 0.5
+};
+
+
+let strataMap = maps[i]
+let secStrataName = project.details.jsonlayer.sec_strata.name
+let strataName = project.details.jsonlayer.strata.name
+let secStratUrl = `http://127.0.0.1:8000/vtiles/${secStrataName}/{z}/{x}/{y}.geojson`;
+let stratUrl  = `http://127.0.0.1:8000/vtiles/${strataName}/{z}/{x}/{y}.geojson`;
+
+let strat_TileLayer = new L.TileLayer.GeoJSON(stratUrl, {
+        clipTiles: true,
+        unique: function (feature) {
+            return feature.id; 
+        }
+    }, 
+    {
+        style: style,
+        onEachFeature: function (feature, layer) {
+            if (feature.properties) {
+                var popupString = '<div class="popup">';
+                
+                for (var k in feature.properties) {
+                    var v = feature.properties[k];
+                    if (k==='label'){
+                     
+                      popupString += v + '<br />';
+
+                    }
+                }
+            }
+            if (!(layer instanceof L.Point)) {
+                 var popup = L.popup()
+                layer.on('mouseover', function (e) {
+                    
+                    layer.setStyle(hoverStyle);
+
+                    //layer.bindPopup(popupString, {className: 'my-popup'}).openPopup();
+                     popup
+                        .setLatLng([e.latlng.lat,e.latlng.lng])
+                        .setContent(popupString)
+                        .openOn(strataMap);
+
+                          
+                      layer.bindPopup(popup); 
+
+
+                });
+                layer.on('mouseout', function () {
+                   
+                    layer.setStyle(style);
+                    strataMap.closePopup();
+                    //stratamap.closePopup(popup);
+                    
+                });
+            }
+        }
+    }
+)
+    
+
+let sec_Strat_TileLayer = new L.TileLayer.GeoJSON(secStratUrl, {
+        clipTiles: true,
+        unique: function (feature) {
+            return feature.id; 
+        }
+    }, 
+    {
+        style: style,
+        onEachFeature: function (feature, layer) {
+            if (feature.properties) {
+                var popupString = '<div class="popup">';
+                
+                for (var k in feature.properties) {
+                    var v = feature.properties[k];
+                    if (k==='label'){
+                      //popupString += k + ': ' + v + '<br />';
+                      popupString += v + '<br />';
+
+                    }
+                }
+            }
+            if (!(layer instanceof L.Point)) {
+                 var popup = L.popup()
+                layer.on('mouseover', function (e) {
+                    
+                    layer.setStyle(hoverStyle);
+
+                    layer.bindPopup(popupString, {className: 'my-popup'}).openPopup();
+              
+
+
+                });
+                layer.on('mouseout', function () {
+                   
+                    layer.setStyle(style);
+                    strataMap.closePopup();
+                    //stratamap.closePopup(popup);
+                    
+                });
+            }
+        }
+    }
+)
+
+var baseMaps = {
+    "Grayscale": cartoDBPositron
+    
+};
+
+var overlayMaps = {
+    "Islands": sec_Strat_TileLayer,
+    "Ecoregions": strat_TileLayer,
+    "LUCAS": stateclassTiles
+};
+  
+
+  L.control.layers(baseMaps, overlayMaps).addTo(maps[i]);
+
+
+
+  const allMapData = document.getElementById('map');
+  const mapControls = allMapData.querySelectorAll('input[name=leaflet-base-layers]')
+  mapControls.forEach(function(control, index){
+    control.id = "inputBase_"+index.toString()
+    const label = document.createElement("label");
+    label.className = 'custom-layer-control'
+    label.htmlFor = "inputBase_"+index.toString()
+    control.parentNode.insertBefore(label, control.nextSibling);
+    
+  })
+  const layersSelect = allMapData.querySelectorAll('div[class=leaflet-control-layers-overlays] > label > input[class=leaflet-control-layers-selector]')
+  layersSelect.forEach(function(control, index){
+    control.id = "inputLayer_"+index.toString()
+    const label = document.createElement("label");
+    label.htmlFor = "inputLayer_"+index.toString()
+    label.className = 'custom-layer-control'
+    
+    //label.htmlFor = "custom-layer-control";
+    control.parentNode.insertBefore(label, control.nextSibling);
+    
+  })
+  
+
+
+  //stateclassTiles.addTo(maps[i]) 
   const url = `http://127.0.0.1:8000/tiles/s${mapscenario}-it${settings.iteration_number}-ts${settings.year}-sc/{z}/{x}/{y}.png?style=lulc`;
+  //const url = `http://127.0.0.1:8000/tiles/s${mapscenario}-it${settings.iteration_number}-ts${settings.year}-sc/{z}/{x}/{y}.png`;
   
   stateclassTiles.setUrl(url);
 
-    if (feature.geometry) {
+
+  
+
+    if (feature.geom) {
       
-      tempLayer = L.geoJson(feature.geometry);
+      tempLayer = L.geoJson(feature.geom);
         maps[i].fitBounds(tempLayer.getBounds());
     }
       

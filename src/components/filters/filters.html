@@ -4,9 +4,11 @@
    <form>
       <div class="field-full">
         <label for="variable">Variable</label>
-        <div class="select-wrapper">
-          <select name="variable" disabled>
-          </select>
+        <!--<div class="select-wrapper">-->
+          <!--<select name="variable" disabled>
+          </select>-->
+          <div name="variable" disabled>
+          <!--</div>-->
         </div>
       </div>
      </form>
@@ -17,15 +19,19 @@
       <div class="field">
         <label for="scenario">Scenario</label>
         <div>
-          <select class='multiselect' name="scenario" multiple disabled>
-          </select>
+          <!--<select class='multiselect' name="scenario" multiple disabled>
+          </select>-->
+          <div name="scenario">
+            </div>
         </div>       
       </div>
       <div class="field">
         <label for="variable_detail">Class</label>
         <div>
-          <select class='multiselect' id="variableSelect" name="variable_detail" multiple disabled>
-          </select>
+          <!--<select class='multiselect' id="variableSelect" name="variable_detail" multiple disabled>
+          </select>-->
+          <div id="variableSelect" name="variable_detail">
+            </div>
         </div>
       </div>
      </form>
@@ -34,8 +40,8 @@
   <section>
     <form>
       <div class="field">
-        <label for="secondary_stratum">Island <a id="strataoverlayOpen" href="#strata-overlay">(Choose on Map)</a></label>
-
+        <!--<label for="secondary_stratum">Island <a id="strataoverlayOpen" href="#strata-overlay">(Choose on Map)</a></label>-->
+        <label name="secondary_stratum_label" for="secondary_stratum">Island <a id="secStrataOverlayOpen" href="#strata-overlay">(Choose on Map)</a></label>
         <div class="select-wrapper">
           <select name="secondary_stratum" disabled>
             
@@ -43,7 +49,8 @@
         </div>
       </div>
       <div class="field">
-        <label for="stratum">Moisture Zone <a>(Choose on Map)<a/></label>
+      <label name="stratum_label" for="stratum">Moisture Zone <a id="strataOverlayOpen" href="#strata-overlay">(Choose on Map)</a></label>
+      <!--  <label for="stratum">Moisture Zone <a>(Choose on Map)<a/></label>-->
         <div class="select-wrapper">
           <select name="stratum" disabled>
             <option value="All">All</option>
@@ -54,7 +61,27 @@
    <h2>Select Iterations</h2>
   <section>
    <form class='filterform'>
-      <div class="field">
+       <div class="field">
+          <input name="iteration-checkbox" value="percentile" id="percentileIteration" type="radio">
+          <label for="percentileIteration">Percentile of Iterations</label>
+           
+           <!-- <label><input type="checkbox" value="" id="iteration1Label" name="percentile-checkbox">Calculate Percentile of Iterations</label>-->
+           <div>
+            <input name="iteration-percentile" type="number" min="50" max="100" step="1" value="95" disabled/> 
+            
+            </div>
+        </div>
+       <div class="field" >
+          <input name="iteration-checkbox" value="single_iteration" id="singleIteration" type="radio">
+          <label for="singleIteration">Single Iteration</label>
+           
+           <!-- <label><input type="checkbox" value="" id="iteration1Label" name="percentile-checkbox">Calculate Percentile of Iterations</label>-->
+           <div>
+            <input name="iteration-single" type="number" min="50" max="100" step="1" value="95" disabled/> 
+           </div>
+        </div>
+       
+      <!--<div class="field">
         <label for="iteration_type">Iteration type</label>
         <div class="select-wrapper">
           <select name="iteration_type" disabled>
@@ -66,10 +93,13 @@
       <div class="field">
         <label for="iteration">Iteration value</label>
         <input name="iteration" type="number" min="1" max="100" step="1" value="95" disabled/> 
-      </div>
+      </div>-->
       <div class="field-full update">
         <input type="submit" value="Update" />
       </div>
+
+      
+                  
      </form>
      <div class="vis-list inline-list">
       <ul>
@@ -85,21 +115,11 @@
 
           <!-- Modal content -->
           <div class="modal-content">
-            <span class="close">&times;</span>
-            <br>
+           
+            
              <div id="strata-leaflet"></div>
             
           </div>
 
  </div>
- <div id="secstrataModal" class="modal">
-
-          <!-- Modal content -->
-          <div class="modal-content">
-            <span class="close">&times;</span>
-            <br>
-             <div id="secstrata-leaflet"></div>
-            
-          </div>
-
- </div>
+ 
