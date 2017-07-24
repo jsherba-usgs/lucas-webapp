@@ -7,7 +7,7 @@ const chart = () => {
   /**
   * PUBLIC VARIABLES
   **/
-  console.log(patternHatch('6370'))
+
   let margin = { top: 30, right: 20, bottom: 20, left: 60 };
 
   let width = 400;

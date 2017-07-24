@@ -1,6 +1,6 @@
 import d3 from 'd3';
 import tip from 'd3-tip';
-
+import {transitionTypeColorScale, nameContract, patterHatch} from './../../helpers/colors';
 
 d3.tip = tip;
 
@@ -78,6 +78,8 @@ const chart = () => {
 
       // Add group element to Container to hold data that will be drawn as area
       container.append('g').classed('bars', true);
+
+      container.append('g').classed('barsPattern', true);
 
       // Add group element to Container for x axis
       container.append('g').classed('x-axis-group axis', true);
@@ -220,8 +222,9 @@ const chart = () => {
       .domain([0, maxX]);
      
     // Y scale
- 
-    const yDomain = chartData.values.map((d) => d.y);
+   
+    const yDomain = chartData.values.map((d) => nameContract[d.y]);
+
 
     const yScale = d3.scale.ordinal()
       .rangeRoundBands([0, chartH], yRoundBands)
@@ -253,56 +256,42 @@ const chart = () => {
     const barsContainer = d3.select(this).select('g.bars');
   
     const bars = barsContainer.selectAll('rect').data((c) => c.values);
+
+    const barsContainerPattern = d3.select(this).select('g.barsPattern');
+    const barsPattern = barsContainerPattern.selectAll('rect').data((c) => c.values);
+     barsPattern
+     .attr('xmlns', "http://www.w3.org/2000/svg")
    
 
-    const valueLabels = barsContainer.selectAll('text.value').data((c) => c.values);
+    const valueLabels = barsContainerPattern.selectAll('text.value').data((c) => c.values);
  
     const barHeight = yScale.rangeBand()//d3.min([30, yScale.rangeBand()]);
 
     
-  const color = d3.scale.ordinal()
-  .range([
-   '#8dd3c7',
-   '#ffffb3',
-   '#bebada',
-   '#fb8072',
-   '#80b1d3',
-   '#fdb462',
-   '#b3de69',
-   '#fccde5',
-   '#ffed6f',
-   '#bc80bd',
-   '#ccebc5'
-
-  ]).domain([
-    'Ag->Forest',
-    'Ag->Grassland',
-    'Ag->Shrubland',
-    'Forest->Ag',
-    'Grassland->Ag',
-    'Shrubland->Ag',
-    'Agriculture->Developed',
-    'Barren->Developed',
-    'Forest->Developed',
-    'Grassland->Developed',
-    'Shrubland->Developed'
-
-  ]);
+  const color = transitionTypeColorScale
 
 
     // D3 UPDATE
     bars.transition().duration(1000)
       .attr('class', (d) => d.y)
       .attr('x', (d) => xScale(d.x0))
-      .attr('y', (d) => yScale(d.y))
+      .attr('y', (d) => yScale(nameContract[d.y]))
       .attr('width', (d) => xScale(d.x))
       .attr('height', barHeight)
       .style('fill', (d) => color(d.pathway));
 
+    barsPattern.transition().duration(1000)
+      .attr('class', (d) => d.y)
+      .attr('x', (d) => xScale(d.x0))
+      .attr('y', (d) => yScale(nameContract[d.y]))
+      .attr('width', (d) => xScale(d.x))
+      .attr('height', barHeight)
+      .attr('fill', (d) => 'url('+'#'+'diagonalHatch'+d.scenario+')');
+
     valueLabels.transition().duration(1000)
         .attr('class', 'value')
         .attr('x', (d) => xScale(d.x) + 2)
-        .attr('y', (d) => yScale(d.y) + (barHeight / 2))
+        .attr('y', (d) => yScale(nameContract[d.y]) + (barHeight / 2))
         //.text((d) => `${d.pathway}`)
         .text(function(d) {
             if (xScale(d.x) > 100) {return `${d.pathway}`}
@@ -316,12 +305,23 @@ const chart = () => {
     // D3 ENTER
     bars.enter()
       .append('rect')
-        .attr('class', (d) => d.y)
+        .attr('class', (d) => nameContract[d.y])
         .attr('x', (d) => xScale(d.x0))
-        .attr('y', (d) => yScale(d.y))
+        .attr('y', (d) => yScale(nameContract[d.y]))
         .attr('width', (d) => xScale(d.x))
         .attr('height', barHeight)
         .style('fill', (d) => color(d.pathway))
+        .on('mouseover', tooltip.show)
+        .on('mouseout', tooltip.hide);
+
+    barsPattern.enter()
+      .append('rect')
+        .attr('class', (d) => nameContract[d.y])
+        .attr('x', (d) => xScale(d.x0))
+        .attr('y', (d) => yScale(nameContract[d.y]))
+        .attr('width', (d) => xScale(d.x))
+        .attr('height', barHeight)
+        .attr('fill', (d) => 'url('+'#'+'diagonalHatch'+d.scenario+')')
         .on('mouseover', tooltip.show)
         .on('mouseout', tooltip.hide);
 
@@ -329,7 +329,7 @@ const chart = () => {
       .append('text')
         .attr('class', 'value')
         .attr('x', (d) => xScale(d.x0 + d.x/2))
-        .attr('y', (d) => yScale(d.y) + (barHeight / 2))
+        .attr('y', (d) => yScale(nameContract[d.y]) + (barHeight / 2))
         .text(function(d) {
             if (xScale(d.x) > 100) {return `${d.pathway}`}
             else  { return "" }
@@ -342,6 +342,9 @@ const chart = () => {
     // If exits need to happen, apply a transition and remove DOM elements
     // when the transition has finished
     bars.exit()
+      .remove();
+
+    barsPattern.exit()
       .remove();
 
     valueLabels.exit()

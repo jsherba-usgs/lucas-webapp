@@ -2732,3 +2732,20 @@ display: block;
 	text-decoration: underline;
 }
 
+.downloadsection{
+	
+	font-size: .9em;
+	margin-left:1em;
+	cursor: pointer;
+}
+
+
+.downloadsection:after {
+	font-family: FontAwesome;
+	font-style: normal;
+	font-weight: 400;
+	text-transform: none !important;
+	color: #c9d4b2;
+	content: '\f01a';
+
+	}

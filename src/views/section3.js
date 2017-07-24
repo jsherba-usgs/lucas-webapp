@@ -10,7 +10,8 @@ import './../components/horizontal-bar-chart/horizontal-bar-chart-small-multiple
 // Import Components
 import chartSmallMultiplesTransition from './../components/multiline-area-chart/multiLine-area-chart-small-multiples';
 import hbarChart from './../components/horizontal-bar-chart/horizontal-bar-chart-stacked';
-
+import {patternHatch, strokeHatch} from './../helpers/colors';
+import {downloadCSV, exportTableToCSV} from './../helpers/csv-service';
 //import  from './../helpers/project-details';
 /*
 * PRIVATE VARIABLES
@@ -19,8 +20,8 @@ const parentContainer = document.getElementById('three');
 //const timeseriesContainer = parentContainer.querySelector('.chart.timeseries');
 const hbarsContainer = parentContainer.querySelector('.chart.pathways');
 const timeSeriesContainer = parentContainer.querySelector('.chart.timeseries');
-const groupScenario = parentContainer.querySelector('.group_scenario');
-const groupClass = parentContainer.querySelector('.group_class');
+const groupScenario = parentContainer.querySelector('.group_scenario_section3');
+const groupClass = parentContainer.querySelector('.group_class_section3');
 let timeseriesChart;
 let pathwaysChart;
 let loading;
@@ -30,6 +31,17 @@ let loading;
 
 const view = {
   init() {
+
+		
+		const section3Table = document.getElementById("downloadsection3")
+		section3Table.onclick = function(e) {
+			e.preventDefault();
+			
+        exportTableToCSV("lucas.csv", parentContainer)
+    }
+   
+
+
     // Set x and y accessors
     const yAccessor = function (d) { return +d.values; };
     const xAccessor = function (d) { return new Date(d.key, 0, 1); };
@@ -43,6 +55,11 @@ const view = {
       .xValue((d) => +d.total);
   },
   updateChart(nestedData, colorScale, transitionGroups) {
+
+  	const section3 = document.getElementById("three")
+    const scenarioGroupCheckbox3 = section3.querySelector('input[id=scenarioGroup3]');
+    scenarioGroupCheckbox3.checked = true
+
     timeseriesChart = chartSmallMultiplesTransition();
     const yAccessor = function (d) { return +d.values; };
     const xAccessor = function (d) { return new Date(d.key, 0, 1); };
@@ -160,6 +177,7 @@ function  totalArea(transitionPathwaysNestedMap, groupByScenario){
             y: groups[0].group,
             x0: groups[0].y0,
             group: groups[0].x,
+            scenario: groups[0].x,
             pathway: groups[0].pathway
           }
             
@@ -170,6 +188,7 @@ function  totalArea(transitionPathwaysNestedMap, groupByScenario){
             y: groups[0].x,
             x0: groups[0].y0,
             group: groups[0].group,
+            scenario: groups[0].x,
             pathway: groups[0].pathway
           }
       }
@@ -185,7 +204,7 @@ let minY = d3.min(nestedData[0].values, (d) => d.key);
 
 function  totalAreaLine(nestedData, groupByScenario, transitionGroups){
       let lineData = [];
-      console.log(transitionGroups)
+      
       
 
       nestedData.forEach((series) => {
@@ -236,6 +255,7 @@ function  totalAreaLine(nestedData, groupByScenario, transitionGroups){
  //console.log(transitionPathways)
  let pathwayValues = totalAreaLine(nestedData, groupByScenario, transitionGroups)
 
+
  lineChartTotals = d3.nest()
           .key((d) => d.scenario)
           .key((d) => d.state)
@@ -250,6 +270,7 @@ function  totalAreaLine(nestedData, groupByScenario, transitionGroups){
 
  let dataset = totalArea(transitionPathwaysNestedMap, groupByScenario)
 
+
  dataset = [].concat.apply([], dataset)
  dataset = [].concat.apply([], dataset)
 
@@ -257,6 +278,8 @@ function  totalAreaLine(nestedData, groupByScenario, transitionGroups){
       .key((d) => d.group)
       .sortKeys(d3.ascending)
       .entries(dataset); 
+
+
    
    groupScenario.onclick = () => {
       groupScenario.classList.add("active");
@@ -328,11 +351,91 @@ function  totalAreaLine(nestedData, groupByScenario, transitionGroups){
       
     };
 
-
         // Call horizontal bar charts - small multiples
     d3.select(hbarsContainer)
       .datum(dataset)
       .call(pathwaysChart);
+
+
+
+ function updateLineandBarLegend(legendData){
+    
+    const collapseSection3 = document.getElementById('collapseLineGraphSection3')
+    collapseSection3.classList.add("in");
+    d3.selectAll(".legend-section3-body > *").remove();
+    console.log(legendData)
+    let sectionLegend = document.getElementById("legend-section3-body")
+   
+    legendData.forEach(function(stateObject, indexIDGroup){
+      
+      let transitionGroup = stateObject['key']
+      stateObject.values.forEach(function(scenarioObject){
+
+      	let scenario=scenarioObject['key']
+
+      	scenarioObject.values.forEach(function(transitionObject, indexID){
+        let state = transitionObject.pathway
+      	
+        let barClass = "bar_scenario_3_"+scenario+ "_" + indexID.toString() + "_" + indexIDGroup.toString()
+        let lineClass = "line_scenario_3_"+scenario+ "_" + indexID.toString()+ "_" + indexIDGroup.toString()
+        
+        
+        
+        let changeTotal = transitionObject.total
+        
+        const tableRow = document.createElement("tr");
+        const barCol = document.createElement("td");
+        barCol.width="100px";
+        barCol.className= barClass;
+      
+        const lineCol = document.createElement("td");
+        lineCol.width="100"
+        lineCol.className = lineClass;
+        const scenarioCol = document.createElement("td");
+        scenarioCol.innerHTML = scenario
+        const transitionGroupCol = document.createElement("td");
+        transitionGroupCol.innerHTML = transitionGroup
+        const stateCol = document.createElement("td");
+        stateCol.innerHTML = state
+        const changeCol = document.createElement("td");
+        changeCol.innerHTML=changeTotal.toString()
+        
+        tableRow.appendChild(barCol)
+        tableRow.appendChild(lineCol)
+        tableRow.appendChild(transitionGroupCol)
+        tableRow.appendChild(stateCol)
+        tableRow.appendChild(scenarioCol)
+        tableRow.appendChild(changeCol)
+        
+        sectionLegend.appendChild(tableRow)
+
+        
+
+        let color = colorScale(state)
+        //let pattern = scenarioLegendLookup[scenario]
+        console.log(color)
+        console.log(state)
+        barClass="."+barClass
+        let pattern= patternHatch(scenario)
+        d3.select(barClass).append("svg").attr("width", 50).attr("height", 32).append("rect").attr("width", 40).attr("height", 30).style("fill", color).attr("transform", "translate(0,10)")
+        d3.select(barClass).select("svg").attr('xmlns', "http://www.w3.org/2000/svg").append('defs').append('pattern').attr('id', barClass).attr('patternUnits', 'userSpaceOnUse').attr('width', '10').attr('height', '10').append('image').attr('xlink:href',pattern).attr('x','0').attr('y','0').attr('height','10').attr('width','10') 
+        d3.select(barClass).select("svg").append("rect").attr("width", 40).attr("height", 30).attr("transform", "translate(0,10)").style("fill", "url(#"+barClass+")")//.attr("fill", 'url('+'#'+'diagonalHatch'+scenario+')')
+        
+        lineClass="."+lineClass
+        let strokeArray = strokeHatch(scenario)
+        d3.select(lineClass).append("svg").attr("height", 10).append("line").attr("x1", 0).attr("x2", 40).attr("y1", 0).attr("y2", 0).attr("stroke", color).attr('stroke-width', '5').attr('stroke-dasharray',strokeArray);   
+        })
+      })
+    })
+   
+ 
+  
+
+     collapseSection3.classList.remove("in");
+    }    
+    updateLineandBarLegend(transitionPathwaysNested)
+    
+
 
 
   },

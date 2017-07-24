@@ -1,5 +1,12 @@
 import d3 from 'd3';
 
+export const nameContract = {
+    'AGRICULTURAL CONTRACTION':"Agr. Contr.",
+    'AGRICULTURAL EXPANSION':"Agr. Expan.",
+    'URBANIZATION':'URBANIZATION',
+    "6370": "6370",
+    "6385":"6385"
+  }
 
 export const patternHatch = d3.scale.ordinal()
           .range([

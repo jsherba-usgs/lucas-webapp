@@ -13,7 +13,7 @@ import { stateclassColorScale, carbonstockColorScale, scenarioLegendLookup, scen
 import barChart from './../components/bar-chart/bar-chart-small-multiples';
 //import chart from './../components/multiline-area-chart/multiLine-area-chart';
 import chartSmallMultiples from './../components/multiline-area-chart/multiLine-area-chart-small-multiples';
-
+import {downloadCSV, exportTableToCSV} from './../helpers/csv-service';
 
 /*
 * PRIVATE VARIABLES
@@ -34,50 +34,18 @@ let sumMax = 0
 let sumMin = 0
 const view = {
   init() {
-    
+      const section2Table = document.getElementById("downloadsection2")
+      section2Table.onclick = function(e) {
+        e.preventDefault();
+        
+      exportTableToCSV("lucas.csv", parentContainer)
+
+    }
   },
   updateChart(nestedData, colorScale) {
 
     timeseriesChart = chartSmallMultiples()
- /* const timeseriesData= nestedData.map((series) => (
-      {
-        name: series.key,
-        type: 'line',
-        //values: series.values,
-        values: series.values.map(function(dd){
-                key = dd.key
-                values = dd.values[0].Mean
-                min = dd.values[0].min
-                max = dd.values[0].max
-                return {key:key, min:min, max:max, values:values}
-              })
-      }
-    ));*/
 
-
-  /*const timeseriesData = nestedData.map((series) => (
-      {
-        key: series.key.split(' / ')[1],
-       
-        //values: series.values,
-        values: series.values.map(function(dd){
-
-              
-                values= dd.values[0].Mean
-                max =dd.values[0].max
-                min=dd.values[0].min
-                year= dd.values[0].Timestep + " / " + dd.values[0].StateLabelX
-                name=series.key
-                yearval= dd.values[0].Timestep.toString()
-                key= dd.values[0].Timestep.toString()
-                scenario= dd.values[0].ScenarioID
-                state=dd.values[0].StateLabelX
-
-               
-                return {year:year, min:min, max:max, values:values, name:name, name:name, yearval:yearval,key:key,scenario:scenario, state:state}
-              })
-      }
-    ));*/
     const section2 = document.getElementById("two")
     const scenarioGroupCheckbox = section2.querySelector('input[id=scenarioGroup]');
     scenarioGroupCheckbox.checked = true
