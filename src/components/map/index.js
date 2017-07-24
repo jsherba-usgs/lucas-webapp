@@ -232,10 +232,13 @@ model.preLoadRasters = (slider,d) => {
    
 
    let yearArray = range(2011,2061,5)
-   let layerKeys = Object.keys(maps[0]._layers)
-   console.log(yearArray)
-   console.log(layerKeys)
-   if (layerKeys.length < yearArray.length){
+   //console.log(maps[0]._layers)
+   //console.log(maps[0]._tilePane.childElementCount)
+   let layerKeys = maps[0]._tilePane.childElementCount//Object.keys(maps[0]._layers)
+   
+   
+   if (layerKeys < yearArray.length){
+    
    slider.playbackRate(0)
   
    let loadRasters = function(slider, d){
@@ -507,7 +510,7 @@ model.reloadMap = (...args) => {
       update = true;
     }
     if (args[0].stratum && args[0].stratum !== settings.stratum) {
-      console.log("test")
+
       settings.stratum = args[0].stratum;
       project = projects.getDetailsForId(args[0].project);      
       feature = project.details.stratum.find((item) => item.id === args[0].stratum);
@@ -744,9 +747,9 @@ var overlayMaps = {
 
   L.control.layers(baseMaps, overlayMaps).addTo(maps[i]);
 
-
-
-  const allMapData = document.getElementById('map');
+  
+  let mapId= "map_"+i.toString()
+  let allMapData = document.getElementById(mapId);
   const mapControls = allMapData.querySelectorAll('input[name=leaflet-base-layers]')
   mapControls.forEach(function(control, index){
     control.id = "inputBase_"+index.toString()

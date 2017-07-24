@@ -7,7 +7,7 @@ import Spinner from 'spin';
 import './../components/bar-chart/bar-chart.css';
 
 // Import Helpers
-import { stateclassColorScale, carbonstockColorScale } from './../helpers/colors';
+import { stateclassColorScale, carbonstockColorScale, scenarioLegendLookup, scenarioLookupDictionary, patternHatch, strokeHatch} from './../helpers/colors';
 
 // Import Components
 import barChart from './../components/bar-chart/bar-chart-small-multiples';
@@ -78,9 +78,12 @@ const view = {
               })
       }
     ));*/
+    const section2 = document.getElementById("two")
+    const scenarioGroupCheckbox = section2.querySelector('input[id=scenarioGroup]');
+    scenarioGroupCheckbox.checked = true
 
-
-
+    const totalChangeCheckbox = section2.querySelector('input[id=totalChange]');
+    totalChangeCheckbox.checked = true
 
 
     
@@ -570,6 +573,9 @@ const view = {
       .key((d) => d.scenario)
       .key((d) => d.state)
       .entries(totalLine);
+
+   //   console.log(barChartTotals)
+  
     
     d3.select(chartContainer)
       .datum(lineChartTotals)
@@ -581,6 +587,95 @@ const view = {
       .call(barChart()
         .color(colorScale)
       );
+
+    let legendData= d3.nest()
+    .key((d) => d.scenario)
+    .key((d) => d.state)
+    .entries(totalBar);
+
+  
+  
+  function updateLineandBarLegend(legendData){
+    
+    const collapseSection2 = document.getElementById('collapseLineGraphSection2')
+    collapseSection2.classList.add("in");
+    d3.selectAll(".legend-section2-body > *").remove();
+    
+    let sectionLegend = document.getElementById("legend-section2-body")
+
+    legendData.forEach(function(scenarioObject){
+      
+      let scenario = scenarioObject['key']
+      scenarioObject.values.forEach(function(stateObject, indexID){
+        
+
+        let barClass = "bar_scenario"+scenario+ "_" + indexID.toString()
+        let lineClass = "line_scenario"+scenario+ "_" + indexID.toString()
+        console.log(barClass)
+        let state=stateObject['key']
+        let start = stateObject.values[0].value
+        let end = stateObject.values[1].value
+        let changeTotal = end-start
+        let percentChange =((end-start)/start)*100
+        percentChange= percentChange.toFixed(1);
+        const tableRow = document.createElement("tr");
+        const barCol = document.createElement("td");
+        barCol.width="100px";
+        barCol.className= barClass;
+      
+        const lineCol = document.createElement("td");
+        lineCol.width="100"
+        lineCol.className = lineClass;
+        const scenarioCol = document.createElement("td");
+        scenarioCol.innerHTML = scenario
+        const stateCol = document.createElement("td");
+        stateCol.innerHTML = state
+        const startCol = document.createElement("td");
+        startCol.innerHTML=start.toString()
+        const endCol = document.createElement("td");
+        endCol.innerHTML=end.toString()
+        const changeCol = document.createElement("td");
+        changeCol.innerHTML=changeTotal.toString()
+        const pChangeCol = document.createElement("td");
+        pChangeCol.innerHTML=percentChange.toString()
+        tableRow.appendChild(barCol)
+        tableRow.appendChild(lineCol)
+        tableRow.appendChild(stateCol)
+        tableRow.appendChild(scenarioCol)
+        tableRow.appendChild(startCol)
+        tableRow.appendChild(endCol)
+        tableRow.appendChild(changeCol)
+        tableRow.appendChild(pChangeCol)
+        sectionLegend.appendChild(tableRow)
+
+        
+
+        let color = colorScale(state)
+        //let pattern = scenarioLegendLookup[scenario]
+        
+        barClass="."+barClass
+        let pattern= patternHatch(scenario)
+        d3.select(barClass).append("svg").attr("width", 50).attr("height", 32).append("rect").attr("width", 40).attr("height", 30).style("fill", color).attr("transform", "translate(0,10)")
+        d3.select(barClass).select("svg").attr('xmlns', "http://www.w3.org/2000/svg").append('defs').append('pattern').attr('id', barClass).attr('patternUnits', 'userSpaceOnUse').attr('width', '10').attr('height', '10').append('image').attr('xlink:href',pattern).attr('x','0').attr('y','0').attr('height','10').attr('width','10') 
+        d3.select(barClass).select("svg").append("rect").attr("width", 40).attr("height", 30).attr("transform", "translate(0,10)").style("fill", "url(#"+barClass+")")//.attr("fill", 'url('+'#'+'diagonalHatch'+scenario+')')
+        
+        lineClass="."+lineClass
+        let strokeArray = strokeHatch(scenario)
+        d3.select(lineClass).append("svg").attr("height", 10).append("line").attr("x1", 0).attr("x2", 40).attr("y1", 0).attr("y2", 0).attr("stroke", color).attr('stroke-width', '5').attr('stroke-dasharray',strokeArray);   
+        
+      })
+    })
+   
+ 
+  
+
+     collapseSection2.classList.remove("in");
+    }    
+    updateLineandBarLegend(legendData)
+
+
+
+
   },
   chartStatus(status) {
     switch (status) {

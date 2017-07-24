@@ -282,6 +282,7 @@ function updateFields() {
 
       const img = document.createElement("img")
       img.src = item.image_path
+      img.className = "variableImages"
 
       const span = document.createElement('span')
       span.innerHTML = item.id;
@@ -328,7 +329,7 @@ model.init = () => {
   filtersContainer2.innerHTML = projectFilterContent;
   
   percentileCheckbox = filtersContainer.querySelector('input[id=percentileIteration]');
-  console.log(percentileCheckbox)
+ 
   percentileCheckbox.checked = true
   singleIterationCheckbox  =filtersContainer.querySelector('input[id=singleIteration]');
 

@@ -1,12 +1,12 @@
 import d3 from 'd3';
-import { dashed } from '../../helpers/colors';
+import { dashed, strokeHatch } from '../../helpers/colors';
 
 const chart = () => {
   /**
   * PUBLIC VARIABLES
   **/
 
-  let margin = { top: 15, right: 20, bottom: 20, left:80 };
+  let margin = { top: 30, right: 20, bottom: 20, left:80 };
   
   let width = 400;
   let height = 250;
@@ -477,7 +477,7 @@ const area = d3.svg.area()
       
       .attr('d', (d) => line(d.values))
       //.style("stroke-dasharray", (d) => (dashed(d.name.split(" / ")[1])))
-      .style("stroke-dasharray", (d) => (dashed(d.values[0].scenario)))
+      .style("stroke-dasharray", (d) => (strokeHatch(d.values[0].scenario)))
       //.style('stroke', (d) => color(d.name.split(" / ")[0]));
       .style('stroke', (d) => color(d.values[0].state));
 
@@ -493,7 +493,7 @@ const area = d3.svg.area()
         //.style("stroke-dasharray", (d) => (dashed(d.name.split(":")[1])))
         //.style("stroke-dasharray", (d) => (dashed(d.name.split(" / ")[1])))
         //.style('stroke', (d) => color(d.name.split(" / ")[0]));
-        .style("stroke-dasharray", (d) => (dashed(d.values[0].scenario)))
+        .style("stroke-dasharray", (d) => (strokeHatch(d.values[0].scenario)))
         .style('stroke', (d) => color(d.values[0].state));
 
     // D3 EXIT

@@ -1,5 +1,5 @@
 import d3 from 'd3';
-import { dashed } from '../../helpers/colors';
+import {strokeHatch} from '../../helpers/colors';
 
 const chart = () => {
   /**
@@ -116,8 +116,7 @@ const area = d3.svg.area()
         //console.log(y1)
         //console.log(y2)
         deltaY = y1 - y2;
-       console.log(y1)
-       console.log(y2)
+      
         if (Math.abs(deltaY) > spacing) return;
         again = true;
         sign = deltaY > 0 ? 1 : -1;
@@ -296,6 +295,13 @@ function arrangeLabels(textLabels) {
           .style('text-anchor', 'middle')
           .classed('y-axis-label', true);
 
+     /* annotation.append('text')
+        .attr('y', 0 - margin.top)
+        .attr('x', (chartW / 2))
+        .attr('dy', '1em')
+        .style('text-anchor', 'middle')
+        .classed('year-label', true);*/
+
       // Hover line for click events
       container.append('g')
         .append('line')
@@ -420,6 +426,7 @@ function arrangeLabels(textLabels) {
 
   exports.render = function () {
     this.drawAxes();
+   // this.drawLabels();
     this.drawArea();
     this.drawLines();
     this.drawMouseOverElements();
@@ -454,6 +461,14 @@ function arrangeLabels(textLabels) {
       .call(xAxis);
   };
 
+  /*exports.drawLabels = function () {
+    console.log(data)
+    svg.select('.year-label')
+      .transition().duration(1000)
+      .text('')
+      .text("Stateclass Area Over Time");
+  };*/
+
   exports.drawLines = function () {
    
     const lineData = data.filter((series) => {
@@ -476,7 +491,7 @@ function arrangeLabels(textLabels) {
     lineGroups.transition().duration(1000)
       .attr('class', 'line')
       .attr('d', (d) => line(d.values))
-      .style("stroke-dasharray", (d) => (dashed(d.name.split(" / ")[1])))
+      .style("stroke-dasharray", (d) => (strokeHatch(d.name.split(" / ")[1])))
       .style('stroke', (d) => color(d.name.split(" / ")[0]));
 
     // D3 ENTER
@@ -487,7 +502,7 @@ function arrangeLabels(textLabels) {
         .attr('class', 'line')
         .attr('d', (d) => line(d.values))
         //.style("stroke-dasharray", (d) => (dashed(d.name.split(":")[1])))
-        .style("stroke-dasharray", (d) => (dashed(d.name.split(" / ")[1])))
+        .style("stroke-dasharray", (d) => (strokeHatch(d.name.split(" / ")[1])))
         .style('stroke', (d) => color(d.name.split(" / ")[0]));
 
     // D3 EXIT

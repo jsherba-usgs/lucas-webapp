@@ -272,7 +272,13 @@ const view = {
       .transition()
       .call(timeseriesChart);
 
+     // Update Chart Title
+    let variableSelectInput = document.querySelector('input[name=variable_checkboxes]:checked')
+    let chartTitleDiv = document.getElementById('chartSection1Title')
 
+    chartTitleDiv.innerHTML =variableSelectInput.id
+     
+ 
   },
   removeLayers(){
     leafletMap.removeTimeSeriesRasters()

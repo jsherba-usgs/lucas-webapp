@@ -1,13 +1,13 @@
 import d3 from 'd3';
 import tip from 'd3-tip';
-
+import {patternHatch} from './../../helpers/colors';
 d3.tip = tip;
 
 const chart = () => {
   /**
   * PUBLIC VARIABLES
   **/
-
+  console.log(patternHatch('6370'))
   let margin = { top: 30, right: 20, bottom: 20, left: 60 };
 
   let width = 400;
@@ -112,8 +112,7 @@ const chart = () => {
       container = svg.selectAll('g.container');
 
       // Add group element to Container for x axis
-      container.append('g').classed('x-axis-group axis', true);
-      container.append('g').classed('x-axis-0-group axis', true);
+     
 
       // Add group element to Container to hold data that will be drawn as area
       container.append('g').classed('bars', true);
@@ -121,6 +120,9 @@ const chart = () => {
       container.append('g').classed('barsPattern', true);
 
       container.append('g').classed('errorBars', true);
+
+       container.append('g').classed('x-axis-group axis', true);
+      container.append('g').classed('x-axis-0-group axis', true);
 
       // Add group element to Container for y axis on left and right of chart
       container.append('g').classed('y-axis-group axis', true);
@@ -236,13 +238,15 @@ const chart = () => {
   **/
 
   exports.render = function () {
+    
     exports.drawAxes();
- 
     exports.drawLabels();
    
     container.each(exports.drawErrorBars);
  
     container.each(exports.drawBars);
+
+
 
 
     
@@ -283,31 +287,49 @@ const chart = () => {
 
     // Update the y-axis.
     filtercon.select('.y-axis-group.axis')
-      .transition().duration(1000)
+      .transition().duration(500)
       .call(yAxis);
 
 
 
-     indexval += 1
+    
 
-    });
-
-    container.select('.y-axis-label')
+    filtercon.select('.y-axis-label')
           .text(yAxisAnnotation);
 
     // Draw x axis with category labels
-    container.select('.x-axis-group.axis')
+   /* container.select('.x-axis-group.axis')
       .transition().duration(1000)
-      .call(xAxis);
+      .call(xAxis);*/
 
+    let Ytranslate = yScale(0)
+    
     // Draw 0 x axis only if data has negative values
- /*   if (d3.min(yScale.domain()) < 0) {
-      container.select('.x-axis-0-group.axis')
+    if (d3.min(yScale.domain()) < 0) {
+      
+      
+      /*container.select('.x-axis-0-group.axis')
         .transition().duration(1000)
-       // .attr("transform", "translate(0," + "-" + chartH + ")")
+        .attr("transform", "translate(0,"+Ytranslate+")")
+        .call(xAxis);*/
+
+        filtercon.select('.x-axis-group.axis')
+        .transition().duration(500)
+        .attr("transform", "translate(0,"+Ytranslate+")")
         .call(xAxis);
-    }*/
+
+
+    }else{
+        filtercon.select('.x-axis-group.axis')
+      .transition().duration(500)
+      .call(xAxis);
+    }
+
+     indexval += 1
+
+    });
   };
+
 
   
 
@@ -354,15 +376,16 @@ const chart = () => {
 
     const barsContainerPattern = filtercon.select('g.barsPattern');
     const barsPattern = barsContainerPattern.selectAll('rect').data((c) => c.values);
-
-    const pattern = d3.scale.ordinal()
+     barsPattern
+     .attr('xmlns', "http://www.w3.org/2000/svg")
+    /*const pattern = d3.scale.ordinal()
     .range([
      '0',
      '4'
     ]).domain([
       '6370',
       '6385'
-    ]);
+    ]);*/
      
     // D3 UPDATE
     bars.transition().duration(1000)
@@ -416,12 +439,13 @@ const chart = () => {
       .attr('patternUnits', 'userSpaceOnUse')
      // .attr('width', (d) => pattern(xValue(d).split(" / ")[1]))
      // .attr('height', (d) => pattern(xValue(d).split(" / ")[1]))
-     .attr('width', (d) => pattern(d.scenario))
-     .attr('height', (d) => pattern(d.scenario))
-    .append('path')
+     .attr('width', "10")
+     .attr('height', "10")
+     .append('image').attr('xlink:href',(d) => patternHatch(d.scenario)).attr('x','0').attr('y','0').attr('height','10').attr('width','10')
+    /*.append('path')
       .attr('d', 'M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2')
       .attr('stroke', '#000000')
-      .attr('stroke-width', 1);
+      .attr('stroke-width', 1);*/
  
     // D3 EXIT
     // If exits need to happen, apply a transition and remove DOM elements

@@ -195,6 +195,15 @@ const projectDetails = [
           {
             id: 'Grassland',
           },
+           {
+            id: 'Shrubland',
+          },
+           {
+            id: 'Wetland',
+          },
+           {
+            id: 'Plantation',
+          },
         ],
           
         },
@@ -203,14 +212,30 @@ const projectDetails = [
           image_path: '../../images/Asset 9.png',
           variable_detail: [
           {
-            id: 'Litter',
+            id: 'Aquatic',
           },
           {
-            id: 'SOC',
+            id: 'Atmosphere',
+          },
+          {
+            id: 'Down Deadwood',
+          },
+          {
+            id: 'Grain/Ag',
+          },
+          {
+            id: 'Litter',
           },
           {
             id: 'Living Biomass',
           },
+          {
+            id: 'Standing Deadwood',
+          },
+          {
+            id: 'SOC',
+          },
+          
         ],
          
         },

@@ -1,5 +1,47 @@
 import d3 from 'd3';
 
+
+export const patternHatch = d3.scale.ordinal()
+          .range([
+            
+           'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAADklEQVQYlWNgGAWDEwAAAZoAARbK02kAAAAASUVORK5CYII=',
+           'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAGElEQVQYlWNgIAL8/////6gieipiYGAAAOtjJ9mgOAaFAAAAAElFTkSuQmCC',
+           'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAEUlEQVQYlWNgIA78H1VEZ0UA7RAJ995l1iMAAAAASUVORK5CYII=',
+           'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAADklEQVQYlWNgGAWDEwAAAZoAARbK02kAAAAASUVORK5CYII=',
+           'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAEUlEQVQYlWNgIA78H1VEZ0UA7RAJ995l1iMAAAAASUVORK5CYII=',
+           'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAEklEQVQYlWNgYGD4zzAKBh8AAJYTAQA4FYKbAAAAAElFTkSuQmCC',
+           'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAJElEQVQYlWNgwAT/sYjhVIRXMbokVsW4TPhPjCJi5clXPFAAAB4YCfd6VbaUAAAAAElFTkSuQmCC'
+
+          ]).domain([
+            '6370',
+            '6385',
+            '1120',
+            '1201',
+            '1202',
+            '1203'
+          ]);
+
+export const strokeHatch = d3.scale.ordinal()
+          .range([
+            
+           "",
+           "5, 5",
+           "",
+           "5, 5",
+           '5, 5, 1, 5',
+           '1, 5',
+           '15, 10, 5, 10, 15'
+
+          ]).domain([
+            '6370',
+            '6385',
+            '1120',
+            '1201',
+            '1202',
+            '1203'
+          ]);
+          
+
 export const stateclassColorScale = d3.scale.ordinal()
   .range([
     '#ff8040',
@@ -199,9 +241,9 @@ export const transitiongroupColorScale = {"7171":[ColorScale7171,"Avg. Annual Pr
 
 export const colorScaleDic = {"Land-Cover State": [stateclassColorScale, 30], "Carbon Stock": [carbonstockColorScale, 30], "Land-Cover Transition":[transitionColorScale, 30], "Land-Cover Transition Types":[transitionTypeColorScale]};
 
-export const dashed = d3.scale.ordinal()
+/*export const dashed = d3.scale.ordinal()
     .domain(["6370", "6385"])
-    .range(["0, 0", "3, 3"]);
+    .range(["0, 0", "3, 3"]);*/
 
 export const dashedLegend = d3.scale.ordinal()
     .domain(["6370", "6385"])
@@ -259,7 +301,8 @@ export const transitionClassLegendLookup = {
           'AGRICULTURAL EXPANSION':'#beaed4',
           'URBANIZATION':'#fdc086'}
 
-export const stateClassLegendLookup = {'Agriculture':'#ff8040',
+export const stateClassLegendLookup
+ = {'Agriculture':'#ff8040',
           'Barren':'#c0c0c0',
           'Developed':'#000',
           'Forest':'#008000',
