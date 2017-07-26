@@ -6,10 +6,23 @@
 import L from 'leaflet';
 
 const cartoDBPositron = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
-  attribution: 'Data: <a href="http://www.openstreetmap.org/copyright">OSM</a>, Map Tiles: <a href="http://cartodb.com/attributions">CartoDB</a>',
+ // attribution: 'Data: <a href="http://www.openstreetmap.org/copyright">OSM</a>, Map Tiles: <a href="http://cartodb.com/attributions">CartoDB</a>',
   subdomains: 'abcd',
   maxZoom: 19,
 });
+
+
+
+  const stateclassTiles = L.tileLayer('http://127.0.0.1:8000/tiles/s6370-it0001-ts2011-sc/{z}/{x}/{y}.png', {
+ // attribution: 'LULC: <a href="http://landcarbon.org">LandCarbon</a>',
+  maxZoom: 19,
+  opacity: 1,
+  subdomains: 'abcd',
+  //scenario: '6368',
+  //iteration: '0001',
+  //year: '2001'
+  });
+
 
 const cartoDBPositronLabelsOnly = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png', {
  // attribution: 'Data: <a href="http://www.openstreetmap.org/copyright">OSM</a>, Map Tiles: <a href="http://cartodb.com/attributions">CartoDB</a>',
@@ -37,20 +50,9 @@ const Stamen_TonerLabels = L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net
   ext: 'png'
 });
 
-const stateclassTiles = L.tileLayer('http://127.0.0.1:8000/tiles/s6368-it0001-ts2011-sc/{z}/{x}/{y}.png', {
-  attribution: 'LULC: <a href="http://landcarbon.org">LandCarbon</a>',
-  maxZoom: 19,
-  //scenario: '6368',
-  //iteration: '0001',
-  //year: '2001'
-});
-const stateclassTilesNext = L.tileLayer('http://127.0.0.1:8000/tiles/s6368-it0001-ts2012-sc/{z}/{x}/{y}.png', {
-  attribution: 'LULC: <a href="http://landcarbon.org">LandCarbon</a>',
-  maxZoom: 19,
-  //scenario: '6368',
-  //iteration: '0001',
-  //year: '2001'
-});
 
 
-export { cartoDBPositron, cartoDBPositronLabelsOnly, cartoDBDarkMatter, CartoDB_DarkMatterNoLabels, Stamen_TonerLabels, stateclassTiles, stateclassTilesNext,caEcoregions};
+//const statelassTilePath = `http://127.0.0.1:8000/tiles/s${scenario}-it${iteration}-ts${year}-sc/{z}/{x}/{y}.png?style=lulc`;
+
+//const tgapTilPath = `http://127.0.0.1:8000/tiles/s${scenario}-it0000-ts${year}-tgap${layer}/{z}/{x}/{y}.png?style=${layer}`
+export { cartoDBPositron, cartoDBPositronLabelsOnly, cartoDBDarkMatter, CartoDB_DarkMatterNoLabels, Stamen_TonerLabels, stateclassTiles};

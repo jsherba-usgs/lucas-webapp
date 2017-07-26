@@ -14,7 +14,7 @@ import { addEventListener, triggerEvent } from './helpers/utils';
 // Import Components
 import filters from './components/filters/filters';
 import leafletFilters from './components/map/leaflet_filters'
-
+import projects from './helpers/project-details';
 // Import views
 import section1 from './views/section1';
 import section2 from './views/section2';
@@ -339,12 +339,18 @@ function addMapLegends(){
     section1.resizeChart()
    }*/
 
-   const year = []
+  
 
-    for (var i = 2011; i <= 2061; i++) {
+
+  function setParams(e, variableType){
+
+    details = projects.getDetailsForId(e.detail.project).details;
+    const year = []
+
+    for (var i = details.years.start; i <= details.years.end; i++) {
        year.push(i);
     }
-  function setParams(e, variableType){
+
     const variableApiTypes = {
       'state_label_x': 'StateLabelX',
       'stock_type': 'StockType',
@@ -469,6 +475,9 @@ function addMapLegends(){
 
         
           section1.updateChart(totalAreaByYear, colorScaleDic[e.detail.variable][0]);
+          //section1.sliderremove()
+         // section1.sliderinit()
+          section1.sliderupdate(params.timestep)
       
           // Update section 2 charts
           

@@ -36,7 +36,7 @@ const chart = () => {
   const yScale = d3.scale.linear();
 
   // X Axis on top of chart
-  const xAxis = d3.svg.axis()
+  let xAxis = d3.svg.axis()
     .scale(xScale)
     .orient('bottom')
     .tickFormat(d3.time.format('%Y'))
@@ -327,9 +327,23 @@ function arrangeLabels(textLabels) {
           // Dispatch click event
           dispatch.click(mouse, xScale);
         });*/
+     let yearRange = []
+      _data[0].values.forEach(function(d) {
+            
+           
+           yearRange.push(parseInt(d.key))
 
+      });
+     
+      let tickValues = []
+      for(var i=d3.min(yearRange); i<=d3.max(yearRange)+10;i=i+10) {
 
+        tickValues.push(new Date(i, 0))
+      }
+    
 
+       xAxis 
+          .tickValues(tickValues)
 
       /*
       *  End of all the elements appended to svg only once
@@ -415,6 +429,12 @@ function arrangeLabels(textLabels) {
     return this;
   };
 
+  exports.xAxis = function (_) {
+    if (!_) return xAxis;
+    xAxis = _;
+    return this;
+  };
+
  /**
   * PUBLIC FUNCTIONS
   **/
@@ -450,6 +470,8 @@ function arrangeLabels(textLabels) {
     /*svg.select('.y-axis-group-2.axis')
       .transition().duration(1000)
       .call(yAxis2);*/
+
+   
 
     // Update y axis label
    svg.select('.y-axis-label')

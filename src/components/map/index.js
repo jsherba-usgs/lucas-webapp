@@ -7,7 +7,7 @@ import 'leaflet/dist/leaflet.css';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 
 // Import helpers
-import { cartoDBPositron, cartoDBPositronLabelsOnly, stateclassTiles, stateclassTilesNext, CartoDB_DarkMatterNoLabels, Stamen_TonerLabels } from './../../helpers/leaflet-layers';
+import { cartoDBPositron, stateclassTiles} from './../../helpers/leaflet-layers';
 import projects from './../../helpers/project-details';
 
 /**
@@ -30,61 +30,7 @@ let settings;
 let feature;
 let tempLayer;
 let project;
-//const modal = document.getElementById('myModal');
-//const span = document.getElementsByClassName("close")[0];
 
-// When the user clicks on <span> (x), close the modal
-/*span.onclick = function() {
-    modal.style.display = "none";
-}
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-}*/
-
-/*const info = L.control();
-
-info.onAdd = function (test) {
-
-  this._div = L.DomUtil.create('div', 'info leaflet-bar leaflet-control leaflet-control-custom');
-  this._div.onclick = function(){
-   
- 
-    individualMap=parseInt(test._container.id.split("_")[1])
-    
-    
-
-    let scenarioOptions = document.querySelector('select[name=mapscenario]')
-
-    for(var i = 0; i < scenarioOptions.length; i++){
-      scenarioOptions[i].selected = false;
-    }
-    
-    scenarioOptions.options.item(individualMap).selected = true;
-    
-    }
-  this.update();
-
-  return this._div;
-};
-
-selectYearNode = function(inputMap, year){
-  inputMap._controlContainer.childNodes[1].childNodes[0].innerHTML = year
-}
-selectScenarioNode = function(inputMap, scenario){
-  inputMap._controlContainer.childNodes[1].childNodes[1].innerHTML = scenario
-}
-selectIterationNode = function(inputMap, iteration){
-  inputMap._controlContainer.childNodes[1].childNodes[2].innerHTML = iteration
-}
-
-info.update = function (year) {
-
-  this._div.innerHTML = year || 2011;
-};*/
 
 /**
 * PRIVATE FUNCTIONS
@@ -188,12 +134,6 @@ model.init = ({ selector, lat = 22.234262, lng = -159.784857, scenario = '6368',
     iteration_array: [leftPad(iteration.toString())],
   };
   
- //info.addTo(maps[0]);
-/*mapInfo = ['Year: ' + settings.year, 'Scenario: '+ settings.scenario, 'Iteration: ' +settings.iteration_number]
-  for (j = 0; j < mapInfo.length; j++) {
-       info.addTo(maps[0]);
-       info.update(mapInfo[j]);
-  }*/
  
 
 };
@@ -201,21 +141,18 @@ model.init = ({ selector, lat = 22.234262, lng = -159.784857, scenario = '6368',
 model.removeTimeSeriesRasters = (...args) => {
   scenarios = settings.scenario.split(',')
     
-    //let startYear = parseInt(args[0].year)
+    
     for (i = 0; i < maps.length; i++) {
       
       mapscenario = scenarios[i]
 
-      //let layerKeys = Object.keys(maps[i]._layers)
+     
 
       maps[i].eachLayer(function(layer){
 
         stateclassGroups[i].clearLayers()
        
-        /*if (layer.options && layer.options.id){ //&& layer.options.id !== settings.year.toString()){
-          
-          maps[i].removeLayer(layer);
-        }*/
+    
       });
  
 
@@ -229,15 +166,21 @@ model.mapLayers = () =>{
     return groupLength
 }
 model.preLoadRasters = (slider,d) => {
+  
+   let startYear = project.details.years.start
+   let endYear = project.details.years.end
+      //const feature = project.details.secondary_stratum.find((item) => item.id === args[0].secondary_stratum);
+      //feature = project.details.jsonlayer.sec_strata.features.find((item) => item.properties.name === args[0].secondary_stratum);
    
 
-   let yearArray = range(2011,2061,5)
+   let yearArray = range(startYear,endYear,5)
    //console.log(maps[0]._layers)
    //console.log(maps[0]._tilePane.childElementCount)
+   let yearLength = yearArray.length
    let layerKeys = maps[0]._tilePane.childElementCount//Object.keys(maps[0]._layers)
    
    
-   if (layerKeys < yearArray.length){
+   if (layerKeys < yearLength){
     
    slider.playbackRate(0)
   
@@ -247,7 +190,7 @@ model.preLoadRasters = (slider,d) => {
     scenarios = settings.scenario.split(',')
 
     
-    
+    let lastMap = maps.length-1
     //let startYear = parseInt(args[0].year)
     for (i = 0; i < maps.length; i++) {
       
@@ -274,9 +217,9 @@ model.preLoadRasters = (slider,d) => {
            
           }else{
            
-           url = 'http://127.0.0.1:8000/tiles/s'+mapscenario.toString()+'-it0000-ts'+yearstring.toString()+'-tgap'+layer.toString()+'/{z}/{x}/{y}.png?style='+layer.toString();
-          // url = 'http://127.0.0.1:8000/tiles/s'+mapscenario.toString()+'-it0000-ts'+yearstring.toString()+'-tgap'+layer.toString()+'/{z}/{x}/{y}.png';
-             
+           //url = 'http://127.0.0.1:8000/tiles/s'+mapscenario.toString()+'-it0000-ts'+yearstring.toString()+'-tgap'+layer.toString()+'/{z}/{x}/{y}.png?style='+layer.toString();
+      
+             url = `http://127.0.0.1:8000/tiles/s${scenario}-it0000-ts${year}-tgap${layer}/{z}/{x}/{y}.png?style=${layer}`
           }
           
           
@@ -298,10 +241,12 @@ model.preLoadRasters = (slider,d) => {
         stateclassGroups[i].addTo(maps[i]);
         //stateclassLayers[10].on("load",function() { console.log('layersloaded'), slider.playbackRate(.5)});
         stateclassGroups[i].setZIndex(4)
-        
-        stateclassGroups[i].getLayers()[10].on("load",function() {mapStatus('loaded'), slider.playbackRate(.5)});
-       // stateclassLayers.addTo(maps[i]);
 
+        if (i === lastMap){
+        let startLayer = (yearLength-1)/2
+        stateclassGroups[i].getLayers()[startLayer].on("load",function() {mapStatus('loaded'), slider.playbackRate(.5)});
+       // stateclassLayers.addTo(maps[i]);
+      }
 
      
         
@@ -347,7 +292,8 @@ model.updateRaster = (...args) => {
       project = projects.getDetailsForId(args[0].project);
       
       //const feature = project.details.secondary_stratum.find((item) => item.id === args[0].secondary_stratum);
-      feature = project.details.jsonlayer.sec_strata.features.find((item) => item.properties.name === args[0].secondary_stratum);
+      //feature = project.details.jsonlayer.sec_strata.features.find((item) => item.properties.name === args[0].secondary_stratum);
+      feature = project.details.secondary_stratum.find((item) => item.id === args[0].secondary_stratum);
       /*if (feature.geom) {
         const tempLayer = L.geoJson(feature.geom);
         map.fitBounds(tempLayer.getBounds());
@@ -371,13 +317,6 @@ model.updateRaster = (...args) => {
       mapscenario = scenarios[i]
       
       
-      //const url = `http://127.0.0.1:8000/tiles/s${mapscenario}-it${iterationval}-ts${settings.year}-sc/{z}/{x}/{y}.png?style=lulc`;
-      
-      /*selectYearNode(maps[i], 'Year: ' + settings.year)
-     
-      selectIterationNode(maps[i], 'Iteration: ' + settings.iteration_number)
-
-      selectScenarioNode(maps[i], 'Scenario: ' + mapscenario)*/
       
        maps[i].eachLayer(function(layer){
         
@@ -411,37 +350,7 @@ model.updateRaster = (...args) => {
 
 model.updateIndividualRaster = (...args) => {
  //settings.iteration_number = leftPad(settings.iteration_number)
- 
-/* let update = false;
-  if (args && args[0]) {
-    if (args[0].year && args[0].year !== settings.year) {
-      settings.year = args[0].year;
-      update = true;
-    }
-    if (args[0].scenario && args[0].scenario !== settings.scenario) {
-      settings.scenario = args[0].scenario;
-      update = true;
-    }
-    if (args[0].iteration && args[0].iteration !== settings.iteration) {
-      settings.iteration = args[0].iteration;
-      update = true;
-    }
-    if (args[0].iteration_number) {
-        args[0].iteration_number =  leftPad(args[0].iteration_number)
-    }
-    if (args[0].iteration_number && args[0].iteration_number !== settings.iteration_number) {
-      settings.iteration_number = args[0].iteration_number;
-      update = true;
-    }
-    if (args[0].secondary_stratum && args[0].secondary_stratum !== settings.secondary_stratum) {
-      settings.secondary_stratum = args[0].secondary_stratum;
-      const project = projects.getDetailsForId(args[0].project);
-      const feature = project.details.secondary_stratum.find((item) => item.id === args[0].secondary_stratum);
-      
-      update = true;
-    }
-  }*/
- // modal.style.display = "none";
+
 
    update = true;
   if (update) {
@@ -467,16 +376,15 @@ model.updateIndividualRaster = (...args) => {
       if (layer === "1"){
 
       url = `http://127.0.0.1:8000/tiles/s${scenario}-it${iteration}-ts${year}-sc/{z}/{x}/{y}.png?style=lulc`;
-     //url = `http://127.0.0.1:8000/tiles/s${scenario}-it${iteration}-ts${year}-sc/{z}/{x}/{y}.png`;
+    
        
       }else{
        
-       url = 'http://127.0.0.1:8000/tiles/s'+scenario.toString()+'-it0000-ts'+year.toString()+'-tgap'+layer.toString()+'/{z}/{x}/{y}.png?style='+layer.toString();
-       // url = 'http://127.0.0.1:8000/tiles/s'+scenario.toString()+'-it0000-ts'+year.toString()+'-tgap'+layer.toString()+'/{z}/{x}/{y}.png';
+       //url = 'http://127.0.0.1:8000/tiles/s'+scenario.toString()+'-it0000-ts'+year.toString()+'-tgap'+layer.toString()+'/{z}/{x}/{y}.png?style='+layer.toString();
+       url = `http://127.0.0.1:8000/tiles/s${scenario}-it0000-ts${year}-tgap${layer}/{z}/{x}/{y}.png?style=${layer}`
          
       }
      
-      
       
       let tilelayer = maps[individualMap]._layers[Object.keys(maps[individualMap]._layers)[1]]
 
@@ -514,25 +422,40 @@ model.reloadMap = (...args) => {
       settings.stratum = args[0].stratum;
       project = projects.getDetailsForId(args[0].project);      
       feature = project.details.stratum.find((item) => item.id === args[0].stratum);
+
+      /*feature = []
+      let region = args[0].stratum
+      let url = `http://127.0.0.1:8000/locations/${region}`
+      fetch(url)
+        .then((resp) => resp.json()) // Transform the data into json
+        .then(function(data) {
+          console.log(data)
+          feature = data
+          return feature
+
+        })*/
       update = true;
     }
     if (args[0].secondary_stratum && args[0].secondary_stratum !== settings.secondary_stratum) {
       settings.secondary_stratum = args[0].secondary_stratum;
       project = projects.getDetailsForId(args[0].project);      
       feature = project.details.secondary_stratum.find((item) => item.id === args[0].secondary_stratum);
+
       update = true;
     }
     if (args[0].project && args[0].project !== settings.project) {
       settings.project = args[0].project;
       project = projects.getDetailsForId(args[0].project);      
-      feature = project.details.jsonlayer.sec_strata.features.find((item) => item.properties.name === args[0].secondary_stratum);
+      //feature = project.details.jsonlayer.sec_strata.features.find((item) => item.properties.name === args[0].secondary_stratum);
+      feature = project.details.secondary_stratum.find((item) => item.id === args[0].secondary_stratum);
+     
       update = true;
     }
   }
   
 
 if (update) {
-  
+ 
    d3.selectAll("#map > *").remove();
   mapContainer = document.getElementById('map');
   settings.iteration_number = leftPad("1")
@@ -572,11 +495,6 @@ if (update) {
 
   mapContainer.appendChild(m)
 
-  const CartoDB_DarkMatterNoLabels = L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png', {
- // attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
-  subdomains: 'abcd',
-  maxZoom: 19
-});
 
   const cartoDBPositron = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
  // attribution: 'Data: <a href="http://www.openstreetmap.org/copyright">OSM</a>, Map Tiles: <a href="http://cartodb.com/attributions">CartoDB</a>',
@@ -586,7 +504,7 @@ if (update) {
 
 
 
-  const stateclassTiles = L.tileLayer('http://127.0.0.1:8000/tiles/s6368-it0001-ts2011-sc/{z}/{x}/{y}.png', {
+  const stateclassTiles = L.tileLayer('http://127.0.0.1:8000/tiles/s6370-it0001-ts2011-sc/{z}/{x}/{y}.png', {
  // attribution: 'LULC: <a href="http://landcarbon.org">LandCarbon</a>',
   maxZoom: 19,
   opacity: 1,
@@ -597,13 +515,7 @@ if (update) {
   });
 
 
- const Stamen_TonerLabels = L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/toner-labels/{z}/{x}/{y}.{ext}', {
-  //attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-  subdomains: 'abcd',
-  minZoom: 0,
-  maxZoom: 20,
-  ext: 'png'
-});
+
 // https: also suppported.
 
 maps[i] =  L.map(id, {

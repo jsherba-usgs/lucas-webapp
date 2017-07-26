@@ -110,18 +110,6 @@ function updateIterationInput() {
   }
   
 
-
-/*function updateIterationInput() {
- 
-  const id = iterationTypeSelect.value;
-  const getIterationDetail = details.iteration.find((item) => item.id === id);
-  //const input = document.createElement('input');
-  iterationInput.name = getIterationDetail.name
-  iterationInput.type = getIterationDetail.type
-  iterationInput.min =  getIterationDetail.min
-  iterationInput.max =  getIterationDetail.max
-  iterationInput.value = getIterationDetail.value
-}*/
 function updateVariableDetailInput(){
   variableDetailInput = document.querySelectorAll('input[name=variable_detail_checkboxes]:checked')
 }

@@ -33,6 +33,11 @@ const projectDetails = [
           years: [2011,2061],
         },
       ],
+      years:{
+         start: 2011,
+         end:2061
+         
+        },
       layerDownload:[{
        
           name:"Land-Cover State",
@@ -400,30 +405,34 @@ const projectDetails = [
           name: '1120 | BAU 100TS; 10MC',
           type: 'Business as Usual',
           iterations: 10,
-          years: [2001,2001]
+          years: [2011,2101]
         },
          {
           id: '1201',
           name: '1201 | BAU+Medium 100TS; 10MC',
           type: 'Business as Usual',
           iterations: 10,
-          years: [2001,2001]
+          years:  [2011,2101]
         },
         {
           id: '1202',
           name: '1202 | BAU+High 100TS; 10MC',
           type: 'Business as Usual',
           iterations: 10,
-          years: [2001,2001]
+          years:  [2011,2101]
         },
         {
           id: '1203',
           name: '1203 | BAU+Low 100TS; 10MC',
           type: 'Business as Usual',
           iterations: 10,
-          years: [2001,2001]
+          years:  [2011,2101]
         },
       ],
+      years:{
+         start: 2011,
+         end:2101
+      },
       layerDownload:[{
 
        
