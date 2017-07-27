@@ -54,7 +54,7 @@ const view = {
       .yValue((d) => d.pathway)
       .xValue((d) => +d.total);
   },
-  updateChart(nestedData, colorScale, transitionGroups) {
+  updateChart(nestedData, colorScale, transitionGroups, details, variableType) {
 
   	const section3 = document.getElementById("three")
     const scenarioGroupCheckbox3 = section3.querySelector('input[id=scenarioGroup3]');
@@ -94,6 +94,24 @@ const view = {
               })
       }
     ));
+   
+   
+    /*const yearRange = []
+    timeseriesData.forEach((series) =>
+      //series.values.forEach((d) => domainRange.push(d.values))
+      //series.values.forEach((d) => d.values.forEach((f) => domainRange.push(f.min, f.max)))
+
+      series.values.forEach(function(d) {
+            
+           
+           yearRange.push(parseInt(d.key))
+
+    }));*/
+
+    let xDomainValues = details.xDomain[0][variableType][0].domain
+    timeseriesChart.xDomain(xDomainValues);
+   // console.log([new Date(d3.min(yearRange), 1), new Date(d3.max(yearRange)-1, 1)])    
+    //timeseriesChart.xDomain([new Date(d3.min(yearRange), 1), new Date(d3.max(yearRange)-1, 1)]);
 
     //let dataVariablesSplit = dataVariables.split(',');
 
@@ -356,14 +374,15 @@ function  totalAreaLine(nestedData, groupByScenario, transitionGroups){
       .datum(dataset)
       .call(pathwaysChart);
 
-
+    let ticks = details.xDomain[0][variableType][0].ticks
+    timeseriesChart.updateTicks(ticks)
 
  function updateLineandBarLegend(legendData){
     
     const collapseSection3 = document.getElementById('collapseLineGraphSection3')
     collapseSection3.classList.add("in");
     d3.selectAll(".legend-section3-body > *").remove();
-    console.log(legendData)
+    
     let sectionLegend = document.getElementById("legend-section3-body")
    
     legendData.forEach(function(stateObject, indexIDGroup){
@@ -413,8 +432,7 @@ function  totalAreaLine(nestedData, groupByScenario, transitionGroups){
 
         let color = colorScale(state)
         //let pattern = scenarioLegendLookup[scenario]
-        console.log(color)
-        console.log(state)
+        
         barClass="."+barClass
         let pattern= patternHatch(scenario)
         d3.select(barClass).append("svg").attr("width", 50).attr("height", 32).append("rect").attr("width", 40).attr("height", 30).style("fill", color).attr("transform", "translate(0,10)")

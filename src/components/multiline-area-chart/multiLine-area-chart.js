@@ -311,7 +311,7 @@ function arrangeLabels(textLabels) {
           .attr('y1', 0)
           .attr('y2', chartH)
           .style('stroke-opacity', 0);
-
+      
       // Invisible rect for mouse tracking since you
       // can't catch mouse events on a g element
     /* container.append('svg:rect')
@@ -327,7 +327,7 @@ function arrangeLabels(textLabels) {
           // Dispatch click event
           dispatch.click(mouse, xScale);
         });*/
-     let yearRange = []
+    /* let yearRange = []
       _data[0].values.forEach(function(d) {
             
            
@@ -341,9 +341,10 @@ function arrangeLabels(textLabels) {
         tickValues.push(new Date(i, 0))
       }
     
-
-       xAxis 
-          .tickValues(tickValues)
+      xAxis
+      .tickValues([new Date(2012, 0), new Date(2021, 0), new Date(2031, 0), new Date(2041, 0), new Date(2051, 0), new Date(2061, 0)])*/
+      /* xAxis 
+          .tickValues(tickValues)*/
 
       /*
       *  End of all the elements appended to svg only once
@@ -459,6 +460,8 @@ function arrangeLabels(textLabels) {
     this.drawArea();
     this.drawLines();
   };
+
+  
 
   exports.drawAxes = function () {
     // Update the y-axis.
@@ -701,6 +704,16 @@ function arrangeLabels(textLabels) {
           //relax2(textLabels, yScale)
           
       });
+  };
+
+  exports.updateTicks = function(ticks){
+    xAxis
+      .tickValues(ticks)
+    svg.select('.x-axis-group.axis')
+      .transition().duration(1000)
+      .call(xAxis);
+    
+
   };
 
   exports.moveTooltip = function (year) {

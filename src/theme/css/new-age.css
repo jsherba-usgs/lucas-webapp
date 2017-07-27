@@ -175,7 +175,7 @@ header {
   min-height: auto;
   overflow-y: hidden;
 
-  background: url("../img/headerImage.png"), #7b4397;
+  background:  url("../img/headerImage.png"), #7b4397;
   /* fallback for old browsers */
   background: url("../img/headerImage.png"), -webkit-linear-gradient(to left, #7b4397, #dc2430);
   /* Chrome 10-25, Safari 5.1-6 */

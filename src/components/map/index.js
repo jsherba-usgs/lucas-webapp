@@ -165,14 +165,16 @@ model.mapLayers = () =>{
    
     return groupLength
 }
-model.preLoadRasters = (slider,d) => {
+model.preLoadRasters = (slider,d, startYear, endYear) => {
   
-   let startYear = project.details.years.start
-   let endYear = project.details.years.end
+  // let startYear = project.details.years.start
+   //let endYear = project.details.years.end
       //const feature = project.details.secondary_stratum.find((item) => item.id === args[0].secondary_stratum);
       //feature = project.details.jsonlayer.sec_strata.features.find((item) => item.properties.name === args[0].secondary_stratum);
-   
+   console.log(startYear)
 
+   //let startYear = project.details.years[0][variableType][0].start
+    //let endYear = project.details.years[0][variableType][0].end
    let yearArray = range(startYear,endYear,5)
    //console.log(maps[0]._layers)
    //console.log(maps[0]._tilePane.childElementCount)
@@ -217,9 +219,9 @@ model.preLoadRasters = (slider,d) => {
            
           }else{
            
-           //url = 'http://127.0.0.1:8000/tiles/s'+mapscenario.toString()+'-it0000-ts'+yearstring.toString()+'-tgap'+layer.toString()+'/{z}/{x}/{y}.png?style='+layer.toString();
+          // url = 'http://127.0.0.1:8000/tiles/s'+mapscenario.toString()+'-it0000-ts'+yearstring.toString()+'-tgap'+layer.toString()+'/{z}/{x}/{y}.png?style='+layer.toString();
       
-             url = `http://127.0.0.1:8000/tiles/s${scenario}-it0000-ts${year}-tgap${layer}/{z}/{x}/{y}.png?style=${layer}`
+             url = `http://127.0.0.1:8000/tiles/s${mapscenario}-it0000-ts${yearstring}-tgap${layer}/{z}/{x}/{y}.png?style=${layer}`
           }
           
           

@@ -42,7 +42,7 @@ const view = {
 
     }
   },
-  updateChart(nestedData, colorScale) {
+  updateChart(nestedData, colorScale, details, variableType) {
 
     timeseriesChart = chartSmallMultiples()
 
@@ -63,19 +63,41 @@ const view = {
    
     timeseriesChart.yValue(yAccessor);
     timeseriesChart.xValue(xAccessor);
+    /*const timeseriesData = nestedData.map((series) => (
+      {
+        name: series.key,
+        type: 'line',
+        //values: series.values,
+        values: series.values.map(function(dd){
+                key = dd.key
+                values = dd.values[0].Mean
+                min = dd.values[0].min
+                max = dd.values[0].max
+                return {key:key, min:min, max:max, values:values}
+              })
+      }
+    ));
    
-    // Set y domain
-   /*const domainRange = [];
-  
+   
+    const yearRange = []
     timeseriesData.forEach((series) =>
       //series.values.forEach((d) => domainRange.push(d.values))
       //series.values.forEach((d) => d.values.forEach((f) => domainRange.push(f.min, f.max)))
 
-      series.values.forEach((d) => domainRange.push(d.min, d.max))
-    );
+      series.values.forEach(function(d) {
+            
+           
+           yearRange.push(parseInt(d.key))
 
-    timeseriesChart.yDomain([d3.min(domainRange), d3.max(domainRange)]);*/
+    }));*/
+    
 
+    //timeseriesChart.xDomain([new Date(d3.min(yearRange), 1), new Date(d3.max(yearRange), 1)]);
+
+    
+    let xDomainValues = details.xDomain[0][variableType][0].domain
+    timeseriesChart.xDomain(xDomainValues);
+    
     timeseriesChart.color(colorScale);
     
 
@@ -561,7 +583,8 @@ const view = {
     .key((d) => d.state)
     .entries(totalBar);
 
-  
+  let ticks = details.xDomain[0][variableType][0].ticks
+    timeseriesChart.updateTicks(ticks)
   
   function updateLineandBarLegend(legendData){
     
@@ -579,7 +602,7 @@ const view = {
 
         let barClass = "bar_scenario"+scenario+ "_" + indexID.toString()
         let lineClass = "line_scenario"+scenario+ "_" + indexID.toString()
-        console.log(barClass)
+        
         let state=stateObject['key']
         let start = stateObject.values[0].value
         let end = stateObject.values[1].value

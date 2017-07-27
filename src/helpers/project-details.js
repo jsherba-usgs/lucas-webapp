@@ -33,11 +33,43 @@ const projectDetails = [
           years: [2011,2061],
         },
       ],
-      years:{
+     /* years:{
          start: 2011,
          end:2061
          
-        },
+        },*/
+      years:[{
+          state_label_x:[{
+            start: 2011,
+            end:2061
+          }],
+         stock_type:[{
+            start: 2011,
+            end:2061
+          }],
+         transition_group:[{
+            start: 2011,
+             end:2061
+          }]
+         
+         
+        }],
+       xDomain:[{
+          state_label_x:[{
+            domain: [new Date(2011, 1), new Date(2061, 1)],
+            ticks:[new Date(2011, 0), new Date(2021, 0), new Date(2031, 0), new Date(2041, 0), new Date(2051, 0), new Date(2061, 0)]
+          }],
+         stock_type:[{
+            domain: [new Date(2011, 1), new Date(2061, 1)],
+            ticks:[new Date(2011, 0), new Date(2021, 0), new Date(2031, 0), new Date(2041, 0), new Date(2051, 0), new Date(2061, 0)]
+          }],
+         transition_group:[{
+            domain: [new Date(2012, 1), new Date(2061, 1)],
+            ticks:[new Date(2012, 0), new Date(2021, 0), new Date(2031, 0), new Date(2041, 0), new Date(2051, 0), new Date(2061, 0)]
+          }]
+         
+         
+        }],
       layerDownload:[{
        
           name:"Land-Cover State",
@@ -429,10 +461,38 @@ const projectDetails = [
           years:  [2011,2101]
         },
       ],
-      years:{
-         start: 2011,
-         end:2101
-      },
+       years:[{
+          state_label_x:[{
+            start: 2011,
+            end:2101
+          }],
+         stock_type:[{
+            start: 2011,
+            end:2101
+          }],
+         transition_group:[{
+            start: 2011,
+             end:2101
+          }]
+         
+         
+        }],
+       xDomain:[{
+          state_label_x:[{
+            domain: [new Date(2011, 1), new Date(2101, 1)],
+            ticks:[new Date(2011, 0), new Date(2021, 0), new Date(2031, 0), new Date(2041, 0), new Date(2051, 0), new Date(2061, 0),new Date(2071, 0), new Date(2081, 0), new Date(2091, 0), new Date(2101, 0)]
+          }],
+         stock_type:[{
+            domain: [new Date(2011, 1), new Date(2101, 1)],
+            ticks:[new Date(2011, 0), new Date(2021, 0), new Date(2031, 0), new Date(2041, 0), new Date(2051, 0), new Date(2061, 0),new Date(2071, 0), new Date(2081, 0), new Date(2091, 0), new Date(2101, 0)]
+          }],
+         transition_group:[{
+            domain: [new Date(2011, 1), new Date(2101, 1)],
+            ticks:[new Date(2011, 0), new Date(2021, 0), new Date(2031, 0), new Date(2041, 0), new Date(2051, 0), new Date(2061, 0),new Date(2071, 0), new Date(2081, 0), new Date(2091, 0), new Date(2101, 0)]
+          }]
+         
+         
+        }],
       layerDownload:[{
 
        

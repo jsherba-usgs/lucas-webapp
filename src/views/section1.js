@@ -32,7 +32,10 @@ let timeseriesChart;
 let xScale
 let xAxis
 let loading;
-
+let startYear
+let endYear
+let tickValues
+let xDomainValues
 /*
 * EXPORT OBJECT
 */
@@ -41,7 +44,7 @@ let loading;
 const view = {
   init() {
     // Init map
-    console.log("testetesttest")
+    
     leafletMap.init(mapContainer);
 
     //leafletFilters.init();
@@ -170,43 +173,55 @@ const view = {
         .attr('class', 'small')
         .on('click', () => slider.stop());
   },
-  sliderupdate(years){
+  sliderupdate(details, variableType){
+    startYear = details.years[0][variableType][0].start
+    endYear = details.years[0][variableType][0].end
     sliderContainer.querySelector('.slider').remove()
     let initiateChart = true
     let sliderVals = []
-    for(var i=d3.min(years); i<=d3.max(years);i=i+5) {
+    /*for(var i=d3.min(years); i<=d3.max(years);i=i+5) {
+    sliderVals.push(i);
+    }*/
+    console.log(startYear)
+    console.log(endYear)
+    for(var i=startYear; i<=endYear;i=i+5) {
     sliderVals.push(i);
     }
+    tickValues = details.xDomain[0][variableType][0].ticks
+    xDomainValues = details.xDomain[0][variableType][0].domain
     
-
-    let tickValues = []
+   /* let tickValues = []
     for(var i=d3.min(years); i<=d3.max(years);i=i+10) {
 
         tickValues.push(new Date(i, 0))
       }
 
 
+     
 
+
+    tickValues =[new Date(2012, 0), new Date(2021, 0), new Date(2031, 0), new Date(2041, 0), new Date(2051, 0), new Date(2061, 0)]*/
     
-    
+   
      // .color(stateclassColorScale);
-     let sliderYear = d3.min(years)
+     let sliderYear = startYear//d3.min(years)
      
      slider
-      .domain([new Date(d3.min(years), 0), new Date(d3.max(years), 0)])
+     // .domain([new Date(d3.min(years), 0), new Date(d3.max(years), 0)])
+     .domain(xDomainValues)
       .tapAxis((axis) => axis.tickValues(tickValues))
       .on('change', (d) => {
       
         
         
         const year = d.getFullYear();
-        
+       
         let loadAll = function(slider,d){
         
           if (initiateChart === false){
 
           
-          leafletMap.preLoadRasters(slider, d)
+          leafletMap.preLoadRasters(slider, d, startYear, endYear)
           
           }
           initiateChart=false
@@ -375,7 +390,7 @@ const view = {
 
     // do the actual resize...
       },
-  updateChart(nestedData, colorscale) {
+  updateChart(nestedData, colorscale, details, variableType) {
     
     this.chartStatus('loaded');
     chartContainer.classList.remove('no-data');
@@ -408,7 +423,7 @@ const view = {
     
     // Set y domain
     const domainRange = [];
-    const yearRange = []
+    //const yearRange = []
     timeseriesData.forEach((series) =>
       //series.values.forEach((d) => domainRange.push(d.values))
       //series.values.forEach((d) => d.values.forEach((f) => domainRange.push(f.min, f.max)))
@@ -416,19 +431,28 @@ const view = {
       series.values.forEach(function(d) {
             
            domainRange.push(d.min, d.max)
-           yearRange.push(parseInt(d.key))
+           //yearRange.push(parseInt(d.key))
 
     }));
 
    
-
+    
     timeseriesChart.yDomain([d3.min(domainRange), d3.max(domainRange)]);
 
     
 
-    timeseriesChart.xDomain([new Date(d3.min(yearRange), 1), new Date(d3.max(yearRange), 1)]);
+    //timeseriesChart.xDomain([new Date(d3.min(yearRange), 1), new Date(d3.max(yearRange), 1)]);
+   let xDomainValues = details.xDomain[0][variableType][0].domain
+   let ticks = details.xDomain[0][variableType][0].ticks
+   timeseriesChart.xDomain(xDomainValues);
 
-   
+    
+  // Second X scale for brush slider
+
+  // X Axis on top of chart
+  
+
+
 
     timeseriesChart.color(colorscale);
     
@@ -437,6 +461,10 @@ const view = {
       .datum(timeseriesData)
       .transition()
       .call(timeseriesChart);
+
+  timeseriesChart.updateTicks(ticks)
+
+  
 
      // Update Chart Title
     let variableSelectInput = document.querySelector('input[name=variable_checkboxes]:checked')

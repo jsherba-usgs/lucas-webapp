@@ -111,7 +111,25 @@ const area = d3.svg.area()
 
       xAxis.tickSize(5);
       yAxis1.tickSize(5);
+      
+    /* let yearRange = []
+      _data[0].values[0].values.forEach(function(d) {
+            
+           
+           yearRange.push(parseInt(d.key))
 
+      });
+      console.log(d3.min(yearRange))
+     console.log(d3.max(yearRange))
+      let tickValues = []
+      for(var i=d3.min(yearRange); i<=d3.max(yearRange);i=i+10) {
+       
+          tickValues.push(new Date(i, 0))
+      }
+       
+      console.log(tickValues)
+       xAxis 
+          .tickValues(tickValues)*/
 
       // Select the s*vg element, if it exists.
     
@@ -361,7 +379,16 @@ const area = d3.svg.area()
     this.drawArea();
     this.drawLines();
   };
+  
+  exports.updateTicks = function(ticks){
+    xAxis
+      .tickValues(ticks)
+    container.select('.x-axis-group.axis')
+      .transition().duration(1000)
+      .call(xAxis);
+    
 
+  };
   exports.drawAxes = function () {
     // Update the y-axis.
    

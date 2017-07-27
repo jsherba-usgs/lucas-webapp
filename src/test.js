@@ -279,66 +279,8 @@ function addMapLegends(){
     section1.updateIndividualMap(e.detail, addMapLegends)
   })
 
-  // Add event listener to document for filters.change event
-
-  /*const mapExpandButton = document.getElementById('mapexpand');
-  mapExpandButton.addEventListener("click", expandmap);
-
-  const chartExpandButton = document.getElementById('chartexpand');
-  chartExpandButton.addEventListener("click", expandchart);*/
-
-
-  /*function expandmap(){
-      
-      let isfull = window.getComputedStyle(document.getElementById("chartarticle"),null).getPropertyValue('display')
-      
-      if (isfull === "block"){
-        section1.sliderremove()
-
-         document.getElementById("mapexpandicon").className = "fa fa-compress";
-         document.getElementById("chartarticle").className = "col half hidden";
-
-         document.getElementById("mapslider").className = "chroniton-slider";
-         document.getElementById("mapslidercontrol").className = "controls";
-         section1.sliderinit()
-
-       }else{
-         section1.sliderremove()
-         document.getElementById("mapslider").className = "placeholdclass1";
-         document.getElementById("mapslidercontrol").className = "placeholdclass2";
-        
-
-         document.getElementById("mapexpandicon").className = "fa fa-expand";
-         document.getElementById("chartarticle").className = "col half";
-
-         section1.sliderinit()
-       }
-   section1.resizeMap()
-    //section1.reloadMap(e.detail);
-   }
-
-   
-   function expandchart(){
-
-      let isfull = window.getComputedStyle(document.getElementById("maparticle"),null).getPropertyValue('display')
-      
-      if (isfull === "block"){
-          document.getElementById("chartexpandicon").className = "fa fa-compress";
-         document.getElementById("maparticle").className = "col half hidden";
-         document.getElementById("chartarticle").style.maxWidth = "100%";
-       }else{
-         document.getElementById("chartexpandicon").className = "fa fa-expand";
-        document.getElementById("chartarticle").style.maxWidth = "50%";
-        document.getElementById("maparticle").className = "col half";
-
-        document.getElementById("chartarticle").className = "col half";
-        
-        
-       }
-    section1.resizeMap()
-    section1.resizeChart()
-   }*/
-
+  
+ 
   
 
 
@@ -346,8 +288,8 @@ function addMapLegends(){
 
     details = projects.getDetailsForId(e.detail.project).details;
     const year = []
-
-    for (var i = details.years.start; i <= details.years.end; i++) {
+    
+    for (var i = details.years[0][variableType][0].start; i <= details.years[0][variableType][0].end; i++) {
        year.push(i);
     }
 
@@ -376,12 +318,12 @@ function addMapLegends(){
         params.percentile = "Iteration, "+maxPercentile
 
     }
-      if (params.stratum === 'All') {
+      /*if (params.stratum === 'All') {
         delete params.stratum;
       };
       if (params.secondary_stratum === 'All') {
         delete params.secondary_stratum;
-      }
+      }*/
       
     return params
   }
@@ -390,7 +332,7 @@ function addMapLegends(){
     document.getElementById("one").style.display = 'block';
     document.getElementById("two").style.display = 'block';
     document.getElementById("three").style.display = 'block';
-    
+    console.log("test1")
     
    function addframe(){
    
@@ -419,7 +361,7 @@ function addMapLegends(){
     minPercentile = String(100 - parseInt(e.detail.iteration))
     maxPercentile = e.detail.iteration
     
-
+    let details = projects.getDetailsForId(e.detail.project).details;
     
     // Setup query params for fetching data from API
 
@@ -437,6 +379,7 @@ function addMapLegends(){
           const renameTotalAreaByYear = d3.nest()
             .entries(data)
             .map(function(group) {
+              
               if (e.detail.iteration_type==='single_iteration'){
               return {
                 StateLabelX: group.StateLabelX,
@@ -461,7 +404,7 @@ function addMapLegends(){
           }
             });
 
-          
+         
           // Group data by stateclass and year, calculate total area (amount)
          
           const totalAreaByYear = d3.nest()
@@ -472,17 +415,14 @@ function addMapLegends(){
           
           // Update section 1 charts
 
-
-        
-          section1.updateChart(totalAreaByYear, colorScaleDic[e.detail.variable][0]);
-          //section1.sliderremove()
-         // section1.sliderinit()
-          section1.sliderupdate(params.timestep)
+          
+          section1.updateChart(totalAreaByYear, colorScaleDic[e.detail.variable][0], details, 'state_label_x');
+          section1.sliderupdate(details, 'state_label_x')
       
           // Update section 2 charts
           
-          section2.updateChart(totalAreaByYear, colorScaleDic[e.detail.variable][0]);
-
+          section2.updateChart(totalAreaByYear, colorScaleDic[e.detail.variable][0], details, 'state_label_x');
+          
 
 
 
@@ -549,11 +489,13 @@ function addMapLegends(){
             
             // Update section 1 charts
             
-            section1.updateChart(totalAreaByYear, colorScaleDic[e.detail.variable][0]);
-        
-            // Update section 2 charts
-            
-            section2.updateChart(totalAreaByYear, colorScaleDic[e.detail.variable][0]);
+
+            section1.updateChart(totalAreaByYear, colorScaleDic[e.detail.variable][0], details, 'stock_type');
+            section1.sliderupdate(details, 'state_label_x')
+      
+          // Update section 2 charts
+          
+            section2.updateChart(totalAreaByYear, colorScaleDic[e.detail.variable][0], details, 'stock_type');
           })
           .catch((error) => {
             if (error.message.indexOf('No data') > -1) {
@@ -573,24 +515,6 @@ function addMapLegends(){
       //document.getElementById("two").style.display = 'none';
      let transitionGroups = e.detail.variable_detail.split(",")
      let params = setParams(e, 'transition_group')
-
-      /*let params = {
-          scenario: e.detail.scenario,
-          //iteration: e.detail.iteration,
-          secondary_stratum: e.detail.secondary_stratum,
-          stratum: e.detail.stratum,
-          //transition_group: e.detail.variable_detail,
-          group_by:"Timestep,TransitionGroup,Iteration,IDScenario",
-          percentile: "Iteration, 95",
-          timestep: year,
-          pagesize: 1000,
-        };
-        if (params.stratum === 'All') {
-          delete params.stratum;
-        }
-        if (params.secondary_stratum === 'All') {
-          delete params.secondary_stratum;
-        }*/
 
         // Fetch data for state class and update charts
         service.loadTransitions(params)
@@ -647,15 +571,17 @@ function addMapLegends(){
             const totalAreaAll3 = totalAreaByYearAll.filter(function (d) { if (groupVariable.includes(d["key"].split(':')[0]) || groupVariable.includes(d["key"].split(' / ')[0])) return true}  )
             
             // Update section 1 charts
+           
             
-            section1.updateChart(totalAreaAll2, colorScaleDic[e.detail.variable][0]);
-        
-            // Update section 2 charts
-            section2.updateChart(totalAreaAll2, colorScaleDic[e.detail.variable][0]);
 
-            //section3.updateChart(totalAreaByYear, e.detail.variable_detail);
-            //section3.chartStatus('loading');
-            section3.updateChart(totalAreaAll3, colorScaleDic["Land-Cover Transition Types"][0], transitionGroups);
+          section1.updateChart(totalAreaAll2, colorScaleDic[e.detail.variable][0], details, 'transition_group');
+          section1.sliderupdate(details, 'transition_group')
+      
+          // Update section 2 charts
+          
+          section2.updateChart(totalAreaAll2, colorScaleDic[e.detail.variable][0], details, 'transition_group');
+
+          section3.updateChart(totalAreaAll3, colorScaleDic["Land-Cover Transition Types"][0], transitionGroups, details, 'transition_group');
           })
           .catch((error) => {
             if (error.message.indexOf('No data') > -1) {
