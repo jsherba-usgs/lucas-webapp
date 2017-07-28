@@ -182,8 +182,7 @@ const view = {
     /*for(var i=d3.min(years); i<=d3.max(years);i=i+5) {
     sliderVals.push(i);
     }*/
-    console.log(startYear)
-    console.log(endYear)
+   
     for(var i=startYear; i<=endYear;i=i+5) {
     sliderVals.push(i);
     }
@@ -471,7 +470,8 @@ const view = {
     let chartTitleDiv = document.getElementById('chartSection1Title')
 
     chartTitleDiv.innerHTML =variableSelectInput.id
-     
+
+    
  
   },
   removeLayers(){
@@ -489,8 +489,14 @@ const view = {
     leafletMap.updateIndividualRaster(options);
   },
   reloadMap(options, addMapLegend) {
-    leafletFilters.init(options, addMapLegend)
+   /* let layerLength = leafletMap.mapLayers()
+      if (layerLength > 0){
+      leafletMap.removeTimeSeriesRasters()
+    }*/
+    timeseriesChart.moveTooltip(2011);
     leafletMap.reloadMap(options);
+    leafletFilters.init(options, addMapLegend)
+
   },
   chartStatus(status) {
     switch (status) {

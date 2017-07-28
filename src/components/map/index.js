@@ -101,7 +101,7 @@ model.init = ({ selector, lat = 22.234262, lng = -159.784857, scenario = '6368',
   }
 
   
-  //console.log(scenarios)
+  
   
   stateclassGroup = new L.layerGroup()
 
@@ -139,6 +139,7 @@ model.init = ({ selector, lat = 22.234262, lng = -159.784857, scenario = '6368',
 };
 
 model.removeTimeSeriesRasters = (...args) => {
+
   scenarios = settings.scenario.split(',')
     
     
@@ -166,12 +167,12 @@ model.mapLayers = () =>{
     return groupLength
 }
 model.preLoadRasters = (slider,d, startYear, endYear) => {
-  
+ 
   // let startYear = project.details.years.start
    //let endYear = project.details.years.end
       //const feature = project.details.secondary_stratum.find((item) => item.id === args[0].secondary_stratum);
       //feature = project.details.jsonlayer.sec_strata.features.find((item) => item.properties.name === args[0].secondary_stratum);
-   console.log(startYear)
+   
 
    //let startYear = project.details.years[0][variableType][0].start
     //let endYear = project.details.years[0][variableType][0].end
@@ -266,7 +267,6 @@ model.preLoadRasters = (slider,d, startYear, endYear) => {
 }
 
 model.updateRaster = (...args) => {
- //settings.iteration_number = leftPad(settings.iteration_number)
 
  let update = false;
   if (args && args[0]) {
@@ -305,7 +305,7 @@ model.updateRaster = (...args) => {
   }
 
   if (update) {
-
+    
     scenarios = settings.scenario.split(',')
     let filtersContainer = document.getElementById('mapfilters');
     let yearInput = filtersContainer.querySelectorAll('input[name=year]');
@@ -406,11 +406,13 @@ model.reloadMap = (...args) => {
 
   
   let update = true;
+  //console.log(args[0].year)
+  settings.year=2011
   if (args && args[0]) {
-    if (args[0].year && args[0].year !== settings.year) {
+    /*if (args[0].year && args[0].year !== settings.year) {
       settings.year = args[0].year;
       update = true;
-    }
+    }*/
     if (args[0].scenario && args[0].scenario !== settings.scenario) {
       settings.scenario = args[0].scenario;
       update = true;
@@ -425,17 +427,7 @@ model.reloadMap = (...args) => {
       project = projects.getDetailsForId(args[0].project);      
       feature = project.details.stratum.find((item) => item.id === args[0].stratum);
 
-      /*feature = []
-      let region = args[0].stratum
-      let url = `http://127.0.0.1:8000/locations/${region}`
-      fetch(url)
-        .then((resp) => resp.json()) // Transform the data into json
-        .then(function(data) {
-          console.log(data)
-          feature = data
-          return feature
 
-        })*/
       update = true;
     }
     if (args[0].secondary_stratum && args[0].secondary_stratum !== settings.secondary_stratum) {
@@ -457,7 +449,7 @@ model.reloadMap = (...args) => {
   
 
 if (update) {
- 
+  
    d3.selectAll("#map > *").remove();
   mapContainer = document.getElementById('map');
   settings.iteration_number = leftPad("1")

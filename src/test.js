@@ -19,6 +19,9 @@ import projects from './helpers/project-details';
 import section1 from './views/section1';
 import section2 from './views/section2';
 import section3 from './views/section3';
+import { loadtheme } from './theme/js/theme-lucas';
+
+
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -26,6 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
   * PAGE UI
   */
   // Intialize smooth scrolling
+loadtheme()
  
 $('#collapseExample').collapse('show');
 
@@ -35,12 +39,9 @@ $('#collapseExample').collapse('show');
   });
 
   const body = document.body;
-/*  const wrapper = document.getElementById('wrapper');
-  const header = document.getElementById('header');
-  const banner = document.getElementById('banner');
-  const overlay = document.getElementById('overlay');*/
-  const overlayOpenBtn = document.getElementById('overlayOpen');
-  const overlayCloseBtn = document.getElementById('overlayClose');
+
+  //const overlayOpenBtn = document.getElementById('overlayOpen');
+  //const overlayCloseBtn = document.getElementById('overlayClose');
 
   // Disable animations/transitions until the page has loaded.
   body.classList.add('is-loading');
@@ -73,14 +74,14 @@ $('#collapseExample').collapse('show');
   
 
   // Open, close overlay
-  function overlayOpen() {
+  /*function overlayOpen() {
     body.classList.add('is-overlay-visible');
   }
   function overlayClose() {
     body.classList.remove('is-overlay-visible');
   }
   overlayOpenBtn.addEventListener('click', overlayOpen);
-  overlayCloseBtn.addEventListener('click', overlayClose);
+  overlayCloseBtn.addEventListener('click', overlayClose);*/
   
 function updateLineandBarLegend(typeParams, typelLookupDictionary, scenarioParams, scenarioLookupDictionary){
   //update stateclass legend
@@ -243,18 +244,41 @@ function addMapLegends(){
   // Filters legend
   const filtersLegend = Array.from(document.getElementsByClassName('legend-filters'));
   function updateFiltersLegend(d) {
+
     const content = `
       <ul>
         <li>Scenario ${d.scenario}</li>
         <li>Iteration ${d.iteration}</li>
         <li>${d.secondary_stratum}</li>
         <li>${d.stratum}</li>
+        <li>${d.variable_detail}</li>
       </ul>
       <a data-scroll href="#filters">
         (Update)
       </a>`;
 
     filtersLegend.forEach((el) => {
+      el.innerHTML = content;
+    });
+
+  }
+
+  const projectLegend = Array.from(document.getElementsByClassName('legend-projects'));
+  function updateProjectLegend(details) {
+    
+    const modelTitle = details.short_title
+
+    
+    const content = `
+      <ul>
+        
+        <li>${modelTitle} </li>
+      </ul>
+      <a data-scroll href="#wrapper" class="projectScroll">
+        (Update)
+      </a>`;
+
+    projectLegend.forEach((el) => {
       el.innerHTML = content;
     });
 
@@ -280,7 +304,7 @@ function addMapLegends(){
   })
 
   
- 
+
   
 
 
@@ -332,7 +356,7 @@ function addMapLegends(){
     document.getElementById("one").style.display = 'block';
     document.getElementById("two").style.display = 'block';
     document.getElementById("three").style.display = 'block';
-    console.log("test1")
+    
     
    function addframe(){
    
@@ -349,12 +373,15 @@ function addMapLegends(){
   document.getElementById("addframe").onclick = addframe;
   document.getElementById("removeframe").onclick = removeframe;
     // Update ul element
-    updateFiltersLegend(e.detail);
+   
+
+
     
+    section1.reloadMap(e.detail, addMapLegends)
     // Update section 1 map
     //section1.updateMap(e.detail);
 
-    section1.reloadMap(e.detail, addMapLegends)
+   // section1.reloadMap(e.detail, addMapLegends)
 
 
 
@@ -362,6 +389,9 @@ function addMapLegends(){
     maxPercentile = e.detail.iteration
     
     let details = projects.getDetailsForId(e.detail.project).details;
+
+     updateFiltersLegend(e.detail);
+    updateProjectLegend(details);
     
     // Setup query params for fetching data from API
 
@@ -424,6 +454,7 @@ function addMapLegends(){
           section2.updateChart(totalAreaByYear, colorScaleDic[e.detail.variable][0], details, 'state_label_x');
           
 
+         
 
 
         })
@@ -437,7 +468,7 @@ function addMapLegends(){
           console.log(error);
         });
       
-        updateLineandBarLegend(params.state_label_x, stateClassLegendLookup, params.scenario, scenarioLegendLookup)
+       // updateLineandBarLegend(params.state_label_x, stateClassLegendLookup, params.scenario, scenarioLegendLookup)
        
     }
     if (e.detail.variable ==="Carbon Stock"){
@@ -507,7 +538,7 @@ function addMapLegends(){
             console.log(error);
           });
 
-          updateLineandBarLegend(params.stock_type, stockLegendLookup, params.scenario, scenarioLegendLookup)
+         // updateLineandBarLegend(params.stock_type, stockLegendLookup, params.scenario, scenarioLegendLookup)
     }
     if (e.detail.variable ==="Land-Cover Transition"){
       section1.chartStatus('loading');
@@ -593,30 +624,10 @@ function addMapLegends(){
             console.log(error);
           });
          
-          updateLineandBarLegend(e.detail.variable_detail, transitionClassLegendLookup, '.legend-stateclass.legend-section1')
+         // updateLineandBarLegend(e.detail.variable_detail, transitionClassLegendLookup, scenarioLegendLookup, '.legend-stateclass.legend-section1')
     }
     // Fetch data for transitions and update charts
-   /* service.loadTransitions(params)
-      .then((data) => {
-        // Group data by transition group and year, calculate total area (amount)
-        const totalAreaByYear = d3.nest()
-          .key((d) => d.TransitionGroup).sortKeys(d3.ascending)
-          .key((d) => d.Timestep)
-          .rollup((v) => d3.sum(v, (d) => d.Amount))
-          .entries(data);
 
-        // Update section 3 ag contraction chart
-        section3.updateChart(totalAreaByYear);
-      })
-      .catch((error) => {
-        if (error.message.indexOf('No data') > -1) {
-          d3.selectAll('#three .chart')
-            .classed('no-data', true)
-            .select('svg')
-              .remove();
-        }
-        console.log(error);
-      });*/
   });
 
   // Intializing the filters starts the app on page load

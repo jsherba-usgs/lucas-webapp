@@ -23,7 +23,10 @@ let variableDetailInput;
 let iterationTypeSelect;
 let strataOverlayOpenBtn;
 let strataOverlayCloseBtn;
-
+const headerContentContainer = document.getElementById('header_content');
+const headerTitleContainer = document.getElementById('header_title');
+let iterationInputSingle
+let iterationInputPercentile
 
 function getOptionVals(selection) {
   let details = [];
@@ -93,18 +96,34 @@ function updateIterationInput() {
   //let iterationInputChecked = document.querySelectorAll('input[name=iteration-checkbox]:checked')
   details.iteration.forEach(function(item){
       if (item.id === 'percentile'){
-          iterationInputPercentile.name = item.name
+         console.log("test1")
+
+          /*iterationInputPercentile.name = item.name
           iterationInputPercentile.type = item.type
           iterationInputPercentile.min =  item.min
           iterationInputPercentile.max =  item.max
-          iterationInputPercentile.value = item.value
+          iterationInputPercentile.value = item.value*/
+
+          iterationPercentile.name = item.name
+          iterationPercentile.type = item.type
+          iterationPercentile.min =  item.min
+          iterationPercentile.max =  item.max
+          iterationPercentile.value = item.value
 
       }else{
-        iterationInputSingle.name = item.name
+        console.log("test2")
+        /*iterationInputSingle.name = item.name
         iterationInputSingle.type = item.type
         iterationInputSingle.min =  item.min
         iterationInputSingle.max =  item.max
-        iterationInputSingle.value = item.value
+        iterationInputSingle.value = item.value*/
+
+        iterationSingle.name = item.name
+        iterationSingle.type = item.type
+        iterationSingle.min =  item.min
+        iterationSingle.max =  item.max
+        iterationSingle.value = item.value
+         console.log("test3")
       }
     })
   }
@@ -163,26 +182,14 @@ function updateVariableDetail() {
 
 
 function updateFields() {
-  const headerContentContainer = document.getElementById('header_content');
+  
   projectId = this.options[this.selectedIndex].value;
 
   details = projects.getDetailsForId(projectId).details;
-  headerContentContainer.innerHTML = details.header_description; //update header description
+  headerContentContainer.innerHTML = details.header_description;
+  headerTitleContainer.innerHTML = details.header_title;
+   //update header description
   if (details) {
-
-    // Populate scenario select box
-    /*scenarioSelect = filtersContainer.querySelector('div[name=scenario]');
-    removeOptions(scenarioSelect);
-    details.scenario.forEach((item) => {
-      const option = document.createElement('option');
-      option.text = item.name;
-      option.value = item.id;
-      scenarioSelect.add(option);
-    });
-    scenarioSelect[0].selected = true
-    scenarioSelect.disabled = false;
-
-    scenarioSelect.setAttribute('size',scenarioSelect.childElementCount);*/
     
     scenarioSelect = filtersContainer.querySelector('div[name=scenario]');
     while (scenarioSelect.firstChild) {
@@ -291,18 +298,27 @@ function updateFields() {
     // Populate iteration input box
     //iterationTypeSelect = filtersContainer.querySelector('select[name=iteration_type]');
     //iterationTypeSelect.disabled = false;
+    
 
     iterationInputSingle = filtersContainer.querySelector('input[name=iteration-single]');
     //iterationInputSingle.disabled = false;
 
     iterationInputPercentile = filtersContainer.querySelector('input[name=iteration-percentile]');
     //iterationInputPercentile.disabled = false;
-
+    
     variableDetail = filtersContainer.querySelector('div[name=variable_detail]');
     variableDetail.disabled = false;
 
-    
+    scenarioSelect.onchange = updateScenarioVariables;
+    scenarioSelect.onchange();
 
+
+    variableSelect.onchange = updateVariableDetail;
+    variableSelect.onchange();
+  
+
+    variableDetail.onchange = updateVariableDetailInput;
+    variableDetail.onchange()
   }
 }
 
@@ -342,21 +358,19 @@ model.init = () => {
   });
   
   
+  
 
   projectSelect.onchange = updateFields;
   projectSelect.onchange();
-
-  scenarioSelect.onchange = updateScenarioVariables; //updateIterationInput;
+  /*scenarioSelect.onchange = updateScenarioVariables;
   scenarioSelect.onchange();
-
-  //iterationTypeSelect.onchange = updateIterationInput;
-  //iterationTypeSelect.onchange();
+  
 
   variableSelect.onchange = updateVariableDetail;
   variableSelect.onchange();
+  
 
-
-  variableDetail.onchange = updateVariableDetailInput;
+  variableDetail.onchange = updateVariableDetailInput;*/
 
   // Create a custom event that is dispatched when Update button on form is clicked
   const form =  filtersContainer.querySelector('.filterform');//document.querySelectorAll('form.update')filtersContainer.querySelector('form');

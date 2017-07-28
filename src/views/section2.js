@@ -564,7 +564,7 @@ const view = {
       .key((d) => d.state)
       .entries(totalLine);
 
-   //   console.log(barChartTotals)
+
   
     
     d3.select(chartContainer)
@@ -582,6 +582,7 @@ const view = {
     .key((d) => d.scenario)
     .key((d) => d.state)
     .entries(totalBar);
+
 
   let ticks = details.xDomain[0][variableType][0].ticks
     timeseriesChart.updateTicks(ticks)
@@ -657,12 +658,63 @@ const view = {
       })
     })
    
- 
-  
-
      collapseSection2.classList.remove("in");
     }    
     updateLineandBarLegend(legendData)
+
+
+  function updateLineandBarLegendSection1(legendData){
+    
+    const collapseSection1 = document.getElementById('section1-graph-collapse')
+    collapseSection1.classList.add("in");
+    d3.selectAll(".legend-section1-body > *").remove();
+    
+    let sectionLegend1 = document.getElementById("legend-section1-body")
+
+    legendData.forEach(function(scenarioObject){
+      
+      let scenario = scenarioObject['key']
+      scenarioObject.values.forEach(function(stateObject, indexID){
+        
+
+        
+        let lineClass = "line1_scenario"+scenario+ "_" + indexID.toString()
+        
+        let state=stateObject['key']
+        
+        
+        const tableRow = document.createElement("tr");
+        tableRow.className = "section1_legend"
+        const lineCol = document.createElement("td");
+        lineCol.width="100"
+        lineCol.className = lineClass;
+        const scenarioCol = document.createElement("td");
+        scenarioCol.innerHTML = scenario
+        const stateCol = document.createElement("td");
+        stateCol.innerHTML = state
+       
+        
+        tableRow.appendChild(lineCol)
+        tableRow.appendChild(stateCol)
+        tableRow.appendChild(scenarioCol)
+        
+        sectionLegend1.appendChild(tableRow)
+
+        
+
+        let color = colorScale(state)
+       
+        
+        lineClass="."+lineClass
+        let strokeArray = strokeHatch(scenario)
+        d3.select(lineClass).append("svg").attr("height", 10).append("line").attr("x1", 0).attr("x2", 40).attr("y1", 0).attr("y2", 0).attr("stroke", color).attr('stroke-width', '5').attr('stroke-dasharray',strokeArray);   
+        
+      })
+    })
+   
+     collapseSection1.classList.remove("in");
+    }    
+    updateLineandBarLegendSection1(legendData)
 
 
 

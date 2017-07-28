@@ -1379,7 +1379,8 @@
 		display: -ms-flex;
 		display: flex;
 		padding: 6em 0 2em 0 ;
-		background-color: #dbe2cc;
+	/*	background-color: #dbe2cc;*/
+		background-color:#f0f0f0;;
 		border-bottom: 0 !important;
 		cursor: default;
 		height: 60vh;
@@ -2528,10 +2529,7 @@
 .chroniton-slider{
 	/*margin-left:25px;*/
 }
-.framecontrols{
-	margin-left:20px;
-	margin-bottom:0em;
-}
+
 .inline { 
 display: inline-block; 
 margin:10px;
@@ -2749,3 +2747,234 @@ display: block;
 	content: '\f01a';
 
 	}
+.section1_legend{border:none;}
+
+
+
+ 
+/*replace the content value with the
+corresponding value from the list below*/
+.framecontrols{
+	margin-left:20px;
+	margin-bottom:0em;
+}
+
+.infoButton {
+    position: relative;
+    float:right;
+}
+.infoButton:after {
+    content: "\f05a";
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: inherit;
+/*--adjust as necessary--*/
+    color: #c9d4b2;
+    font-size: 25px;
+    
+    position: absolute;
+    top: 0px;
+    
+    right:20px;
+}
+
+
+ 
+/*replace the content value with the
+corresponding value from the list below*/
+ 
+.infoButtonFilters:after {
+    content: "\f05a";
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: inherit;
+/*--adjust as necessary--*/
+    color: #c9d4b2;
+    font-size: 20px;
+    margin:0px 0px 0px 10px;
+   
+	
+	position: absolute;
+   text-decoration:none;
+}
+.projectScroll{
+	border-bottom: none;
+}
+
+
+
+.navbar-default {
+  background-color: white;
+  border-color: rgba(34, 34, 34, 0.05);
+  -webkit-transition: all 0.35s;
+  -moz-transition: all 0.35s;
+  transition: all 0.35s;
+  font-family: 'Catamaran', 'Helvetica', 'Arial', 'sans-serif';
+  font-weight: 200;
+  letter-spacing: 1px;
+}
+.navbar-default .navbar-header .navbar-brand {
+  font-family: 'Catamaran', 'Helvetica', 'Arial', 'sans-serif';
+  font-weight: 200;
+  letter-spacing: 1px;
+  color: #fdcc52;
+}
+.navbar-default .navbar-header .navbar-brand:hover,
+.navbar-default .navbar-header .navbar-brand:focus {
+  color: #fcbd20;
+}
+.navbar-default .navbar-header .navbar-toggle {
+  font-size: 12px;
+  color: #222222;
+  padding: 8px 10px;
+}
+.navbar-default .nav > li {
+padding:0px;
+}
+
+
+.navbar-default .nav > li > a {
+  font-family: 'Lato', 'Helvetica', 'Arial', 'sans-serif';
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 14px;
+  border-bottom:none;
+  
+}
+.navbar-default .nav > li > a,
+.navbar-default .nav > li > a:focus {
+  color: #222222;
+}
+.navbar-default .nav > li > a:hover,
+.navbar-default .nav > li > a:focus:hover {
+  color: #fdcc52;
+}
+.navbar-default .nav > li.active > a,
+.navbar-default .nav > li.active > a:focus {
+  color: #fdcc52 !important;
+  background-color: transparent;
+}
+.navbar-default .nav > li.active > a:hover,
+.navbar-default .nav > li.active > a:focus:hover {
+  background-color: transparent;
+}
+@media (min-width: 768px) {
+  .navbar-default {
+    
+    border-color: transparent;
+    background-color: #292b2c !important;
+  }
+  .navbar-default .navbar-header .navbar-brand {
+    color: rgba(255,255,255, 0.7);
+  }
+  .navbar-default .navbar-header .navbar-brand:hover,
+  .navbar-default .navbar-header .navbar-brand:focus {
+    color: white;
+  }
+  .navbar-default .nav > li > a,
+  .navbar-default .nav > li > a:focus {
+    color: rgba(255, 255, 255, 0.7);
+  }
+  .navbar-default .nav > li > a:hover,
+  .navbar-default .nav > li > a:focus:hover {
+    color: white;
+  }
+  .navbar-default.affix {
+    background-color: white;
+    border-color: rgba(34, 34, 34, 0.1);
+  }
+  .navbar-default.affix .navbar-header .navbar-brand {
+    color: #222222;
+  }
+  .navbar-default.affix .navbar-header .navbar-brand:hover,
+  .navbar-default.affix .navbar-header .navbar-brand:focus {
+    color: #fdcc52;
+  }
+  .navbar-default.affix .nav > li > a,
+  .navbar-default.affix .nav > li > a:focus {
+    color: #222222;
+  }
+  
+  .navbar-default.affix .navbar-brand >a > svg > g> g> path,
+  .navbar-default.affix .navbar-brand >a > svg > g> g> path:focus {
+    fill: #4d4d4d;
+  }
+  .navbar-default.affix .navbar-brand >a > svg > g> path,
+  .navbar-default.affix .navbar-brand >a > svg > g> path:focus {
+    fill: #4d4d4d;
+  }
+  .navbar-default.affix .navbar-brand >a > svg > g> g> polygon,
+  .navbar-default.affix .navbar-brand >a > svg > g> g> polygon:focus {
+    fill: #4d4d4d;
+    stroke-width:1
+  }
+  .navbar-default.affix .navbar-brand{
+
+    padding-top:2px;
+  }
+  .navbar-default.affix .nav > li > a:hover,
+  .navbar-default.affix .nav > li > a:focus:hover {
+    color: #fdcc52;
+  }
+}
+
+
+.navbar-default .navbar-header .navbar-brand {
+    color: rgba(255,255,255, 0.7);
+}
+  .downloadresults{
+    background-color: white;
+  }
+  .divitem{
+    height:150px;
+  }
+ 
+.hawaiianislands{
+  color: #D96459;
+}
+.pacificnorthwest{
+  color: #588C7E;
+}
+.conus{
+  color: #8C4646;
+}
+.california{
+  color:#F2AE72 ;
+}
+/* .divitem:hover {
+    background-color: #8C4646;
+ }
+ .divitem:hover .text-muted{
+    color: white;
+ }
+ 
+ .divitem:hover .pacificnorthwest{
+    color: white;
+  }
+  .divitem:hover .california{
+    color: white;
+  }
+  .divitem:hover .conus{
+    color: white;
+  }
+  .divitem:hover .hawaiianislands{
+    color: white;
+  }*/
+.lucaslogo{
+  width:100px;
+  height:100px;
+  margin-bottom:20px;
+  margin-right: 10px;
+}
+
+#Layer_1{
+	width:100px;
+  height: 30px;
+}
+.navbar-brand{
+  padding-bottom: 18px;
+padding-top: 13px;
+
+}

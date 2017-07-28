@@ -18,27 +18,30 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   </head>
-
   <body>
+     <nav id='navigation' class="modelsnav"></nav>
+
+  
 
     <!-- Wrapper -->
+
       <div id="wrapper">
 
         <!-- Header -->
-          <header id="header" class="alt">
+         <!-- <header id="header" class="alt">
             <a href="index.html" class="logo">Land<strong>Carbon</strong> <span>SyncroSim Visualizer Prototype</span></a>
             <nav>
               <a id="overlayOpen" href="#overlay">About</a>
             </nav>
-          </header>
-
+          </header>-->
+         
 
 
         <!-- Banner -->
-          <section id="banner" class="major">
+         <section id="banner" class="major">
             <div class="inner">
               <header class="major">
-                <h1>Land Change Projections for Hawai'i</h1>
+                <h1 id="header_title"><!--Land Change Projections for Hawai'i--></h1>
               </header>
               <div id="filters_project">
 
@@ -51,13 +54,13 @@
               </div>
               <div class="vis-list inline-list">
                   <ul>
-                    <li><a data-scroll href="#filters" ><p id="choosefilterbtn">Choose data</p><p><i class="fa fa-arrow-down" aria-hidden="true"></i></p></a> </li>
+                    <li><a data-scroll href="#filters" ><p id="choosefilterbtn">Select Filters</p><p><i class="fa fa-arrow-down" aria-hidden="true"></i></p></a> </li>
                    
                   </ul>
                 </div>
              
             </div>
-          </section>
+        </section>
 
         <!-- Contact -->
           <section id="filters">
@@ -72,12 +75,17 @@
               <section id="one">
                 <div class="inner">
                   <header class="major">
-                    <h2>Land Change over Time</h2>
+                    <h2>Change Accross the Landscape</h2>
                   </header>
                   <p>
-                    Use the graph controls to watch as the data changes through time and visualize the spatial distrubution of change on the map. 
+                    Land-use and carbon were modeled between 2011 and 2061 for the Hawai'ian Islands at the 1x1 km scale. The model was run over 20 monte carlo iterations to produce a distribution of projected results
+                     
                     <!--The landscape is divided spatially into simulation cells, each of which is 1x1 km in size. Simulations were run for 60 years with an annual timestep using initial conditions corresponding to the year 2001. A different number of Monte Carlo realizations (iterations) were run for different scenarios. Each cell is characterized by a group of state variables. One of these is the State Type of each cell which corresponds to one of the seven LULC classes.-->
                   </p>
+
+                    The map below shows the change in land-use or carbon over the simulation period for the selected combination of scenario, iteration, and strata. Use the controls below the map to change the year, scenario, iteration or land-use layer on the map. 
+
+                   The chart below displays trajectories of landscape change through time. Use the play, pause and stop controls or move the slider to animate the map through time. 
                 <!--  <p>
                     The map below shows the change in State Type over the simulation period (2001 -2061) in 10 year intervals for selected combination of scenario, iteration, moisture zone (stratum) and island (secondary stratum). The chart below displays the total landscape area in each LULC class per year. Use the play, pause and stop controls or move the slider to see the changes.
                   </p>-->
@@ -85,7 +93,8 @@
                
               <div class="inner-section1">
                <div class="row">
-                  <div class="framecontrols">
+                <article class="col threefifth">
+                  <div class="framecontrols inline">
                           Map frame
                           <button id="removeframe" type="button" class="framebutton" data-type="minus" data-field="quant[1]">
                                   -
@@ -94,8 +103,14 @@
                                +
                             </button>
                            
-                       </div>
-                </div>
+                  </div>
+
+                
+                 <div class="infoButton inline"></div>
+                </article>
+                <article class="col twofifth">
+                 </article>
+               </div>
                 <div class="row">
                  
                   <article id="maparticle" class="col threefifth">
@@ -149,8 +164,26 @@
                                                  
                                   <div id="accordion-toggle" class="legends">
                                      
-                                     <div class="inline legend-stateclass legend-section1"></div>
-                                     <div class="inline legend-scenario"></div>
+                                     <!--<div class="inline legend-stateclass legend-section1"></div>
+                                     <div class="inline legend-scenario"></div>-->
+                                      <div class="legend-section1">
+                                      <table style="width:100%">
+                                            <thead class ="section1_legend">
+                                              <tr>
+                                              
+                                                <th></th>
+                                                <th>Class</th>
+                                                <th>Scenario</th>
+                                               
+                                              </tr>
+                                            </thead>
+                                            <tbody class ='legend-section1-body' id ="legend-section1-body">
+
+                                              
+                                            </tbody>
+                                      </table>
+
+                                    </div>
                                     
                                   </div>
                                                      
@@ -217,6 +250,7 @@
                   </div>-->
                  <br><br>
                 <div class="legend-filters inline-list"></div>
+                <div class="legend-projects inline-list"></div>
                  <hr/>
               </section>
               
@@ -225,10 +259,10 @@
               <section id="two">
                 <div class="inner">
                   <header class="major">
-                    <h2>Total Area and Net Change</h2>
+                    <h2>Totals and Net Change</h2>
                   </header>
                   <p>
-                    The charts below show the total landscape area in square kilometers over the simulation period beginning with start of the simulation, then at a 10 year interval. Click on the Net Change button to see the net amount of change in landscape area over the previous decade. Hover over the bars for more detailed tooltip.
+                    The charts below show the total land-use or carbon stocks over the simulation period. Click on the Net Change button to see the net amount of change. Group results by either scenario or class. Hover over the bars for more detailed tooltip.
                   </p>
                 </div>
                 
@@ -316,7 +350,7 @@
                         </div>
                         </div>
                         <div class="legend-filters inline-list"></div> 
-               
+                        <div class="legend-projects inline-list"></div>
                 <hr/>
               </section>
               
@@ -327,9 +361,9 @@
                   <header class="major">
                     <h2>Transition Groups and Types</h2>
                   </header>
-                  <p>A set of all possible transitions between State Types is also defined in the model. For this project, the processes represented by these transitions include expansion and contraction of agricultural lands, urbanization, wildfire, shrub encroachment into grassland, harvest of tree plantations and shifts in moisture zones due to climate change.</p>
+                  <p>A set of all possible transitions between land-use types is also defined in the model. The processes represented by these transitions include expansion and contraction of agricultural lands, urbanization, wildfire, shrub encroachment into grassland, harvest of tree plantations and shifts in moisture zones due to climate change.</p> 
                 </div>
-                <div class="legend-filters inline-list"></div>
+               
                <!--  <div class="controls" style="margin: 1em 0;">
                    <button class="group_scenario group active">Group Scenario</button>
                   <button class="group_class group">Group Class</button>
@@ -410,8 +444,8 @@
 
 
 
-
-
+                       <div class="legend-filters inline-list"></div>
+                      <div class="legend-projects inline-list"></div>
               </section>
 
           </div>
@@ -451,6 +485,7 @@
     <!-- Scripts -->
    
     <script src="theme/vendor/jquery/jquery.min.js"></script>
+
     <script src="./vendor.bundle.js"></script>
     <script src="./lucas-bundle.js"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>

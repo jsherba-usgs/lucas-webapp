@@ -5,7 +5,11 @@ export const nameContract = {
     'AGRICULTURAL EXPANSION':"Agr. Expan.",
     'URBANIZATION':'URBANIZATION',
     "6370": "6370",
-    "6385":"6385"
+    "6385":"6385", 
+    '1120':'1120',
+    '1201':'1201',
+    '1202':'1202',
+    '1203':'1203'
   }
 
 export const patternHatch = d3.scale.ordinal()
@@ -14,9 +18,10 @@ export const patternHatch = d3.scale.ordinal()
            'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAADklEQVQYlWNgGAWDEwAAAZoAARbK02kAAAAASUVORK5CYII=',
            'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAGElEQVQYlWNgIAL8/////6gieipiYGAAAOtjJ9mgOAaFAAAAAElFTkSuQmCC',
            'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAADklEQVQYlWNgGAWDEwAAAZoAARbK02kAAAAASUVORK5CYII=',
-           'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAEUlEQVQYlWNgIA78H1VEZ0UA7RAJ995l1iMAAAAASUVORK5CYII=',
-           'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAEklEQVQYlWNgYGD4zzAKBh8AAJYTAQA4FYKbAAAAAElFTkSuQmCC',
-           'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAJElEQVQYlWNgwAT/sYjhVIRXMbokVsW4TPhPjCJi5clXPFAAAB4YCfd6VbaUAAAAAElFTkSuQmCC'
+           'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAGElEQVQYlWNgIAL8/////6gieipiYGAAAOtjJ9mgOAaFAAAAAElFTkSuQmCC',
+           /*'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAEUlEQVQYlWNgIA78H1VEZ0UA7RAJ995l1iMAAAAASUVORK5CYII=',*/
+           'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAN0lEQVQoU2NkQAL/////z8jIyIgsBmPDBfEpAikGKySkCKyQGEVwE7G5CV0Mq8PxeoaQqQNoIgBLZBALtx3qVgAAAABJRU5ErkJggg==',
+           'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAICAYAAADA+m62AAAAQ0lEQVQoU42PUQoAMAhC5/0P7WhQuGawvkJfVlitSBIAun4JCTm4QDWjj0RNPuC0TnVMUN6Y/nN0f6I2OsNpX4kxuAEe+igFrBB/IAAAAABJRU5ErkJggg=='
 
           ]).domain([
             '6370',
@@ -307,8 +312,7 @@ export const transitionClassLegendLookup = {
           'AGRICULTURAL EXPANSION':'#beaed4',
           'URBANIZATION':'#fdc086'}
 
-export const stateClassLegendLookup
- = {'Agriculture':'#ff8040',
+export const stateClassLegendLookup = {'Agriculture':'#ff8040',
           'Barren':'#c0c0c0',
           'Developed':'#000',
           'Forest':'#008000',
@@ -325,6 +329,10 @@ export const stockLegendLookup = {'Agriculture':'#ff8040',
 
 export const scenarioLegendLookup = {
          "6370":"Scenario6370", 
-         "6385":"Scenario6385" }
+         "6385":"Scenario6385",
+         "1120":"Scenario1120", 
+         "1201":"Scenario1201",
+         "1202":"Scenario1202", 
+         "1203":"Scenario1203" }
 
 export const colorScaleDicLegend = {"Land-Cover State": [stateclassColorScale, 20], "Carbon Stock": [carbonstockColorScale, 18], "Land-Cover Transition":[transitionColorScale, 7]};

@@ -14,9 +14,11 @@ const projectList = [
 const projectDetails = [
   {
     id: '7096',
-    name: '7096 | Hawaii land cover and carbon model',
+    name: 'Hawaii land-cover and carbon model',
     details: {
       header_description: "<p>Explore dynamics of land-use/land-cover (LULC) change projections for the state of Hawai\'i. These datasets are a result of a USGS modeling project that simulates LULC change into the future over different scenarios using a state-and-transition simulation model (STSM). The STSM model was run using the <a href=\"http://syncrosim.com\" target=\"blank\">SyncroSim</a> framework and the ST-SIM module. Processes represented in this project include expansion/contraction of agricultural lands, urbanization, wildfire, shrub encroachment into grassland and harvest of tree plantations. Additional details on the STSM approach can be found in <a href=\"http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12597/full\">Daniel et al (2016)</a>.</p>",
+      header_title: "Hawai\'i land cover and carbon model",
+      short_title:"Hawaii Model",
       scenario: [
         {
           id: '6370',
@@ -428,9 +430,11 @@ const projectDetails = [
   },
   {
   id: '4008',
-    name: '4008 | Califoria land cover model',
+    name: 'California land-cover model',
     details: {
       header_description: "<p>Explore dynamics of land-use/land-cover (LULC) change projections for the state of California. These datasets are a result of a USGS modeling project that simulates LULC change into the future over different scenarios using a state-and-transition simulation model (STSM). Processes represented in this project include expansion/contraction of agricultural lands, urbanization, and shrub encroachment into grassland. Four scenarios were run for the State of California stratified by Ecoregion and County. Additional details on the STSM approach can be found in <a href=\"http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12597/full\">Daniel et al (2016)</a>.</p>",
+      header_title: "California land-cover model",
+      short_title:"California Model",
       scenario: [
         {
           id: '1120',
@@ -650,6 +654,12 @@ const projectDetails = [
             {
               id: 'Grassland',
             },
+            {
+            id: 'Shrubland',
+          },
+           {
+            id: 'Wetland',
+          },
           
         ],
           

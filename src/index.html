@@ -20,10 +20,13 @@
                 <div class="col-sm-8">
                     <div class="header-content">
                         <div class="header-content-inner">
-                            <h1> LUCAS</h1>
+                            <h1 class="lucas-title"> LUCAS</h1>
                             <!--<h1><img src="theme/img/logo/LUCAS_logo.png" border="1px"> </h1>-->
-                            <h2>Land-Use and Carbon Scenario Simulator</h2>
-                            <a href="/models.html" class="btn btn-outline btn-xl page-scroll">View models</a>
+                            <h2 class="lucas-subtitle">Land-Use and Carbon Scenario Simulator</h2>
+                            <div>
+                                <input type="button" value="View Models" onclick="window.location.href='/models.html';">
+                              </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -39,7 +42,7 @@
             <div class="row">
                 <div class="col-md-8 col-md-offset-2">
                     <!--<h2 class="section-heading">The LUCAS Model</h2>-->
-                    <h3>Explore and download land-use and carbon data from multiple LUCAS models.</h3>
+                    <h3>Explore and download land-use and carbon data from LUCAS models.</h3>
                    <hr>
                 </div>
             </div>
@@ -117,10 +120,8 @@
         <div class="container stateclassanimationcontainer">
             
             <div class="row">
-                <div class="col-md-4 stateclassanimation">
-                    
-                </div>
-                <div class="col-md-8 stateclassanimationtext">
+               
+                <div class="col-md-12 stateclassanimationtext">
                     <div class="row">
                         <div class="col-lg-12 text-center">
                             <div class="section-heading">
@@ -140,8 +141,10 @@
                                     <!--<i class="glyphicon glyphicon-arrow-left"></i>-->
                                     <h3>CA Landuse Projections</h3>
                                     <p class="text-muted">Land-use projections for California's 4th Climate Assessment</p>
-                                     <button type="button" class="btn btn-default">Explore</button>
-                                     
+                                     <div>
+                                        <input type="button" value="Explore" onclick="window.location.href='/models.html';">
+                                      </div>
+                                                                 
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -149,7 +152,9 @@
                                     <!--<i class="icon-camera text-primary"></i>-->
                                     <h3>Land use and carbon in Hawaii</h3>
                                     <p class="text-muted">Land use and carbon projections for the Hawaiian Islands</p>
-                                     <button type="button" class="btn btn-default">Explore</button>
+                                    <div>
+                                    <input type="button" value="Explore" onclick="window.location.href='/models.html';">
+                                  </div>
                                       
                                 </div>
                             </div>
@@ -184,6 +189,9 @@
         <div class="container">
             <h2>Download model results</h2>
             <h3>Tabular and spatially explicit model results are available for download.</h3>
+            <div>
+            <input type="button" value="Download" onclick="window.location.href='/download.html';">
+          </div>
         </div>
     </section>
     <section class="bg-primary">

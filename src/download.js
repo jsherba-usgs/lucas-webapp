@@ -14,7 +14,7 @@ import { addEventListener, triggerEvent } from './helpers/utils';
 // Import Components
 import filters from './components/filters/filters_download';
 import projects from './helpers/project-details'
-
+import { loadtheme } from './theme/js/theme-lucas'
 // Import views
 //import sectionDownload from './views/section_download';
 
@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
   * PAGE UI
   */
   // Intialize smooth scrolling
- 
+ //loadtheme()
 $('#collapseExample').collapse('show');
 
   smoothScroll.init({
@@ -34,12 +34,13 @@ $('#collapseExample').collapse('show');
   });
 
   const body = document.body;
+
 /*  const wrapper = document.getElementById('wrapper');
   const header = document.getElementById('header');
   const banner = document.getElementById('banner');
   const overlay = document.getElementById('overlay');*/
-  const overlayOpenBtn = document.getElementById('overlayOpen');
-  const overlayCloseBtn = document.getElementById('overlayClose');
+  //const overlayOpenBtn = document.getElementById('overlayOpen');
+  //const overlayCloseBtn = document.getElementById('overlayClose');
 
   // Disable animations/transitions until the page has loaded.
   body.classList.add('is-loading');
@@ -70,7 +71,7 @@ $('#collapseExample').collapse('show');
   });
 
   
-
+loadtheme()
   // Open, close overlay
   function overlayOpen() {
     body.classList.add('is-overlay-visible');
@@ -78,8 +79,8 @@ $('#collapseExample').collapse('show');
   function overlayClose() {
     body.classList.remove('is-overlay-visible');
   }
-  overlayOpenBtn.addEventListener('click', overlayOpen);
-  overlayCloseBtn.addEventListener('click', overlayClose);
+  /*overlayOpenBtn.addEventListener('click', overlayOpen);
+  overlayCloseBtn.addEventListener('click', overlayClose);*/
 
   function leftPad(val = 1, length = 4) {
   const str = val.toString();
