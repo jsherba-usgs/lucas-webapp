@@ -605,6 +605,11 @@ padding-top: 13px;
   font-weight:300;
 }
 
+.models-row{
+  margin-right:150px;
+  margin-left:150px;
+}
+
 input[type="submit"],
   input[type="reset"],
   input[type="button"],
