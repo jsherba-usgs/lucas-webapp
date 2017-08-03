@@ -509,6 +509,17 @@ if (update) {
   });
 
 
+const mapboxTiles = L.tileLayer('https://api.mapbox.com/styles/v1/defjeff/cj5o5h3i04zp82smolfwvzwmh/tiles/256/%7Bz%7D/%7Bx%7D/%7By%7D?access_token=pk.eyJ1IjoiZGVmamVmZiIsImEiOiJjajVtd24xMzgzYWRyMzNvMmo5cWo3ZTM4In0.Jgu3IRnkLYwpDOzdhuMkHw', {
+ // attribution: 'LULC: <a href="http://landcarbon.org">LandCarbon</a>',
+  maxZoom: 19,
+  opacity: 1,
+  subdomains: 'abcd',
+  //scenario: '6368',
+  //iteration: '0001',
+  //year: '2001'
+  });
+
+
 
 // https: also suppported.
 
@@ -640,6 +651,7 @@ let sec_Strat_TileLayer = new L.TileLayer.GeoJSON(secStratUrl, {
 )
 
 var baseMaps = {
+ /* "mapBox": mapboxTiles,*/
     "Grayscale": cartoDBPositron
     
 };

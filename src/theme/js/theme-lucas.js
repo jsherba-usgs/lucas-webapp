@@ -1,6 +1,6 @@
 
 
-import nav from '../html/navigation-lucas.html';
+import nav from '../html/navigation.html';
 
 export function loadtheme() {
 

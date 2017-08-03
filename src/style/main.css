@@ -2978,3 +2978,20 @@ padding:0px;
 padding-top: 13px;
 
 }
+.container-header{
+  width: 100%;
+padding-left: 0px;
+padding-right: 10px;
+
+}
+#lucas-nav{
+    font-family: 'Roboto', sans-serif;
+    font-weight: 200;
+    letter-spacing: 1px;
+    color: #ffffff;
+    font-size: 25px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 15px;
+    border: none;
+}

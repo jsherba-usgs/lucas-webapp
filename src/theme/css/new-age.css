@@ -116,6 +116,7 @@ p {
   }
   .navbar-default .navbar-header .navbar-brand {
     color: rgba(255,255,255, 0.7);
+    padding-right:0px;
   }
   .navbar-default .navbar-header .navbar-brand:hover,
   .navbar-default .navbar-header .navbar-brand:focus {
@@ -176,11 +177,11 @@ header {
   min-height: auto;
   overflow-y: hidden;
 
-  background:  url("../img/headerImage.png");
+  background:  url("../img/header_original_ill.png");
   /* fallback for old browsers */
-  background: url("../img/headerImage.png");
+  background: url("../img/header_original_ill.png");
   /* Chrome 10-25, Safari 5.1-6 */
-  background: url("../img/headerImage.png");
+  background: url("../img/header_original_ill.png");
   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   color: white;
   background-size: cover;
@@ -221,16 +222,19 @@ header .device-container .screen img {
     min-height: 75%;
   }
   header .header-content {
-    text-align: left;
+    text-align: center;
     padding: 0;
     height: 100vh;
   }
   header .header-content .header-content-inner {
     max-width: none;
     margin: 0;
-    position: absolute;
+    position: relative;
     top: 35%;
     transform: translateY(-40%);
+    background-color: rgba(41, 43, 44, 0.8);
+    padding-bottom: 20px;
+    padding-top: 10px;
   }
   header .header-content .header-content-inner h1 {
     font-size: 35px;
@@ -495,7 +499,14 @@ body {
   padding-top:0px;
   padding-bottom:0px;
   background-color:#ffffff;
+  /*min-height:1200px;*/
 }
+.modelsSectionheading{
+  padding-top:60px;
+  padding-bottom:40px;
+}
+.modelsSection{min-height:1000px;}
+.aboutSection{min-height:1000px;}
 .stateclassanimationcontainer{
   width:100%;
 }
@@ -508,16 +519,22 @@ body {
   background-color: white;
   background-image: linear-gradient(to bottom, #e0e6d3, #d5ddc3);
 }
-.stsmdiagram{
+/*.stsmdiagram{
    width:500px;
    height:500px;
-}
+}*/
 .sfdiagram{
-    width:500px;
-    height:500px;
+   /* width:500px;
+    height:500px;*/
+    padding-left: 100px;
 
 }
+.container-header{
+  width: 100%;
+padding-left: 0px;
+padding-right: 10px;
 
+}
 .extramargintop{
   margin-top:50px;
 }
@@ -597,19 +614,23 @@ padding-top: 13px;
   margin-right: 10px;
 }
 .lucas-title{
-  font-family: 'Catamaran', 'Helvetica', 'Arial', 'sans-serif';
-  font-weight: 400;
-  letter-spacing: 1px;
+  font-family: 'Roboto', sans-serif;;
+  font-weight: 200;
+  letter-spacing: 5px;
+  margin-bottom:0px;
 }
 .lucas-subtitle{
   font-weight:300;
+  margin-top:0px;
+  font-size:25px;
 }
 
 .models-row{
   margin-right:150px;
   margin-left:150px;
 }
-
+.modelsSectionIndex{padding-top:20px;
+padding-bottom:20px;}
 input[type="submit"],
   input[type="reset"],
   input[type="button"],
@@ -722,3 +743,38 @@ input[type="submit"],
       cursor: default;
       opacity: 0.25;
     }
+
+.lucaslogo{
+  width:100px;
+  height:100px;
+  margin-bottom:20px;
+  margin-right: 10px;
+}
+header .header-content .header-content-inner .lucas-title{
+  font-family: 'Roboto', sans-serif;;
+  font-weight: 200;
+  letter-spacing: 5px;
+  margin-bottom:0px;
+  font-size: 70px;
+}
+
+
+.lucas-diagram-img{
+  padding-top:80px;
+  max-width:600px
+}
+.models-row{
+  margin-right:150px;
+  margin-left:150px;
+}
+
+#lucas-nav{
+    font-family: 'Roboto', sans-serif;
+    font-weight: 200;
+    letter-spacing: 1px;
+    color: #ffffff;
+    font-size: 25px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 15px;
+}
