@@ -1,24 +1,12 @@
 
-import head from 'theme/html/head.html';
-import nav from 'theme/html/navigation.html';
-headerContainer = document.getElementById('header');
-headerContainer.innerHTML = head;
-
-navContainer = document.getElementById('navigation');
-navContainer.innerHTML = nav;
-
-
+// Import Styles
+import './theme/vendor/bootstrap/css/bootstrap.css';
+import './theme/css/new-age.css';
+import nav from './theme/html/navigation.html';
+	navContainer = document.getElementById('mainNav');
+	navContainer.innerHTML = nav;
 
 document.addEventListener('DOMContentLoaded', () => {
-	
-	$('.navbar-collapse ul li a').click(function() {
-        $('.navbar-toggle:visible').click();
+
+
 })
-}, false);
-/*import { loadtheme } from './theme/js/theme';
-
-
-
-document.addEventListener('DOMContentLoaded', () => {
-loadtheme()
-})*/
