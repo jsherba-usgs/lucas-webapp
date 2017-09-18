@@ -1,5 +1,6 @@
 // Import Node Modules
 import smoothScroll from 'smooth-scroll';
+import L from 'leaflet-tilelayer-geojson'
 import d3 from 'd3';
 
 // Import Styles

@@ -12,7 +12,8 @@ module.exports = {
     lucas: './test.js',
     theme: './index.js',
     download: './download.js',
-    vendor: ['smooth-scroll', 'd3', 'leaflet', 'bootstrap']
+    vendor: ['jquery','smooth-scroll', 'd3', 'leaflet', 'bootstrap', 'leaflet-tilelayer-geojson'],
+    vendor2: ['smooth-scroll','bootstrap',]
   },
   output: {
     path: path.join(__dirname, './build'),
@@ -54,9 +55,20 @@ module.exports = {
   plugins: [
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
+      chunks: ['bundle1'],
       minChunks: Infinity,
       filename: 'vendor.bundle.js'
     }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor2',
+      chunks: ['bundle2'],
+      minChunks: Infinity,
+      filename: 'vendor.bundle2.js'
+    }),
+    /*new webpack.ProvidePlugin({
+        $: 'jquery',
+        jQuery: 'jquery',
+    }),*/
     new webpack.LoaderOptionsPlugin({
       minimize: true,
       debug: false

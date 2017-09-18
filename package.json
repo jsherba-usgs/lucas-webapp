@@ -47,6 +47,10 @@
     "leaflet": "^0.7.7",
     "leaflet.sync": "^0.0.6",
     "smooth-scroll": "github:cferdinandi/smooth-scroll",
-    "spin": "0.0.1"
+    "spin": "0.0.1",
+    "jquery.easing":"^1.3.2",
+    "bootstrap-select":"^1.12.2",
+    "leaflet-tilelayer-geojson":"^1.0.4",
+    "font-awesome":"^4.7.0"
   }
 }
