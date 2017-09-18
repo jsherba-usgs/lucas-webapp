@@ -23,7 +23,6 @@ import { loadtheme } from './theme/js/theme-lucas';
 
 
 
-
 document.addEventListener('DOMContentLoaded', () => {
   /*
   * PAGE UI
@@ -402,7 +401,7 @@ function addMapLegends(){
       let params = setParams(e, 'state_label_x')
       
       // Fetch data for state class and update charts
-
+     
       service.loadStates(params)
 
         .then((data) => {
