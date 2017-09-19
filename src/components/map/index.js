@@ -2,6 +2,7 @@
 import L from 'leaflet';
 import Spinner from 'spin';
 import 'leaflet.sync'
+
 // Import Styles
 import 'leaflet/dist/leaflet.css';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';

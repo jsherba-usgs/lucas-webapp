@@ -4,7 +4,6 @@ import percentileFilterContent from './filters_percentile.html';
 import { triggerEvent } from './../../helpers/utils';
 import projects from './../../helpers/project-details';
 
-
 const model = {};
 
 let filtersContainer;

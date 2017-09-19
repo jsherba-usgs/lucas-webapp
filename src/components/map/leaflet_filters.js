@@ -4,6 +4,7 @@ import projects from './../../helpers/project-details';
 import {transitiongroupColorScale, colorScaleDicLegend, colorScaleDic, dashed,dashedLegend, stateClassLegendLookup, stockLegendLookup, transitionClassLegendLookup} from '../../helpers/colors';
 import d3 from 'd3';
 
+
 const model = {};
 
 let filtersContainer;

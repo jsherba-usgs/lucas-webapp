@@ -12,7 +12,8 @@ module.exports = {
     lucas: './test.js',
     theme: './index.js',
     download: './download.js',
-    vendor: ['jquery','smooth-scroll', 'd3', 'leaflet', 'bootstrap', 'leaflet-tilelayer-geojson'],
+   // vendor: ['jquery','smooth-scroll', 'd3', 'leaflet', 'bootstrap', 'leaflet-tilelayer-geojson'],
+    vendor: ['jquery', 'smooth-scroll', 'd3', 'leaflet', 'leaflet-tilelayer-geojson'],
     vendor2: ['smooth-scroll','bootstrap',]
   },
   output: {

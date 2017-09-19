@@ -1,9 +1,10 @@
 // Import Node Modules
 import smoothScroll from 'smooth-scroll';
-import L from 'leaflet-tilelayer-geojson'
+import 'bootstrap';
 import d3 from 'd3';
 
 // Import Styles
+import './theme/css/bootstrap.css';
 import './style/main.css';
 
 
@@ -25,6 +26,7 @@ import { loadtheme } from './theme/js/theme-lucas';
 
 
 document.addEventListener('DOMContentLoaded', () => {
+  
   /*
   * PAGE UI
   */
