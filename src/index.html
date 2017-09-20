@@ -11,14 +11,15 @@
     <title>LUCAS</title>
 
     <!-- Bootstrap Core CSS -->
-    
+    <link href="https://fonts.googleapis.com/css?family=Lato:200,200italic,300,300italic,600,600italic|Catamaran:100,200,300,400,500,600,700,800,900|Muli|Roboto:500i|Open+Sans" rel="stylesheet">
 
     <!-- Custom Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <!--<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">-->
+    <!--<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto:500i" rel="stylesheet"> 
-
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">-->
     <!-- Plugin CSS -->
    <!-- <link rel="stylesheet" href="theme/vendor/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="theme/vendor/simple-line-icons/css/simple-line-icons.css">
@@ -32,11 +33,8 @@
     
 
     <header>
-        <div class="container">
-            <div class="row">
-				 <div class="col-sm-3">
-				 </div>
-                <div class="col-sm-6">
+        <div class="header-container">
+            
                     <div class="header-content">
                         <div class="header-content-inner">
                             <h1 class="lucas-title"> LUCAS</h1>
@@ -47,25 +45,63 @@
                             </div>
                             
                         </div>
-                    </div>
-                </div>
-				<div class="col-sm-3">
-				 </div>
+                    
+				
                 
              </div>
          </div>  
     </header>
 
-    <section class="bg-primary text-center">
-        <div class="container">
+    <section class="bg-primary introbox text-center">
+        <!--<div class="container">
             <div class="row">
                 <div class="col-md-8 col-md-offset-2">
-                    <!--<h2 class="section-heading">The LUCAS Model</h2>-->
+                   
                     <h3>Explore and download land-use and carbon data from LUCAS models.</h3>
                    <hr>
                 </div>
             </div>
+        </div>-->
+       
+  <div class="iconcontainer">
+    <div class="row">
+      <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+        <div class="iconbox">
+          <div class="featureinfo">
+            <h3 class="text-left">Explore Models</h3>
+            <p class="text-muted">
+              View and compare land use and carbon data from multiple LUCAS models. 
+            </p>
+            <input type="button" value="Models" onclick="window.location.href='./models.html';">
+          </div>
         </div>
+      </div>
+      <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+        <div class="iconbox">
+          <div class="featureinfo">
+            <h3 class="text-left">Download</h3>
+            <p class="text-muted">
+              Download tabular and spatially explicit results from the LUCAS model. 
+            </p>
+            <input type="button" value="Download" onclick="window.location.href='./download.html';">
+          </div>
+        </div>
+      </div>
+       <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+        <div class="iconbox">
+          <div class="featureinfo">
+            <h3 class="text-left">About LUCAS</h3>
+            <p class="text-muted">
+              More about the LUCAS model and adopting the ST-Sim framework. 
+            </p>
+            <input type="button" value="About" onclick="window.location.href='./about.html';">
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
     </section>
 
      <section id="features" class="features">
@@ -134,7 +170,7 @@
             </div>
         </div>
     </section>
-    <section class="stateclassanimationsection">
+   <!-- <section class="stateclassanimationsection">
         
         <div class="container stateclassanimationcontainer">
             
@@ -189,26 +225,7 @@
                             </div>
                         </div>
                        </div>
-                       <!-- <div class="row">
-                            <div class="col-md-6">
-                                <div class="feature-item">
-                                  
-                                    <h3>CONUS Model</h3>
-                                    <p class="text-muted">Land use and carbon projections for the Conterminous United States</p>
-                                     <button type="button" class="btn btn-default">Explore</button>
-                                      
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="feature-item">
-                                    
-                                    <h3>Pacific Northwest Model</h3>
-                                    <p class="text-muted">Land use and carbon projections for the Pacific Northwest of the United States</p>
-                                     <button type="button" class="btn btn-default">Explore</button>
-                                      
-                                </div>
-                            </div>
-                        </div>-->
+               
                     </div>
                 </div>
             </div>
@@ -222,10 +239,11 @@
             <input type="button" value="Download" onclick="window.location.href='/download.html';">
           </div>
         </div>
-    </section>
+    </section>-->
     <section class="bg-primary">
         <div class="container">
             <h2>Collaborators</h2>
+             <p class="text-muted">The LUCAS model has been adopted by a range of users to explore land-use and carbon dynamics accross multiple scenarios.</p>
             <ul class="list-inline list-social">
                 <li class="social-twitter">
                     

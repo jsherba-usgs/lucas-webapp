@@ -86,7 +86,8 @@ p {
   padding: 8px 10px;
 }
 .navbar-default .nav > li > a {
-  font-family: 'Lato', 'Helvetica', 'Arial', 'sans-serif';
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 200;
   text-transform: uppercase;
   letter-spacing: 2px;
   font-size: 14px;
@@ -112,7 +113,7 @@ p {
   .navbar-default {
     background-color: transparent;
     border-color: transparent;
-    background-color: #292b2c !important;
+    background-color: #404040 !important;
 
   }
   .navbar-default .navbar-header .navbar-brand {
@@ -188,6 +189,10 @@ header {
   background-size: cover;
   background-attachment: fixed;
 }
+header .header-container {
+  background-color: rgba(41, 43, 44, 0.5);
+  height:100%;
+}
 header .header-content {
   text-align: center;
   padding: 150px 0 50px;
@@ -219,23 +224,27 @@ header .device-container .screen img {
 }
 @media (min-width: 768px) {
   header {
-	height:75%;
-    min-height: 75%;
+	  height:60%;
+    min-height: 60%;
+    box-shadow: 0 4px 2px -2px gray;
   }
   header .header-content {
     text-align: center;
     padding: 0;
-    height: 100vh;
+    height: 100%;
+    position: relative;
   }
   header .header-content .header-content-inner {
+    width: 400px;
     max-width: none;
     margin: 0;
     position: relative;
-    top: 35%;
+    top: 45%;
+    left:40%;
     transform: translateY(-40%);
-    background-color: rgba(41, 43, 44, 0.8);
     padding-bottom: 20px;
     padding-top: 10px;
+    text-align: left;
   }
   header .header-content .header-content-inner h1 {
     font-size: 35px;
@@ -426,10 +435,17 @@ footer ul li a.active {
 .bg-primary {
   background-color:#ffffff;
   color: #222222;
+  
+}
+.introbox{
+      padding-top: 45px;
+    padding-bottom: 60px;
+}
 
-  /*background-color: #f0f0f0;*/
-  
-  
+.iconbox{
+  text-align:left;
+  padding-left: 35px;
+padding-right: 35px;
 }
 .text-primary {
   color: #fdcc52;
@@ -779,3 +795,23 @@ header .header-content .header-content-inner .lucas-title{
     padding-bottom: 15px;
     padding-left: 15px;
 }
+
+#wrapper > * > .inner {
+      padding: 0em 0 0em;
+      margin: 0 auto;
+      max-width: 105em;
+      width: calc(100% - 6em);
+    }
+.major{
+  margin-bottom: 0;
+width: calc(100% + .5em);
+}
+  h1.explore-models{
+    margin-top: 0px;
+    font-size: 4em;
+    color: #444;
+    font-weight: 600;
+    line-height: 1.65;
+    border-bottom: 0;
+    font-family: Lato,Helvetica,sans-serif;
+  }

@@ -276,7 +276,7 @@ function addMapLegends(){
         
         <li>${modelTitle} </li>
       </ul>
-      <a data-scroll href="#wrapper" class="projectScroll">
+      <a data-scroll href="#navigation" class="projectScroll">
         (Update)
       </a>`;
 
