@@ -1,7 +1,7 @@
 import d3 from 'd3';
 import tip from 'd3-tip';
 import {transitionTypeColorScale, nameContract, patterHatch} from './../../helpers/colors';
-
+import projectDetails from '../../helpers/project-details.js';
 d3.tip = tip;
 
 const chart = () => {
@@ -9,7 +9,7 @@ const chart = () => {
   * PUBLIC VARIABLES
   **/
 
-  let margin = { top: 30, right: 20, bottom: 20, left: 150 };
+  let margin = { top: 30, right: 20, bottom: 50, left: 150 };
   let width = 300;
   let height = 200;
   let color = d3.scale.ordinal()
@@ -98,6 +98,13 @@ const chart = () => {
         .style('text-anchor', 'middle')
         .classed('series-label', true);
 
+      annotation.append('text')
+        .attr('y',chartH + margin.bottom/2)
+        .attr('x', (chartW / 2))
+        .attr('dy', '1em')
+        .style('text-anchor', 'middle')
+        .classed('x-axis-label', true);
+
       container.call(tooltip);
 
       /*
@@ -180,6 +187,12 @@ const chart = () => {
     return this;
   };
 
+  exports.xAxisAnnotation = function (_) {
+    if (!_) return xAxisAnnotation;
+    xAxisAnnotation = _;
+    return this;
+  };
+
   exports.chartClass = function (_) {
     if (!_) return chartClass;
     chartClass = _;
@@ -191,6 +204,7 @@ const chart = () => {
   **/
 
   exports.render = function () {
+    exports.drawLabels();
     container.each(exports.drawChart);
     exports.drawLabels();
   };
@@ -200,7 +214,14 @@ const chart = () => {
     container.select('.series-label')
       .transition().duration(1000)
       .text('')
-      .text((d) => d.key);
+      .text((d) => (projectDetails.getNameForID(d.key)!= undefined) ? projectDetails.getNameForID(d.key):d.key);
+
+    container.select('.x-axis-label')
+      .transition().duration(1000)
+      .text('')
+      .text((d) => xAxisAnnotation);
+    
+
   };
 
   exports.drawChart = function (chartData) {
@@ -233,7 +254,8 @@ const chart = () => {
     // X Axis on bottom of chart
     const xAxis = d3.svg.axis()
       .scale(xScale)
-      .orient('bottom');
+      .orient('bottom')
+      .tickFormat(d3.format("s"));
      
 
     // Y axis on the left side of chart

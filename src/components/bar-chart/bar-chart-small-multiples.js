@@ -1,6 +1,7 @@
 import d3 from 'd3';
 import tip from 'd3-tip';
 import {patternHatch} from './../../helpers/colors';
+import projectDetails from '../../helpers/project-details.js';
 d3.tip = tip;
 
 const chart = () => {
@@ -46,12 +47,15 @@ const chart = () => {
     .orient('bottom')
     .tickSize(5)
     .tickFormat((d) => d.substring(0, 5));
+    
 
   // First Y axis on the left side of chart
   let yAxis = d3.svg.axis()
     .scale(yScale)
     .tickSize(3)
-    .orient('left');
+    .ticks(8)
+    .orient('left')
+    .tickFormat(d3.format("s"));
 
   // Events
   const dispatch = d3.dispatch('click', 'mouseout', 'brushmove');
@@ -294,8 +298,8 @@ const chart = () => {
 
     
 
-    filtercon.select('.y-axis-label')
-          .text(yAxisAnnotation);
+    /*filtercon.select('.y-axis-label')
+          .text(yAxisAnnotation);*/
 
     // Draw x axis with category labels
    /* container.select('.x-axis-group.axis')
@@ -334,10 +338,16 @@ const chart = () => {
   
 
   exports.drawLabels = function () {
+
     container.select('.year-label')
       .transition().duration(1000)
       .text('')
-      .text((d) => d.key);
+      .text((d) => (projectDetails.getNameForID(d.key)!= undefined) ? projectDetails.getNameForID(d.key):d.key);
+      console.log(data)
+    container.select('.y-axis-label')
+        .transition().duration(1000)
+        .text('')
+        .text(yAxisAnnotation);
   };
 
 

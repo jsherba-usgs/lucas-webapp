@@ -806,12 +806,15 @@ header .header-content .header-content-inner .lucas-title{
   margin-bottom: 0;
 width: calc(100% + .5em);
 }
-  h1.explore-models{
-    margin-top: 0px;
-    font-size: 4em;
-    color: #444;
-    font-weight: 600;
-    line-height: 1.65;
-    border-bottom: 0;
-    font-family: Lato,Helvetica,sans-serif;
-  }
+h1.explore-models{
+  margin-top: 0px;
+  font-size: 4em;
+  color: #444;
+  font-weight: 600;
+  line-height: 1.65;
+  border-bottom: 0;
+  font-family: Lato,Helvetica,sans-serif;
+}
+.model-section{
+  padding-top: 3.25em;
+}

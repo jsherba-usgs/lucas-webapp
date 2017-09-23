@@ -8,7 +8,7 @@ import './../components/bar-chart/bar-chart.css';
 
 // Import Helpers
 import { stateclassColorScale, carbonstockColorScale, scenarioLegendLookup, scenarioLookupDictionary, patternHatch, strokeHatch} from './../helpers/colors';
-
+import projectDetails from './../helpers/project-details.js';
 // Import Components
 import barChart from './../components/bar-chart/bar-chart-small-multiples';
 //import chart from './../components/multiline-area-chart/multiLine-area-chart';
@@ -45,6 +45,8 @@ const view = {
   updateChart(nestedData, colorScale, details, variableType) {
 
     timeseriesChart = chartSmallMultiples()
+    timeSeriesBarChart = barChart()
+
 
     const section2 = document.getElementById("two")
     const scenarioGroupCheckbox = section2.querySelector('input[id=scenarioGroup]');
@@ -52,8 +54,6 @@ const view = {
 
     const totalChangeCheckbox = section2.querySelector('input[id=totalChange]');
     totalChangeCheckbox.checked = true
-
-
     
    
     // Set x and y accessors for timeseries chart
@@ -63,36 +63,6 @@ const view = {
    
     timeseriesChart.yValue(yAccessor);
     timeseriesChart.xValue(xAccessor);
-    /*const timeseriesData = nestedData.map((series) => (
-      {
-        name: series.key,
-        type: 'line',
-        //values: series.values,
-        values: series.values.map(function(dd){
-                key = dd.key
-                values = dd.values[0].Mean
-                min = dd.values[0].min
-                max = dd.values[0].max
-                return {key:key, min:min, max:max, values:values}
-              })
-      }
-    ));
-   
-   
-    const yearRange = []
-    timeseriesData.forEach((series) =>
-      //series.values.forEach((d) => domainRange.push(d.values))
-      //series.values.forEach((d) => d.values.forEach((f) => domainRange.push(f.min, f.max)))
-
-      series.values.forEach(function(d) {
-            
-           
-           yearRange.push(parseInt(d.key))
-
-    }));*/
-    
-
-    //timeseriesChart.xDomain([new Date(d3.min(yearRange), 1), new Date(d3.max(yearRange), 1)]);
 
     
     let xDomainValues = details.xDomain[0][variableType][0].domain
@@ -100,6 +70,8 @@ const view = {
     
     timeseriesChart.color(colorScale);
     
+    timeseriesChart.yAxisAnnotation(projectDetails.getUnit(variableType)); 
+    timeSeriesBarChart.yAxisAnnotation(projectDetails.getUnit(variableType));
 
     this.chartStatus('loaded');
     chartContainer.classList.remove('no-data');
@@ -319,7 +291,7 @@ const view = {
 
         d3.select(chartContainer)
           .datum(barChartTotals)
-          .call(barChart()
+          .call(timeSeriesBarChart
             .color(colorScale)
         );
 
@@ -342,7 +314,7 @@ const view = {
 
         d3.select(chartContainer)
           .datum(barChartTotals)
-          .call(barChart()
+          .call(timeSeriesBarChart
             .color(colorScale)
         );
 
@@ -381,7 +353,7 @@ const view = {
 
       d3.select(chartContainer)
         .datum(barChartChange)
-        .call(barChart()
+        .call(timeSeriesBarChart
           .color(colorScale)
         );
       }else{
@@ -410,7 +382,7 @@ const view = {
 
       d3.select(chartContainer)
         .datum(barChartChange)
-        .call(barChart()
+        .call(timeSeriesBarChart
           .color(colorScale)
         );
 
@@ -445,7 +417,7 @@ const view = {
 
         d3.select(chartContainer)
           .datum(barChartTotals)
-          .call(barChart()
+          .call(timeSeriesBarChart
             .color(colorScale)
         );
           return barChartTotals
@@ -476,7 +448,7 @@ const view = {
 
         d3.select(chartContainer)
         .datum(barChartChange)
-        .call(barChart()
+        .call(timeSeriesBarChart
           .color(colorScale)
         );
         return barChartChange
@@ -510,7 +482,7 @@ const view = {
 
         d3.select(chartContainer)
           .datum(barChartTotals)
-          .call(barChart()
+          .call(timeSeriesBarChart
             .color(colorScale)
         );
           return barChartTotals
@@ -543,7 +515,7 @@ const view = {
 
         d3.select(chartContainer)
         .datum(barChartChange)
-        .call(barChart()
+        .call(timeSeriesBarChart
           .color(colorScale)
         );
         return barChartChange
@@ -574,7 +546,7 @@ const view = {
     
     d3.select(chartContainer)
       .datum(barChartTotals)
-      .call(barChart()
+      .call(timeSeriesBarChart
         .color(colorScale)
       );
 
@@ -597,12 +569,13 @@ const view = {
 
     legendData.forEach(function(scenarioObject){
       
-      let scenario = scenarioObject['key']
+      let scenario = projectDetails.getNameForID(scenarioObject['key'])
+      let scenario_id = scenarioObject['key']
       scenarioObject.values.forEach(function(stateObject, indexID){
         
 
-        let barClass = "bar_scenario"+scenario+ "_" + indexID.toString()
-        let lineClass = "line_scenario"+scenario+ "_" + indexID.toString()
+        let barClass = "bar_scenario"+scenario_id+ "_" + indexID.toString()
+        let lineClass = "line_scenario"+scenario_id+ "_" + indexID.toString()
         
         let state=stateObject['key']
         let start = stateObject.values[0].value
@@ -646,13 +619,13 @@ const view = {
         //let pattern = scenarioLegendLookup[scenario]
         
         barClass="."+barClass
-        let pattern= patternHatch(scenario)
+        let pattern= patternHatch(scenario_id)
         d3.select(barClass).append("svg").attr("width", 50).attr("height", 32).append("rect").attr("width", 40).attr("height", 30).style("fill", color).attr("transform", "translate(0,10)")
         d3.select(barClass).select("svg").attr('xmlns', "http://www.w3.org/2000/svg").append('defs').append('pattern').attr('id', barClass).attr('patternUnits', 'userSpaceOnUse').attr('width', '10').attr('height', '10').append('image').attr('xlink:href',pattern).attr('x','0').attr('y','0').attr('height','10').attr('width','10') 
         d3.select(barClass).select("svg").append("rect").attr("width", 40).attr("height", 30).attr("transform", "translate(0,10)").style("fill", "url(#"+barClass+")")//.attr("fill", 'url('+'#'+'diagonalHatch'+scenario+')')
         
         lineClass="."+lineClass
-        let strokeArray = strokeHatch(scenario)
+        let strokeArray = strokeHatch(scenario_id)
         d3.select(lineClass).append("svg").attr("height", 10).append("line").attr("x1", 0).attr("x2", 40).attr("y1", 0).attr("y2", 0).attr("stroke", color).attr('stroke-width', '5').attr('stroke-dasharray',strokeArray);   
         
       })
@@ -672,13 +645,14 @@ const view = {
     let sectionLegend1 = document.getElementById("legend-section1-body")
 
     legendData.forEach(function(scenarioObject){
-      
-      let scenario = scenarioObject['key']
+     
+      let scenario = projectDetails.getNameForID(scenarioObject['key'])
+      let scenario_id = scenarioObject['key']
       scenarioObject.values.forEach(function(stateObject, indexID){
         
-
         
-        let lineClass = "line1_scenario"+scenario+ "_" + indexID.toString()
+        
+        let lineClass = "line1_scenario"+scenario_id+ "_" + indexID.toString()
         
         let state=stateObject['key']
         
@@ -706,7 +680,7 @@ const view = {
        
         
         lineClass="."+lineClass
-        let strokeArray = strokeHatch(scenario)
+        let strokeArray = strokeHatch(scenario_id)
         d3.select(lineClass).append("svg").attr("height", 10).append("line").attr("x1", 0).attr("x2", 40).attr("y1", 0).attr("y2", 0).attr("stroke", color).attr('stroke-width', '5').attr('stroke-dasharray',strokeArray);   
         
       })

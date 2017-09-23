@@ -9,7 +9,7 @@ import './../components/multiline-area-chart/multiLine-area-chart.css';
 
 // Import Helpers
 //import { stateclassColorScale } from './../helpers/colors';
-
+import projectDetails from './../helpers/project-details.js';
 
 // Import Components
 import leafletMap from './../components/map/index';
@@ -53,6 +53,7 @@ const view = {
     sliderVals.push(i);
     }
     let initiateChart = true
+    console.log('init_chart')
     timeseriesChart = chart()
       .width(chartContainer.offsetWidth)
       .height(chartContainer.offsetHeight || 400)
@@ -438,7 +439,7 @@ const view = {
     
     timeseriesChart.yDomain([d3.min(domainRange), d3.max(domainRange)]);
 
-    
+    timeseriesChart.yAxisAnnotation(projectDetails.getUnit(variableType)); 
 
     //timeseriesChart.xDomain([new Date(d3.min(yearRange), 1), new Date(d3.max(yearRange), 1)]);
    let xDomainValues = details.xDomain[0][variableType][0].domain

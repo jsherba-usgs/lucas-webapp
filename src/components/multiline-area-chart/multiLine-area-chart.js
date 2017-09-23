@@ -49,7 +49,8 @@ const chart = () => {
   // First Y axis on the left side of chart
   const yAxis1 = d3.svg.axis()
     .scale(yScale)
-    .orient('left');
+    .orient('left')
+    .tickFormat(d3.format("s"));
   // Second Y axis on the right side of chart
   // Second Y axis uses the same yScale as first one
   /*const yAxis2 = d3.svg.axis()
@@ -447,7 +448,7 @@ function arrangeLabels(textLabels) {
 
   exports.render = function () {
     this.drawAxes();
-   // this.drawLabels();
+    this.drawLabels();
     this.drawArea();
     this.drawLines();
     this.drawMouseOverElements();
@@ -477,8 +478,8 @@ function arrangeLabels(textLabels) {
    
 
     // Update y axis label
-   svg.select('.y-axis-label')
-      .text(yAxisAnnotation);
+   /*svg.select('.y-axis-label')
+      .text(yAxisAnnotation);*/
 
     // Update the x-axis.
     svg.select('.x-axis-group.axis')
@@ -486,13 +487,18 @@ function arrangeLabels(textLabels) {
       .call(xAxis);
   };
 
-  /*exports.drawLabels = function () {
-    console.log(data)
-    svg.select('.year-label')
+  exports.drawLabels = function () {
+    
+    /*svg.select('.year-label')
       .transition().duration(1000)
       .text('')
-      .text("Stateclass Area Over Time");
-  };*/
+      .text("Stateclass Area Over Time");*/
+
+     svg.select('.y-axis-label')
+      .transition().duration(1000)
+      .text('')
+      .text(yAxisAnnotation);
+  };
 
   exports.drawLines = function () {
    

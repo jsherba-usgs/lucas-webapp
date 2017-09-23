@@ -13,6 +13,7 @@ import hbarChart from './../components/horizontal-bar-chart/horizontal-bar-chart
 import {patternHatch, strokeHatch} from './../helpers/colors';
 import {downloadCSV, exportTableToCSV} from './../helpers/csv-service';
 //import  from './../helpers/project-details';
+import projectDetails from './../helpers/project-details.js';
 /*
 * PRIVATE VARIABLES
 */
@@ -63,11 +64,17 @@ const view = {
     timeseriesChart = chartSmallMultiplesTransition();
     const yAccessor = function (d) { return +d.values; };
     const xAccessor = function (d) { return new Date(d.key, 0, 1); };
+   
     timeseriesChart.yValue(yAccessor);
     timeseriesChart.xValue(xAccessor);
-
     timeseriesChart.color(colorScale);
 
+    timeseriesChart.yAxisAnnotation(projectDetails.getUnit(variableType)); 
+    //pathwaysChart.xAxisAnnotation(projectDetails.getUnit(variableType))
+    let start_date = details.xDomain[0][variableType][0].domain[0].getFullYear().toString()
+    let end_date =details.xDomain[0][variableType][0].domain[1].getFullYear().toString()
+    
+    pathwaysChart.xAxisAnnotation("Total transition "+projectDetails.getUnit(variableType).toLowerCase()+": "+ start_date +" - "+ end_date);
     timeseriesChart
        .height(250)
        .width(timeSeriesContainer.offsetWidth)
@@ -390,13 +397,14 @@ function  totalAreaLine(nestedData, groupByScenario, transitionGroups){
       let transitionGroup = stateObject['key']
       stateObject.values.forEach(function(scenarioObject){
 
-      	let scenario=scenarioObject['key']
+      	let scenario = projectDetails.getNameForID(scenarioObject['key'])
+        let scenario_id = scenarioObject['key']
 
       	scenarioObject.values.forEach(function(transitionObject, indexID){
         let state = transitionObject.pathway
       	
-        let barClass = "bar_scenario_3_"+scenario+ "_" + indexID.toString() + "_" + indexIDGroup.toString()
-        let lineClass = "line_scenario_3_"+scenario+ "_" + indexID.toString()+ "_" + indexIDGroup.toString()
+        let barClass = "bar_scenario_3_"+scenario_id+ "_" + indexID.toString() + "_" + indexIDGroup.toString()
+        let lineClass = "line_scenario_3_"+scenario_id+ "_" + indexID.toString()+ "_" + indexIDGroup.toString()
         
         
         
@@ -434,13 +442,13 @@ function  totalAreaLine(nestedData, groupByScenario, transitionGroups){
         //let pattern = scenarioLegendLookup[scenario]
         
         barClass="."+barClass
-        let pattern= patternHatch(scenario)
+        let pattern= patternHatch(scenario_id)
         d3.select(barClass).append("svg").attr("width", 50).attr("height", 32).append("rect").attr("width", 40).attr("height", 30).style("fill", color).attr("transform", "translate(0,10)")
         d3.select(barClass).select("svg").attr('xmlns', "http://www.w3.org/2000/svg").append('defs').append('pattern').attr('id', barClass).attr('patternUnits', 'userSpaceOnUse').attr('width', '10').attr('height', '10').append('image').attr('xlink:href',pattern).attr('x','0').attr('y','0').attr('height','10').attr('width','10') 
         d3.select(barClass).select("svg").append("rect").attr("width", 40).attr("height", 30).attr("transform", "translate(0,10)").style("fill", "url(#"+barClass+")")//.attr("fill", 'url('+'#'+'diagonalHatch'+scenario+')')
         
         lineClass="."+lineClass
-        let strokeArray = strokeHatch(scenario)
+        let strokeArray = strokeHatch(scenario_id)
         d3.select(lineClass).append("svg").attr("height", 10).append("line").attr("x1", 0).attr("x2", 40).attr("y1", 0).attr("y2", 0).attr("stroke", color).attr('stroke-width', '5').attr('stroke-dasharray',strokeArray);   
         })
       })

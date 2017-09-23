@@ -1,6 +1,6 @@
 import d3 from 'd3';
 import { dashed, strokeHatch } from '../../helpers/colors';
-
+import projectDetails from '../../helpers/project-details.js';
 const chart = () => {
   /**
   * PUBLIC VARIABLES
@@ -50,7 +50,9 @@ const chart = () => {
   // First Y axis on the left side of chart
   let yAxis1 = d3.svg.axis()
     .scale(yScale)
-    .orient('left');
+    .orient('left')
+    .ticks(10)
+    .tickSize(3);
   // Second Y axis on the right side of chart
   // Second Y axis uses the same yScale as first one
   /*const yAxis2 = d3.svg.axis()
@@ -110,7 +112,8 @@ const area = d3.svg.area()
       //yAxis1.tickSize(-(chartW-20));
 
       xAxis.tickSize(5);
-      yAxis1.tickSize(5);
+      yAxis1
+      .tickFormat(d3.format("s"));
       
     /* let yearRange = []
       _data[0].values[0].values.forEach(function(d) {
@@ -134,7 +137,7 @@ const area = d3.svg.area()
       // Select the s*vg element, if it exists.
     
       const div = d3.select(this).selectAll(`.${chartClass}`).data(_data);
-
+      console.log(div)
       data = _data;
 
       div.enter()
@@ -435,8 +438,7 @@ const area = d3.svg.area()
     })
 
   // Update y axis label
-       container.select('.y-axis-label')
-          .text(yAxisAnnotation);
+
 
         // Update the x-axis.
         container.select('.x-axis-group.axis')
@@ -457,7 +459,20 @@ const area = d3.svg.area()
     container.select('.year-label')
       .transition().duration(1000)
       .text('')
-      .text((d) => d.key);
+      .text((d) => (projectDetails.getNameForID(d.key)!= undefined) ? projectDetails.getNameForID(d.key):d.key);
+
+   /* container.select('.year-label')
+      .transition().duration(1000)
+      .text('')
+      .text((d) => ()*/
+
+      
+       container.select('.y-axis-label')
+        .transition().duration(1000)
+        .text('')
+        .text(yAxisAnnotation);
+     
+
   };
 
 
