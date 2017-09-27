@@ -53,7 +53,7 @@ const view = {
     sliderVals.push(i);
     }
     let initiateChart = true
-    console.log('init_chart')
+    
     timeseriesChart = chart()
       .width(chartContainer.offsetWidth)
       .height(chartContainer.offsetHeight || 400)
@@ -74,6 +74,7 @@ const view = {
     // Init date slider
     slider = chroniton()
       // TODO: Refactor - get range of years from data, instead of hardcoding values below
+      .stop()
       .domain([new Date(2011, 0), new Date(2061, 0)])
       .labelFormat(d3.time.format('%Y'))
       .width(sliderContainer.offsetWidth)
@@ -183,13 +184,17 @@ const view = {
     /*for(var i=d3.min(years); i<=d3.max(years);i=i+5) {
     sliderVals.push(i);
     }*/
-   
+    
     for(var i=startYear; i<=endYear;i=i+5) {
     sliderVals.push(i);
     }
     tickValues = details.xDomain[0][variableType][0].ticks
     xDomainValues = details.xDomain[0][variableType][0].domain
-    
+    console.log(variableType)
+    if (variableType === "transition_group"){
+      let update_start_year = sliderVals[0]
+      sliderVals[0] = update_start_year+1
+    }
    /* let tickValues = []
     for(var i=d3.min(years); i<=d3.max(years);i=i+10) {
 
@@ -209,6 +214,7 @@ const view = {
      slider
      // .domain([new Date(d3.min(years), 0), new Date(d3.max(years), 0)])
      .domain(xDomainValues)
+     .stop()
       .tapAxis((axis) => axis.tickValues(tickValues))
       .on('change', (d) => {
       
@@ -242,9 +248,12 @@ const view = {
         loadAll(slider, d)
         //updateRasterOpacity()
 
-       
-
+       console.log(sliderVals)
+       console.log(sliderVals.indexOf(year))
+       console.log(sliderYear)
+       console.log(year)
             if (sliderVals.indexOf(year) > -1 && year!==sliderYear) {
+              console.log("testval")
               leafletMap.updateRaster({ year })
               sliderYear = year
              }
@@ -494,7 +503,7 @@ const view = {
       if (layerLength > 0){
       leafletMap.removeTimeSeriesRasters()
     }*/
-    timeseriesChart.moveTooltip(2011);
+    //timeseriesChart.moveTooltip(2011);
     leafletMap.reloadMap(options);
     leafletFilters.init(options, addMapLegend)
 

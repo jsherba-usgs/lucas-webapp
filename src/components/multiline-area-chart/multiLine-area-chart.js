@@ -760,6 +760,44 @@ function arrangeLabels(textLabels) {
       });
   };
 
+    exports.resetTooltip = function (year) {
+
+    d3.select('#one').select('.mouse-line')
+      .style('opacity', '1');
+    d3.select('#one').selectAll('.mouse-per-line circle')
+      .style('opacity', '1');
+    d3.select('#one').selectAll('.mouse-per-line text')
+      .style('opacity', '1');
+
+    const mouse = xScale(new Date(year, 0, 1));
+    d3.select('#one').select('.mouse-line')
+      .attr('d', () => {
+        let d = `M${mouse}, ${chartH}`;
+        d += ` ${mouse}, 0`;
+        return d;
+      });
+
+    d3.select('#one').selectAll('.mouse-per-line')
+      .attr('transform', function (d) {
+        const x0 = year;
+        const bisect = d3.bisector((c) => parseInt(c.key)).right;
+        const idx = bisect(d.values, x0);
+        const d0 = d.values[idx - 1];
+        const d1 = d.values[idx];
+        let datum;
+        if (d1) {
+          datum = x0 - parseInt(d0.key) > parseInt(d1.key) - x0 ? d1 : d0;
+        } else {
+          datum = d0;
+        }
+
+        d3.select(this).select('text')
+          .text(datum.values);
+        
+        return `translate(${mouse}, ${yScale(datum.values)})`;
+      });
+  };
+
 
   d3.rebind(exports, dispatch, 'on');
 

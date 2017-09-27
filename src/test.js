@@ -515,6 +515,7 @@ function addMapLegends(){
         // Fetch data for state class and update charts
         service.loadCarbonStocks(params)
           .then((data) => {
+
            /* const renameTotalAreaByYear = d3.nest()
               .entries(data)
               .map(function(group) {
@@ -557,9 +558,9 @@ function addMapLegends(){
             let iteration_vals = params.iteration.split(',')
             if (element.Iteration === 1050){
             
-            element.max = percentile_dictionary[element.IDScenario][element.StockType][element.Timestep][parseInt(iteration_vals[2])][0]['Amount']
-            element.min = percentile_dictionary[element.IDScenario][element.StockType][element.Timestep][parseInt(iteration_vals[0])][0]['Amount']
-            element.Mean =percentile_dictionary[element.IDScenario][element.StockType][element.Timestep][1050][0]['Amount']
+            element.max = parseFloat(percentile_dictionary[element.IDScenario][element.StockType][element.Timestep][parseInt(iteration_vals[2])][0]['Amount'].toFixed(2));
+            element.min = parseFloat(percentile_dictionary[element.IDScenario][element.StockType][element.Timestep][parseInt(iteration_vals[0])][0]['Amount'].toFixed(2));
+            element.Mean =parseFloat(percentile_dictionary[element.IDScenario][element.StockType][element.Timestep][1050][0]['Amount'].toFixed(2));
           }
 
           })
