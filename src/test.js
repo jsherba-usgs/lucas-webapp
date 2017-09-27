@@ -415,7 +415,7 @@ function addMapLegends(){
 
         .then((data) => {
           
-          percentile_dictionary = d3.nest()
+          const percentile_dictionary = d3.nest()
           .key(function(d) { return d.IDScenario; })
           //.key(function(d) { return d.SecondaryStratum; })
           //.key(function(d) { return d.Stratum; })
@@ -424,9 +424,7 @@ function addMapLegends(){
           .key(function(d) { return d.Iteration; })
           .rollup()
           .map(data)
-          console.log(data)
-          console.log(params)
-          console.log(percentile_dictionary)
+         
           data.forEach(function(element) {
             let iteration_vals = params.iteration.split(',')
             if (element.Iteration === 1050){
@@ -440,7 +438,7 @@ function addMapLegends(){
           data = data.filter(function(el) {
               return el.Iteration === 1050;
           });
-          console.log(data)
+          
           //console.log(data)
           /*const renameTotalAreaByYear = d3.nest()
             .entries(data)
@@ -517,7 +515,7 @@ function addMapLegends(){
         // Fetch data for state class and update charts
         service.loadCarbonStocks(params)
           .then((data) => {
-            const renameTotalAreaByYear = d3.nest()
+           /* const renameTotalAreaByYear = d3.nest()
               .entries(data)
               .map(function(group) {
                
@@ -543,16 +541,40 @@ function addMapLegends(){
 
             }
           }
-              });
+              });*/
+
+          const percentile_dictionary = d3.nest()
+          .key(function(d) { return d.IDScenario; })
+          //.key(function(d) { return d.SecondaryStratum; })
+          //.key(function(d) { return d.Stratum; })
+          .key(function(d) { return d.StockType; })
+          .key(function(d) { return d.Timestep; })
+          .key(function(d) { return d.Iteration; })
+          .rollup()
+          .map(data)
+         
+          data.forEach(function(element) {
+            let iteration_vals = params.iteration.split(',')
+            if (element.Iteration === 1050){
+            
+            element.max = percentile_dictionary[element.IDScenario][element.StockType][element.Timestep][parseInt(iteration_vals[2])][0]['Amount']
+            element.min = percentile_dictionary[element.IDScenario][element.StockType][element.Timestep][parseInt(iteration_vals[0])][0]['Amount']
+            element.Mean =percentile_dictionary[element.IDScenario][element.StockType][element.Timestep][1050][0]['Amount']
+          }
+
+          })
+          data = data.filter(function(el) {
+              return el.Iteration === 1050;
+          });
               
               
             // Group data by stateclass and year, calculate total area (amount)
            
             const totalAreaByYear = d3.nest()
-              .key((d) => d.StockType+" / "+d.ScenarioID)
+              .key((d) => d.StockType+" / "+d.IDScenario)
               .key((d) => d.Timestep)
                //.rollup((v) => d3.sum(v, (d) => d.Mean))
-              .entries(renameTotalAreaByYear);
+              .entries(data);
             
             // Update section 1 charts
             
@@ -586,18 +608,34 @@ function addMapLegends(){
         // Fetch data for state class and update charts
         service.loadTransitions(params)
           .then((data) => {
-            const renameTotalAreaByYear = d3.nest()
+             const percentile_dictionary = d3.nest()
+          .key(function(d) { return d.IDScenario; })
+          //.key(function(d) { return d.SecondaryStratum; })
+          //.key(function(d) { return d.Stratum; })
+          .key(function(d) { return d.TransitionGroup; })
+          .key(function(d) { return d.Timestep; })
+          .key(function(d) { return d.Iteration; })
+          .rollup()
+          .map(data)
+         
+          data.forEach(function(element) {
+            let iteration_vals = params.iteration.split(',')
+            if (element.Iteration === 1050){
+            
+            element.max = percentile_dictionary[element.IDScenario][element.TransitionGroup][element.Timestep][parseInt(iteration_vals[2])][0]['Amount']
+            element.min = percentile_dictionary[element.IDScenario][element.TransitionGroup][element.Timestep][parseInt(iteration_vals[0])][0]['Amount']
+            element.Mean =percentile_dictionary[element.IDScenario][element.TransitionGroup][element.Timestep][1050][0]['Amount']
+          }
+
+          })
+          data = data.filter(function(el) {
+              return el.Iteration === 1050;
+          });
+              
+            /*const renameTotalAreaByYear = d3.nest()
               .entries(data)
               .map(function(group) {
-                /*return {
-                  TransitionGroup: group.TransitionGroup,
-                  ScenarioID: group.IDScenario,
-                  Timestep: group.Timestep,
-                  max: group["pc(sum, 95)"],
-                  min: group["pc(sum, 5)"],
-                  Mean:   group["pc(sum, 50)"],
-                  
-                }*/
+               
             if (e.detail.iteration_type==='single_iteration'){
               return {
                 TransitionGroup: group.TransitionGroup,
@@ -621,15 +659,15 @@ function addMapLegends(){
             }
           }
 
-              });
+              });*/
               
 
            const totalAreaByYearAll = d3.nest()
-              .key((d) => d.TransitionGroup+" / "+d.ScenarioID)
+              .key((d) => d.TransitionGroup+" / "+d.IDScenario)
               
               .key((d) => d.Timestep)
                //.rollup((v) => d3.sum(v, (d) => d.Mean))
-              .entries(renameTotalAreaByYear);
+              .entries(data);
 
            let groupVariable = e.detail.variable_detail.split(",")
           
