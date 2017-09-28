@@ -7,7 +7,7 @@ import Spinner from 'spin';
 import './../components/bar-chart/bar-chart.css';
 
 // Import Helpers
-import { stateclassColorScale, carbonstockColorScale, scenarioLegendLookup, scenarioLookupDictionary, patternHatch, strokeHatch} from './../helpers/colors';
+import { stateclassColorScale, carbonstockColorScale, scenarioLegendLookup, transitionColorScale, scenarioLookupDictionary, patternHatch, strokeHatch} from './../helpers/colors';
 import projectDetails from './../helpers/project-details.js';
 // Import Components
 import barChart from './../components/bar-chart/bar-chart-small-multiples';
@@ -66,6 +66,7 @@ const view = {
 
     
     let xDomainValues = details.xDomain[0][variableType][0].domain
+    console.log(xDomainValues)
     timeseriesChart.xDomain(xDomainValues);
     
     timeseriesChart.color(colorScale);
@@ -129,15 +130,25 @@ const view = {
   
     function  totalArea(nestedData, groupByScenario){
       let decadalData = []
+      let barLength = nestedData.length
       nestedData.forEach((series) => {
         
-    
+        
         let filteredValues = series.values.filter(function (el) {return el.key === minY || el.key === maxY});
+        let yearStateVal
+        console.log(barLength)
         if (groupByScenario === true){
           filteredValues.forEach((row) => {
+
+            if (barLength >= 4){
+               yearStateVal = row.key.substring(2,3)+ " / " + series.key.split(' / ')[0]
+            }else{
+              console.log("test")
+               yearStateVal = row.key + " / " + series.key.split(' / ')[0]
+            }
             decadalData.push(
               {
-                year: row.key + " / " + series.key.split(' / ')[0],
+                year: yearStateVal,
                 value: row.values[0].Mean,
                 max:row.values[0].max,
                 min:row.values[0].min,
@@ -151,9 +162,14 @@ const view = {
           });
        }else{
          filteredValues.forEach((row) => {
+           if (barLength >= 4){
+               let yearStateVal = row.key.substring(2,4)+ " / " + series.key.split(' / ')[1]
+            }else{
+               let yearStateVal = row.key + " / " + series.key.split(' / ')[1]
+            }
             decadalData.push(
               {
-                year: row.key + " / " +  series.key.split(' / ')[1],
+                year: yearStateVal,
                 value: row.values[0].Mean,
                 max:row.values[0].max,
                 min:row.values[0].min,
@@ -268,6 +284,7 @@ const view = {
 
     let isTotals = true
     showTotals.onclick = () => {
+      timeseriesChart.color(colorScale);
       showTotals.classList.add("active");
       showChange.classList.remove("active")
       isTotals = true
@@ -283,7 +300,8 @@ const view = {
          d3.select(chartContainer)
           .datum(lineChartTotals)
           .transition()
-          .call(timeseriesChart);
+          .call(timeseriesChart)
+       
 
         barChartTotals = d3.nest()
         .key((d) => d.scenario)
@@ -306,7 +324,8 @@ const view = {
          d3.select(chartContainer)
           .datum(lineChartTotals)
           .transition()
-          .call(timeseriesChart);
+          .call(timeseriesChart)
+          
 
         barChartTotals = d3.nest()
         .key((d) => d.state)
@@ -323,6 +342,7 @@ const view = {
     };
 
     showChange.onclick = () => {
+      timeseriesChart.color(colorScale);
       showTotals.classList.remove("active");
       showChange.classList.add("active")
       isTotals = false
@@ -349,7 +369,9 @@ const view = {
       d3.select(chartContainer)
       .datum(lineChartChange)
       .transition()
-      .call(timeseriesChart);
+      .call(timeseriesChart)
+       
+      
 
       d3.select(chartContainer)
         .datum(barChartChange)
@@ -378,7 +400,8 @@ const view = {
       d3.select(chartContainer)
       .datum(lineChartChange)
       .transition()
-      .call(timeseriesChart);
+      .call(timeseriesChart)
+      
 
       d3.select(chartContainer)
         .datum(barChartChange)
@@ -392,6 +415,7 @@ const view = {
 
    
    groupScenario.onclick = () => {
+      timeseriesChart.color(colorScale);
       groupScenario.classList.add("active");
       groupClass.classList.remove("active")
       groupByScenario = true
@@ -409,8 +433,8 @@ const view = {
          d3.select(chartContainer)
           .datum(lineChartTotals)
           .transition()
-          .call(timeseriesChart);
-
+          .call(timeseriesChart)
+          
         barChartTotals = d3.nest()
         .key((d) => d.scenario)
         .entries(totalBar);
@@ -444,7 +468,8 @@ const view = {
          d3.select(chartContainer)
           .datum(lineChartChange)
           .transition()
-          .call(timeseriesChart);
+          .call(timeseriesChart)
+         
 
         d3.select(chartContainer)
         .datum(barChartChange)
@@ -458,6 +483,7 @@ const view = {
     };
 
   groupClass.onclick = () => {
+    timeseriesChart.color(colorScale);
       groupScenario.classList.remove("active");
       groupClass.classList.add("active")
       groupByScenario = false
@@ -474,7 +500,8 @@ const view = {
          d3.select(chartContainer)
           .datum(lineChartTotals)
           .transition()
-          .call(timeseriesChart);
+          .call(timeseriesChart)
+         
 
         barChartTotals = d3.nest()
           .key((d) => d.state)
@@ -510,7 +537,8 @@ const view = {
         d3.select(chartContainer)
           .datum(lineChartChange)
           .transition()
-          .call(timeseriesChart);
+          .call(timeseriesChart)
+          
 
 
         d3.select(chartContainer)
@@ -542,7 +570,8 @@ const view = {
     d3.select(chartContainer)
       .datum(lineChartTotals)
       .transition()
-      .call(timeseriesChart);
+      .call(timeseriesChart)
+     
     
     d3.select(chartContainer)
       .datum(barChartTotals)

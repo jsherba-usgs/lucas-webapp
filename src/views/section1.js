@@ -74,7 +74,7 @@ const view = {
     // Init date slider
     slider = chroniton()
       // TODO: Refactor - get range of years from data, instead of hardcoding values below
-      .stop()
+    
       .domain([new Date(2011, 0), new Date(2061, 0)])
       .labelFormat(d3.time.format('%Y'))
       .width(sliderContainer.offsetWidth)
@@ -167,15 +167,18 @@ const view = {
         .append('button')
         .html('<i class="icon fa-pause"></i>')
         .attr('class', 'small')
+        .attr('id', 'pause_button')
         .on('click', () => slider.pause());
 
     d3.select(controlsContainer)
         .append('button')
         .html('<i class="icon fa-stop"></i>')
         .attr('class', 'small')
+        .attr('id', 'stop_button')
         .on('click', () => slider.stop());
   },
   sliderupdate(details, variableType){
+   
     startYear = details.years[0][variableType][0].start
     endYear = details.years[0][variableType][0].end
     sliderContainer.querySelector('.slider').remove()
@@ -190,7 +193,7 @@ const view = {
     }
     tickValues = details.xDomain[0][variableType][0].ticks
     xDomainValues = details.xDomain[0][variableType][0].domain
-    console.log(variableType)
+    
     if (variableType === "transition_group"){
       let update_start_year = sliderVals[0]
       sliderVals[0] = update_start_year+1
@@ -211,61 +214,63 @@ const view = {
      // .color(stateclassColorScale);
      let sliderYear = startYear//d3.min(years)
      
-     slider
+    slider
      // .domain([new Date(d3.min(years), 0), new Date(d3.max(years), 0)])
+     .stop(stopValue = true)
      .domain(xDomainValues)
-     .stop()
       .tapAxis((axis) => axis.tickValues(tickValues))
       .on('change', (d) => {
-      
         
         
-        const year = d.getFullYear();
-       
-        let loadAll = function(slider,d){
-        
-          if (initiateChart === false){
-
-          
-          leafletMap.preLoadRasters(slider, d, startYear, endYear)
-          
-          }
-          initiateChart=false
-
-        }
-     
-          
-        let updateRasterOpacity = function(){
-            sliderYear = year
-            if (sliderVals.indexOf(year) > -1 && year!==sliderYear) {
-
-              leafletMap.updateRaster({ year })
-             }
+        if (stopValue!==true){
+          const year = d.getFullYear();
+         
+         // if (year ===2061){slider.stop()}
+             
+          let loadAll = function(slider,d){
             
-        } 
+            if (initiateChart === false){
 
-        
-        loadAll(slider, d)
-        //updateRasterOpacity()
+            
+            leafletMap.preLoadRasters(slider, d, startYear, endYear)
+            
+            }
+            initiateChart=false
+            
 
-       console.log(sliderVals)
-       console.log(sliderVals.indexOf(year))
-       console.log(sliderYear)
-       console.log(year)
-            if (sliderVals.indexOf(year) > -1 && year!==sliderYear) {
-              console.log("testval")
-              leafletMap.updateRaster({ year })
+          }
+       
+            
+          let updateRasterOpacity = function(){
               sliderYear = year
-             }
-         if (slider.isAtEnd()){slider.pause()}
-          timeseriesChart.moveTooltip(year);
+              if (sliderVals.indexOf(year) > -1 && year!==sliderYear) {
+
+                leafletMap.updateRaster({ year })
+               }
+              
+          } 
+
+          
+          loadAll(slider, d)
+          //updateRasterOpacity()
+
+         
+              if (sliderVals.indexOf(year) > -1 && year!==sliderYear) {
+                console.log("testval")
+                leafletMap.updateRaster({ year })
+                sliderYear = year
+               }
+          
+
+           if (slider.isAtEnd()){slider.pause();}
+
+           timeseriesChart.moveTooltip(year);
+        }  
+        stopValue=false
+          //
        // updateRasterOpacity(year, sliderVals, leafletMap)
           
-     
-       
-
-          //loadAll()
-          //updateRasterOpacity()
+      
         
       })
       
@@ -334,7 +339,7 @@ const view = {
       .call(slider);
 
   },
-  sliderinit(){
+  /*sliderinit(){
     sliderContainer = parentContainer.querySelector('.chroniton-slider');
     controlsContainer = parentContainer.querySelector('.controls');
    
@@ -358,6 +363,7 @@ const view = {
         .append('button')
         .html('<i class="icon fa-pause"></i>')
         .attr('class', 'small')
+        .attr('id', 'pause_button')
         .on('click', () => slider.pause());
 
     d3.select(controlsContainer)
@@ -376,7 +382,7 @@ const view = {
     });
 
     
-  },
+  },*/
  
   resizeChart() {
     // update width

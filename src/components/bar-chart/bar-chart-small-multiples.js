@@ -225,6 +225,14 @@ const chart = () => {
     return this;
   };
 
+  exports.xAxis = function (_) {
+    if (!_) return xAxis;
+      xAxis = _;
+    return this;
+  };
+
+   
+
   exports.yAxisAnnotation = function (_) {
     if (!_) return yAxisAnnotation;
     yAxisAnnotation = _;
@@ -343,7 +351,7 @@ const chart = () => {
       .transition().duration(1000)
       .text('')
       .text((d) => (projectDetails.getNameForID(d.key)!= undefined) ? projectDetails.getNameForID(d.key):d.key);
-      console.log(data)
+    
     container.select('.y-axis-label')
         .transition().duration(1000)
         .text('')
