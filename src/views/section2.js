@@ -66,7 +66,7 @@ const view = {
 
     
     let xDomainValues = details.xDomain[0][variableType][0].domain
-    console.log(xDomainValues)
+   
     timeseriesChart.xDomain(xDomainValues);
     
     timeseriesChart.color(colorScale);
@@ -131,29 +131,32 @@ const view = {
     function  totalArea(nestedData, groupByScenario){
       let decadalData = []
       let barLength = nestedData.length
-      nestedData.forEach((series) => {
-        
-        
-        let filteredValues = series.values.filter(function (el) {return el.key === minY || el.key === maxY});
-        let yearStateVal
+      nestedData.forEach((series, index) => {
+        if (index > barLength/2){
+          index = index-(barLength/2)
+        }
         console.log(barLength)
+        let filteredValues = series.values.filter(function (el) {return el.key === minY || el.key === maxY});
+        let yearShort
+       
         if (groupByScenario === true){
           filteredValues.forEach((row) => {
-
-            if (barLength >= 4){
-               yearStateVal = row.key.substring(2,3)+ " / " + series.key.split(' / ')[0]
+             
+           if (barLength >= 4){
+               yearShort = row.key.substring(2,4)
             }else{
-              console.log("test")
-               yearStateVal = row.key + " / " + series.key.split(' / ')[0]
+                yearShort = row.key
             }
+             console.log(index)
+             
             decadalData.push(
               {
-                year: yearStateVal,
+                year: row.key + " / " + series.key.split(' / ')[0],
                 value: row.values[0].Mean,
                 max:row.values[0].max,
                 min:row.values[0].min,
                 name:series.key,
-                yearval: row.key,
+                yearval: series.key.split(' / ')[0]+"_"+yearShort,
                 scenario: series.key.split(' / ')[1],
                 state:series.key.split(' / ')[0],
                 
@@ -161,20 +164,21 @@ const view = {
             );
           });
        }else{
-         filteredValues.forEach((row) => {
+         filteredValues.forEach((row, index2) => {
            if (barLength >= 4){
-               let yearStateVal = row.key.substring(2,4)+ " / " + series.key.split(' / ')[1]
+               yearShort = row.key.substring(2,4)
             }else{
-               let yearStateVal = row.key + " / " + series.key.split(' / ')[1]
+                yearShort = row.key
             }
+           
             decadalData.push(
               {
-                year: yearStateVal,
+                year: row.key + " / " + series.key.split(' / ')[1],
                 value: row.values[0].Mean,
                 max:row.values[0].max,
                 min:row.values[0].min,
                 name:series.key,
-                yearval: row.key,
+                yearval: series.key.split(' / ')[1]+"_"+yearShort,
                 scenario: series.key.split(' / ')[1],
                 state:series.key.split(' / ')[0],
                 
@@ -256,13 +260,24 @@ const view = {
       if (nextRow) {
         
        
-        if (groupByScenario){
+        /*if (groupByScenario){
           
           yearGroup = `${currentRow.yearval.substring(2,4)}-${nextRow.yearval.substring(2,4)} / ${currentRow.state}`
         }else{
           yearGroup = `${currentRow.yearval.substring(2,4)}-${nextRow.yearval.substring(2,4)} / ${currentRow.scenario}`
+        }*/
+        let yearChange = `${currentRow.year.substring(2,4)}-${nextRow.year.substring(2,4)}`
+        let newYearVal
+        if (groupByScenario){
+          
+          //yearGroup = `${currentRow.yearval.substring(2,4)}-${nextRow.yearval.substring(2,4)} / ${currentRow.state}`
+          newYearVal = currentRow.state+"_"+yearChange
+        }else{
+         // yearGroup = `${currentRow.yearval.substring(2,4)}-${nextRow.yearval.substring(2,4)} / ${currentRow.scenario}`
+         newYearVal = currentRow.scenario+"_"+yearChange
         }
-
+        
+         
         decadalChange.push(
           {
             name: currentRow.name,
@@ -271,7 +286,9 @@ const view = {
             max: nextRow.max -  currentRow.value,
             scenario: currentRow.scenario,
             state:currentRow.state,
-            year: yearGroup,
+            year: currentRow.year,
+            yearval: newYearVal
+
           }
         );
       }

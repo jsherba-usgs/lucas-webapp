@@ -18,7 +18,7 @@ const chart = () => {
   let yAxisAnnotation = 'Area (square kilometers)';
   let xAxisAnnotation = 'Ordinal Scale';
   //let xValue = function(d) { return d.name; };
-  let xValue = function(d) { return d.year; };
+  let xValue = function(d) { return d.yearval; };
   let yValue = function(d) { return +d.value; };
   let yMaxValue = function(d) { return +d.max; };
   let yMinValue = function(d) { return +d.min; };
@@ -46,7 +46,8 @@ const chart = () => {
     .scale(xScale)
     .orient('bottom')
     .tickSize(5)
-    .tickFormat((d) => d.substring(0, 5));
+    //.tickFormat((d) => d.substr(1));
+    .tickFormat((d) => d.split('_')[1]);
     
 
   // First Y axis on the left side of chart
@@ -62,7 +63,7 @@ const chart = () => {
 
 
   function exports(_selection) {
-    _selection.each(function (_data) {
+    _selection.each(function (_data, dindex) {
       const chartW = width - margin.left - margin.right;
       const chartH = height - margin.top - margin.bottom;
 
@@ -72,12 +73,14 @@ const chart = () => {
       data = _data;
 
       // Setup scales
+      console.log(data)
       xScale
         .rangeRoundBands([0, chartW], xRoundBands)
         //.domain(data[0].values.map((d) => xValue(d)));
-        .domain(data[0].values.map((d) => xValue(d)));
+        //.domain(data[0].values.map((d) => xValue(d)));
+        .domain(data[0].values.map((d,index) => xValue(d)));
       // .domain(["2011","2061"])
-      
+      console.log(xScale.domain())
     /*  let maxY = d3.max(data, (c) => d3.max(c.values, (d) => yMaxValue(d)));
       let minY = d3.min(data, (c) => d3.min(c.values, (d) => yMinValue(d)));
 
@@ -332,6 +335,7 @@ const chart = () => {
 
 
     }else{
+
         filtercon.select('.x-axis-group.axis')
       .transition().duration(500)
       .call(xAxis);
