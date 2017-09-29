@@ -234,8 +234,8 @@ model.init = (options, addMapLegends) => {
   // Initialize container
  //const addMapLegends2 = addMapLegends()
  
- let scenarioOptions = options.scenario.split(",")
-
+ let scenarioOptions = options.scenario.split(",").slice(0,3)
+console.log(scenarioOptions)
  
  filtersContainer = document.getElementById('mapfilters');
 

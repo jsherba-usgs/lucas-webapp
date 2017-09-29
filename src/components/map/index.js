@@ -457,10 +457,11 @@ if (update) {
   
  // mapContainer.remove();
 
-  scenarios = settings.scenario.split(',')
- 
+  scenarios = settings.scenario.split(',').slice(0,3)
+
   maps = createMapVariables(scenarios)
   stateclassGroups = createGroupVariables(scenarios)
+  
   
   for (i = 0; i < maps.length; i++) {
 

@@ -635,7 +635,7 @@ const view = {
         barCol.className= barClass;
       
         const lineCol = document.createElement("td");
-        lineCol.width="100"
+        lineCol.width="100px"
         lineCol.className = lineClass;
         const scenarioCol = document.createElement("td");
         scenarioCol.innerHTML = scenario
@@ -672,7 +672,7 @@ const view = {
         
         lineClass="."+lineClass
         let strokeArray = strokeHatch(scenario_id)
-        d3.select(lineClass).append("svg").attr("height", 10).append("line").attr("x1", 0).attr("x2", 40).attr("y1", 0).attr("y2", 0).attr("stroke", color).attr('stroke-width', '5').attr('stroke-dasharray',strokeArray);   
+        d3.select(lineClass).append("svg").attr("height", 10).attr("width", 100).append("line").attr("x1", 0).attr("x2", 40).attr("y1", 0).attr("y2", 0).attr("stroke", color).attr('stroke-width', '5').attr('stroke-dasharray',strokeArray);   
         
       })
     })
@@ -706,7 +706,7 @@ const view = {
         const tableRow = document.createElement("tr");
         tableRow.className = "section1_legend"
         const lineCol = document.createElement("td");
-        lineCol.width="100"
+        lineCol.width="100px"
         lineCol.className = lineClass;
         const scenarioCol = document.createElement("td");
         scenarioCol.innerHTML = scenario
@@ -727,7 +727,7 @@ const view = {
         
         lineClass="."+lineClass
         let strokeArray = strokeHatch(scenario_id)
-        d3.select(lineClass).append("svg").attr("height", 10).append("line").attr("x1", 0).attr("x2", 40).attr("y1", 0).attr("y2", 0).attr("stroke", color).attr('stroke-width', '5').attr('stroke-dasharray',strokeArray);   
+        d3.select(lineClass).append("svg").attr("height", 10).attr("width", 100).append("line").attr("x1", 0).attr("x2", 40).attr("y1", 0).attr("y2", 0).attr("stroke", color).attr('stroke-width', '5').attr('stroke-dasharray',strokeArray);   
         
       })
     })
