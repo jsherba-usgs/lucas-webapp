@@ -244,7 +244,7 @@ model.preLoadRasters = (slider,d, startYear, endYear) => {
        // var streets = new L.layerGroup(stateclassLayers).addTo(maps[i]);
         stateclassGroups[i].addTo(maps[i]);
         //stateclassLayers[10].on("load",function() { console.log('layersloaded'), slider.playbackRate(.5)});
-        stateclassGroups[i].setZIndex(4)
+        stateclassGroups[i].setZIndex(5)
 
         if (i === lastMap){
         let startLayer = (yearLength-1)/2
@@ -667,8 +667,8 @@ var baseMaps = {
 let stratumLabel = project.details.stratum_label
 let secondaryStratumLabel = project.details.secondary_stratum_label
 var overlayMaps = {
-    [stratumLabel]: sec_Strat_TileLayer,
-    [secondaryStratumLabel]: strat_TileLayer,
+    [secondaryStratumLabel]: sec_Strat_TileLayer,
+    [stratumLabel]: strat_TileLayer,
     "LUCAS": stateclassTiles
 };
   
@@ -708,12 +708,75 @@ var overlayMaps = {
   stateclassTiles.setUrl(url);
 
 
+  if (args[0].secondary_stratum === "All" & args[0].stratum === "All"){
 
-    if (feature.geom) {
+    tempLayer = L.geoJson(feature.geom);
+        maps[i].fitBounds(tempLayer.getBounds())
+  } else if(args[0].stratum === "All"){
+
+    str = str.replace(/abc/g, '');
+    let secStratumVal = args[0].secondary_stratum.replace(/'/g, '').replace(/ /g, "");
+    let locationPath = `http://127.0.0.1:8000/locations/${secStratumVal}/`
+    let currentMap = maps[i]
+    $.ajax({
+      type: "GET",
+      url: locationPath,
+      dataType: 'json',
+      success: function (response) {
+          
+          let strataResponse = response
+          let geojsonLayer = L.geoJson(strataResponse);
+          
+          currentMap.fitBounds(geojsonLayer.getBounds());
+      }
+  });
+
+  }else{
+    let stratumVal = args[0].stratum.replace(/'/g, '').replace(/ /g, "");
+    let locationPath = `http://127.0.0.1:8000/locations/${stratumVal}/`
+    let currentMap = maps[i]
+    $.ajax({
+      type: "GET",
+      url: locationPath,
+      dataType: 'json',
+      success: function (response) {
+          
+          let strataResponse = response
+          let geojsonLayer = L.geoJson(strataResponse);
+         
+          currentMap.fitBounds(geojsonLayer.getBounds());
+      }
+  });
+
+  }
+  console.log(args[0].secondary_stratum)
+console.log(args[0].stratum)
+ 
+
+  //let test = `http://127.0.0.1:8000/locations/${secStratumVal}/`&#39;
+  
+  //let locationPath = `http://127.0.0.1:8000/locations/${secStratumVal}/`
+
+  
+
+   
+        
+       // console.log(maps[i])
+
+
+        
+ /* $.getJSON(test, function(data) {
+    console.log(data)
+    console.log(feature.geom)
+        tempLayer = L.geoJson(data);
+        maps[i].fitBounds(tempLayer.getBounds());
+    })*/
+
+  /*  if (feature.geom) {
       
       tempLayer = L.geoJson(feature.geom);
         maps[i].fitBounds(tempLayer.getBounds());
-    }
+    }*/
       
   }
 
