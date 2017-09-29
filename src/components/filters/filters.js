@@ -24,6 +24,7 @@ let strataOverlayOpenBtn;
 let strataOverlayCloseBtn;
 const headerContentContainer = document.getElementById('header_content');
 const headerTitleContainer = document.getElementById('header_title');
+
 let iterationInputSingle
 let iterationInputPercentile
 
@@ -187,6 +188,12 @@ function updateFields() {
   details = projects.getDetailsForId(projectId).details;
   headerContentContainer.innerHTML = details.header_description;
   headerTitleContainer.innerHTML = details.header_title;
+  let stratumLabel = document.getElementById('stratum_label');
+  let secondaryStratumLabel = document.getElementById('secondary_stratum_label');
+  console.log(stratumLabel)
+  stratumLabel.firstChild.innerHTML = details.stratum_label;;
+  secondaryStratumLabel.firstChild.innerHTML = details.secondary_stratum_label;
+  //secondaryStratumLabel.innerHTML = details.secondary_stratum_label;
    //update header description
   if (details) {
     

@@ -369,14 +369,19 @@ function addMapLegends(){
    function addframe(){
    
     let scenarios = e.detail.scenario
+    console.log(scenarios.length)
+    if (scenarios.split(",").length <3){
     let lastScenario = scenarios.split(",").slice(-1).pop()
     e.detail.scenario = e.detail.scenario + "," + lastScenario
     section1.reloadMap(e.detail, addMapLegends);
+    }
   }
   function removeframe(){
-    let scenarios = e.detail.scenario.split(",").slice(0,-1).join(",")
-     e.detail.scenario = scenarios
-    section1.reloadMap(e.detail, addMapLegends);
+    if (e.detail.scenario.split(",").length >=2){
+      let scenarios = e.detail.scenario.split(",").slice(0,-1).join(",")
+       e.detail.scenario = scenarios
+      section1.reloadMap(e.detail, addMapLegends);
+    }
   }
   document.getElementById("addframe").onclick = addframe;
   document.getElementById("removeframe").onclick = removeframe;
@@ -586,6 +591,7 @@ function addMapLegends(){
           // Update section 2 charts
           
             section2.updateChart(totalAreaByYear, colorScaleDic[e.detail.variable][0], details, 'stock_type');
+            
           })
           .catch((error) => {
             if (error.message.indexOf('No data') > -1) {

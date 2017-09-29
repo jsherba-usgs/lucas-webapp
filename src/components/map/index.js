@@ -521,6 +521,11 @@ const mapboxTiles = L.tileLayer('https://api.mapbox.com/styles/v1/defjeff/cj5o5h
   //year: '2001'
   });
 
+const Esri_WorldImagery = L.tileLayer(
+        'http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            attribution: 'Tiles &copy; Esri &mdash;'
+        });
+
 
 
 // https: also suppported.
@@ -617,6 +622,7 @@ let sec_Strat_TileLayer = new L.TileLayer.GeoJSON(secStratUrl, {
     {
         style: style,
         onEachFeature: function (feature, layer) {
+
             if (feature.properties) {
                 var popupString = '<div class="popup">';
                 
@@ -654,13 +660,15 @@ let sec_Strat_TileLayer = new L.TileLayer.GeoJSON(secStratUrl, {
 
 var baseMaps = {
  /* "mapBox": mapboxTiles,*/
-    "Grayscale": cartoDBPositron
+    "Grayscale": cartoDBPositron,
+    "Imagery": Esri_WorldImagery
     
 };
-
+let stratumLabel = project.details.stratum_label
+let secondaryStratumLabel = project.details.secondary_stratum_label
 var overlayMaps = {
-    "Islands": sec_Strat_TileLayer,
-    "Ecoregions": strat_TileLayer,
+    [stratumLabel]: sec_Strat_TileLayer,
+    [secondaryStratumLabel]: strat_TileLayer,
     "LUCAS": stateclassTiles
 };
   
@@ -700,7 +708,6 @@ var overlayMaps = {
   stateclassTiles.setUrl(url);
 
 
-  
 
     if (feature.geom) {
       
