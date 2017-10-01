@@ -235,7 +235,7 @@ export const transitionTypeColorScale = d3.scale.ordinal()
 
   ]);
 
-export const carbonstockColorScale = d3.scale.ordinal()
+/*export const carbonstockColorScale = d3.scale.ordinal()
   .range([
    '#386cb0',
    '#f0027f',
@@ -246,6 +246,28 @@ export const carbonstockColorScale = d3.scale.ordinal()
     'SOC',
     'Living Biomass',
     
+  ]);*/
+
+export const carbonstockColorScale = d3.scale.ordinal()
+  .range([
+   '#1f78b4',
+   '#a6cee3',
+   '#fdbf6f',
+   '#ff7f00',
+   '#b2df8a',
+   '#33a02c',
+   '#b15928',
+   '#fb9a99',
+   
+  ]).domain([
+      'Aquatic',
+      'Atmosphere',
+      'Down Deadwood',
+      'Grain/Ag',
+      'Litter',
+      'Living Biomass',
+      'Standing Deadwood',
+      'SOC',
   ]);
 
 export const transitiongroupColorScale = {"7171":[ColorScale7171,"Avg. Annual Prob."], "7129":[ColorScale7129,"Avg. Annual Prob."], "7134":[ColorScale7134,"Avg. Annual Prob."], "7141":[ColorScale7141,"Avg. Annual Prob."], "7148":[ColorScale7148,"Avg. Annual Prob."], "7151":[ColorScale7151,"Avg. Annual Prob."], "7158":[ColorScale7158,"Avg. Annual Prob."]}

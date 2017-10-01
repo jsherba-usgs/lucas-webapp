@@ -910,7 +910,7 @@
 		}
 		table tbody tr {
 			/*border: solid 1px rgba(212, 212, 255, 0.1);*/
-			border: solid 1px rgba(102, 102, 105, 0.1);
+			/*border: solid 1px rgba(102, 102, 105, 0.1);*/
 			border-left: 0;
 			border-right: 0;
 		}
@@ -934,7 +934,7 @@
 
 		table thead {
 			/*border-bottom: solid 2px rgba(212, 212, 255, 0.1);*/
-			border-bottom: solid 2px rgba(102, 102, 105, 0.1);
+			/*border-bottom: solid 2px rgba(102, 102, 105, 0.1);*/
 		}
 
 		table tfoot {
@@ -2541,6 +2541,7 @@ margin:10px;
 	}
 .legendcollapsename-section1{
 	float:right;
+	padding-right:30px;
 }
 
 .legendcollapsenametext{
@@ -2640,7 +2641,7 @@ margin-right: 20px;
 	padding:0px;
 	line-height: 0em;
 	letter-spacing: 0em;
-	display: table-cell;
+	/*display: table-cell;*/
     text-align:center;
 
 }
@@ -3005,4 +3006,18 @@ p.download-text{
 	font-size: 18px;
 	line-height: 1.5;
 	margin:0 0 4em;
+}
+
+#largechartboxsection1{
+	background-color:#fafafa;
+}
+.multiLinePlusArea{
+	background-color:#fafafa;
+}
+#chart-legend-section1{
+	padding-top:10px;
+	padding-bottom:10px;
+}
+.legend-section1{
+	padding-right:30px;
 }

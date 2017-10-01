@@ -42,8 +42,8 @@ $('#collapseExample').collapse('show');
 
   const body = document.body;
 
-  //const overlayOpenBtn = document.getElementById('overlayOpen');
-  //const overlayCloseBtn = document.getElementById('overlayClose');
+  const overlayOpenBtn = document.getElementById('overlayOpen');
+  const overlayCloseBtn = document.getElementById('overlayClose');
 
   // Disable animations/transitions until the page has loaded.
   body.classList.add('is-loading');
@@ -75,15 +75,7 @@ $('#collapseExample').collapse('show');
 
   
 
-  // Open, close overlay
-  /*function overlayOpen() {
-    body.classList.add('is-overlay-visible');
-  }
-  function overlayClose() {
-    body.classList.remove('is-overlay-visible');
-  }
-  overlayOpenBtn.addEventListener('click', overlayOpen);
-  overlayCloseBtn.addEventListener('click', overlayClose);*/
+  
   
 function updateLineandBarLegend(typeParams, typelLookupDictionary, scenarioParams, scenarioLookupDictionary){
   //update stateclass legend
@@ -715,9 +707,20 @@ function addMapLegends(){
 
 
 
- 
+ // Open, close overlay
 
-  filters.init();
+ filters.init();
+ 
+  function overlayOpen() {
+    body.classList.add('is-overlay-visible');
+  }
+  function overlayClose() {
+    body.classList.remove('is-overlay-visible');
+  }
+  overlayOpenBtn.addEventListener('click', overlayOpen);
+  overlayCloseBtn.addEventListener('click', overlayClose);
+
+  
   //leafletFilters.init();
 
 
