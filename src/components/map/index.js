@@ -585,25 +585,32 @@ let strat_TileLayer = new L.TileLayer.GeoJSON(stratUrl, {
             }
             if (!(layer instanceof L.Point)) {
                  var popup = L.popup()
-                layer.on('mouseover', function (e) {
+                 layer.on("click", function (e) {
+                     // var bounds = layer.getBounds();
+                      var popupContent = popupString;
+                      popup.setLatLng([e.latlng.lat,e.latlng.lng])
+                      popup.setContent(popupContent);
+                      strataMap.openPopup(popup);
+                });
+               layer.on('mouseover', function (e) {
                     
                     layer.setStyle(hoverStyle);
 
                     //layer.bindPopup(popupString, {className: 'my-popup'}).openPopup();
-                     popup
+                    /* popup
                         .setLatLng([e.latlng.lat,e.latlng.lng])
                         .setContent(popupString)
                         .openOn(strataMap);
 
                           
-                      layer.bindPopup(popup); 
+                      layer.bindPopup(popup); */
 
 
                 });
                 layer.on('mouseout', function () {
                    
                     layer.setStyle(style);
-                    strataMap.closePopup();
+                    /*strataMap.closePopup();*/
                     //stratamap.closePopup(popup);
                     
                 });
@@ -637,11 +644,18 @@ let sec_Strat_TileLayer = new L.TileLayer.GeoJSON(secStratUrl, {
             }
             if (!(layer instanceof L.Point)) {
                  var popup = L.popup()
+                 layer.on("click", function (e) {
+                     // var bounds = layer.getBounds();
+                      var popupContent = popupString;
+                      popup.setLatLng([e.latlng.lat,e.latlng.lng])
+                      popup.setContent(popupContent);
+                      strataMap.openPopup(popup);
+                });
                 layer.on('mouseover', function (e) {
                     
                     layer.setStyle(hoverStyle);
 
-                    layer.bindPopup(popupString, {className: 'my-popup'}).openPopup();
+                    //layer.bindPopup(popupString, {className: 'my-popup'}).openPopup();
               
 
 
@@ -649,7 +663,7 @@ let sec_Strat_TileLayer = new L.TileLayer.GeoJSON(secStratUrl, {
                 layer.on('mouseout', function () {
                    
                     layer.setStyle(style);
-                    strataMap.closePopup();
+                   // strataMap.closePopup();
                     //stratamap.closePopup(popup);
                     
                 });
@@ -713,11 +727,10 @@ var overlayMaps = {
     tempLayer = L.geoJson(feature.geom);
         maps[i].fitBounds(tempLayer.getBounds())
   } else if(args[0].stratum === "All"){
-
-    str = str.replace(/abc/g, '');
     let secStratumVal = args[0].secondary_stratum.replace(/'/g, '').replace(/ /g, "");
     let locationPath = `http://127.0.0.1:8000/locations/${secStratumVal}/`
     let currentMap = maps[i]
+    
     $.ajax({
       type: "GET",
       url: locationPath,
@@ -749,8 +762,7 @@ var overlayMaps = {
   });
 
   }
-  console.log(args[0].secondary_stratum)
-console.log(args[0].stratum)
+  
  
 
   //let test = `http://127.0.0.1:8000/locations/${secStratumVal}/`&#39;
