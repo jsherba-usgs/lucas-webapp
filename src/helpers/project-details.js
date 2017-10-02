@@ -149,35 +149,43 @@ const projectDetails = [
       layer:[
        {
           id:1,
-          name:"STATECLASS"
+          name:"STATECLASS",
+          description: "Land-use area categorized in land-use classes."
         },
         {
           id:7129,
-          name:"AGRICULTURAL CONTRACTION"
+          name:"AGRICULTURAL CONTRACTION",
+          description: "Average annual probability of transition all transitions out of agricultural (e.g. agriculture->developed)."
         },
         {
           id:7134,
-          name:"AGRICULTURAL EXPANSION"
+          name:"AGRICULTURAL EXPANSION",
+          description: "Average annual probability of transition for all transitions into agricultural land (e.g. forest->agriculture)."
         },
         {
           id:7141,
-          name:"MOISTURE ZONE: Dry->Mesic"
+          name:"MOISTURE ZONE: Dry->Mesic",
+          description: "Average annual probability of transition from dry to mesic moisture zones."
         },
         {
           id:7148,
-          name:"MOISTURE ZONE: Mesic->Dry"
+          name:"MOISTURE ZONE: Mesic->Dry",
+          description: "Average annual probability of transition from mesic to dry moisture zones."
         },
         {
           id:7151,
-          name:"MOISTURE ZONE: Mesic->Wet"
+          name:"MOISTURE ZONE: Mesic->Wet",
+          description: "Average annual probability of transition from mesic to wet moisture zones."
         },
         {
           id:7158,
-          name:"MOISTURE ZONE: Wet->Mesic"
+          name:"MOISTURE ZONE: Wet->Mesic",
+          description: "Average annual probability of transition from wet to mesic moisture zones."
         },
         {
           id:7171,
-          name:"URBANIZATION"
+          name:"URBANIZATION",
+          description: "Average annual probability of transition into developed land."
         },
       ],
       sumby: [
@@ -574,35 +582,23 @@ const projectDetails = [
       layer:[
        {
           id:1,
-          name:"STATECLASS"
+          name:"STATECLASS",
+          description: "Land-use area categorized in land-use classes."
         },
         {
           id:7129,
-          name:"AGRICULTURAL CONTRACTION"
+          name:"AGRICULTURAL CONTRACTION",
+          description: "Average annual probability of transition all transitions out of agricultural (e.g. agriculture->developed)."
         },
         {
           id:7134,
-          name:"AGRICULTURAL EXPANSION"
-        },
-        {
-          id:7141,
-          name:"MOISTURE ZONE: Dry->Mesic"
-        },
-        {
-          id:7148,
-          name:"MOISTURE ZONE: Mesic->Dry"
-        },
-        {
-          id:7151,
-          name:"MOISTURE ZONE: Mesic->Wet"
-        },
-        {
-          id:7158,
-          name:"MOISTURE ZONE: Wet->Mesic"
+          name:"AGRICULTURAL EXPANSION",
+          description: "Average annual probability of transition for all transitions into agricultural land (e.g. forest->agriculture)."
         },
         {
           id:7171,
-          name:"URBANIZATION"
+          name:"URBANIZATION",
+          description: "Average annual probability of transition into developed land."
         },
       ],
       sumby: [

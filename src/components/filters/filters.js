@@ -201,7 +201,7 @@ function updateFields() {
   }
   
   const strataItem = document.createElement("li");
- 
+
   strataItem.innerHTML = '<b>'+details.stratum_label +'</b>'+ ': ' +details.stratum_description
 
   const secStrataItem = document.createElement("li");
@@ -210,7 +210,15 @@ function updateFields() {
   availableStrata.appendChild(strataItem)
   availableStrata.appendChild(secStrataItem)
 
-
+  let availableLayers = document.getElementById('available_map_layers');
+  while (availableLayers.firstChild) {
+   availableLayers.removeChild(availableLayers.firstChild);
+  }
+  details.layer.forEach((item) => {
+    const listItem = document.createElement("li");
+    listItem.innerHTML = '<b>'+item.name +'</b>'+ ': ' + item.description
+    availableLayers.appendChild(listItem)
+  })
 
 
   

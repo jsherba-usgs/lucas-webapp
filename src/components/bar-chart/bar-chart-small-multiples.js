@@ -73,14 +73,14 @@ const chart = () => {
       data = _data;
 
       // Setup scales
-      console.log(data)
+      
       xScale
         .rangeRoundBands([0, chartW], xRoundBands)
         //.domain(data[0].values.map((d) => xValue(d)));
         //.domain(data[0].values.map((d) => xValue(d)));
         .domain(data[0].values.map((d,index) => xValue(d)));
       // .domain(["2011","2061"])
-      console.log(xScale.domain())
+
     /*  let maxY = d3.max(data, (c) => d3.max(c.values, (d) => yMaxValue(d)));
       let minY = d3.min(data, (c) => d3.min(c.values, (d) => yMinValue(d)));
 
@@ -100,7 +100,7 @@ const chart = () => {
       // our data array. Note that data is a nested array
       // with each element containing another array of 'values'
       const div = d3.select(this).selectAll(`.${chartClass}`).data(data);
-
+      console.log("newtest1")
       div.enter()
         .append('div')
           .attr('class', chartClass);
@@ -366,6 +366,7 @@ const chart = () => {
   exports.drawBars = function () {
 
     let indexval = 0
+    console.log(container)
     container.each(function(d, i) {
       
 

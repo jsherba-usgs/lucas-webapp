@@ -139,7 +139,7 @@ const area = d3.svg.area()
       const div = d3.select(this).selectAll(`.${chartClass}`).data(_data);
       console.log(div)
       data = _data;
-
+     
       div.enter()
         .append('div')
           .attr('class', chartClass);

@@ -104,7 +104,7 @@
                <div class="row">
                 <article class="col threefifth">
                   <div class="framecontrols inline">
-                          Map frame
+                          
                           <button id="removeframe" type="button" class="framebutton" data-type="minus" data-field="quant[1]">
                                   -
                             </button>
@@ -464,7 +464,7 @@
       <!-- About -->
       <div id="overlay">
         <div class="inner">
-        <h2>Select Variable</h2>
+        <h2 class="overlayh2">Select Variable</h2>
           <p>
             The LUCAS model tracks land use and carbon through time and space. Depending on the goals of the model and the data available during model development, a range of datasets may be produced. Choosing a dataset to explore further will automatically update the available scenarios and classes.
               <ul>
@@ -479,7 +479,7 @@
                 </li>
               </ul>
           </p>
-          <h2>Select Scenarios and Classes</h2>
+          <h2 class="overlayh2">Select Scenarios and Classes</h2>
           <p>
             The LUCAS model is typically run over a range of Scenarios. Scenarios represent possible future pathways of change developed with a range of assumptions about land-use management, population dynamics, climate and other variables. Scenarios allow us to ask "what if" questions about how and where change may occur according to an array of differnt futures.  Select one or more scenario to explore further. 
           </p>
@@ -489,16 +489,42 @@
           <p>
            The Class options will update depending on the chosen variable. Choose one or more classes to further explore. 
           </p>
-          <h2>Select Strata</h2>
-          </p>
+          <h2 class="overlayh2">Select Strata</h2>
+          <p>
             Choose a spatial unit to summarize results over. Use the dropdown menu or click "Choose on Map" to access a webmap with available spatial layers. I you choose to summarize over more than one strata types results will show data within the overlap area of the strata. 
           </p>
           <ul id = "available_strata">
             
           </ul>
-          <h2>Iterations</h2>
-          </p>
+          <h2 class="overlayh2">Iterations</h2>
+           <p>
             The LUCAS model is typically run over multiple Monte Carlo iterations to capture uncertainty within model inputs. Select "Percentile of Iterations" to view the mean and percentile bounds. You may also choose to display results for a single iteration of the model. 
+          </p>
+          <h2 class="overlayh2">Iterations</h2>
+           <p>
+            The LUCAS model is typically run over multiple Monte Carlo iterations to capture uncertainty within model inputs. Select "Percentile of Iterations" to view the mean and percentile bounds. You may also choose to display results for a single iteration of the model. 
+          </p>
+           <h2 class="overlayh2">Map Viewer</h2>
+           <h3 class="overlayh2">Layer controls</h3>
+           <p>
+            Use this interactive web map to explore land use and carbon data accross the landscape. Use the menu below the map frame on the left to update the model layers visible on the web map. These controls allow the user to toggle between different years, scenarios, iterations, and map products. Toggle the "Show map legend" button to show the legend for the current layer on the map. Map layers include:
+            </p>
+             <p>
+            <ul id = "available_map_layers">
+            
+            </ul>
+          </p>
+           <h3 class="overlayh2">Frame controls</h3>
+          <p>
+          Use the plus and minus buttons on the top left of the web map to add or remove a map frame. When a new map frame is added, layer controls for the frame appear below the frame. Adding a frame allows the user to compare two or more layers side by side. 
+          </p>
+          <h3 class="overlayh2">Base maps</h3>
+          <p>
+          Within each map frame hover over the layers icon to expand the basemap options. Grey-scale and imagery base maps are available as well as strata layers. 
+          </p>
+          <h3 class="overlayh2">Animate map layers</h3>
+          <p>
+          Map layers may be animated through time using the controls below the graph. Choose the layers you would like to animate and then click the play button under the graph. Layers will update every five year timestep within the map frame. The graph tooltip will also animate within the graph frame and show land-use values. 
           </p>
         </div>
 

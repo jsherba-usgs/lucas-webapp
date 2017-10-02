@@ -142,7 +142,7 @@ const view = {
         if (groupByScenario === true){
           filteredValues.forEach((row) => {
              
-           if (barLength >= 4){
+           if (barLength >= 10){
                yearShort = row.key.substring(2,4)
             }else{
                 yearShort = row.key
@@ -165,7 +165,7 @@ const view = {
           });
        }else{
          filteredValues.forEach((row, index2) => {
-           if (barLength >= 4){
+           if (barLength >= 10 ){
                yearShort = row.key.substring(2,4)
             }else{
                 yearShort = row.key
@@ -294,9 +294,7 @@ const view = {
       }
     }
 
-
-    totalLine = totalAreaLine(nestedData, groupByScenario)
-    totalBar = totalArea(nestedData, groupByScenario)
+    
 
 
     let isTotals = true
@@ -571,30 +569,39 @@ const view = {
 
     // First time
     // Call bar charts - small multiples
-  
-  let barChartTotals = d3.nest()
-      .key((d) => d.scenario)
-      .entries(totalBar);
 
-  let lineChartTotals = d3.nest()
+
+
+
+    timeseriesChart.color(colorScale);
+      groupScenario.classList.add("active");
+      groupClass.classList.remove("active")
+      groupByScenario = true
+      totalBar = totalArea(nestedData, groupByScenario)
+      totalLine = totalAreaLine(nestedData, groupByScenario)
+
+      
+        
+    lineChartTotals = d3.nest()
       .key((d) => d.scenario)
       .key((d) => d.state)
       .entries(totalLine);
-
-
-  
     
-    d3.select(chartContainer)
+
+     d3.select(chartContainer)
       .datum(lineChartTotals)
       .transition()
       .call(timeseriesChart)
-     
-    
+      
+    barChartTotals = d3.nest()
+    .key((d) => d.scenario)
+    .entries(totalBar);
+
     d3.select(chartContainer)
       .datum(barChartTotals)
       .call(timeSeriesBarChart
         .color(colorScale)
-      );
+    );
 
     let legendData= d3.nest()
     .key((d) => d.scenario)
