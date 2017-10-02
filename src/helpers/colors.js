@@ -195,6 +195,57 @@ export const ColorScale7158= d3.scale.ordinal()
     '.28-.35'
   ]);
 
+export const ColorScale4150= d3.scale.ordinal()
+.range([
+   "rgb(224,224,224)",
+   "rgb(0,0,255)",
+   "rgb(0,255,255)",
+   "rgb(255,255,0)",
+   "rgb(255,128,0)",
+   "rgb(255,0,0)"
+  ]).domain([
+    '0',
+    '0-.03',
+    '.03-.06',
+    '.06-.09',
+    '.09-.12',
+    '.12-.16'
+  ]);
+
+export const ColorScale4125= d3.scale.ordinal()
+.range([
+   "rgb(224,224,224)",
+   "rgb(0,0,255)",
+   "rgb(0,255,255)",
+   "rgb(255,255,0)",
+   "rgb(255,128,0)",
+   "rgb(255,0,0)"
+  ]).domain([
+    '0',
+    '0-0.1',
+    '0.1-0.2',
+    '0.2-0.3',
+    '0.3-0.4',
+    '0.4-0.5'
+  ]);
+
+export const ColorScale4130= d3.scale.ordinal()
+.range([
+   "rgb(224,224,224)",
+   "rgb(0,0,255)",
+   "rgb(0,255,255)",
+   "rgb(255,255,0)",
+   "rgb(255,128,0)",
+   "rgb(255,0,0)"
+  ]).domain([
+    '0',
+    '0-0.1',
+    '0.1-0.2',
+    '0.2-0.3',
+    '0.3-0.4',
+    '0.4-0.5'
+  ]);
+
 export const transitionColorScale = d3.scale.ordinal()
   .range([
    '#7fc97f',
@@ -270,7 +321,7 @@ export const carbonstockColorScale = d3.scale.ordinal()
       'SOC',
   ]);
 
-export const transitiongroupColorScale = {"7171":[ColorScale7171,"Avg. Annual Prob."], "7129":[ColorScale7129,"Avg. Annual Prob."], "7134":[ColorScale7134,"Avg. Annual Prob."], "7141":[ColorScale7141,"Avg. Annual Prob."], "7148":[ColorScale7148,"Avg. Annual Prob."], "7151":[ColorScale7151,"Avg. Annual Prob."], "7158":[ColorScale7158,"Avg. Annual Prob."]}
+export const transitiongroupColorScale = {"4150":[ColorScale4150,"Avg. Annual Prob."],"4130":[ColorScale4130,"Avg. Annual Prob."],"4125":[ColorScale4125,"Avg. Annual Prob."],"7171":[ColorScale7171,"Avg. Annual Prob."], "7129":[ColorScale7129,"Avg. Annual Prob."], "7134":[ColorScale7134,"Avg. Annual Prob."], "7141":[ColorScale7141,"Avg. Annual Prob."], "7148":[ColorScale7148,"Avg. Annual Prob."], "7151":[ColorScale7151,"Avg. Annual Prob."], "7158":[ColorScale7158,"Avg. Annual Prob."]}
 
 export const colorScaleDic = {"Land-Cover State": [stateclassColorScale, 30], "Carbon Stock": [carbonstockColorScale, 30], "Land-Cover Transition":[transitionColorScale, 30], "Land-Cover Transition Types":[transitionTypeColorScale]};
 

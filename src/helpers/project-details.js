@@ -544,37 +544,17 @@ const projectDetails = [
         }
         ,
         {
-          id:7129,
+          id:4125,
           type_code:"tgap",
           name:"AGRICULTURAL CONTRACTION"
         },
         {
-          id:7134,
+          id:4130,
           type_code:"tgap",
           name:"AGRICULTURAL EXPANSION"
         },
         {
-          id:7141,
-          type_code:"tgap",
-          name:"MOISTURE ZONE: Dry->Mesic"
-        },
-        {
-          id:7148,
-          type_code:"tgap",
-          name:"MOISTURE ZONE: Mesic->Dry"
-        },
-        {
-          id:7151,
-          type_code:"tgap",
-          name:"MOISTURE ZONE: Mesic->Wet"
-        },
-        {
-          id:7158,
-          type_code:"tgap",
-          name:"MOISTURE ZONE: Wet->Mesic"
-        },
-        {
-          id:7171,
+          id:4150,
           type_code:"tgap",
           name:"URBANIZATION"
         },
@@ -586,17 +566,17 @@ const projectDetails = [
           description: "Land-use area categorized in land-use classes."
         },
         {
-          id:7129,
+          id:4125,
           name:"AGRICULTURAL CONTRACTION",
           description: "Average annual probability of transition all transitions out of agricultural (e.g. agriculture->developed)."
         },
         {
-          id:7134,
+          id:4130,
           name:"AGRICULTURAL EXPANSION",
           description: "Average annual probability of transition for all transitions into agricultural land (e.g. forest->agriculture)."
         },
         {
-          id:7171,
+          id:4150,
           name:"URBANIZATION",
           description: "Average annual probability of transition into developed land."
         },
