@@ -42,8 +42,8 @@ $('#collapseExample').collapse('show');
 
   const body = document.body;
 
-  const overlayOpenBtn = document.getElementById('overlayOpen');
-  const overlayCloseBtn = document.getElementById('overlayClose');
+  //const overlayOpenBtn = document.getElementById('overlayOpen');
+  //const overlayCloseBtn = document.getElementById('overlayClose');
 
   // Disable animations/transitions until the page has loaded.
   body.classList.add('is-loading');
@@ -710,17 +710,29 @@ function addMapLegends(){
  // Open, close overlay
 
  filters.init();
- 
+
   function overlayOpen() {
     body.classList.add('is-overlay-visible');
   }
   function overlayClose() {
     body.classList.remove('is-overlay-visible');
   }
+  /*const overlayOpenBtn = document.getElementById('overlayOpen');
+  const overlayCloseBtn = document.getElementById('overlayClose');
   overlayOpenBtn.addEventListener('click', overlayOpen);
-  overlayCloseBtn.addEventListener('click', overlayClose);
+  overlayCloseBtn.addEventListener('click', overlayClose);*/
+  
 
   
+  
+  //const overlayCloseBtn = document.getElementById('overlayClose');
+    
+  const overlayOpenBtns = document.querySelectorAll('.overlayOpen');
+  for (var i = 0; i < overlayOpenBtns.length; i++) {
+      overlayOpenBtns[i].addEventListener('click', overlayOpen)
+  }
+  const overlayCloseBtn = document.getElementById('overlayClose');
+  overlayCloseBtn.addEventListener('click', overlayClose)
   //leafletFilters.init();
 
 

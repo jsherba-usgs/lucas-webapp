@@ -115,7 +115,7 @@
                   </div>
 
                 
-                 <div class="infoButton inline"><a id="overlayOpen" href="#overlay"></a></div>
+                 <div class="inline infoButtonRow"><a class ='infoButton overlayOpen' id="overlayOpen" href="#overlay"><i class="fa fa-info-circle" aria-hidden="true"></i></a></div>
                 </article>
                 <article class="col twofifth">
                  </article>
@@ -464,25 +464,41 @@
       <!-- About -->
       <div id="overlay">
         <div class="inner">
+        <h2>Select Variable</h2>
           <p>
-            The USGS is involved in a variety of scenario-based modeling projects aimed at projecting land-use change into the future. Typically, these projects lead to the creation of many time-series datasets in the form of large tabular and spatial files. A common difficulty among land-use scenario researchers is efficiently managing, analyzing, and visualizing these datasets.
+            The LUCAS model tracks land use and carbon through time and space. Depending on the goals of the model and the data available during model development, a range of datasets may be produced. Choosing a dataset to explore further will automatically update the available scenarios and classes.
+              <ul>
+                <li>
+                  <b>Land-use State</b>: The amount of land-use area in a range of land use classes (e.g. forest, grassland, developed) through time. 
+                </li>
+                <li>
+                  <b>Land-use Transition</b>: The amoung of land-use area moving from one class to another (e.g. forest -> developed) through time.
+                </li>
+                <li>
+                  <b>Carbon Stock</b>: Carbon stocks represent the total carbon stored in different ecosystem pools. 
+                </li>
+              </ul>
           </p>
+          <h2>Select Scenarios and Classes</h2>
           <p>
-            The <a href="http://gif.berkeley.edu/" target="blank">Geospatial Innovation Facility</a> (GIF) at University of California, Berkeley has developed a prototype web application designed to ingest the tabular and spatial data stored within a generalized USGS land-use database that manages modeling results from <a href="http://www.apexrms.com/" target="blank">ApexRMS</a>'s <a href="http://syncrosim.com" target="blank">SyncroSim</a> software. The prototype web application consists of the following components:
+            The LUCAS model is typically run over a range of Scenarios. Scenarios represent possible future pathways of change developed with a range of assumptions about land-use management, population dynamics, climate and other variables. Scenarios allow us to ask "what if" questions about how and where change may occur according to an array of differnt futures.  Select one or more scenario to explore further. 
           </p>
-          <ul>
-            <li>
-              A public <a href="http://stage.landcarbon.org/api/">Application Programming Interface</a> (API) built on the <a href="http://www.django-rest-framework.org/">Django REST framework</a>. The API provides standardized access to data within the SyncroSim database for building web applications and data visualizations.
-            </li>
-            <li>
-              A data management console for researchers to manage projects and scenarios.
-            </li>
-            <li>
-              Interactive web based data visualizations built using the API that allow users to dynamically visualize dense time series of projected climate and land use futures.
-            </li>
+          <ul id = "available_scenarios">
+            
           </ul>
+          <p>
+           The Class options will update depending on the chosen variable. Choose one or more classes to further explore. 
           </p>
-            This prototype web application allows researchers to explore land-use data scenarios and quickly share land-use modeling results with colleagues and  the public. The interactive data visualizations presented here and new tools built using the API can be used to communicate complex data and introduce non-scientists to the concept of scenarios, thus successfully fulfilling the USGS mandate of sharing datasets and science with the public.
+          <h2>Select Strata</h2>
+          </p>
+            Choose a spatial unit to summarize results over. Use the dropdown menu or click "Choose on Map" to access a webmap with available spatial layers. I you choose to summarize over more than one strata types results will show data within the overlap area of the strata. 
+          </p>
+          <ul id = "available_strata">
+            
+          </ul>
+          <h2>Iterations</h2>
+          </p>
+            The LUCAS model is typically run over multiple Monte Carlo iterations to capture uncertainty within model inputs. Select "Percentile of Iterations" to view the mean and percentile bounds. You may also choose to display results for a single iteration of the model. 
           </p>
         </div>
 

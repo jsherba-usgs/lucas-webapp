@@ -96,14 +96,7 @@ function updateIterationInput() {
   //let iterationInputChecked = document.querySelectorAll('input[name=iteration-checkbox]:checked')
   details.iteration.forEach(function(item){
       if (item.id === 'percentile'){
-         console.log("test1")
-
-          /*iterationInputPercentile.name = item.name
-          iterationInputPercentile.type = item.type
-          iterationInputPercentile.min =  item.min
-          iterationInputPercentile.max =  item.max
-          iterationInputPercentile.value = item.value*/
-
+        
           iterationPercentile.name = item.name
           iterationPercentile.type = item.type
           iterationPercentile.min =  item.min
@@ -111,19 +104,13 @@ function updateIterationInput() {
           iterationPercentile.value = item.value
 
       }else{
-        console.log("test2")
-        /*iterationInputSingle.name = item.name
-        iterationInputSingle.type = item.type
-        iterationInputSingle.min =  item.min
-        iterationInputSingle.max =  item.max
-        iterationInputSingle.value = item.value*/
 
         iterationSingle.name = item.name
         iterationSingle.type = item.type
         iterationSingle.min =  item.min
         iterationSingle.max =  item.max
         iterationSingle.value = item.value
-         console.log("test3")
+         
       }
     })
   }
@@ -186,15 +173,48 @@ function updateFields() {
   projectId = this.options[this.selectedIndex].value;
 
   details = projects.getDetailsForId(projectId).details;
+
+  //update header content
   headerContentContainer.innerHTML = details.header_description;
   headerTitleContainer.innerHTML = details.header_title;
+
+  //update stratum names
   let stratumLabel = document.getElementById('stratum_label');
   let secondaryStratumLabel = document.getElementById('secondary_stratum_label');
-  console.log(stratumLabel)
   stratumLabel.firstChild.innerHTML = details.stratum_label;;
   secondaryStratumLabel.firstChild.innerHTML = details.secondary_stratum_label;
-  //secondaryStratumLabel.innerHTML = details.secondary_stratum_label;
-   //update header description
+
+  //update scenario about section
+  let availableScenarios = document.getElementById('available_scenarios');
+  while (availableScenarios.firstChild) {
+   availableScenarios.removeChild(availableScenarios.firstChild);
+  }
+  details.scenario.forEach((item) => {
+    const listItem = document.createElement("li");
+    listItem.innerHTML = '<b>'+item.name +'</b>'+ ': ' + item.description
+    availableScenarios.appendChild(listItem)
+  })
+
+  let availableStrata = document.getElementById('available_strata');
+  while (availableStrata.firstChild) {
+   availableStrata.removeChild(availableStrata.firstChild);
+  }
+  
+  const strataItem = document.createElement("li");
+ 
+  strataItem.innerHTML = '<b>'+details.stratum_label +'</b>'+ ': ' +details.stratum_description
+
+  const secStrataItem = document.createElement("li");
+  secStrataItem.innerHTML = '<b>'+details.secondary_stratum_label +'</b>'+ ': ' +details.secondary_stratum_description
+
+  availableStrata.appendChild(strataItem)
+  availableStrata.appendChild(secStrataItem)
+
+
+
+
+  
+
   if (details) {
     
     scenarioSelect = filtersContainer.querySelector('div[name=scenario]');

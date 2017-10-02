@@ -2758,12 +2758,12 @@ corresponding value from the list below*/
 	margin-bottom:0em;
 }
 
-.infoButton {
-    position: relative;
+.infoButtonRow {
+	 position: relative;
     float:right;
 }
-.infoButton:after {
-    content: "\f05a";
+.infoButton {
+  
     font-family: FontAwesome;
     font-style: normal;
     font-weight: normal;
@@ -2783,8 +2783,8 @@ corresponding value from the list below*/
 /*replace the content value with the
 corresponding value from the list below*/
  
-.infoButtonFilters:after {
-    content: "\f05a";
+.infoButtonFilters {
+   /* content: "\f05a";*/
     font-family: FontAwesome;
     font-style: normal;
     font-weight: normal;
@@ -2796,7 +2796,7 @@ corresponding value from the list below*/
    
 	
 	position: absolute;
-   text-decoration:none;
+    text-decoration:none;
 }
 .projectScroll{
 	border-bottom: none;
