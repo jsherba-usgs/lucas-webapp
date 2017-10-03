@@ -1,5 +1,4 @@
 // Import Node Modules
-import smoothScroll from 'smooth-scroll';
 import 'bootstrap';
 import d3 from 'd3';
 
@@ -30,10 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
  //loadtheme()
 $('#collapseExample').collapse('show');
 
-  smoothScroll.init({
-    updateURL: false,
-    easing: 'easeInOutCubic',
-  });
+  
 
   const body = document.body;
 
@@ -218,11 +214,11 @@ loadtheme()
             }
             let dateBegin =params.timestep_begin + "-01-01"
             let dateEnd = params.timestep_end + "-01-01"
-            let urlPath = slug + "/" +dateBegin+ "/" + dateEnd
+            let urlPath = slug + "/" +dateBegin+ "/" + dateEnd +"/"
             
       
               //scenario-6385-spatial-it0015-sc/2001-01-01/2010-01-01/
-              
+              console.log(urlPath)
               service.spatialDownload(urlPath, strataJson)
 
 
@@ -259,7 +255,7 @@ loadtheme()
             }
             let dateBegin =params.timestep_begin + "-01-01"
             let dateEnd = params.timestep_end + "-01-01"
-            let urlPath = slug + "/" +dateBegin+ "/" + dateEnd
+            let urlPath = slug + "/" +dateBegin+ "/" + dateEnd + "/"
             
             
        

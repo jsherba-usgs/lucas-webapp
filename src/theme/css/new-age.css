@@ -522,8 +522,11 @@ body {
   padding-top:60px;
   padding-bottom:40px;
 }
-.modelsSection{min-height:1000px;}
-.aboutSection{min-height:1000px;}
+/*.modelsSection{min-height:1000px;}*/
+.aboutSection{
+  padding-top:0px;
+  padding-bottom: 0px;
+}
 .stateclassanimationcontainer{
   width:100%;
 }
@@ -817,4 +820,20 @@ h1.explore-models{
 }
 .model-section{
   padding-top: 3.25em;
+}
+#iconrow{
+  margin-left:0px;
+  margin-right:0px;
+}
+.title-inner{
+width: 80%;
+margin-right: auto;
+margin-left: auto;
+margin-top: 80px;
+}
+.title-inner-next{
+  width: 80%;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 10px;
 }

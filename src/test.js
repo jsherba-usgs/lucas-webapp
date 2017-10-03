@@ -1,5 +1,7 @@
 // Import Node Modules
-import smoothScroll from 'smooth-scroll';
+//import smoothScroll from '../node_modules/smooth-scroll/smooth-scroll.js';
+//import smoothScroll from 'smooth-scroll';
+import SmoothScroll from 'smooth-scroll'
 import 'bootstrap';
 import d3 from 'd3';
 
@@ -35,10 +37,10 @@ loadtheme()
  
 $('#collapseExample').collapse('show');
 
-  /*smoothScroll.init({
-    updateURL: false,
-    easing: 'easeInOutCubic',
-  });*/
+
+
+  var scroll = new SmoothScroll('a[href*="#"]');
+
 
   const body = document.body;
 
@@ -735,6 +737,10 @@ function addMapLegends(){
   overlayCloseBtn.addEventListener('click', overlayClose)
   //leafletFilters.init();
 
+  /*smoothScroll.init({
+    updateURL: false,
+    easing: 'easeInOutCubic',
+  });*/
 
 });
 
