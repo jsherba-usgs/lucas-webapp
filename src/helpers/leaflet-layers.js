@@ -4,6 +4,10 @@
  */
 
 import L from 'leaflet';
+import config from './api-config';
+
+
+const tileEndpoint = config.tileEndpoint
 
 const cartoDBPositron = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
  // attribution: 'Data: <a href="http://www.openstreetmap.org/copyright">OSM</a>, Map Tiles: <a href="http://cartodb.com/attributions">CartoDB</a>',
@@ -13,7 +17,7 @@ const cartoDBPositron = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nola
 
 
 
-  const stateclassTiles = L.tileLayer('http://127.0.0.1:8000/tiles/s6370-it0001-ts2011-sc/{z}/{x}/{y}.png', {
+  const stateclassTiles = L.tileLayer(tileEndpoint+'s6370-it0001-ts2011-sc/{z}/{x}/{y}.png', {
  // attribution: 'LULC: <a href="http://landcarbon.org">LandCarbon</a>',
   maxZoom: 19,
   opacity: 1,

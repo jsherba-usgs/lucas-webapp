@@ -3,7 +3,7 @@ import projectFilterContent from './filters_projects.html';
 import percentileFilterContent from './filters_percentile.html';
 import { triggerEvent } from './../../helpers/utils';
 import projects from './../../helpers/project-details';
-
+import config from './../../helpers/api-config';
 const model = {};
 
 let filtersContainer;
@@ -27,6 +27,10 @@ const headerTitleContainer = document.getElementById('header_title');
 
 let iterationInputSingle
 let iterationInputPercentile
+
+window.tileEndpoint = config.tileEndpoint
+window.vtileEndpoint = config.vtileEndpoint
+window.locationEndpoint = config.locationEndpoint
 
 function getOptionVals(selection) {
   let details = [];
@@ -472,7 +476,7 @@ model.init = (scenarioStart) => {
     
   
     
-    var geojsonURL = `http://127.0.0.1:8000/vtiles/${layerName}/{z}/{x}/{y}.geojson`;
+    var geojsonURL = `${window.vtileEndpoint}${layerName}/{z}/{x}/{y}.geojson`;
     
         var style = {
         "clickable": true,

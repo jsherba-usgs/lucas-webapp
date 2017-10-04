@@ -15,9 +15,12 @@ import { addEventListener, triggerEvent } from './helpers/utils';
 import filters from './components/filters/filters_download';
 import projects from './helpers/project-details'
 import { loadtheme } from './theme/js/theme-lucas'
+import config from './helpers/api-config';
 // Import views
 //import sectionDownload from './views/section_download';
-
+window.tileEndpoint = config.tileEndpoint
+window.vtileEndpoint = config.vtileEndpoint
+window.locationEndpoint = config.locationEndpoint
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -234,7 +237,7 @@ loadtheme()
 
         
 
-        let url = `http://127.0.0.1:8000/locations/${selectedStrata}/?format=json`
+        let url = `${window.locationEndpoint}${selectedStrata}/?format=json`
      
     
       
@@ -254,8 +257,7 @@ loadtheme()
             let dateBegin =params.timestep_begin + "-01-01"
             let dateEnd = params.timestep_end + "-01-01"
             let urlPath = slug + "/" +dateBegin+ "/" + dateEnd + "/"
-            console.log(urlPath)
-            console.log(strataJson)
+           
            service.spatialDownload(urlPath, strataJson)
 
 

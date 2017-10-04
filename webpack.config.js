@@ -9,7 +9,7 @@ module.exports = {
   devtool: isProd ? 'hidden-source-map' : 'cheap-eval-source-map',
   context: path.join(__dirname, './src'),
   entry: {
-    lucas: './test.js',
+    lucas: './app.js',
     theme: './index.js',
     download: './download.js',
    // vendor: ['jquery','smooth-scroll', 'd3', 'leaflet', 'bootstrap', 'leaflet-tilelayer-geojson'],

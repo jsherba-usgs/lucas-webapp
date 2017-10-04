@@ -9,6 +9,8 @@ import markerIcon from 'leaflet/dist/images/marker-icon.png';
 
 // Import helpers
 import { cartoDBPositron, stateclassTiles} from './../../helpers/leaflet-layers';
+import config from './../../helpers/api-config';
+
 import projects from './../../helpers/project-details';
 
 /**
@@ -31,7 +33,9 @@ let settings;
 let feature;
 let tempLayer;
 let project;
-
+window.tileEndpoint = config.tileEndpoint
+window.vtileEndpoint = config.vtileEndpoint
+window.locationEndpoint = config.locationEndpoint
 
 /**
 * PRIVATE FUNCTIONS
@@ -216,14 +220,14 @@ model.preLoadRasters = (slider,d, startYear, endYear) => {
          let url
           if (layer === "1"){
 
-           url = `http://127.0.0.1:8000/tiles/s${mapscenario}-it${iterationval}-ts${yearstring}-sc/{z}/{x}/{y}.png?style=lulc`;
+           url = `${window.tileEndpoint}s${mapscenario}-it${iterationval}-ts${yearstring}-sc/{z}/{x}/{y}.png?style=lulc`;
           //  url = `http://127.0.0.1:8000/tiles/s${mapscenario}-it${iterationval}-ts${yearstring}-sc/{z}/{x}/{y}.png`;
            
           }else{
            
           // url = 'http://127.0.0.1:8000/tiles/s'+mapscenario.toString()+'-it0000-ts'+yearstring.toString()+'-tgap'+layer.toString()+'/{z}/{x}/{y}.png?style='+layer.toString();
       
-             url = `http://127.0.0.1:8000/tiles/s${mapscenario}-it0000-ts${yearstring}-tgap${layer}/{z}/{x}/{y}.png?style=${layer}`
+             url = `${window.tileEndpoint}s${mapscenario}-it0000-ts${yearstring}-tgap${layer}/{z}/{x}/{y}.png?style=${layer}`
           }
           
           
@@ -378,13 +382,13 @@ model.updateIndividualRaster = (...args) => {
       let url
       if (layer === "1"){
 
-      url = `http://127.0.0.1:8000/tiles/s${scenario}-it${iteration}-ts${year}-sc/{z}/{x}/{y}.png?style=lulc`;
+      url = `${window.tileEndpoint}s${scenario}-it${iteration}-ts${year}-sc/{z}/{x}/{y}.png?style=lulc`;
     
        
       }else{
        
        //url = 'http://127.0.0.1:8000/tiles/s'+scenario.toString()+'-it0000-ts'+year.toString()+'-tgap'+layer.toString()+'/{z}/{x}/{y}.png?style='+layer.toString();
-       url = `http://127.0.0.1:8000/tiles/s${scenario}-it0000-ts${year}-tgap${layer}/{z}/{x}/{y}.png?style=${layer}`
+       url = `${window.tileEndpoint}s${scenario}-it0000-ts${year}-tgap${layer}/{z}/{x}/{y}.png?style=${layer}`
          
       }
      
@@ -500,7 +504,7 @@ if (update) {
 
 
 
-  const stateclassTiles = L.tileLayer('http://127.0.0.1:8000/tiles/s6370-it0001-ts2011-sc/{z}/{x}/{y}.png', {
+  const stateclassTiles = L.tileLayer('${window.tileEndpoint}s6370-it0001-ts2011-sc/{z}/{x}/{y}.png', {
  // attribution: 'LULC: <a href="http://landcarbon.org">LandCarbon</a>',
   maxZoom: 19,
   opacity: 1,
@@ -525,7 +529,6 @@ const Esri_WorldImagery = L.tileLayer(
         'http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
             attribution: 'Tiles &copy; Esri &mdash;'
         });
-
 
 
 // https: also suppported.
@@ -559,8 +562,8 @@ var hoverStyle = {
 let strataMap = maps[i]
 let secStrataName = project.details.jsonlayer.sec_strata.name
 let strataName = project.details.jsonlayer.strata.name
-let secStratUrl = `http://127.0.0.1:8000/vtiles/${secStrataName}/{z}/{x}/{y}.geojson`;
-let stratUrl  = `http://127.0.0.1:8000/vtiles/${strataName}/{z}/{x}/{y}.geojson`;
+let secStratUrl = `${window.vtileEndpoint}${secStrataName}/{z}/{x}/{y}.geojson`;
+let stratUrl  = `${window.vtileEndpoint}${strataName}/{z}/{x}/{y}.geojson`;
 
 let strat_TileLayer = new L.TileLayer.GeoJSON(stratUrl, {
         clipTiles: true,
@@ -716,7 +719,7 @@ var overlayMaps = {
 
 
   //stateclassTiles.addTo(maps[i]) 
-  const url = `http://127.0.0.1:8000/tiles/s${mapscenario}-it${settings.iteration_number}-ts${settings.year}-sc/{z}/{x}/{y}.png?style=lulc`;
+  const url = `${window.tileEndpoint}s${mapscenario}-it${settings.iteration_number}-ts${settings.year}-sc/{z}/{x}/{y}.png?style=lulc`;
   //const url = `http://127.0.0.1:8000/tiles/s${mapscenario}-it${settings.iteration_number}-ts${settings.year}-sc/{z}/{x}/{y}.png`;
   
   stateclassTiles.setUrl(url);
@@ -728,7 +731,7 @@ var overlayMaps = {
         maps[i].fitBounds(tempLayer.getBounds())
   } else if(args[0].stratum === "All"){
     let secStratumVal = args[0].secondary_stratum.replace(/'/g, '').replace(/ /g, "");
-    let locationPath = `http://127.0.0.1:8000/locations/${secStratumVal}/`
+    let locationPath = `${window.locationEndpoint}${secStratumVal}/`
     let currentMap = maps[i]
     
     $.ajax({
@@ -746,7 +749,7 @@ var overlayMaps = {
 
   }else{
     let stratumVal = args[0].stratum.replace(/'/g, '').replace(/ /g, "");
-    let locationPath = `http://127.0.0.1:8000/locations/${stratumVal}/`
+    let locationPath = `${window.locationEndpoint}${stratumVal}/`
     let currentMap = maps[i]
     $.ajax({
       type: "GET",

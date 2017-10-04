@@ -179,12 +179,12 @@ header {
   min-height: auto;
   overflow-y: hidden;
 
-  background:  url("../img/header_original_ill_2000.png");
-  /* fallback for old browsers */
-  background: url("../img/header_original_ill_2000.png");
-  /* Chrome 10-25, Safari 5.1-6 */
-  background: url("../img/header_original_ill_2000.png");
-  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  /*background:  url("theme/img/header_original_ill_2000.png");
+  
+  background: url("theme/img/header_original_ill_2000.png");
+ 
+  background: url("theme/img/header_original_ill_2000.png");*/
+ 
   color: white;
   background-size: cover;
   background-attachment: fixed;

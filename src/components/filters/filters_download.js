@@ -3,6 +3,7 @@ import projectFilterContent from './filters_projects_download.html';
 import percentileFilterContent from './filters_percentile_download.html';
 import { triggerEvent } from './../../helpers/utils';
 import projects from './../../helpers/project-details';
+import config from './../../helpers/api-config';
 
 const model = {};
 
@@ -31,6 +32,9 @@ let strataOverlayOpenBtn
 let strataOverlayCloseBtn
 let first
 
+window.tileEndpoint = config.tileEndpoint
+window.vtileEndpoint = config.vtileEndpoint
+window.locationEndpoint = config.locationEndpoint
 
 function hasClass(el, className) {
   if (el.classList)
@@ -717,8 +721,7 @@ model.init = () => {
 
   };
 
-
-  secStrataOverlayOpenBtn= document.getElementById('secStrataOverlayOpen');
+secStrataOverlayOpenBtn= document.getElementById('secStrataOverlayOpen');
   secStrataOverlayOpenBtn.addEventListener("click", function(){
     strataOverlayOpen(['secondary_stratum','nonSpatial']);
 }, false);
@@ -727,14 +730,7 @@ model.init = () => {
     strataOverlayOpen(['stratum','nonSpatial']);
 }, false);
 
-  secStrataOverlayOpenSpatialBtn = document.getElementById('secStrataOverlayOpenSpatial');
-  secStrataOverlayOpenSpatialBtn.addEventListener("click", function(){
-    strataOverlayOpen(['secondary_stratum','spatial']);
-}, false);
-  strataOverlayOpenSpatialBtn=document.getElementById('strataOverlayOpenSpatial');
-  strataOverlayOpenSpatialBtn.addEventListener("click", function(){
-    strataOverlayOpen(['strata','spatial']);
-}, false);
+
 
   //strataOverlayOpenBtn= document.getElementById('strataOverlayOpen');
   //strataOverlayOpenBtn.addEventListener('click', strataOverlayOpen);
@@ -757,7 +753,7 @@ model.init = () => {
     
   
     
-    var geojsonURL = `http://127.0.0.1:8000/vtiles/${layerName}/{z}/{x}/{y}.geojson`;
+    var geojsonURL = `${window.vtileEndpoint}${layerName}/{z}/{x}/{y}.geojson`;
     
         var style = {
         "clickable": true,
@@ -825,6 +821,9 @@ model.init = () => {
                     let selectBox =`select[name=${stratum_type}${spatial}]`
 
                     layer.on('click', function (e) {
+
+                      
+
                      let filterValue = e.target.feature.properties.label.split(" County")[0]
                      filtersContainer.querySelector(selectBox).value = filterValue
                      stratamodal.style.display = "none";
@@ -837,23 +836,29 @@ model.init = () => {
                 if (!(layer instanceof L.Point)) {
                      var popup = L.popup()
                     layer.on('mouseover', function (e) {
+                        
                         layer.setStyle(hoverStyle);
 
-                        
-                        popup
+                        layer.bindPopup(popupString, {className: 'my-popup'}).openPopup();
+                        //popup.className = 'my-popup'
+                        //popup.offset = L.point(0,-50)
+
+                        /*popup
                           .setLatLng([e.latlng.lat,e.latlng.lng])
                           .setContent(popupString)
                           .openOn(stratamap);
 
                           
                         layer.bindPopup(popup);
-                        $('.leaflet-popup').css({'bottom': '530px', 'z-index':'1000'})
+                        $('.leaflet-popup').css('z-index','100000')*/
 
 
                     });
                     layer.on('mouseout', function () {
+                       
                         layer.setStyle(style);
-                        stratamap.closePopup(popup);
+                        stratamap.closePopup();
+                        //stratamap.closePopup(popup);
                         
                     });
                 }

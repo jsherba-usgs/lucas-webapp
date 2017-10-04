@@ -95,7 +95,7 @@ const projectDetails = [
        
           name:"Land-Cover State",
           tag:"landcover",
-          image_path: '../../images/Asset 8.png',
+          image_path: 'images/Asset 8.png',
           values:[
         {
           id:1,
@@ -107,7 +107,7 @@ const projectDetails = [
        
           name:"Land-Cover Transition",
           tag:"transition",
-          image_path: '../../images/Asset 7.png',
+          image_path: 'images/Asset 7.png',
           values:[
         
         {
@@ -247,7 +247,7 @@ const projectDetails = [
       variable: [
         {
           id: 'Land-Cover State',
-          image_path: '../../images/Asset 8.png',
+          image_path: 'images/Asset 8.png',
           variable_detail: [
           {
             id: 'Agriculture',
@@ -275,7 +275,7 @@ const projectDetails = [
         },
         {
           id: 'Carbon Stock',
-          image_path: '../../images/Asset 9.png',
+          image_path: 'images/Asset 9.png',
           variable_detail: [
           {
             id: 'Aquatic',
@@ -307,7 +307,7 @@ const projectDetails = [
         },
         {
           id: 'Land-Cover Transition',
-          image_path: '../../images/Asset 7.png',
+          image_path: 'images/Asset 7.png',
           variable_detail: [
           {
             id: 'AGRICULTURAL CONTRACTION',
@@ -534,7 +534,7 @@ const projectDetails = [
        
           name:"Land-Cover State",
           tag:"landcover",
-          image_path: '../../images/Asset 8.png',
+          image_path: 'images/Asset 8.png',
           values:[
         {
           id:1,
@@ -546,7 +546,7 @@ const projectDetails = [
        
           name:"Land-Cover Transition",
           tag:"transition",
-          image_path: '../../images/Asset 7.png',
+          image_path: 'images/Asset 7.png',
           values:[
         
         {
@@ -647,7 +647,7 @@ const projectDetails = [
       variable: [
         {
           id: 'Land-Cover State',
-          image_path: '../../images/Asset 7.png',
+          image_path: 'images/Asset 7.png',
           variable_detail: [
             {
               id: 'Agriculture',
@@ -673,7 +673,7 @@ const projectDetails = [
         },
         {
           id: 'Land-Cover Transition',
-           image_path: '../../images/Asset 8.png',
+           image_path: 'images/Asset 8.png',
           variable_detail: [
             {
               id: 'AGRICULTURAL CONTRACTION',
