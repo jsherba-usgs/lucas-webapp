@@ -356,7 +356,7 @@ function updateFields() {
   }
 }
 
-model.init = () => {
+model.init = (scenarioStart) => {
   // Initialize container
   
   filtersContainer = document.getElementById('filters');
@@ -365,6 +365,7 @@ model.init = () => {
   // Initialize container
   filtersContainer2 = document.getElementById('filters_project');
   filtersContainer2.innerHTML = projectFilterContent;
+
   
   percentileCheckbox = filtersContainer.querySelector('input[id=percentileIteration]');
  
@@ -392,8 +393,7 @@ model.init = () => {
   });
   
   
-  
-
+  document.querySelector(scenarioStart).selected = true
   projectSelect.onchange = updateFields;
   projectSelect.onchange();
   /*scenarioSelect.onchange = updateScenarioVariables;

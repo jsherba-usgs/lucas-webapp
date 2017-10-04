@@ -706,12 +706,20 @@ function addMapLegends(){
   });
 
   // Intializing the filters starts the app on page load
+ 
+ let setProjectID = localStorage.getItem("storageName")
 
+if (setProjectID ==null){
+  let scenarioStart = 'option[value="7096"]'
+    filters.init(scenarioStart);
+    
 
-
+}else{
+  let scenarioStart = 'option[value=\"'+setProjectID+'\"]'
+    filters.init(scenarioStart);
+}
  // Open, close overlay
 
- filters.init();
 
   function overlayOpen() {
     body.classList.add('is-overlay-visible');

@@ -819,7 +819,7 @@ h1.explore-models{
   font-family: Lato,Helvetica,sans-serif;
 }
 .model-section{
-  padding-top: 3.25em;
+  padding-top:5em;
 }
 #iconrow{
   margin-left:0px;
@@ -829,7 +829,7 @@ h1.explore-models{
 width: 80%;
 margin-right: auto;
 margin-left: auto;
-margin-top: 80px;
+margin-top: 5em;
 }
 .title-inner-next{
   width: 80%;

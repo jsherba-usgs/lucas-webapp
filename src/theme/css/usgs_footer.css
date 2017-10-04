@@ -15,7 +15,8 @@
 #usgsfooter {
 	/*font-family: Verdana, Arial, Helvetica, sans-serif;*/
 	/*font-size: small;*/
-	
+	font-size: 14px;
+	font-family: Muli,Helvetica,Arial,"sans-serif";
 	margin-bottom: 2px;
 }
 #usgsfooterbar {
@@ -25,6 +26,7 @@
     font-size: 14px;
 }
 #usgsfooterbar a:link, #usgsfooterbar a:visited {
+	border-bottom:none;
 	margin-right: 40px;
 	color: #ffffff;
 	text-decoration: none;
@@ -40,14 +42,29 @@
 	text-decoration: none;
 }
 #usgsfootertext {
+
 	padding: 4px;
 	margin-top: 20px;
 	margin-bottom: 5px;
 	font-size: 14px;
 }
+
+#usgsfootertext a:link{
+
+	border-bottom:none;
+}
 #usgsfootertext img {
 	border: none;
 	float: right;
 	margin-right: .3em;
+	width: auto;
+    height: auto;
 }
 			
+#mainContainer{
+	min-height:100%;
+	margin-bottom:-150px;
+}
+.push{
+	height:150px;
+}

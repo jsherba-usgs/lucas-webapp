@@ -2549,7 +2549,16 @@ margin:10px;
 	font-size: .9em;
 }
 
+.download-dropdown:after {
+	font-family: FontAwesome;
+	font-style: normal;
+	font-weight: 400;
+	text-transform: none !important;
+	color: #c9d4b2;
+	content: '\f078';
 
+	}
+	
 .legendcollapsenametext:after {
 	font-family: FontAwesome;
 	font-style: normal;

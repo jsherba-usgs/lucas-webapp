@@ -6,7 +6,6 @@ import d3 from 'd3';
 import './theme/css/bootstrap.css';
 import './style/main.css';
 
-
 // Import Helpers
 import service from './helpers/api-service.js';
 import {colorScaleDicLegend, colorScaleDic, dashed,dashedLegend, stateClassLegendLookup, stockLegendLookup, transitionClassLegendLookup, scenarioLegendLookup} from './helpers/colors';
@@ -231,13 +230,13 @@ loadtheme()
           selectedStrata = params.secondary_stratum
         }
         
-        selectedStrata = selectedStrata.replace(/'/g, "")
+        selectedStrata = selectedStrata.replace(/'/g, "").replace(/ /g, "")
 
         
 
         let url = `http://127.0.0.1:8000/locations/${selectedStrata}/?format=json`
      
-        
+    
       
        fetch(url)
         .then((resp) => resp.json()) // Transform the data into json
@@ -246,7 +245,6 @@ loadtheme()
             // projects.getDetailsForId(params.project).details.secondary_stratum.find((item) => item.id === params.secondary_stratum).geom
             strataJson =JSON.stringify(data)
             
-
             let slug = "scenario-"+params.scenario.toString()+"-spatial-it"+leftPad(params.iteration)+"-"+params.variable_detail_type
 
             if (params.variable_detail != "1"){
@@ -256,9 +254,7 @@ loadtheme()
             let dateBegin =params.timestep_begin + "-01-01"
             let dateEnd = params.timestep_end + "-01-01"
             let urlPath = slug + "/" +dateBegin+ "/" + dateEnd + "/"
-            
-            
-       
+     
             service.spatialDownload(urlPath, strataJson)
 
 
