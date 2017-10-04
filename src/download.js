@@ -254,8 +254,9 @@ loadtheme()
             let dateBegin =params.timestep_begin + "-01-01"
             let dateEnd = params.timestep_end + "-01-01"
             let urlPath = slug + "/" +dateBegin+ "/" + dateEnd + "/"
-     
-            service.spatialDownload(urlPath, strataJson)
+            console.log(urlPath)
+            console.log(strataJson)
+           service.spatialDownload(urlPath, strataJson)
 
 
 

@@ -531,18 +531,24 @@ const projectDetails = [
          
         }],
       layerDownload:[{
-
        
           name:"Land-Cover State",
           tag:"landcover",
-          image_path: '../../images/Asset 7.png',
+          image_path: '../../images/Asset 8.png',
           values:[
         {
           id:1,
           type_code:"sc",
           name:"STATECLASS"
-        }
-        ,
+        },
+      ]},
+      {
+       
+          name:"Land-Cover Transition",
+          tag:"transition",
+          image_path: '../../images/Asset 7.png',
+          values:[
+        
         {
           id:4125,
           type_code:"tgap",
