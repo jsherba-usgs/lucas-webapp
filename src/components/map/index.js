@@ -116,7 +116,7 @@ model.init = ({ selector, lat = 22.234262, lng = -159.784857, scenario = '6368',
  map = L.map(mapContainer, {
     center: [lat, lng],
     zoom: 6,
-    minZoom: 5,
+   // minZoom: 5,
     maxZoom: 18,
     attributionControl: true,
     touchZoom: false,
@@ -220,22 +220,52 @@ model.preLoadRasters = (slider,d, startYear, endYear) => {
          let url
           if (layer === "1"){
 
-           url = `${window.tileEndpoint}s${mapscenario}-it${iterationval}-ts${yearstring}-sc/{z}/{x}/{y}.png?style=lulc`;
-          //  url = `http://127.0.0.1:8000/tiles/s${mapscenario}-it${iterationval}-ts${yearstring}-sc/{z}/{x}/{y}.png`;
+           //url = `${window.tileEndpoint}s${mapscenario}-it${iterationval}-ts${yearstring}-sc/{z}/{x}/{y}.png?style=lulc`;
+          url =  `http://127.0.0.1:8000/api/rstores/s${mapscenario}-it${iterationval}-ts${yearstring}-sc/?style=lulc&format=png`;
+         
            
           }else{
            
-          // url = 'http://127.0.0.1:8000/tiles/s'+mapscenario.toString()+'-it0000-ts'+yearstring.toString()+'-tgap'+layer.toString()+'/{z}/{x}/{y}.png?style='+layer.toString();
+          url =  `http://127.0.0.1:8000/api/rstores/s${mapscenario}-it${iterationval}-ts${yearstring}-sc/?style=lulc&format=png`;
       
-             url = `${window.tileEndpoint}s${mapscenario}-it0000-ts${yearstring}-tgap${layer}/{z}/{x}/{y}.png?style=${layer}`
+            // url = `${window.tileEndpoint}s${mapscenario}-it0000-ts${yearstring}-tgap${layer}/{z}/{x}/{y}.png?style=${layer}`
           }
-          
-          
-         let stateclassTiles = L.tileLayer(url, {
+          let imageBounds = [[22.3883299982, -159.85461369],[18.7379531081, -154.459224592]]//[[22.59372606392931,-160.3125],[19.31114335506464,-154.6875]]
+          // [
+          //       [
+          //           31.300599,
+          //           -125.260128
+                    
+          //       ],
+          //       [
+          //           31.300599,
+          //           -113.749296
+                    
+          //       ],
+          //       [
+          //           43.575479,
+          //           -113.749296
+                    
+          //       ],
+          //       [
+          //           43.575479,
+          //           -125.260128
+                    
+          //       ],
+          //       [
+          //           31.300599,
+          //           -125.260128
+                
+          //       ]
+          //   ]
+        let stateclassTiles =  L.imageOverlay(url, imageBounds, {
+         //let stateclassTiles = L.tileLayer(url, {
             attribution: 'LULC: <a href="http://landcarbon.org">LandCarbon</a>',
-            maxZoom: 19,
+           // maxZoom: 19,
             opacity: 0,
             subdomains: 'abcd',
+            //tileSize: 512,
+          
             //scenario: '6368',
             //iteration: '0001',
             id: yearstring,
@@ -252,6 +282,7 @@ model.preLoadRasters = (slider,d, startYear, endYear) => {
 
         if (i === lastMap){
         let startLayer = (yearLength-1)/2
+        
         stateclassGroups[i].getLayers()[startLayer].on("load",function() {mapStatus('loaded'), slider.playbackRate(.5)});
        // stateclassLayers.addTo(maps[i]);
       }
@@ -382,14 +413,16 @@ model.updateIndividualRaster = (...args) => {
       let url
       if (layer === "1"){
 
-      url = `${window.tileEndpoint}s${scenario}-it${iteration}-ts${year}-sc/{z}/{x}/{y}.png?style=lulc`;
-    
+      //url = `${window.tileEndpoint}s${scenario}-it${iteration}-ts${year}-sc/{z}/{x}/{y}.png?style=lulc`;
+      url = `${window.tileEndpoint}s${scenario}-it${iteration}-ts${year}-sc/1/1/1.png?style=lulc`;
+   // url =  `http://127.0.0.1:8000/api/rstores/s${mapscenario}-it${settings.iteration_number}-ts${settings.year}-sc/?style=lulc&format=png`;
        
       }else{
        
-       //url = 'http://127.0.0.1:8000/tiles/s'+scenario.toString()+'-it0000-ts'+year.toString()+'-tgap'+layer.toString()+'/{z}/{x}/{y}.png?style='+layer.toString();
-       url = `${window.tileEndpoint}s${scenario}-it0000-ts${year}-tgap${layer}/{z}/{x}/{y}.png?style=${layer}`
-         
+     
+      // url = `${window.tileEndpoint}s${scenario}-it0000-ts${year}-tgap${layer}/{z}/{x}/{y}.png?style=${layer}`
+       url = `${window.tileEndpoint}s${scenario}-it0000-ts${year}-tgap${layer}/1/1/1.png?style=${layer}`
+        // url =  `http://127.0.0.1:8000/api/rstores/s${mapscenario}-it${settings.iteration_number}-ts${settings.year}-sc/?style=lulc&format=png`;
       }
      
       
@@ -501,18 +534,57 @@ if (update) {
   subdomains: 'abcd',
   maxZoom: 19,
 });
+ //let testurl = 'http://127.0.0.1:8000/api/rstores/s1120-it0001-ts2090-sc/?style=lulc&format=png'
+//let imageBounds = [[31.300599, -125.260128], [ 43.575479,-113.749296]]
 
+ let imageBounds =[[22.3883299982, -159.85461369],[18.7379531081, -154.459224592]]//[[22.59372606392931,-160.3125],[19.31114335506464,-154.6875]]//[[ 22.234262, -159.784857], [ 18.915694, -154.808719]]
+                  
+ // [
+ //                [
+ //                    31.300599,
+ //                    -125.260128
+                    
+ //                ],
+ //                [
+ //                    31.300599,
+ //                    -113.749296
+                    
+ //                ],
+ //                [
+ //                    43.575479,
+ //                    -113.749296
+                    
+ //                ],
+ //                [
+ //                    43.575479,
+ //                    -125.260128
+                    
+ //                ],
+ //                [
+ //                    31.300599,
+ //                    -125.260128
+                
+ //                ]
+ //            ]
+//const stateclassTiles = L.tileLayer('${window.tileEndpoint}s6370-it0001-ts2011-sc/{z}/{x}/{y}.png', {
+const stateclassTiles = L.imageOverlay('${window.tileEndpoint}s6370-it0001-ts2011-sc/1/1/1.png', imageBounds, {
+  attribution: 'LULC: <a href="http://landcarbon.org">LandCarbon</a>',
+ maxZoom: 19,
+ opacity: 1,
+subdomains: 'abcd',
+  
+  });
 
-
-  const stateclassTiles = L.tileLayer('${window.tileEndpoint}s6370-it0001-ts2011-sc/{z}/{x}/{y}.png', {
- // attribution: 'LULC: <a href="http://landcarbon.org">LandCarbon</a>',
-  maxZoom: 19,
-  opacity: 1,
-  subdomains: 'abcd',
+// const stateclassTiles = L.tileLayer('${window.tileEndpoint}s6370-it0001-ts2011-sc/{z}/{x}/{y}.png', {
+//  attribution: 'LULC: <a href="http://landcarbon.org">LandCarbon</a>',
+ // maxZoom: 19,
+ // opacity: 1,
+ // subdomains: 'abcd',
+  //tileSize: 512,
   //scenario: '6368',
   //iteration: '0001',
   //year: '2001'
-  });
+ // });
 
 
 const mapboxTiles = L.tileLayer('https://api.mapbox.com/styles/v1/defjeff/cj5o5h3i04zp82smolfwvzwmh/tiles/256/%7Bz%7D/%7Bx%7D/%7By%7D?access_token=pk.eyJ1IjoiZGVmamVmZiIsImEiOiJjajVtd24xMzgzYWRyMzNvMmo5cWo3ZTM4In0.Jgu3IRnkLYwpDOzdhuMkHw', {
@@ -538,7 +610,7 @@ maps[i] =  L.map(id, {
       center: ["43.5754794945", "-125.260128026"],
       
       zoom: 9,
-      minZoom: 5,
+      //minZoom: 5,
       maxZoom: 19,
       attributionControl: true,
       touchZoom: false,
@@ -719,9 +791,10 @@ var overlayMaps = {
 
 
   //stateclassTiles.addTo(maps[i]) 
-  const url = `${window.tileEndpoint}s${mapscenario}-it${settings.iteration_number}-ts${settings.year}-sc/{z}/{x}/{y}.png?style=lulc`;
-  //const url = `http://127.0.0.1:8000/tiles/s${mapscenario}-it${settings.iteration_number}-ts${settings.year}-sc/{z}/{x}/{y}.png`;
-  
+  //const url = `http://127.0.0.1:8000/api/rstores/s${mapscenario}-it${settings.iteration_number}-ts${settings.year}-sc/?style=lulc&format=png`
+ //const url = `${window.tileEndpoint}s${mapscenario}-it${settings.iteration_number}-ts${settings.year}-sc/{z}/{x}/{y}.png?style=lulc`;
+   const url = `${window.tileEndpoint}s${mapscenario}-it${settings.iteration_number}-ts${settings.year}-sc/1/1/1.png?style=lulc`;
+ 
   stateclassTiles.setUrl(url);
 
 

@@ -22,6 +22,7 @@ const cartoDBPositron = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nola
   maxZoom: 19,
   opacity: 1,
   subdomains: 'abcd',
+  //tileSize: 512,
   //scenario: '6368',
   //iteration: '0001',
   //year: '2001'

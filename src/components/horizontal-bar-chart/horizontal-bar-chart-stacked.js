@@ -262,11 +262,20 @@ const chart = () => {
     const yAxis = d3.svg.axis()
       .scale(yScale)
       .orient('left');
+      
 
      // Update the y-axis.
     d3.select(this).select('.y-axis-group.axis')
       .transition().duration(1000)
-      .call(yAxis);
+      .call(yAxis)
+      .selectAll("text")  
+            .style("text-anchor", "end")
+            .attr("dx", "3em")
+            .attr("dy", "-1em")
+            .attr("transform", function(d) {
+                return "rotate(-90)" 
+                });
+
 
     // Draw x axis with category labels
    d3.select(this).select('.x-axis-group.axis')

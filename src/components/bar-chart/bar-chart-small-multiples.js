@@ -27,13 +27,13 @@ const chart = () => {
   /**
   * PRIVATE VARIABLES
   **/
-
+ 
   let data;
   let container;
   let xRoundBands = 0.2;
   const tooltip = d3.tip()
     .attr('class', 'd3-tip')
-    .html((d) => `${d.year}: ${d.value} km<sup>2</sup>`);
+    .html((d) => `${d.year.split(' / ')[0]} / ${projectDetails.getNameForID(d.year.split(' / ')[1])!= undefined ? projectDetails.getNameForID(d.year.split(' / ')[1]):d.year.split(' / ')[1]}: ${d.value} km<sup>2</sup>`);
 
   // X scale
   const xScale = d3.scale.ordinal();
