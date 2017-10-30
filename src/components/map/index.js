@@ -182,10 +182,11 @@ model.preLoadRasters = (slider,d, startYear, endYear) => {
    //let startYear = project.details.years[0][variableType][0].start
     //let endYear = project.details.years[0][variableType][0].end
    let yearArray = range(startYear,endYear,5)
-   //console.log(maps[0]._layers)
+   
    //console.log(maps[0]._tilePane.childElementCount)
    let yearLength = yearArray.length
-   let layerKeys = maps[0]._tilePane.childElementCount//Object.keys(maps[0]._layers)
+   //let layerKeys = maps[0]._tilePane.childElementCount//Object.keys(maps[0]._layers)
+   let layerKeys = maps[0]._panes.overlayPane.childElementCount
    
    
    if (layerKeys < yearLength){
@@ -196,7 +197,7 @@ model.preLoadRasters = (slider,d, startYear, endYear) => {
     mapStatus('loading')
 
     scenarios = settings.scenario.split(',')
-
+    
     
     let lastMap = maps.length-1
     //let startYear = parseInt(args[0].year)
@@ -210,10 +211,10 @@ model.preLoadRasters = (slider,d, startYear, endYear) => {
       mapscenario = scenarios[i]
         
       let stateclassLayers = []
-
+      
       for (var j = 0; j < yearArray.length; j++) {
         
-    
+          
           let yearstring = yearArray[j].toString()
           
           //const url = `http://127.0.0.1:8000/tiles/s${mapscenario}-it${iterationval}-ts${yearstring}-sc/{z}/{x}/{y}.png?style=lulc`;
@@ -221,15 +222,18 @@ model.preLoadRasters = (slider,d, startYear, endYear) => {
           if (layer === "1"){
 
            //url = `${window.tileEndpoint}s${mapscenario}-it${iterationval}-ts${yearstring}-sc/{z}/{x}/{y}.png?style=lulc`;
-          url =  `http://127.0.0.1:8000/api/rstores/s${mapscenario}-it${iterationval}-ts${yearstring}-sc/?style=lulc&format=png`;
+         // url =  `http://127.0.0.1:8000/api/rstores/s${mapscenario}-it${iterationval}-ts${yearstring}-sc/?style=lulc&format=png`;
+          url = `${window.tileEndpoint}s${mapscenario}-it${iterationval}-ts${yearstring}-sc/1/1/1.png?style=lulc`;
          
            
           }else{
-           
-          url =  `http://127.0.0.1:8000/api/rstores/s${mapscenario}-it${iterationval}-ts${yearstring}-sc/?style=lulc&format=png`;
+          //url = `${window.tileEndpoint}s${mapscenario}-it${iterationval}-ts${yearstring}-sc/1/1/1.png?style=lulc`;
+         //url =  `http://127.0.0.1:8000/api/rstores/s${mapscenario}-it${iterationval}-ts${yearstring}-sc/?style=lulc&format=png`;
       
-            // url = `${window.tileEndpoint}s${mapscenario}-it0000-ts${yearstring}-tgap${layer}/{z}/{x}/{y}.png?style=${layer}`
+            //url = `${window.tileEndpoint}s${mapscenario}-it0000-ts${yearstring}-tgap${layer}/{z}/{x}/{y}.png?style=${layer}`
+            url = `${window.tileEndpoint}s${mapscenario}-it0000-ts${yearstring}-tgap${layer}/1/1/1.png?style=${layer}`
           }
+
           let imageBounds = [[22.3883299982, -159.85461369],[18.7379531081, -154.459224592]]//[[22.59372606392931,-160.3125],[19.31114335506464,-154.6875]]
           // [
           //       [
@@ -536,8 +540,8 @@ if (update) {
 });
  //let testurl = 'http://127.0.0.1:8000/api/rstores/s1120-it0001-ts2090-sc/?style=lulc&format=png'
 //let imageBounds = [[31.300599, -125.260128], [ 43.575479,-113.749296]]
-
- let imageBounds =[[22.3883299982, -159.85461369],[18.7379531081, -154.459224592]]//[[22.59372606392931,-160.3125],[19.31114335506464,-154.6875]]//[[ 22.234262, -159.784857], [ 18.915694, -154.808719]]
+console.log(project.details.bb_box)
+ let imageBounds =project.details.bb_box//[[22.3883299982, -159.85461369],[18.7379531081, -154.459224592]][[22.59372606392931,-160.3125],[19.31114335506464,-154.6875]]//[[ 22.234262, -159.784857], [ 18.915694, -154.808719]]
                   
  // [
  //                [
