@@ -796,8 +796,8 @@ var overlayMaps = {
 
   //stateclassTiles.addTo(maps[i]) 
   //const url = `http://127.0.0.1:8000/api/rstores/s${mapscenario}-it${settings.iteration_number}-ts${settings.year}-sc/?style=lulc&format=png`
- //const url = `${window.tileEndpoint}s${mapscenario}-it${settings.iteration_number}-ts${settings.year}-sc/{z}/{x}/{y}.png?style=lulc`;
-   const url = `${window.tileEndpoint}s${mapscenario}-it${settings.iteration_number}-ts${settings.year}-sc/1/1/1.png?style=lulc`;
+  //const url = `${window.tileEndpoint}s${mapscenario}-it${settings.iteration_number}-ts${settings.year}-sc/{z}/{x}/{y}.png?style=lulc`;
+  const url = `${window.tileEndpoint}s${mapscenario}-it${settings.iteration_number}-ts${settings.year}-sc/1/1/1.png?style=lulc`;
  
   stateclassTiles.setUrl(url);
 
