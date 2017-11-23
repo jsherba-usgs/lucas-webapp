@@ -233,8 +233,8 @@ model.preLoadRasters = (slider,d, startYear, endYear) => {
             //url = `${window.tileEndpoint}s${mapscenario}-it0000-ts${yearstring}-tgap${layer}/{z}/{x}/{y}.png?style=${layer}`
             url = `${window.tileEndpoint}s${mapscenario}-it0000-ts${yearstring}-tgap${layer}/1/1/1.png?style=${layer}`
           }
-
-          let imageBounds = [[22.3883299982, -159.85461369],[18.7379531081, -154.459224592]]//[[22.59372606392931,-160.3125],[19.31114335506464,-154.6875]]
+          let imageBounds =project.details.bb_box
+          //let imageBounds = [[22.3883299982, -159.85461369],[18.7379531081, -154.459224592]]//[[22.59372606392931,-160.3125],[19.31114335506464,-154.6875]]
           // [
           //       [
           //           31.300599,
