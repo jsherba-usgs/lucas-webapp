@@ -187,7 +187,8 @@ model.preLoadRasters = (slider,d, startYear, endYear) => {
    let yearLength = yearArray.length
    //let layerKeys = maps[0]._tilePane.childElementCount//Object.keys(maps[0]._layers)
    let layerKeys = maps[0]._panes.overlayPane.childElementCount
-   
+   let width = project.details.width
+   let height = project.details.height
    
    if (layerKeys < yearLength){
     
@@ -223,7 +224,7 @@ model.preLoadRasters = (slider,d, startYear, endYear) => {
 
            //url = `${window.tileEndpoint}s${mapscenario}-it${iterationval}-ts${yearstring}-sc/{z}/{x}/{y}.png?style=lulc`;
          // url =  `http://127.0.0.1:8000/api/rstores/s${mapscenario}-it${iterationval}-ts${yearstring}-sc/?style=lulc&format=png`;
-          url = `${window.tileEndpoint}s${mapscenario}-it${iterationval}-ts${yearstring}-sc/1/1/1.png?style=lulc`;
+          url = `${window.tileEndpoint}s${mapscenario}-it${iterationval}-ts${yearstring}-sc/1/${width}/${height}.png?style=lulc`;
          
            
           }else{
@@ -231,7 +232,7 @@ model.preLoadRasters = (slider,d, startYear, endYear) => {
          //url =  `http://127.0.0.1:8000/api/rstores/s${mapscenario}-it${iterationval}-ts${yearstring}-sc/?style=lulc&format=png`;
       
             //url = `${window.tileEndpoint}s${mapscenario}-it0000-ts${yearstring}-tgap${layer}/{z}/{x}/{y}.png?style=${layer}`
-            url = `${window.tileEndpoint}s${mapscenario}-it0000-ts${yearstring}-tgap${layer}/1/1/1.png?style=${layer}`
+            url = `${window.tileEndpoint}s${mapscenario}-it0000-ts${yearstring}-tgap${layer}/1/${width}/${height}.png?style=${layer}`
           }
           let imageBounds =project.details.bb_box
           //let imageBounds = [[22.3883299982, -159.85461369],[18.7379531081, -154.459224592]]//[[22.59372606392931,-160.3125],[19.31114335506464,-154.6875]]
@@ -396,7 +397,11 @@ model.updateIndividualRaster = (...args) => {
 
    update = true;
   if (update) {
-      
+      //project = projects.getDetailsForId(args[0].project);
+      let width = project.details.width
+      let height = project.details.height
+      console.log(width)
+      console.log(height)
       let individualMap = args[0].index_val
       let scenarios = settings.scenario.split(',')
       //scenario = args[0].value
@@ -418,14 +423,14 @@ model.updateIndividualRaster = (...args) => {
       if (layer === "1"){
 
       //url = `${window.tileEndpoint}s${scenario}-it${iteration}-ts${year}-sc/{z}/{x}/{y}.png?style=lulc`;
-      url = `${window.tileEndpoint}s${scenario}-it${iteration}-ts${year}-sc/1/1/1.png?style=lulc`;
+      url = `${window.tileEndpoint}s${scenario}-it${iteration}-ts${year}-sc/1/${width}/${height}.png?style=lulc`;
    // url =  `http://127.0.0.1:8000/api/rstores/s${mapscenario}-it${settings.iteration_number}-ts${settings.year}-sc/?style=lulc&format=png`;
        
       }else{
        
      
       // url = `${window.tileEndpoint}s${scenario}-it0000-ts${year}-tgap${layer}/{z}/{x}/{y}.png?style=${layer}`
-       url = `${window.tileEndpoint}s${scenario}-it0000-ts${year}-tgap${layer}/1/1/1.png?style=${layer}`
+       url = `${window.tileEndpoint}s${scenario}-it0000-ts${year}-tgap${layer}/1/${width}/${height}.png?style=${layer}`
         // url =  `http://127.0.0.1:8000/api/rstores/s${mapscenario}-it${settings.iteration_number}-ts${settings.year}-sc/?style=lulc&format=png`;
       }
      
@@ -492,6 +497,9 @@ model.reloadMap = (...args) => {
 
 if (update) {
   
+  let width = project.details.width
+  let height = project.details.height
+  
    d3.selectAll("#map > *").remove();
   mapContainer = document.getElementById('map');
   settings.iteration_number = leftPad("1")
@@ -540,7 +548,7 @@ if (update) {
 });
  //let testurl = 'http://127.0.0.1:8000/api/rstores/s1120-it0001-ts2090-sc/?style=lulc&format=png'
 //let imageBounds = [[31.300599, -125.260128], [ 43.575479,-113.749296]]
-console.log(project.details.bb_box)
+
  let imageBounds =project.details.bb_box//[[22.3883299982, -159.85461369],[18.7379531081, -154.459224592]][[22.59372606392931,-160.3125],[19.31114335506464,-154.6875]]//[[ 22.234262, -159.784857], [ 18.915694, -154.808719]]
                   
  // [
@@ -571,7 +579,7 @@ console.log(project.details.bb_box)
  //                ]
  //            ]
 //const stateclassTiles = L.tileLayer('${window.tileEndpoint}s6370-it0001-ts2011-sc/{z}/{x}/{y}.png', {
-const stateclassTiles = L.imageOverlay('${window.tileEndpoint}s6370-it0001-ts2011-sc/1/1/1.png', imageBounds, {
+const stateclassTiles = L.imageOverlay('${window.tileEndpoint}s6370-it0001-ts2011-sc/1/${width}/${height}.png', imageBounds, {
   attribution: 'LULC: <a href="http://landcarbon.org">LandCarbon</a>',
  maxZoom: 19,
  opacity: 1,
@@ -797,7 +805,7 @@ var overlayMaps = {
   //stateclassTiles.addTo(maps[i]) 
   //const url = `http://127.0.0.1:8000/api/rstores/s${mapscenario}-it${settings.iteration_number}-ts${settings.year}-sc/?style=lulc&format=png`
   //const url = `${window.tileEndpoint}s${mapscenario}-it${settings.iteration_number}-ts${settings.year}-sc/{z}/{x}/{y}.png?style=lulc`;
-  const url = `${window.tileEndpoint}s${mapscenario}-it${settings.iteration_number}-ts${settings.year}-sc/1/1/1.png?style=lulc`;
+  const url = `${window.tileEndpoint}s${mapscenario}-it${settings.iteration_number}-ts${settings.year}-sc/1/${width}/${height}.png?style=lulc`;
  
   stateclassTiles.setUrl(url);
 

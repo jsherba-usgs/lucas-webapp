@@ -256,7 +256,7 @@ const view = {
 
          
               if (sliderVals.indexOf(year) > -1 && year!==sliderYear) {
-                console.log("testval")
+               
                 leafletMap.updateRaster({ year })
                 sliderYear = year
                }

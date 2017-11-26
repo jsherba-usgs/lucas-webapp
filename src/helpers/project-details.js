@@ -455,7 +455,8 @@ const projectDetails = [
         'VEGETATION CHANGE: Shrubland->Forest',
         'VEGETATION CHANGE: Shrubland->Grassland'
       ],
-
+      height: 1620,
+      width: 2200, 
     }
   },
   {
@@ -1022,6 +1023,8 @@ const projectDetails = [
         'VEGETATION CHANGE: Shrubland->Forest',
         'VEGETATION CHANGE: Shrubland->Grassland'
       ],
+      height: 2490,
+      width: 2160,
     }
   }
 ];
