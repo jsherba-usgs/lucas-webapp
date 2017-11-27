@@ -41,7 +41,7 @@ window.locationEndpoint = config.locationEndpoint
 * PRIVATE FUNCTIONS
 **/
 function mapStatus (status){
-  //mapContainer = document.getElementById('map');
+  
     switch (status) {
       case 'loading':
         maploading = new Spinner().spin( mapContainer);
@@ -97,7 +97,6 @@ function range(start, stop, step){
 * PUBLIC FUNCTIONS
 **/
 model.init = ({ selector, lat = 22.234262, lng = -159.784857, scenario = '6368', iteration = '1', year = '2011', project = '7096' }) => {
-  //model.init = ({ selector, lat = 43.5754794945, lng = -125.260128026, scenario = '6368', iteration = '1', year = '2011' }) => {
   // Initialize container
   if (!selector) {
     mapContainer = document.getElementById('map');
@@ -105,8 +104,6 @@ model.init = ({ selector, lat = 22.234262, lng = -159.784857, scenario = '6368',
     mapContainer = selector;
   }
 
-  
-  
   
   stateclassGroup = new L.layerGroup()
 
@@ -116,7 +113,6 @@ model.init = ({ selector, lat = 22.234262, lng = -159.784857, scenario = '6368',
  map = L.map(mapContainer, {
     center: [lat, lng],
     zoom: 6,
-   // minZoom: 5,
     maxZoom: 18,
     attributionControl: true,
     touchZoom: false,
@@ -172,20 +168,8 @@ model.mapLayers = () =>{
     return groupLength
 }
 model.preLoadRasters = (slider,d, startYear, endYear) => {
- 
-  // let startYear = project.details.years.start
-   //let endYear = project.details.years.end
-      //const feature = project.details.secondary_stratum.find((item) => item.id === args[0].secondary_stratum);
-      //feature = project.details.jsonlayer.sec_strata.features.find((item) => item.properties.name === args[0].secondary_stratum);
-   
-
-   //let startYear = project.details.years[0][variableType][0].start
-    //let endYear = project.details.years[0][variableType][0].end
    let yearArray = range(startYear,endYear,5)
-   
-   //console.log(maps[0]._tilePane.childElementCount)
    let yearLength = yearArray.length
-   //let layerKeys = maps[0]._tilePane.childElementCount//Object.keys(maps[0]._layers)
    let layerKeys = maps[0]._panes.overlayPane.childElementCount
    let width = project.details.width
    let height = project.details.height
@@ -201,7 +185,7 @@ model.preLoadRasters = (slider,d, startYear, endYear) => {
     
     
     let lastMap = maps.length-1
-    //let startYear = parseInt(args[0].year)
+    
     for (i = 0; i < maps.length; i++) {
       
 
@@ -218,78 +202,43 @@ model.preLoadRasters = (slider,d, startYear, endYear) => {
           
           let yearstring = yearArray[j].toString()
           
-          //const url = `http://127.0.0.1:8000/tiles/s${mapscenario}-it${iterationval}-ts${yearstring}-sc/{z}/{x}/{y}.png?style=lulc`;
+          
          let url
           if (layer === "1"){
 
-           //url = `${window.tileEndpoint}s${mapscenario}-it${iterationval}-ts${yearstring}-sc/{z}/{x}/{y}.png?style=lulc`;
-         // url =  `http://127.0.0.1:8000/api/rstores/s${mapscenario}-it${iterationval}-ts${yearstring}-sc/?style=lulc&format=png`;
+        
           url = `${window.tileEndpoint}s${mapscenario}-it${iterationval}-ts${yearstring}-sc/1/${width}/${height}.png?style=lulc`;
          
            
           }else{
-          //url = `${window.tileEndpoint}s${mapscenario}-it${iterationval}-ts${yearstring}-sc/1/1/1.png?style=lulc`;
-         //url =  `http://127.0.0.1:8000/api/rstores/s${mapscenario}-it${iterationval}-ts${yearstring}-sc/?style=lulc&format=png`;
-      
-            //url = `${window.tileEndpoint}s${mapscenario}-it0000-ts${yearstring}-tgap${layer}/{z}/{x}/{y}.png?style=${layer}`
+         
             url = `${window.tileEndpoint}s${mapscenario}-it0000-ts${yearstring}-tgap${layer}/1/${width}/${height}.png?style=${layer}`
           }
+
           let imageBounds =project.details.bb_box
-          //let imageBounds = [[22.3883299982, -159.85461369],[18.7379531081, -154.459224592]]//[[22.59372606392931,-160.3125],[19.31114335506464,-154.6875]]
-          // [
-          //       [
-          //           31.300599,
-          //           -125.260128
-                    
-          //       ],
-          //       [
-          //           31.300599,
-          //           -113.749296
-                    
-          //       ],
-          //       [
-          //           43.575479,
-          //           -113.749296
-                    
-          //       ],
-          //       [
-          //           43.575479,
-          //           -125.260128
-                    
-          //       ],
-          //       [
-          //           31.300599,
-          //           -125.260128
-                
-          //       ]
-          //   ]
+         
         let stateclassTiles =  L.imageOverlay(url, imageBounds, {
-         //let stateclassTiles = L.tileLayer(url, {
+         
             attribution: 'LULC: <a href="http://landcarbon.org">LandCarbon</a>',
-           // maxZoom: 19,
             opacity: 0,
             subdomains: 'abcd',
-            //tileSize: 512,
-          
-            //scenario: '6368',
-            //iteration: '0001',
             id: yearstring,
             });
         
           stateclassGroups[i].addLayer(stateclassTiles)
-          //stateclassLayers.push(stateclassTiles)
+          
         }
        
-       // var streets = new L.layerGroup(stateclassLayers).addTo(maps[i]);
+       
         stateclassGroups[i].addTo(maps[i]);
-        //stateclassLayers[10].on("load",function() { console.log('layersloaded'), slider.playbackRate(.5)});
+  
         stateclassGroups[i].setZIndex(5)
 
         if (i === lastMap){
-        let startLayer = (yearLength-1)/2
+          let startLayer = (yearLength-1)/2
         
-        stateclassGroups[i].getLayers()[startLayer].on("load",function() {mapStatus('loaded'), slider.playbackRate(.5)});
-       // stateclassLayers.addTo(maps[i]);
+          stateclassGroups[i].getLayers()[startLayer].on("load",function() {mapStatus('loaded'), slider.playbackRate(.5)});
+       
       }
 
      
@@ -333,14 +282,7 @@ model.updateRaster = (...args) => {
     if (args[0].secondary_stratum && args[0].secondary_stratum !== settings.secondary_stratum) {
       settings.secondary_stratum = args[0].secondary_stratum;
       project = projects.getDetailsForId(args[0].project);
-      
-      //const feature = project.details.secondary_stratum.find((item) => item.id === args[0].secondary_stratum);
-      //feature = project.details.jsonlayer.sec_strata.features.find((item) => item.properties.name === args[0].secondary_stratum);
       feature = project.details.secondary_stratum.find((item) => item.id === args[0].secondary_stratum);
-      /*if (feature.geom) {
-        const tempLayer = L.geoJson(feature.geom);
-        map.fitBounds(tempLayer.getBounds());
-      }*/
       update = true;
     }
   }
@@ -392,26 +334,21 @@ model.updateRaster = (...args) => {
 
 
 model.updateIndividualRaster = (...args) => {
- //settings.iteration_number = leftPad(settings.iteration_number)
-
 
    update = true;
   if (update) {
-      //project = projects.getDetailsForId(args[0].project);
+     
       let width = project.details.width
       let height = project.details.height
-      console.log(width)
-      console.log(height)
+      
       let individualMap = args[0].index_val
       let scenarios = settings.scenario.split(',')
-      //scenario = args[0].value
-      //let mapscenario = scenarios[individualMap]
       let iteration =  leftPad(args[0].iteration_number)
       let year = args[0].year
       let scenario = args[0].scenario
       let layer = args[0].layer
       
-      //settings.iteration_number = args[0].iteration_number
+     
       settings.iteration_array[individualMap] = leftPad(args[0].iteration_number.toString())
       settings.year = args[0].year
       scenarios[individualMap] = args[0].scenario
@@ -422,16 +359,14 @@ model.updateIndividualRaster = (...args) => {
       let url
       if (layer === "1"){
 
-      //url = `${window.tileEndpoint}s${scenario}-it${iteration}-ts${year}-sc/{z}/{x}/{y}.png?style=lulc`;
+     
       url = `${window.tileEndpoint}s${scenario}-it${iteration}-ts${year}-sc/1/${width}/${height}.png?style=lulc`;
-   // url =  `http://127.0.0.1:8000/api/rstores/s${mapscenario}-it${settings.iteration_number}-ts${settings.year}-sc/?style=lulc&format=png`;
+  
        
       }else{
        
-     
-      // url = `${window.tileEndpoint}s${scenario}-it0000-ts${year}-tgap${layer}/{z}/{x}/{y}.png?style=${layer}`
        url = `${window.tileEndpoint}s${scenario}-it0000-ts${year}-tgap${layer}/1/${width}/${height}.png?style=${layer}`
-        // url =  `http://127.0.0.1:8000/api/rstores/s${mapscenario}-it${settings.iteration_number}-ts${settings.year}-sc/?style=lulc&format=png`;
+        
       }
      
       
@@ -453,13 +388,9 @@ model.reloadMap = (...args) => {
 
   
   let update = true;
-  //console.log(args[0].year)
   settings.year=2011
   if (args && args[0]) {
-    /*if (args[0].year && args[0].year !== settings.year) {
-      settings.year = args[0].year;
-      update = true;
-    }*/
+    
     if (args[0].scenario && args[0].scenario !== settings.scenario) {
       settings.scenario = args[0].scenario;
       update = true;
@@ -487,7 +418,6 @@ model.reloadMap = (...args) => {
     if (args[0].project && args[0].project !== settings.project) {
       settings.project = args[0].project;
       project = projects.getDetailsForId(args[0].project);      
-      //feature = project.details.jsonlayer.sec_strata.features.find((item) => item.properties.name === args[0].secondary_stratum);
       feature = project.details.secondary_stratum.find((item) => item.id === args[0].secondary_stratum);
      
       update = true;
@@ -546,39 +476,11 @@ if (update) {
   subdomains: 'abcd',
   maxZoom: 19,
 });
- //let testurl = 'http://127.0.0.1:8000/api/rstores/s1120-it0001-ts2090-sc/?style=lulc&format=png'
-//let imageBounds = [[31.300599, -125.260128], [ 43.575479,-113.749296]]
+ 
 
- let imageBounds =project.details.bb_box//[[22.3883299982, -159.85461369],[18.7379531081, -154.459224592]][[22.59372606392931,-160.3125],[19.31114335506464,-154.6875]]//[[ 22.234262, -159.784857], [ 18.915694, -154.808719]]
+ let imageBounds =project.details.bb_box
                   
- // [
- //                [
- //                    31.300599,
- //                    -125.260128
-                    
- //                ],
- //                [
- //                    31.300599,
- //                    -113.749296
-                    
- //                ],
- //                [
- //                    43.575479,
- //                    -113.749296
-                    
- //                ],
- //                [
- //                    43.575479,
- //                    -125.260128
-                    
- //                ],
- //                [
- //                    31.300599,
- //                    -125.260128
-                
- //                ]
- //            ]
-//const stateclassTiles = L.tileLayer('${window.tileEndpoint}s6370-it0001-ts2011-sc/{z}/{x}/{y}.png', {
+ 
 const stateclassTiles = L.imageOverlay('${window.tileEndpoint}s6370-it0001-ts2011-sc/1/${width}/${height}.png', imageBounds, {
   attribution: 'LULC: <a href="http://landcarbon.org">LandCarbon</a>',
  maxZoom: 19,
@@ -587,16 +489,6 @@ subdomains: 'abcd',
   
   });
 
-// const stateclassTiles = L.tileLayer('${window.tileEndpoint}s6370-it0001-ts2011-sc/{z}/{x}/{y}.png', {
-//  attribution: 'LULC: <a href="http://landcarbon.org">LandCarbon</a>',
- // maxZoom: 19,
- // opacity: 1,
- // subdomains: 'abcd',
-  //tileSize: 512,
-  //scenario: '6368',
-  //iteration: '0001',
-  //year: '2001'
- // });
 
 
 const mapboxTiles = L.tileLayer('https://api.mapbox.com/styles/v1/defjeff/cj5o5h3i04zp82smolfwvzwmh/tiles/256/%7Bz%7D/%7Bx%7D/%7By%7D?access_token=pk.eyJ1IjoiZGVmamVmZiIsImEiOiJjajVtd24xMzgzYWRyMzNvMmo5cWo3ZTM4In0.Jgu3IRnkLYwpDOzdhuMkHw', {
@@ -618,11 +510,8 @@ const Esri_WorldImagery = L.tileLayer(
 // https: also suppported.
 
 maps[i] =  L.map(id, {
-      //center: ["22.234262", "-159.784857"],
       center: ["43.5754794945", "-125.260128026"],
-      
       zoom: 9,
-      //minZoom: 5,
       maxZoom: 19,
       attributionControl: true,
       touchZoom: false,
@@ -683,22 +572,13 @@ let strat_TileLayer = new L.TileLayer.GeoJSON(stratUrl, {
                     
                     layer.setStyle(hoverStyle);
 
-                    //layer.bindPopup(popupString, {className: 'my-popup'}).openPopup();
-                    /* popup
-                        .setLatLng([e.latlng.lat,e.latlng.lng])
-                        .setContent(popupString)
-                        .openOn(strataMap);
-
-                          
-                      layer.bindPopup(popup); */
 
 
                 });
                 layer.on('mouseout', function () {
                    
                     layer.setStyle(style);
-                    /*strataMap.closePopup();*/
-                    //stratamap.closePopup(popup);
+                  
                     
                 });
             }
@@ -723,7 +603,7 @@ let sec_Strat_TileLayer = new L.TileLayer.GeoJSON(secStratUrl, {
                 for (var k in feature.properties) {
                     var v = feature.properties[k];
                     if (k==='label'){
-                      //popupString += k + ': ' + v + '<br />';
+                      
                       popupString += v + '<br />';
 
                     }
@@ -732,7 +612,7 @@ let sec_Strat_TileLayer = new L.TileLayer.GeoJSON(secStratUrl, {
             if (!(layer instanceof L.Point)) {
                  var popup = L.popup()
                  layer.on("click", function (e) {
-                     // var bounds = layer.getBounds();
+                    
                       var popupContent = popupString;
                       popup.setLatLng([e.latlng.lat,e.latlng.lng])
                       popup.setContent(popupContent);
@@ -742,16 +622,12 @@ let sec_Strat_TileLayer = new L.TileLayer.GeoJSON(secStratUrl, {
                     
                     layer.setStyle(hoverStyle);
 
-                    //layer.bindPopup(popupString, {className: 'my-popup'}).openPopup();
-              
-
 
                 });
                 layer.on('mouseout', function () {
                    
                     layer.setStyle(style);
-                   // strataMap.closePopup();
-                    //stratamap.closePopup(popup);
+                   
                     
                 });
             }
@@ -760,7 +636,7 @@ let sec_Strat_TileLayer = new L.TileLayer.GeoJSON(secStratUrl, {
 )
 
 var baseMaps = {
- /* "mapBox": mapboxTiles,*/
+    /* "mapBox": mapboxTiles,*/
     "Grayscale": cartoDBPositron,
     "Imagery": Esri_WorldImagery
     
@@ -794,17 +670,10 @@ var overlayMaps = {
     const label = document.createElement("label");
     label.htmlFor = "inputLayer_"+index.toString()
     label.className = 'custom-layer-control'
-    
-    //label.htmlFor = "custom-layer-control";
     control.parentNode.insertBefore(label, control.nextSibling);
     
   })
   
-
-
-  //stateclassTiles.addTo(maps[i]) 
-  //const url = `http://127.0.0.1:8000/api/rstores/s${mapscenario}-it${settings.iteration_number}-ts${settings.year}-sc/?style=lulc&format=png`
-  //const url = `${window.tileEndpoint}s${mapscenario}-it${settings.iteration_number}-ts${settings.year}-sc/{z}/{x}/{y}.png?style=lulc`;
   const url = `${window.tileEndpoint}s${mapscenario}-it${settings.iteration_number}-ts${settings.year}-sc/1/${width}/${height}.png?style=lulc`;
  
   stateclassTiles.setUrl(url);
@@ -851,32 +720,6 @@ var overlayMaps = {
 
   }
   
- 
-
-  //let test = `http://127.0.0.1:8000/locations/${secStratumVal}/`&#39;
-  
-  //let locationPath = `http://127.0.0.1:8000/locations/${secStratumVal}/`
-
-  
-
-   
-        
-       // console.log(maps[i])
-
-
-        
- /* $.getJSON(test, function(data) {
-    console.log(data)
-    console.log(feature.geom)
-        tempLayer = L.geoJson(data);
-        maps[i].fitBounds(tempLayer.getBounds());
-    })*/
-
-  /*  if (feature.geom) {
-      
-      tempLayer = L.geoJson(feature.geom);
-        maps[i].fitBounds(tempLayer.getBounds());
-    }*/
       
   }
 

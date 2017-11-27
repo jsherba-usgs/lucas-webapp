@@ -224,7 +224,7 @@ header .device-container .screen img {
 }
 @media (min-width: 768px) {
   header {
-	  height:60%;
+	  height:65%;
     min-height: 60%;
     box-shadow: 0 4px 2px -2px gray;
   }

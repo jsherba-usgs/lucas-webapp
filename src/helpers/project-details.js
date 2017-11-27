@@ -54,7 +54,8 @@ const projectDetails = [
           years: [2011,2061],
         },
       ],
-      bb_box:[[22.3883299982, -159.85461369],[18.7379531081, -154.459224592]],
+      //bb_box:[[22.3883299982, -159.85461369],[18.7379531081, -154.459224592]],
+      bb_box:[[22.4, -159.88],[18.72, -154.48]],
      /* years:{
          start: 2011,
          end:2061
@@ -455,8 +456,10 @@ const projectDetails = [
         'VEGETATION CHANGE: Shrubland->Forest',
         'VEGETATION CHANGE: Shrubland->Grassland'
       ],
-      height: 1620,
-      width: 2200, 
+      //height: 1620,
+      //width: 2200, 
+      height: 1600,
+      width: 2200,
     }
   },
   {
@@ -501,6 +504,7 @@ const projectDetails = [
         },
       ],
       bb_box:[[42.005860, -124.473333],[32.532193, -114.144959]],
+      
 
      
        years:[{
