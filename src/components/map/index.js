@@ -173,9 +173,10 @@ model.preLoadRasters = (slider,d, startYear, endYear) => {
    let layerKeys = maps[0]._panes.overlayPane.childElementCount
    let width = project.details.width
    let height = project.details.height
-   
+    console.log(layerKeys)
+    console.log(yearLength)
    if (layerKeys < yearLength){
-    
+   
    slider.playbackRate(0)
   
    let loadRasters = function(slider, d){

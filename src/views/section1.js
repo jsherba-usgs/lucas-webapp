@@ -45,7 +45,8 @@ const view = {
     // Init map
     
     leafletMap.init(mapContainer);
-
+    let startYear = 2011
+    let endYear = 2061
     let sliderVals = []
     for(var i=2011; i<=2061;i=i+5) {
     sliderVals.push(i);
@@ -74,11 +75,11 @@ const view = {
         const year = d.getFullYear();
         
         let loadAll = function(slider,d){
-        
+          
           if (initiateChart === false){
 
-          
-          leafletMap.preLoadRasters(slider, d)
+        
+          leafletMap.preLoadRasters(slider, d, startYear, endYear)
           
           }
           initiateChart=false
@@ -151,7 +152,7 @@ const view = {
         .on('click', () => slider.stop());
   },
   sliderupdate(details, variableType){
-   
+    
     startYear = details.years[0][variableType][0].start
     endYear = details.years[0][variableType][0].end
     sliderContainer.querySelector('.slider').remove()
@@ -182,7 +183,7 @@ const view = {
         if (stopValue!==true){
           const year = d.getFullYear();
          
-             
+          
           let loadAll = function(slider,d){
             
             if (initiateChart === false){

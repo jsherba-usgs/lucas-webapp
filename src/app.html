@@ -26,60 +26,30 @@
       <div id="wrapper">
 
         <!-- Banner -->
-         <section id="banner" class="major">
+         <section id="banner">
             <div class="inner">
               <header class="major">
-                <h1 id="header_title"><!--Land Change Projections for Hawai'i--></h1>
+                <h1 id="header_title">Land Change Projections for Hawai'i</h1>
               </header>
 
-          <div id="filters_project">
-
-              </div>
-
-              <button class="tablink" onclick="openPage('Map', this, 'red')" id="defaultOpen">Maps</button>
-              <button class="tablink" onclick="openPage('Graphs', this, 'green')" >Graphs</button>
+              <button class="tablink" onclick="openPage('Map', this, 'red')" id="defaultOpen">Map</button>
+              <button class="tablink" onclick="openPage('Graphs', this, 'green')" >Graph</button>
               <button class="tablink" onclick="openPage('Download', this, 'blue')">Download</button>
-
-              <div class="content" id="header_content">
-            
-                
-              </div>
-             
              
             </div>
-        </section>
+         </section>
 
-        <hr>
-        <!-- Contact -->
-     <!--   <section id="filters">
-
-          </section>-->
-        <hr/>
 
         <!-- Main -->
           <div id="main">
 
             <!-- One -->
-            <div id="Map" class="tabcontent">
+          <!--  <div id="Map" class="tabcontent">-->
               <section id="one">
-                <div class="inner">
-                  <header class="major">
-                    <h2>Change Accross the Landscape</h2>
-                  </header>
-                  <p>
-                    Land-use and carbon were modeled between 2011 and 2061 for the Hawai'ian Islands at the 1x1 km scale. The model was run over 20 monte carlo iterations to produce a distribution of projected results
-                     
-                   
-                  </p>
-
-                    The map below shows the change in land-use or carbon over the simulation period for the selected combination of scenario, iteration, and strata. Use the controls below the map to change the year, scenario, iteration or land-use layer on the map. 
-
-                   The chart below displays trajectories of landscape change through time. Use the play, pause and stop controls or move the slider to animate the map through time. 
-               
-                </div>
+                
                
               <div class="inner-section1">
-               <div class="row">
+               <!--<div class="row">
                 <article class="col threefifth">
                   <div class="framecontrols inline">
                           
@@ -96,6 +66,9 @@
                  <div class="inline infoButtonRow"><a class ='infoButton overlayOpen' id="overlayOpen" href="#overlay"><i class="fa fa-info-circle" aria-hidden="true"></i></a></div>
                 </article>
                 <article class="col twofifth">
+                      <div class="controls"></div>
+                      <div class="chroniton-slider"></div>
+                      
                  </article>
                </div>
                 <div class="row">
@@ -112,36 +85,75 @@
                       
                      
                   </article>
-                </div>
-                
-                  <article id="chartarticle" class="col twofifth">
-                     
+                </div>-->
 
-                    <div class="box largechartbox" id="largechartboxsection1">
-                      <div id ="chartSection1Title" class="chart-title"></div>
+                <div class="row">
+                 
+                  <article id="maparticle" class="col">
+                      
+                      <div class="box">
+                        <div class="row" id="mapfilters">
+                          
+                        </div>
+                        <div id="map"></div>
+                        
                      
-                      <div class="chroniton-slider"></div>
-                      <div class="controls"></div>
-                     
-                    </div>  
-
-                     
-
-                    
+                      </div>
+                      
                      
                   </article>
+                </div>
+                <div class="row">
+                  <article class="col twofifth">
+                        
+                        <div class="chroniton-slider"></div>
+                        <div class="controls"></div>
+                   </article>
+                  <article class="col threefifth">
+                    <div class="framecontrols inline">
+                            
+                            <button id="removeframe" type="button" class="framebutton" data-type="minus" data-field="quant[1]">
+                                    -
+                              </button>
+                               <button id="addframe" type="button" class="framebutton" data-type="plus" data-field="quant[1]">
+                                 +
+                              </button>
+                             
+                    </div>
+
+                  
+                   <div class="inline infoButtonRow"><a class ='infoButton overlayOpen' id="overlayOpen" href="#overlay"><i class="fa fa-info-circle" aria-hidden="true"></i></a></div>
+                  </article>
+                  
+               </div>
+               
                
                 
 
                   </div>
-                </div>
+               <!-- </div>-->
                
                  </div>
              
-                 <br><br>
                 
-                 <hr/>
               </section>
+              <section id="two">
+                <div class="inner">
+                    <header class="major">
+                      <h2>Change Accross the Landscape</h2>
+                    </header>
+                    <p>
+                      Land-use and carbon were modeled between 2011 and 2061 for the Hawai'ian Islands at the 1x1 km scale. The model was run over 20 monte carlo iterations to produce a distribution of projected results
+                       
+                     
+                    </p>
+
+                      The map below shows the change in land-use or carbon over the simulation period for the selected combination of scenario, iteration, and strata. Use the controls below the map to change the year, scenario, iteration or land-use layer on the map. 
+
+                     The chart below displays trajectories of landscape change through time. Use the play, pause and stop controls or move the slider to animate the map through time. 
+                 
+                  </div>
+                </section>
               </div> 
 
            
