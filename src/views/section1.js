@@ -52,22 +52,7 @@ const view = {
     }
     let initiateChart = true
     
-    timeseriesChart = chart()
-      .width(chartContainer.offsetWidth)
-      .height(chartContainer.offsetHeight || 400)
-      .xDomain([new Date(2011, 0), new Date(2061, 0)])
-      .yAxisAnnotation('Area (km²)')
-
-    xScale = d3.time.scale().nice();
-
-
-  // X Axis on top of chart
-    xAxis = d3.svg.axis()
-      .scale(xScale)
-      .orient('bottom')
-      .tickFormat(d3.time.format('%Y'))
-      .tickValues([new Date(2011, 0), new Date(2021, 0), new Date(2031, 0), new Date(2041, 0), new Date(2051, 0), new Date(2061, 0)])
-     // .color(stateclassColorScale);
+    
      let sliderYear = 2011
     // Init date slider
     slider = chroniton()
@@ -118,7 +103,7 @@ const view = {
               sliderYear = year
              }
          
-        timeseriesChart.moveTooltip(year);
+       // timeseriesChart.moveTooltip(year);
         
       })
       .playbackRate(.5);
@@ -233,7 +218,7 @@ const view = {
 
            if (slider.isAtEnd()){slider.pause();}
 
-           timeseriesChart.moveTooltip(year);
+          // timeseriesChart.moveTooltip(year);
         }  
         stopValue=false
         
@@ -351,13 +336,18 @@ const view = {
     leafletMap.updateRaster(options);
   },
   updateIndividualMap(options) {
+
     leafletFilters.updateIndividualLegend(options)
     leafletMap.updateIndividualRaster(options);
+    
   },
   reloadMap(options, addMapLegend) {
+    
     leafletMap.reloadMap(options);
+    
     leafletFilters.init(options, addMapLegend)
 
+    
   },
   chartStatus(status) {
     switch (status) {

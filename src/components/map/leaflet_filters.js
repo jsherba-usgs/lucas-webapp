@@ -235,7 +235,7 @@ model.init = (options, addMapLegends) => {
  //const addMapLegends2 = addMapLegends()
  
  let scenarioOptions = options.scenario.split(",").slice(0,3)
-console.log(scenarioOptions)
+
  
  filtersContainer = document.getElementById('mapfilters');
 
@@ -243,45 +243,31 @@ while (filtersContainer.hasChildNodes()) {
     filtersContainer.removeChild(filtersContainer.lastChild);
 }
  scenarioOptions.forEach((scenarioval) => {
-
+  
   filtersContainer.innerHTML += content
- /* $('#collapseExample2').collapse('show'),
-  addMapLegends()*/
+ 
 
  });
  legendInput = filtersContainer.querySelectorAll('a');
  legendInputDiv = filtersContainer.querySelectorAll('div.collapsedivs');
  
- /*legendInput.forEach((legendDiv, index_val) => {
-  index_string = index_val.toString()
-  legendInput[index_val].hash = legendInput[index_val].hash+index_string, 
-  legendInputDiv[index_val].id = legendInputDiv[index_val].id+index_string
-  //$('#collapseExample'+index_string).collapse('toggle')
-  //console.log(legendInputDiv[index_val])//.collapse('show')
- });
- addMapLegends()
- legendInputDiv.forEach((legendDiv, index_val) => {
-
-  $('#collapseExample'+index_val.toString()).collapse('toggle');
-  })*/
-
-
  mapscenarioSelect = filtersContainer.querySelectorAll('select[name=mapscenario]');
  
- filtersContainer2 = document.getElementById('filters');
- scenarioSelect = document.querySelectorAll('input[name=scenario_checkboxes]:checked')
+ //filtersContainer2 = document.getElementById('filters');
+ //scenarioSelect = document.querySelectorAll('input[name=scenario_checkboxes]:checked')
  //scenarioSelect = filtersContainer2.querySelector('div[name=scenario]');
+ //console.log(scenarioSelect)
+ //console.log("test3")
+ //filtersContainer3 = document.getElementById('filters_project');
+ //projectSelect = filtersContainer3.querySelector('select[name=project]');
 
- filtersContainer3 = document.getElementById('filters_project');
- projectSelect = filtersContainer3.querySelector('select[name=project]');
+ scenarios = [{name:"6370", id:"6370"}]//getCheckBoxValuesList(scenarioSelect) 
+
+
+
+ //selectedProjects = GetSelectValues(projectSelect)
  
- scenarios = getCheckBoxValuesList(scenarioSelect) 
-
-
-
- selectedProjects = GetSelectValues(projectSelect)
- 
- projectId = selectedProjects[0].id
+ projectId = options.project//selectedProjects[0].id
 
  /*scenarios.forEach((scenario) => {
    
@@ -309,6 +295,7 @@ layers = projects.getDetailsForId(projectId).details.layer;
 
 layerInput = filtersContainer.querySelectorAll('select[name=maplayer]');
 
+
 layers.forEach((layer, indexval) => {
   layerInput.forEach((layerDiv, indexval2) => {
       const option = document.createElement('option');
@@ -329,16 +316,17 @@ yearInput = filtersContainer.querySelectorAll('input[name=year]');
 yearInput.forEach((yearDiv) => {yearDiv.disabled = false;});
 yearInput.disabled = false;
 
-scenarioSelect.onchange = updateYearInput;
-scenarioSelect.onchange();
+//scenarioSelect.onchange = updateYearInput;
+//scenarioSelect.onchange();
 
-scenarioSelect.onchange = updateIterationInput;
-scenarioSelect.onchange();
+//scenarioSelect.onchange = updateIterationInput;
+//scenarioSelect.onchange();
 
-mapscenarioSelect.onchange = updateFields;
-mapscenarioSelect.onchange();
+//mapscenarioSelect.onchange = updateFields;
+//mapscenarioSelect.onchange();
 
 layerInput.onchange = updateLayerLegend(addMapLegends);
+
 
 //layerInput.onchange(addMapLegends);
   //updateFields()
