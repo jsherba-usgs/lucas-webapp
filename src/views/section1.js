@@ -62,7 +62,7 @@ const view = {
       .domain([new Date(2011, 0), new Date(2061, 0)])
       .labelFormat(d3.time.format('%Y'))
       .width(sliderContainer.offsetWidth)
-      .margin({ top: 10, right: 20, bottom: 20, left: 80})
+      .margin({ top: 10, right: 25, bottom: 10, left: 25})
       // TODO: Refactor axis tick values to add ticks every n years
       // instead of hardcoding values below
       .tapAxis((axis) => axis.tickValues([new Date(2011, 0), new Date(2021, 0), new Date(2031, 0), new Date(2041, 0), new Date(2051, 0), new Date(2061, 0)]))

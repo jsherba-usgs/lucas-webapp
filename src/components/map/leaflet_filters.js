@@ -91,7 +91,7 @@ function updateLayerLegend(addMapLegends){
   legendInput[index_val].hash = legendInput[index_val].hash+index_string, 
   legendInputDiv[index_val].id = legendInputDiv[index_val].id+index_string
   //$('#collapseExample'+index_string).collapse('toggle')
-  //console.log(legendInputDiv[index_val])//.collapse('show')
+  //legendInputDiv[index_val].collapse('show')
  });
  addMapLegends()
  /*legendInputDiv.forEach((legendDiv, index_val) => {

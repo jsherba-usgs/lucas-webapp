@@ -142,8 +142,29 @@ function addMapLegends(){
     let scenarios = initialDetails.scenario
 
 
+function addframe(){
+    
+    if (scenarios.split(",").length <3){
+    let lastScenario = scenarios.split(",").slice(-1).pop()
+    initialDetails.scenario = initialDetails.scenario + "," + lastScenario
+    section1.reloadMap(initialDetails, addMapLegends);
+    document.getElementById('addremoveframe').onclick = function() { removeframe(); }
+    document.getElementById('addremoveframe').innerText= "Remove Map Frame";
+    }
+  }
 
-   function addframe(){
+  function removeframe(){
+    if (initialDetails.scenario.split(",").length >=2){
+      let scenarios = initialDetails.scenario.split(",").slice(0,-1).join(",")
+       initialDetails.scenario = scenarios
+      section1.reloadMap(initialDetails, addMapLegends);
+      document.getElementById('addremoveframe').onclick = function() { addframe(); }
+      document.getElementById('addremoveframe').innerText= "Add Map Frame";
+    }
+  }
+
+
+   /*function addframe(){
     
     if (scenarios.split(",").length <3){
     let lastScenario = scenarios.split(",").slice(-1).pop()
@@ -158,11 +179,15 @@ function addMapLegends(){
        initialDetails.scenario = scenarios
       section1.reloadMap(initialDetails, addMapLegends);
     }
-  }
+  }*/
 
 
-  document.getElementById("addframe").onclick = addframe;
-  document.getElementById("removeframe").onclick = removeframe;
+  
+
+  //document.getElementById( "testButton" ).onclick = testAdd;
+  document.getElementById('addremoveframe').onclick = addframe;
+ // document.getElementById("addframe").onclick = addframe;
+  //document.getElementById("removeframe").onclick = removeframe;
     
 
   section1.reloadMap(initialDetails, addMapLegends)

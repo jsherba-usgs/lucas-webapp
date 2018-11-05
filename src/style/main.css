@@ -255,9 +255,54 @@
 		margin: 2em 0;
 	}
 
-		hr.major {
+	hr.major {
 			margin: 3em 0;
 		}
+
+.flex-mapcontrols1{
+	height:50px;
+	flex:1;
+	height:auto;
+	margin-bottom:60px;
+	
+}
+.flex-mapcontrols2{
+	flex:2;
+	height:auto;
+	margin-bottom:60px;
+}
+.flex-mapcontrols3{
+	flex:1;
+	height:auto;
+	
+}
+
+	
+
+	.flex-article1{
+		flex: calc(100% * 0.2);
+		background: #F5F5F5;
+		margin:5px;
+	  padding: 0px;
+	  width: 250px;
+	  
+	  margin-top: 10px;
+	  
+	}
+
+	.flex-article2{
+		flex: calc(100% * 0.5);
+		
+		
+		
+	  padding: 0px;
+	  width: 250px;
+	  
+	  margin-top: 10px;
+	  
+	  
+	}
+
 
 	.align-left {
 		text-align: left;
@@ -279,6 +324,12 @@
 		flex-direction: row;
 	}
 
+	.rowvertical {
+		display: flex;
+		flex-direction: column;
+		justify-content:space-around;
+	}
+
 	.col {
 		flex: 1;
 
@@ -287,7 +338,8 @@
 
   .col.half {
     flex: calc(100% * 0.5);
-
+    padding-right: 0px; 
+    padding-left: 0px;
   }
 
   .col.onefour {
@@ -312,8 +364,9 @@
   }
   .col.onethird {
     flex: calc(100% * 0.33);
-    justify-content: center;
+    justify-content: left;
  	align-items: center;
+ 	 
   }
   .col.onefive {
     flex: calc(100% * 0.20);
@@ -2125,9 +2178,7 @@
 * Section 1 Chart and Map Elements
 **********************************/
 #one #map {
-	height: 550px;
-	margin-left:20px;
-	margin-right:20px;
+	height: 600px;
 }
 
 /**********************************
@@ -2215,7 +2266,7 @@
 .controls {
 	text-align: center;
 	margin-top: 15px;
-	margin-left:90px;
+	
 }
 
 /* Chart tooltip */
