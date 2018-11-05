@@ -58,7 +58,7 @@ const view = {
     // Init date slider
     slider = chroniton()
       // TODO: Refactor - get range of years from data, instead of hardcoding values below
-    
+      .loop(true)
       .domain([new Date(2011, 0), new Date(2061, 0)])
       .labelFormat(d3.time.format('%Y'))
       .width(sliderContainer.offsetWidth)
@@ -107,7 +107,7 @@ const view = {
        // timeseriesChart.moveTooltip(year);
         
       })
-      .playbackRate(.5);
+      .playbackRate(5);
 
    
 

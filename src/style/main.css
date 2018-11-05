@@ -281,12 +281,14 @@
 
 	.flex-article1{
 		flex: calc(100% * 0.2);
-		background: #F5F5F5;
-		margin:5px;
+		
+	  height:600px;
 	  padding: 0px;
 	  width: 250px;
-	  
-	  margin-top: 10px;
+	      margin-top: 10px;
+    margin-right: 5px;
+    margin-bottom: 0px;
+    margin-left: 5px;
 	  
 	}
 
@@ -324,10 +326,20 @@
 		flex-direction: row;
 	}
 
-	.rowvertical {
+	.rowvertical1 {
 		display: flex;
 		flex-direction: column;
 		justify-content:space-around;
+		background: #F5F5F5;
+		height:600px;
+	}
+	.rowvertical2{
+		.rowvertical1 {
+		display: flex;
+		flex-direction: column;
+		justify-content:space-around;
+		
+	}
 	}
 
 	.col {
@@ -1051,7 +1063,7 @@
 		text-decoration: none;
 		text-transform: uppercase;
 		white-space: nowrap;
-		background-color: #87A449;
+		background-color: #838EDE;
 		color: #fff;
 	}
 
@@ -2635,10 +2647,10 @@ input.mapfilters[type="number"]:focus,
 		}
 input.mapfilters, select.mapfilters{
 	width:10em;
-	font-size: 12pt;
+	font-size: 1em;
 	border:none;
 	height: 1.5em;
-	border-bottom: 1px solid #c9d4b2;
+	border-bottom: 2px solid #838ede;
 	
 }
 
@@ -2667,13 +2679,13 @@ height: auto;
 .control-label{
 	float:left;
 	text-align: left;
-	font-size: .6em;
+	font-size: 1em;
 	padding-top:0px;
 	margin:0px;
 }
 form .form-group{
 	margin-top:.1em;
-	margin-bottom:.5em;
+	margin-bottom:1em;
 	margin-left:.2em;
 	margin-right:0px;
 }

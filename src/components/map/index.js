@@ -238,7 +238,7 @@ model.preLoadRasters = (slider,d, startYear, endYear) => {
         if (i === lastMap){
           let startLayer = (yearLength-1)/2
         
-          stateclassGroups[i].getLayers()[startLayer].on("load",function() {mapStatus('loaded'), slider.playbackRate(.5)});
+          stateclassGroups[i].getLayers()[startLayer].on("load",function() {mapStatus('loaded'), slider.playbackRate(1)});
        
       }
 
