@@ -47,9 +47,11 @@ const view = {
     timeseriesChart = chartSmallMultiples()
     timeSeriesBarChart = barChart()
 
-
+    console.log("test2")
     const section2 = document.getElementById("two")
+
     const scenarioGroupCheckbox = section2.querySelector('input[id=scenarioGroup]');
+    console.log("test3")
     scenarioGroupCheckbox.checked = true
 
     const totalChangeCheckbox = section2.querySelector('input[id=totalChange]');

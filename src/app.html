@@ -5,7 +5,8 @@
   License: pixelarity.com/license
 -->
 <html>
-  <head>
+
+<head>
     <title>LandCarbon</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -18,179 +19,230 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
     <link href="https://fonts.googleapis.com/css?family=Lato:200,200italic,300,300italic,600,600italic|Catamaran:100,200,300,400,500,600,700,800,900|Muli|Roboto:500i|Open+Sans" rel="stylesheet">
-  
-  </head>
-  <body>
-     <nav id='navigation' class="modelsnav navbar-default"></nav>
 
-      <div id="wrapper">
+</head>
+
+<body>
+    <nav id='navigation' class="modelsnav navbar-default"></nav>
+
+    <div id="wrapper">
 
         <!-- Banner -->
-         <section id="banner">
+        <section id="banner">
             <div class="inner">
-              <header class="major">
-                <h1 id="header_title">Land Change Projections for Hawai'i</h1>
-              </header>
+                <header class="major">
+                    <h1 id="header_title">Land Change Projections for Hawai'i</h1>
+                </header>
+                <button class="tablink" id="tabSummary">Summary</button>
+                <button class="tablink" id="tabMap">Map</button>
+                <button class="tablink" id="tabGraph">Graph</button>
+                <button class="tablink" id="tabDownload">Download</button>
 
-              <button class="tablink" onclick="openPage('Map', this, 'red')" id="defaultOpen">Map</button>
-              <button class="tablink" onclick="openPage('Graphs', this, 'green')" >Graph</button>
-              <button class="tablink" onclick="openPage('Download', this, 'blue')">Download</button>
-             
             </div>
-         </section>
-
+        </section>
 
         <!-- Main -->
-          <div id="main">
+        <div id="main">
 
             <!-- One -->
-          <!--  <div id="Map" class="tabcontent">-->
-          <section id="two">
-                <div class="inner">
-                    <header class="major">
-                      <h2>Change Accross the Landscape</h2>
-                    </header>
-                   <!-- <p>
+            <div id="Summary" class="tabcontent inner">
+                Summary
+            </div>
+            <div id="Map" class="tabcontent inner">
+                <section>
+                    <div class="inner">
+                        <header class="major">
+                            <h2>Change Accross the Landscape</h2>
+                        </header>
+                        <!-- <p>
                       Land-use and carbon were modeled between 2011 and 2061 for the Hawai'ian Islands at the 1x1 km scale. The model was run over 20 monte carlo iterations to produce a distribution of projected results
-                       
-                     
+
                     </p>-->
 
-                      The map below shows the change in land-use or carbon over the simulation period for the selected combination of scenario, iteration, and strata. Use the controls below the map to change the year, scenario, iteration or land-use layer on the map. 
+                        The map below shows the change in land-use or carbon over the simulation period for the selected combination of scenario, iteration, and strata. Use the controls below the map to change the year, scenario, iteration or land-use layer on the map. The chart below displays trajectories of landscape change through time. Use the play, pause and stop controls or move the slider to animate the map through time.
 
-                     The chart below displays trajectories of landscape change through time. Use the play, pause and stop controls or move the slider to animate the map through time. 
-                 
-                  </div>
+                    </div>
                 </section>
-              <section id="one">
-                
-               
-              <div class="inner-section1">
+                <section id="one">
 
-                <div class="row">
-                   <article class="flex-article2" id="mapframebuttonbox">
-                    <div class="framecontrols inline">
+                    <div class="inner-section1">
 
-                                <button id="addremoveframe" type="button">
-                                          Add Map Frame
-                                </button>
-                                 
-                              </div>
-                    </article>
-                    <select class="mapfilters" name="maplayer"> <option value="1">Zoom to</option><option value="7129">AGRICULTURAL CONTRACTION</option><option value="7134">AGRICULTURAL EXPANSION</option><option value="7141">MOISTURE ZONE: Dry-&gt;Mesic</option><option value="7148">MOISTURE ZONE: Mesic-&gt;Dry</option><option value="7151">MOISTURE ZONE: Mesic-&gt;Wet</option><option value="7158">MOISTURE ZONE: Wet-&gt;Mesic</option><option value="7171">URBANIZATION</option></select>
+                        <div class="row">
+                            <article class="flex-article2" id="mapframebuttonbox">
+                                <div class="framecontrols inline">
+
+                                    <button id="addremoveframe" type="button">
+                                        Add Map Frame
+                                    </button>
+
+                                </div>
+                            </article>
+                            <select class="mapfilters" name="maplayer">
+                                <option value="1">Zoom to</option>
+                                <option value="7129">AGRICULTURAL CONTRACTION</option>
+                                <option value="7134">AGRICULTURAL EXPANSION</option>
+                                <option value="7141">MOISTURE ZONE: Dry-&gt;Mesic</option>
+                                <option value="7148">MOISTURE ZONE: Mesic-&gt;Dry</option>
+                                <option value="7151">MOISTURE ZONE: Mesic-&gt;Wet</option>
+                                <option value="7158">MOISTURE ZONE: Wet-&gt;Mesic</option>
+                                <option value="7171">URBANIZATION</option>
+                            </select>
+                        </div>
+                        <div class="row">
+                            <article class="flex-article1">
+                                <div class="rowvertical1">
+
+                                    <article class="flex-mapcontrols2">
+                                        <div class="row" id="mapfilters"></div>
+                                    </article>
+
+                                </div>
+                                <div class="rowvertical2">
+                                    <div class="controls"></div>
+                                </div>
+
+                            </article>
+                            <article id="maparticle" class="flex-article2">
+
+                                <div class="box">
+
+                                    <div id="map"></div>
+                                    <div class="chroniton-slider"></div>
+
+                                </div>
+
+                            </article>
+
+                        </div>
+
+                    </div>
+
+                </section>
+            </div>
+            <div id="Graph" class="tabcontent inner">
+                <div id="filters_project">
+
                 </div>
-                <div class="row">
-                   <article class="flex-article1">
-                        <div class="rowvertical1">
-                          <!-- <article class="flex-mapcontrols1">
-                               <div class="framecontrols inline">
+                <section id="filters">
 
-                                <button id="addremoveframe" type="button">
-                                          Add Map Frame
-                                </button>
-                                 
-                              </div>
-                              <div class="inline infoButtonRow"><a class ='infoButton overlayOpen' id="overlayOpen" href="#overlay"><i class="fa fa-info-circle" aria-hidden="true"></i></a></div>
-                          </article>-->
-                          <article class="flex-mapcontrols2">
-                            <div class="row" id="mapfilters"></div>
-                           </article>
-                          <!-- <article class="flex-mapcontrols3">
-                            
-                            <div class="controls"></div>
-                         </article>-->
-                      </div>
-                      <div class="rowvertical2">
-                          <div class="controls"></div>
-                      </div>
+                </section>
+                <!-- Two -->
+                <section id="two">
+                    <div class="inner">
+                        <header class="major">
+                            <h2>Totals and Net Change</h2>
+                        </header>
+                        <p>
+                            The charts below show the total land-use or carbon stocks over the simulation period. Click on the Net Change button to see the net amount of change. Group results by either scenario or class. Hover over the bars for more detailed tooltip.
+                        </p>
+                    </div>
 
-                  </article>
-                 <article id="maparticle" class="flex-article2">
-                      
-                      <div class="box">
-                        
-                        <div id="map"></div>
-                        <div class="chroniton-slider"></div>
-                     
-                      </div>
-                      
-                     
-                  </article>
-                 
-                  
-               <!--</div>
-                <div class="row">-->
-                 
-                 
-                </div>
-                
-               
+                    <div class="controls" style="margin: 1em 0;">
+                        <input class="total area active" name="change-checkbox" id="totalChange" type="radio" checked>
+                        <label for="totalChange">Totals</label>
+                        <input class="change area" name="change-checkbox" id="netChange" type="radio">
+                        <label for="netChange">Net Change</label>
+                    </div>
+                    <div class="controls" style="margin: 1em 0;">
+                        <input class="group_scenario group active" name="group-checkbox" id="scenarioGroup" type="radio" checked>
+                        <label for="scenarioGroup">Group Scenario</label>
+                        <input name="group-checkbox" id="classGroup" type="radio">
+                        <label class="group_class group" for="classGroup">Group Class</label>
+                    </div>
+                    <br>
+                    <div class="chart multiples"></div>
 
-                  </div>
-               <!-- </div>-->
-               
-                 </div>
-             
-                
-              </section>
-              
-              </div> 
+                    <div class='inner inner-section-2'>
+                        <div class="chart-legends">
 
-           
+                            <div class="row">
+                                <article class="col">
+                                    <p class="legendcollapsename">
+                                        <!--<div class="accordion-heading">-->
+                                        <a class="legendcollapsenametext accordion-toggle" data-toggle="collapse" href="#collapseLineGraphSection2" data-parent="#accordion2">
+                                  Show legend & data
+                                </a>
+                                        <a id="downloadsection2" class="downloadsection">
+                                  Download table 
+                                </a>
+                                    </p>
+                                </article>
+                            </div>
+                            <div class="row">
+                                <article class="col">
+                                    <div class="collapsedivsgraphs collapse in" id="collapseLineGraphSection2">
 
-          </div>
+                                        <div id="accordion-toggle" class="legends-section2">
 
-      </div>
+                                            <!--<div class="inline legend-stateclass2"></div>
+                                     <div class="inline legend-scenario2"></div>-->
+                                            <div class="legend-section2">
+                                                <table style="width:100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th></th>
+                                                            <th></th>
+                                                            <th>Class</th>
+                                                            <th>Scenario</th>
+                                                            <th>Area in 2011 (km<sup>2</sup>)</th>
+                                                            <th>Area in 2061 (km<sup>2</sup>)</th>
+                                                            <th>Change in (km<sup>2</sup>)</th>
+                                                            <th>Change in %</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class='legend-section2-body' id="legend-section2-body">
 
-      <!-- About -->
-      <div id="overlay">
-        <div class="inner">
-       
-         
-           <h2 class="overlayh2">Map Viewer</h2>
-           <h3 class="overlayh2">Layer controls</h3>
-           <p>
-            Use this interactive web map to explore land use and carbon data accross the landscape. Use the menu below the map frame on the left to update the model layers visible on the web map. These controls allow the user to toggle between different years, scenarios, iterations, and map products. Toggle the "Show map legend" button to show the legend for the current layer on the map. Map layers include:
-            </p>
-             <p>
-            <ul id = "available_map_layers">
-            
-            </ul>
-          </p>
-           <h3 class="overlayh2">Frame controls</h3>
-          <p>
-          Use the plus and minus buttons on the top left of the web map to add or remove a map frame. When a new map frame is added, layer controls for the frame appear below the frame. Adding a frame allows the user to compare two or more layers side by side. 
-          </p>
-          <h3 class="overlayh2">Base maps</h3>
-          <p>
-          Within each map frame hover over the layers icon to expand the basemap options. Grey-scale and imagery base maps are available as well as strata layers. 
-          </p>
-          <h3 class="overlayh2">Animate map layers</h3>
-          <p>
-          Map layers may be animated through time using the controls below the graph. Choose the layers you would like to animate and then click the play button under the graph. Layers will update every five year timestep within the map frame. The graph tooltip will also animate within the graph frame and show land-use values. 
-          </p>
+                                                    </tbody>
+                                                </table>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </article>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="legend-filters inline-list"></div>
+                    <div class="legend-projects inline-list"></div>
+                    <hr/>
+                </section>
+            </div>
+            <div id="Download" class="tabcontent inner">
+                Download
+            </div>
         </div>
+    </div>
 
-        <a id="overlayClose" class="close" href="#overlay">Close</a>
-      </div>
-       <div class= 'footer-index' id='usgs-footer' >
-        
-    <div>
+    </div>
 
-     
-    <!-- Scripts -->
-   
-   <!--<script src="./jquery.min.js"></script>-->
-   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-   <!--<script src="./vendor.bundle.js"></script>-->
-   <script src="./lucas-bundle.js"></script>
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>-->
-   <!--<script src=https://cdnjs.cloudflare.com/ajax/libs/leaflet-tilelayer-geojson/1.0.4/TileLayer.GeoJSON.min.js></script>-->
-   <script src=./helpers/TileLayer.GeoJSON.js></script>
+    </div>
 
-<!--<script src=https://cdnjs.cloudflare.com/ajax/libs/leaflet-tilelayer-geojson/1.0.4/TileLayer.GeoJSON.min.js.map></script>-->
-   
-  </body>
+    </div>
+
+    <!-- About -->
+    <!-- About -->
+    
+    <div class='footer-index' id='usgs-footer'>
+
+        <div>
+
+            <!-- Scripts -->
+
+            <!--<script src="./jquery.min.js"></script>-->
+            <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+            <!--<script src="./vendor.bundle.js"></script>-->
+            <script src="./lucas-bundle.js"></script>
+            <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>-->
+            <!--<script src=https://cdnjs.cloudflare.com/ajax/libs/leaflet-tilelayer-geojson/1.0.4/TileLayer.GeoJSON.min.js></script>-->
+            <script src=./helpers/TileLayer.GeoJSON.js></script>
+
+            <!--<script src=https://cdnjs.cloudflare.com/ajax/libs/leaflet-tilelayer-geojson/1.0.4/TileLayer.GeoJSON.min.js.map></script>-->
+
+</body>
+
 </html>

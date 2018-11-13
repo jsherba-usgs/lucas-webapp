@@ -175,13 +175,12 @@ function updateVariableDetail() {
 function updateFields() {
   
   projectId = this.options[this.selectedIndex].value;
-
+  
   details = projects.getDetailsForId(projectId).details;
 
   //update header content
-  headerContentContainer.innerHTML = details.header_description;
+  /*headerContentContainer.innerHTML = details.header_description;
   headerTitleContainer.innerHTML = details.header_title;
-
   //update stratum names
   let stratumLabel = document.getElementById('stratum_label');
   let secondaryStratumLabel = document.getElementById('secondary_stratum_label');
@@ -193,6 +192,7 @@ function updateFields() {
   while (availableScenarios.firstChild) {
    availableScenarios.removeChild(availableScenarios.firstChild);
   }
+
   details.scenario.forEach((item) => {
     const listItem = document.createElement("li");
     listItem.innerHTML = '<b>'+item.name +'</b>'+ ': ' + item.description
@@ -222,7 +222,7 @@ function updateFields() {
     const listItem = document.createElement("li");
     listItem.innerHTML = '<b>'+item.name +'</b>'+ ': ' + item.description
     availableLayers.appendChild(listItem)
-  })
+  })*/
 
 
   
@@ -422,6 +422,7 @@ model.init = (scenarioStart) => {
     // dispatch custom event
     triggerEvent(document, 'filters.change', {
       detail: model.getValues()
+
     });
 
 

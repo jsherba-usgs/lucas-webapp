@@ -330,8 +330,9 @@
 		display: flex;
 		flex-direction: column;
 		justify-content:space-around;
-		background: #F5F5F5;
+		/*background: #F5F5F5;*/
 		height:600px;
+		border: 1px solid rgba(131, 142, 222, .3)
 	}
 	.rowvertical2{
 		.rowvertical1 {
@@ -3096,4 +3097,18 @@ p.download-text{
 .overlayh2{
 	color: #ffffff;
 	margin:0;
+}
+
+Style tab links 
+
+
+.tablink:hover {
+  background-color: #777;
+}
+
+
+.tabcontent {
+ 
+  display: none;
+ 
 }
