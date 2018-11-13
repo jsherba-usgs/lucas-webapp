@@ -1,44 +1,43 @@
 <div class="inner">
-  <h2 >Select Variable to Explore<a class ='infoButtonFilters overlayOpen' id="overlayOpen" href="#overlay"><i class="fa fa-info-circle" aria-hidden="true"></i></a></h2>
-  <section>
-   <form>
-      <div class="field-full">
-        <label for="variable">Variable</label>
-        <!--<div class="select-wrapper">-->
-          <!--<select name="variable" disabled>
-          </select>-->
-          <div name="variable" disabled>
-          <!--</div>-->
-        </div>
-      </div>
-     </form>
-  </section>
-  <h2>Select Scenarios and Classes<a class ='infoButtonFilters overlayOpen' id="overlayOpen" href="#overlay"><i class="fa fa-info-circle" aria-hidden="true"></i></a></h2>
+  <div class ="row">
+    <div class ="col onefour">
+        <section>
+          <form>
+            <div class="field-full">
+              <label for="variable">Variable</label>
+                <div name="variable" disabled>
+                </div>
+            </div>
+         </form>
+         </section>
+    </div>
+    <div class ="col onefour">
+          <section>
+           <form>
+              <div class="field">
+                <label for="scenario">Scenario</label>
+                <div>
+                  <!--<select class='multiselect' name="scenario" multiple disabled>
+                  </select>-->
+                  <div name="scenario">
+                    </div>
+                </div>       
+              </div>
+              <div class="field">
+                <label for="variable_detail">Class</label>
+                <div>
+                  <!--<select class='multiselect' id="variableSelect" name="variable_detail" multiple disabled>
+                  </select>-->
+                  <div id="variableSelect" name="variable_detail">
+                    </div>
+                </div>
+              </div>
+             </form>
+          </section>
 
-  <section>
-   <form>
-      <div class="field">
-        <label for="scenario">Scenario</label>
-        <div>
-          <!--<select class='multiselect' name="scenario" multiple disabled>
-          </select>-->
-          <div name="scenario">
-            </div>
-        </div>       
-      </div>
-      <div class="field">
-        <label for="variable_detail">Class</label>
-        <div>
-          <!--<select class='multiselect' id="variableSelect" name="variable_detail" multiple disabled>
-          </select>-->
-          <div id="variableSelect" name="variable_detail">
-            </div>
-        </div>
-      </div>
-     </form>
-  </section>
-  <h2>Select Strata<a class ='infoButtonFilters overlayOpen' id="overlayOpen" href="#overlay"><i class="fa fa-info-circle" aria-hidden="true"></i></a></h2>
-  <section>
+    </div>
+    <div class ="col onefour">
+         <section>
     <form>
       <div class="field">
         <!--<label for="secondary_stratum">Island <a id="strataoverlayOpen" href="#strata-overlay">(Choose on Map)</a></label>-->
@@ -59,8 +58,9 @@
         </div>
       </div>
   </section>
-   <h2>Select Iterations<a class ='infoButtonFilters overlayOpen' id="overlayOpen" href="#overlay"><i class="fa fa-info-circle" aria-hidden="true"></i></a></h2>
-  <section>
+    </div>
+    <div class ="col onefour">
+      <section>
    <form class='filterform'>
        <div class="field">
           <input name="iteration-checkbox" value="percentile" id="percentileIteration" type="radio">
@@ -102,14 +102,19 @@
       
                   
      </form>
-     <div class="vis-list inline-list">
-      <ul>
-        <li><a data-scroll href="#one" >Change in Landuse over Time</a></li>
-        <li><a data-scroll href="#two" >Total Area &amp; Net Change</a></li>
-        <li><a data-scroll href="#three" >Transition Types &amp; Pathways</a></li>
-      </ul>
-    </div>
+    
   </section>
+      </div>
+  </div>
+
+  <!--<h2 >Select Variable to Explore<a class ='infoButtonFilters overlayOpen' id="overlayOpen" href="#overlay"><i class="fa fa-info-circle" aria-hidden="true"></i></a></h2>
+  
+  <h2>Select Scenarios and Classes<a class ='infoButtonFilters overlayOpen' id="overlayOpen" href="#overlay"><i class="fa fa-info-circle" aria-hidden="true"></i></a></h2>
+  
+  <h2>Select Strata<a class ='infoButtonFilters overlayOpen' id="overlayOpen" href="#overlay"><i class="fa fa-info-circle" aria-hidden="true"></i></a></h2>
+ 
+   <h2>Select Iterations<a class ='infoButtonFilters overlayOpen' id="overlayOpen" href="#overlay"><i class="fa fa-info-circle" aria-hidden="true"></i></a></h2>-->
+  
 </div>
 
  <div id="strataModal" class="modal">

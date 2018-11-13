@@ -98,9 +98,10 @@ function updateScenarioVariables(){
 function updateIterationInput() {
 
   //let iterationInputChecked = document.querySelectorAll('input[name=iteration-checkbox]:checked')
+
   details.iteration.forEach(function(item){
       if (item.id === 'percentile'){
-        
+          
           iterationPercentile.name = item.name
           iterationPercentile.type = item.type
           iterationPercentile.min =  item.min
@@ -172,12 +173,12 @@ function updateVariableDetail() {
   }
 
 
-function updateFields() {
+function updateFields(projectStart) {
   
-  projectId = this.options[this.selectedIndex].value;
+  projectId = projectStart//this.options[this.selectedIndex].value;
   
   details = projects.getDetailsForId(projectId).details;
-
+  console.log(details)
   //update header content
   /*headerContentContainer.innerHTML = details.header_description;
   headerTitleContainer.innerHTML = details.header_title;
@@ -360,15 +361,15 @@ function updateFields() {
   }
 }
 
-model.init = (scenarioStart) => {
+model.init = (scenarioStart, projectStart) => {
   // Initialize container
   
   filtersContainer = document.getElementById('filters');
   filtersContainer.innerHTML = content;
 
   // Initialize container
-  filtersContainer2 = document.getElementById('filters_project');
-  filtersContainer2.innerHTML = projectFilterContent;
+  //filtersContainer2 = document.getElementById('filters_project');
+  //filtersContainer2.innerHTML = projectFilterContent;
 
   
   percentileCheckbox = filtersContainer.querySelector('input[id=percentileIteration]');
@@ -387,19 +388,22 @@ model.init = (scenarioStart) => {
   filtersContainer3.innerHTML = percentileFilterContent;*/
 
   // Add list of projects to content
-  projectSelect = filtersContainer2.querySelector('select[name=project]');
+  //projectSelect = filtersContainer2.querySelector('select[name=project]');
 
-  projects.getList().forEach((project) => {
-    const option = document.createElement('option');
-    option.text = project.name;
-    option.value = project.id;
-    projectSelect.add(option);
-  });
+  //projects.getList().forEach((project) => {
+    //const option = document.createElement('option');
+   // option.text = project.name;
+   // option.value = project.id;
+    //projectSelect.add(option);
+  //});
   
-  
-  document.querySelector(scenarioStart).selected = true
-  projectSelect.onchange = updateFields;
-  projectSelect.onchange();
+  projectSelect = projectStart
+  //document.querySelector(scenarioStart).selected = true
+  console.log("testtest")
+  updateFields(projectStart)
+  //updateScenarioVariables()
+ // projectSelect.onchange = updateFields;
+  //projectSelect.onchange();
   /*scenarioSelect.onchange = updateScenarioVariables;
   scenarioSelect.onchange();
   
@@ -412,7 +416,7 @@ model.init = (scenarioStart) => {
 
   // Create a custom event that is dispatched when Update button on form is clicked
   const form =  filtersContainer.querySelector('.filterform');//document.querySelectorAll('form.update')filtersContainer.querySelector('form');
-  const form2 = filtersContainer2.querySelector('form')
+  //const form2 = filtersContainer2.querySelector('form')
  
   
   //const form2 = filtersContainer2.querySelector('form');
@@ -429,7 +433,7 @@ model.init = (scenarioStart) => {
   };
 
 
- form2.onsubmit = function (e) {
+ /*form2.onsubmit = function (e) {
     // prevent default
     e.preventDefault();
     // dispatch custom event
@@ -437,7 +441,7 @@ model.init = (scenarioStart) => {
     triggerEvent(document, 'filters.change', {
       detail: model.getValues()
     });
-  };
+  };*/
 
 
   triggerEvent(document, 'filters.change', {
@@ -662,7 +666,7 @@ stratamap.addControl(new ourCustomControl());
 model.getValues = () => (
   {
 
-    project: projectSelect.value,
+    project: projectSelect,
     scenario: getCheckBoxVals(scenarioSelectInput),
     stratum: stratumSelect.value,
     secondary_stratum: secStratumSelect.value,

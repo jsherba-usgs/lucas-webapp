@@ -181,8 +181,9 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   function loadGraphSection() {
+    let projectStart = "7096"
     let scenarioStart = 'option[value="7096"]'
-    filters.init(scenarioStart);
+    filters.init(scenarioStart,projectStart);
 
     let lucasVariable = 'Land-Cover State'
 
@@ -293,9 +294,7 @@ document.addEventListener('DOMContentLoaded', () => {
           
       
           // Update section 2 charts
-         console.log(totalAreaByYear)
-         console.log(colorScaleDic[e.detail.variable][0])
-         console.log(details)
+
           section2.updateChart(totalAreaByYear, colorScaleDic[e.detail.variable][0], details, 'state_label_x');
            
 

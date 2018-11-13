@@ -356,7 +356,7 @@
   }
 
   .col.onefour {
-    flex: calc(100% * 0.25);
+    flex: calc(100% * 0.24);
     justify-content: center;
  	align-items: center;
   }
@@ -458,6 +458,7 @@
 		margin: 0 0 1em 0;
 		display: flex;
 		flex-wrap: wrap;
+		flex-direction: column;
 	}
 
 		form .field-full {
@@ -641,7 +642,7 @@
 			display: inline-block;
 			font-weight: 300;
 			padding-left: 2.65em;
-			padding-right: 0.75em;
+			/*padding-right: 0.75em;*/
 			position: relative;
 			
 		}
@@ -2770,7 +2771,7 @@ header.download-header > :first-child::after{
 
 .checkbox_class{
 	margin-bottom:0em;
-	margin-right:6em;
+	/*margin-right:6em;*/
 }
 
 .variableLabel:before {
@@ -2788,8 +2789,8 @@ img {
   height: 150px;
 }
 .variableImages{
-width: 170px;
-  height: 170px;
+width: 100px;
+  height: 100px;
 
 }
 .variableLabel {
