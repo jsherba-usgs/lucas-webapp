@@ -23,6 +23,7 @@ const chartContainer = parentContainer.querySelector('.chart.multiples');
 const showTotals = parentContainer.querySelector('.total');
 const showChange = parentContainer.querySelector('.change');
 const groupScenario = parentContainer.querySelector('.group_scenario');
+const showGraphType = parentContainer.querySelector('.group_type');
 const groupClass = parentContainer.querySelector('.group_class');
 let loading;
 let yearGroup;
@@ -47,15 +48,16 @@ const view = {
     timeseriesChart = chartSmallMultiples()
     timeSeriesBarChart = barChart()
 
-    console.log("test2")
+    
     const section2 = document.getElementById("two")
 
-    const scenarioGroupCheckbox = section2.querySelector('input[id=scenarioGroup]');
-    console.log("test3")
-    scenarioGroupCheckbox.checked = true
+    const scenarioGroupCheckbox = section2.querySelector('option[id=scenarioGroup]');
+    
+    //scenarioGroupCheckbox.checked = true
 
-    const totalChangeCheckbox = section2.querySelector('input[id=totalChange]');
-    totalChangeCheckbox.checked = true
+    const totalChangeCheckbox = section2.querySelector('option[id=totalChange]');
+   
+    //totalChangeCheckbox.checked = true
     
    
     // Set x and y accessors for timeseries chart
@@ -299,275 +301,169 @@ const view = {
     
 
 
-    let isTotals = true
-    showTotals.onclick = () => {
+    
+function updateGraphDisplay(){
+    
+      let totalChange = showTotals.options[showTotals.selectedIndex].value
+      let classScenario = groupScenario.options[groupScenario.selectedIndex].value
+      let graphType = showGraphType.options[showGraphType.selectedIndex].value
       timeseriesChart.color(colorScale);
-      showTotals.classList.add("active");
-      showChange.classList.remove("active")
-      isTotals = true
       totalBar = totalArea(nestedData, groupByScenario)
       totalLine = totalAreaLine(nestedData, groupByScenario)
-      if (groupByScenario === true){  
-        lineChartTotals = d3.nest()
-          .key((d) => d.scenario)
-          .key((d) => d.state)
-          .entries(totalLine);
+     
+      if (totalChange === "Totals"&&classScenario==="Group Scenario"){
         
-
-         d3.select(chartContainer)
-          .datum(lineChartTotals)
-          .transition()
-          .call(timeseriesChart)
-       
-
-        barChartTotals = d3.nest()
-        .key((d) => d.scenario)
-        .entries(totalBar);
-
-        d3.select(chartContainer)
-          .datum(barChartTotals)
-          .call(timeSeriesBarChart
-            .color(colorScale)
-        );
-
-        }else{
-
+        if (graphType === "Line Graph"){
+          d3.selectAll('.barchart').selectAll("*").remove();
           lineChartTotals = d3.nest()
-          .key((d) => d.state)
-          .key((d) => d.scenario)
-          .entries(totalLine);
-        
-
-         d3.select(chartContainer)
-          .datum(lineChartTotals)
-          .transition()
-          .call(timeseriesChart)
+            .key((d) => d.scenario)
+            .key((d) => d.state)
+            .entries(totalLine);
           
 
-        barChartTotals = d3.nest()
-        .key((d) => d.state)
-        .entries(totalBar);
+           d3.select(chartContainer)
+            .datum(lineChartTotals)
+            .transition()
+            .call(timeseriesChart)
+       
+        }else{
+          d3.selectAll('.multiLinePlusAreaSmallMultiple').selectAll("*").remove();
+          barChartTotals = d3.nest()
+          .key((d) => d.scenario)
+          .entries(totalBar);
+
+          d3.select(chartContainer)
+            .datum(barChartTotals)
+            .call(timeSeriesBarChart
+              .color(colorScale)
+          );
+       }
+      }else if(totalChange === "Net Change"&&classScenario==="Group Scenario"){
+        
+        if (graphType === "Line Graph"){
+          d3.selectAll('.barchart').selectAll("*").remove();
+            lineChange = []
+            sumValue = 0
+            sumMax = 0
+            sumMin = 0
+            totalLine.forEach(calculateLineChange);
+
+            
+
+            lineChartChange = d3.nest()
+              .key((d) => d.scenario)
+              .key((d) => d.state)
+              .entries(lineChange);
+
+              d3.select(chartContainer)
+              .datum(lineChartChange)
+              .transition()
+              .call(timeseriesChart)
+          }else{
+          d3.selectAll('.multiLinePlusAreaSmallMultiple').selectAll("*").remove();
+
+            decadalChange = [];
+            totalBar.forEach(calculateBarChange);
+
+            barChartChange = d3.nest()
+              .key((d) => d.scenario)
+              .entries(decadalChange);
+
+             
+             
+
+            d3.select(chartContainer)
+            .datum(barChartChange)
+            .call(timeSeriesBarChart
+              .color(colorScale)
+            );
+            return barChartChange
+          }
+      }else if(totalChange === "Totals"&&classScenario==="Group Class"){
+        if (graphType === "Line Graph"){
+          d3.selectAll('.barchart').selectAll("*").remove();
+          lineChartTotals = d3.nest()
+            .key((d) => d.state)
+            .key((d) => d.scenario)
+            .entries(totalLine);
+
+           d3.select(chartContainer)
+            .datum(lineChartTotals)
+            .transition()
+            .call(timeseriesChart)
+         
+        }else{
+          d3.selectAll('.multiLinePlusAreaSmallMultiple').selectAll("*").remove();
+          barChartTotals = d3.nest()
+            .key((d) => d.state)
+            .entries(totalBar);
+
+          d3.select(chartContainer)
+            .datum(barChartTotals)
+            .call(timeSeriesBarChart
+              .color(colorScale)
+          );
+            return barChartTotals
+     
+        }
+
+      }else if(totalChange === "Net Change"&&classScenario==="Group Class"){
+
+        if (graphType === "Line Graph"){
+          d3.selectAll('.barchart').selectAll("*").remove();
+          lineChange = []
+          sumValue = 0
+          sumMax = 0
+          sumMin = 0
+          totalLine.forEach(calculateLineChange);
+
+
+
+          lineChartChange = d3.nest()
+            .key((d) => d.state)
+            .key((d) => d.scenario)
+            .entries(lineChange);
+
+          d3.select(chartContainer)
+          .datum(lineChartChange)
+          .transition()
+          .call(timeseriesChart)
+        }else{
+          d3.selectAll('.multiLinePlusAreaSmallMultiple').selectAll("*").remove();
+
+         decadalChange = [];
+          totalBar.forEach(calculateBarChange);
+
+
+        barChartChange = d3.nest()
+          .key((d) => d.state)
+          .entries(decadalChange);
+
 
         d3.select(chartContainer)
-          .datum(barChartTotals)
-          .call(timeSeriesBarChart
-            .color(colorScale)
-        );
-
-        }
-      
-    };
-
-    showChange.onclick = () => {
-      timeseriesChart.color(colorScale);
-      showTotals.classList.remove("active");
-      showChange.classList.add("active")
-      isTotals = false
-      // Call bar charts - small multiples
-      if (groupByScenario === true){
-      lineChange = []
-        sumValue = 0
-        sumMax = 0
-        sumMin = 0
-        totalLine.forEach(calculateLineChange);
-
-        decadalChange = [];
-        totalBar.forEach(calculateBarChange);
-
-        lineChartChange = d3.nest()
-          .key((d) => d.scenario)
-          .key((d) => d.state)
-          .entries(lineChange);
-
-        barChartChange = d3.nest()
-          .key((d) => d.scenario)
-          .entries(decadalChange);
-            
-      d3.select(chartContainer)
-      .datum(lineChartChange)
-      .transition()
-      .call(timeseriesChart)
-       
-      
-
-      d3.select(chartContainer)
         .datum(barChartChange)
         .call(timeSeriesBarChart
           .color(colorScale)
         );
-      }else{
-        lineChange = []
-        sumValue = 0
-        sumMax = 0
-        sumMin = 0
-        totalLine.forEach(calculateLineChange);
-
-        decadalChange = [];
-        totalBar.forEach(calculateBarChange);
-
-        lineChartChange = d3.nest()
-          .key((d) => d.state)
-          .key((d) => d.scenario)
-          .entries(lineChange);
-
-        barChartChange = d3.nest()
-          .key((d) => d.state)
-          .entries(decadalChange);
-            
-      d3.select(chartContainer)
-      .datum(lineChartChange)
-      .transition()
-      .call(timeseriesChart)
-      
-
-      d3.select(chartContainer)
-        .datum(barChartChange)
-        .call(timeSeriesBarChart
-          .color(colorScale)
-        );
+        return barChartChange
 
       }
+    }
+   } 
+    showTotals.onclick = () => {
+      updateGraphDisplay()
+      
     };
-
 
    
    groupScenario.onclick = () => {
-      timeseriesChart.color(colorScale);
-      groupScenario.classList.add("active");
-      groupClass.classList.remove("active")
-      groupByScenario = true
-      totalBar = totalArea(nestedData, groupByScenario)
-      totalLine = totalAreaLine(nestedData, groupByScenario)
-
-      if (isTotals === true){
-        
-        lineChartTotals = d3.nest()
-          .key((d) => d.scenario)
-          .key((d) => d.state)
-          .entries(totalLine);
-        
-
-         d3.select(chartContainer)
-          .datum(lineChartTotals)
-          .transition()
-          .call(timeseriesChart)
-          
-        barChartTotals = d3.nest()
-        .key((d) => d.scenario)
-        .entries(totalBar);
-
-        d3.select(chartContainer)
-          .datum(barChartTotals)
-          .call(timeSeriesBarChart
-            .color(colorScale)
-        );
-          return barChartTotals
-      }else{
-
-        lineChange = []
-        sumValue = 0
-        sumMax = 0
-        sumMin = 0
-        totalLine.forEach(calculateLineChange);
-
-        decadalChange = [];
-        totalBar.forEach(calculateBarChange);
-
-        lineChartChange = d3.nest()
-          .key((d) => d.scenario)
-          .key((d) => d.state)
-          .entries(lineChange);
-
-        barChartChange = d3.nest()
-          .key((d) => d.scenario)
-          .entries(decadalChange);
-
-         d3.select(chartContainer)
-          .datum(lineChartChange)
-          .transition()
-          .call(timeseriesChart)
-         
-
-        d3.select(chartContainer)
-        .datum(barChartChange)
-        .call(timeSeriesBarChart
-          .color(colorScale)
-        );
-        return barChartChange
-      }
-
+    updateGraphDisplay()
       
     };
 
-  groupClass.onclick = () => {
-    timeseriesChart.color(colorScale);
-      groupScenario.classList.remove("active");
-      groupClass.classList.add("active")
-      groupByScenario = false
-      totalBar = totalArea(nestedData, groupByScenario)
-      totalLine = totalAreaLine(nestedData, groupByScenario)
-  
-      if (isTotals === true){
-
-          lineChartTotals = d3.nest()
-          .key((d) => d.state)
-          .key((d) => d.scenario)
-          .entries(totalLine);
-
-         d3.select(chartContainer)
-          .datum(lineChartTotals)
-          .transition()
-          .call(timeseriesChart)
-         
-
-        barChartTotals = d3.nest()
-          .key((d) => d.state)
-          .entries(totalBar);
-
-        d3.select(chartContainer)
-          .datum(barChartTotals)
-          .call(timeSeriesBarChart
-            .color(colorScale)
-        );
-          return barChartTotals
-      }else{
-        
-        lineChange = []
-        sumValue = 0
-        sumMax = 0
-        sumMin = 0
-        totalLine.forEach(calculateLineChange);
-
-        decadalChange = [];
-        totalBar.forEach(calculateBarChange);
-
-
-        lineChartChange = d3.nest()
-          .key((d) => d.state)
-          .key((d) => d.scenario)
-          .entries(lineChange);
-
-        barChartChange = d3.nest()
-          .key((d) => d.state)
-          .entries(decadalChange);
-
-        d3.select(chartContainer)
-          .datum(lineChartChange)
-          .transition()
-          .call(timeseriesChart)
-          
-
-
-        d3.select(chartContainer)
-        .datum(barChartChange)
-        .call(timeSeriesBarChart
-          .color(colorScale)
-        );
-        return barChartChange
-      }
-
-      
-    };
+  showGraphType.onclick = () => {
+      updateGraphDisplay()
+  }
 
     // First time
     // Call bar charts - small multiples
@@ -575,9 +471,8 @@ const view = {
 
 
 
-    timeseriesChart.color(colorScale);
-      groupScenario.classList.add("active");
-      groupClass.classList.remove("active")
+   /* timeseriesChart.color(colorScale);
+      
       groupByScenario = true
       totalBar = totalArea(nestedData, groupByScenario)
       totalLine = totalAreaLine(nestedData, groupByScenario)
@@ -608,9 +503,9 @@ const view = {
     let legendData= d3.nest()
     .key((d) => d.scenario)
     .key((d) => d.state)
-    .entries(totalBar);
+    .entries(totalBar);*/
 
-
+  updateGraphDisplay()
   let ticks = details.xDomain[0][variableType][0].ticks
     timeseriesChart.updateTicks(ticks)
   

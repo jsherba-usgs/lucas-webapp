@@ -178,7 +178,7 @@ function updateFields(projectStart) {
   projectId = projectStart//this.options[this.selectedIndex].value;
   
   details = projects.getDetailsForId(projectId).details;
-  console.log(details)
+ 
   //update header content
   /*headerContentContainer.innerHTML = details.header_description;
   headerTitleContainer.innerHTML = details.header_title;
@@ -399,7 +399,7 @@ model.init = (scenarioStart, projectStart) => {
   
   projectSelect = projectStart
   //document.querySelector(scenarioStart).selected = true
-  console.log("testtest")
+
   updateFields(projectStart)
   //updateScenarioVariables()
  // projectSelect.onchange = updateFields;

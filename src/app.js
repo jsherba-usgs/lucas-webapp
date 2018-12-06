@@ -22,7 +22,7 @@ import projects from './helpers/project-details';
 // Import views
 import section1 from './views/section1';
 import section2 from './views/section2';
-//import section3 from './views/section3';
+import section3 from './views/section3';
 //import { loadtheme } from './theme/js/theme-lucas';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -240,7 +240,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
  
   addEventListener(document, 'filters.change', (e) => {
-     console.log("test")
+   
     document.getElementById("two").style.display = 'block';
     minPercentile = String(100 - parseInt(e.detail.iteration))
     maxPercentile = e.detail.iteration
@@ -375,8 +375,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (e.detail.variable ==="Land-Cover Transition"){
       
-      //section3.chartStatus('loading');
-      
+      section3.chartStatus('loading');
+     section3.init()
      let transitionGroups = e.detail.variable_detail.split(",")
      let params = setParams(e, 'transition_group')
 
@@ -427,9 +427,9 @@ document.addEventListener('DOMContentLoaded', () => {
       
           // Update section 2 charts
           
-          section2.updateChart(totalAreaAll2, colorScaleDic[e.detail.variable][0], details, 'transition_group');
+          //section3.updateChart(totalAreaAll2, colorScaleDic[e.detail.variable][0], details, 'transition_group');
 
-          //section3.updateChart(totalAreaAll3, colorScaleDic["Land-Cover Transition Types"][0], transitionGroups, details, 'transition_group');
+          section3.updateChart(totalAreaAll3, colorScaleDic["Land-Cover Transition Types"][0], transitionGroups, details, 'transition_group');
           })
           .catch((error) => {
             if (error.message.indexOf('No data') > -1) {

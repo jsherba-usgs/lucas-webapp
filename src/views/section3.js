@@ -17,12 +17,15 @@ import projectDetails from './../helpers/project-details.js';
 /*
 * PRIVATE VARIABLES
 */
-const parentContainer = document.getElementById('three');
+const parentContainer = document.getElementById('two');
 //const timeseriesContainer = parentContainer.querySelector('.chart.timeseries');
-const hbarsContainer = parentContainer.querySelector('.chart.pathways');
-const timeSeriesContainer = parentContainer.querySelector('.chart.timeseries');
-const groupScenario = parentContainer.querySelector('.group_scenario_section3');
-const groupClass = parentContainer.querySelector('.group_class_section3');
+const chartContainer = parentContainer.querySelector('.chart.multiples');
+const groupScenario = parentContainer.querySelector('.group_scenario');
+const showGraphType = parentContainer.querySelector('.group_type');
+//const hbarsContainer = parentContainer.querySelector('.chart.pathways');
+//const timeSeriesContainer = parentContainer.querySelector('.chart.timeseries');
+//const groupScenario = parentContainer.querySelector('.group_scenario_section3');
+//const groupClass = parentContainer.querySelector('.group_class_section3');
 let timeseriesChart;
 let pathwaysChart;
 let loading;
@@ -34,7 +37,7 @@ const view = {
   init() {
 
 		
-		const section3Table = document.getElementById("downloadsection3")
+		const section3Table = document.getElementById("downloadsection2")
 		section3Table.onclick = function(e) {
 			e.preventDefault();
 			
@@ -51,15 +54,15 @@ const view = {
     // horizontal bar chart
     pathwaysChart = hbarChart()
       .height(250)
-      .width(hbarsContainer.offsetWidth - 70)
+      .width(470)
       .yValue((d) => d.pathway)
       .xValue((d) => +d.total);
   },
   updateChart(nestedData, colorScale, transitionGroups, details, variableType) {
 
-  	const section3 = document.getElementById("three")
-    const scenarioGroupCheckbox3 = section3.querySelector('input[id=scenarioGroup3]');
-    scenarioGroupCheckbox3.checked = true
+  	const section3 = document.getElementById("two")
+    //const scenarioGroupCheckbox3 = section3.querySelector('input[id=scenarioGroup3]');
+    //scenarioGroupCheckbox3.checked = true
 
     timeseriesChart = chartSmallMultiplesTransition();
     const yAccessor = function (d) { return +d.values; };
@@ -68,7 +71,7 @@ const view = {
     timeseriesChart.yValue(yAccessor);
     timeseriesChart.xValue(xAccessor);
     timeseriesChart.color(colorScale);
-
+  
     timeseriesChart.yAxisAnnotation(projectDetails.getUnit(variableType)); 
     //pathwaysChart.xAxisAnnotation(projectDetails.getUnit(variableType))
     let start_date = details.xDomain[0][variableType][0].domain[0].getFullYear().toString()
@@ -77,14 +80,14 @@ const view = {
     pathwaysChart.xAxisAnnotation("Total transition "+projectDetails.getUnit(variableType).toLowerCase()+": "+ start_date +" - "+ end_date);
     timeseriesChart
        .height(250)
-       .width(timeSeriesContainer.offsetWidth)
-    timeSeriesContainer.classList.remove('no-data');
+       .width(400)
+    chartContainer.classList.remove('no-data');
 
-  
+    
     
     this.chartStatus('loaded');
     //timeseriesContainer.classList.remove('no-data');
-    hbarsContainer.classList.remove('no-data');
+    chartContainer.classList.remove('no-data');
    
     // Remap nested data for plotting
     const timeseriesData = nestedData.map((series) => (
@@ -278,115 +281,108 @@ function  totalAreaLine(nestedData, groupByScenario, transitionGroups){
     return lineData 
    }
  //console.log(transitionPathways)
- let pathwayValues = totalAreaLine(nestedData, groupByScenario, transitionGroups)
+ 
 
+  
 
- lineChartTotals = d3.nest()
+   groupScenario.onclick = () => {
+    updateGraphDisplayTransition()
+      
+    };
+
+  showGraphType.onclick = () => {
+      updateGraphDisplayTransition()
+  }
+   
+
+  function updateGraphDisplayTransition(){
+
+      let classScenario = groupScenario.options[groupScenario.selectedIndex].value
+      let graphType = showGraphType.options[showGraphType.selectedIndex].value
+      
+      if (classScenario==="Group Scenario"&&graphType === "Line Graph"){
+        pathwayValues = totalAreaLine(nestedData, true, transitionGroups)
+        d3.selectAll('.horizontal-bar').selectAll("*").remove();
+        lineChartTotals = d3.nest()
           .key((d) => d.scenario)
           .key((d) => d.state)
           .entries(pathwayValues);
         
 
- d3.select(timeSeriesContainer)
-  .datum(lineChartTotals)
-  .transition()
-  .call(timeseriesChart);
+       d3.select(chartContainer)
+        .datum(lineChartTotals)
+        .transition()
+        .call(timeseriesChart);
 
 
- let dataset = totalArea(transitionPathwaysNestedMap, groupByScenario)
+            
+        }else if (classScenario==="Group Scenario"&&graphType === "Bar Graph"){
+          d3.selectAll('.multiLinePlusAreaSmallMultiple').selectAll("*").remove();
+          let dataset = totalArea(transitionPathwaysNestedMap, true)
+           dataset = [].concat.apply([], dataset)
+           dataset = [].concat.apply([], dataset)
+
+        dataset= d3.nest()
+            .key((d) => d.group)
+            .sortKeys(d3.ascending)
+            .entries(dataset); 
+
+            d3.select(chartContainer)
+            .datum(dataset)
+            .call(pathwaysChart);
+
+        }else if (classScenario==="Group Class"&&graphType === "Line Graph"){
+             d3.selectAll('.horizontal-bar').selectAll("*").remove();
+            
+
+          pathwayValues = totalAreaLine(nestedData, false, transitionGroups)
 
 
- dataset = [].concat.apply([], dataset)
- dataset = [].concat.apply([], dataset)
+         lineChartTotals = d3.nest()
+                  .key((d) => d.state)
+                  .key((d) => d.scenario)
+                  .entries(pathwayValues);
 
-  dataset= d3.nest()
-      .key((d) => d.group)
-      .sortKeys(d3.ascending)
-      .entries(dataset); 
+        d3.select(chartContainer)
+          .datum(lineChartTotals)
+          .transition()
+          .call(timeseriesChart);
+        }else if (classScenario==="Group Class"&&graphType === "Bar Graph"){   
 
+
+        d3.selectAll('.multiLinePlusAreaSmallMultiple').selectAll("*").remove();
+         
+            
+            let dataset = totalArea(transitionPathwaysNestedMap, false)
+           dataset = [].concat.apply([], dataset)
+           dataset = [].concat.apply([], dataset)
+        console.log(dataset)
+        dataset= d3.nest()
+            .key((d) => d.group)
+            .sortKeys(d3.ascending)
+            .entries(dataset); 
+
+        console.log(dataset)
+
+        d3.select(chartContainer)
+            .datum(dataset)
+            .call(pathwaysChart);
+
+
+        }
+  }
 
    
-   groupScenario.onclick = () => {
-      groupScenario.classList.add("active");
-      groupClass.classList.remove("active")
-      groupByScenario = true
-
-  pathwayValues = totalAreaLine(nestedData, groupByScenario, transitionGroups)
-
-
- lineChartTotals = d3.nest()
-          .key((d) => d.scenario)
-          .key((d) => d.state)
-          .entries(pathwayValues);
-        
-
- d3.select(timeSeriesContainer)
-  .datum(lineChartTotals)
-  .transition()
-  .call(timeseriesChart);
-
-
-      let dataset = totalArea(transitionPathwaysNestedMap, groupByScenario)
-     dataset = [].concat.apply([], dataset)
-     dataset = [].concat.apply([], dataset)
-
-  dataset= d3.nest()
-      .key((d) => d.group)
-      .sortKeys(d3.ascending)
-      .entries(dataset); 
-
-      d3.select(hbarsContainer)
-      .datum(dataset)
-      .call(pathwaysChart);
-      
-    };
-
-  groupClass.onclick = () => {
-      groupScenario.classList.remove("active");
-      groupClass.classList.add("active")
-      groupByScenario = false
-
-  pathwayValues = totalAreaLine(nestedData, groupByScenario, transitionGroups)
-
-
- lineChartTotals = d3.nest()
-          .key((d) => d.state)
-          .key((d) => d.scenario)
-          .entries(pathwayValues);
-        
-
- d3.select(timeSeriesContainer)
-  .datum(lineChartTotals)
-  .transition()
-  .call(timeseriesChart);
-      
-      let dataset = totalArea(transitionPathwaysNestedMap, groupByScenario)
-     dataset = [].concat.apply([], dataset)
-     dataset = [].concat.apply([], dataset)
-
-  dataset= d3.nest()
-      .key((d) => d.group)
-      .sortKeys(d3.ascending)
-      .entries(dataset); 
-
-        d3.select(hbarsContainer)
-      .datum(dataset)
-      .call(pathwaysChart);
-
-      
-    };
 
         // Call horizontal bar charts - small multiples
-    d3.select(hbarsContainer)
-      .datum(dataset)
-      .call(pathwaysChart);
+   updateGraphDisplayTransition()
 
     let ticks = details.xDomain[0][variableType][0].ticks
     timeseriesChart.updateTicks(ticks)
 
  function updateLineandBarLegend(legendData){
     
-    const collapseSection3 = document.getElementById('collapseLineGraphSection3')
+    const collapseSection3 = document.getElementById('collapseLineGraphSection2')
     collapseSection3.classList.add("in");
     d3.selectAll(".legend-section3-body > *").remove();
     
@@ -470,7 +466,7 @@ function  totalAreaLine(nestedData, groupByScenario, transitionGroups){
     switch (status) {
       case 'loading':
         //loading1 = new Spinner().spin(timeseriesContainer);
-        loading = new Spinner().spin(hbarsContainer);
+        loading = new Spinner().spin(chartContainer);
         break;
       case 'loaded':
         //loading1.stop();
@@ -478,7 +474,7 @@ function  totalAreaLine(nestedData, groupByScenario, transitionGroups){
         break;
       default:
        // timeseriesContainer.classList.remove('no-data');
-        hbarsContainer.classList.remove('no-data');
+        chartContainer.classList.remove('no-data');
     }
     
   }
