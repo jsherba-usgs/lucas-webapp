@@ -1,6 +1,7 @@
 // Import Node Modules
 //import smoothScroll from '../node_modules/smooth-scroll/smooth-scroll.js';
 //import smoothScroll from 'smooth-scroll';
+import 'bootstrap';
 import SmoothScroll from 'smooth-scroll'
 //import 'bootstrap';
 import d3 from 'd3';
@@ -17,20 +18,24 @@ import { addEventListener, triggerEvent } from './helpers/utils';
 
 // Import Components
 import filters from './components/filters/filters';
+import filters_download from './components/filters/filters_download';
 //import leafletFilters from './components/map/leaflet_filters'
 import projects from './helpers/project-details';
 // Import views
 import section1 from './views/section1';
 import section2 from './views/section2';
 import section3 from './views/section3';
+
+import config from './helpers/api-config';
 //import { loadtheme } from './theme/js/theme-lucas';
+
 
 document.addEventListener('DOMContentLoaded', () => {
   
   /*
   * PAGE UI
   */
-
+  let download_init = true
   const body = document.body;
 
   // Disable animations/transitions until the page has loaded.
@@ -445,6 +450,239 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   })
   }
+
+  function loadDownloadSection(){
+    
+    
+
+  function leftPad(val = 1, length = 4) {
+  const str = val.toString();
+  return `${'0'.repeat(length - str.length)}${str}`;
+  }
+  /*
+  * INTIALIZATIONS FOR SECTION 1
+  */
+
+  addEventListener(document, 'filters.change', (e) => {
+    
+
+    timestepBegin= parseInt(e.detail.timestep_begin)
+    timestepEnd= parseInt(e.detail.timestep_end)
+
+    const year = []
+
+      for (var i = timestepBegin; i <= timestepEnd; i++) {
+         year.push(i);
+      }
+
+    iterationBegin= parseInt(e.detail.iteration_begin)
+    iterationEnd= parseInt(e.detail.iteration_end)
+
+    const iterations = []
+
+      for (var i = iterationBegin; i <= iterationEnd; i++) {
+         iterations.push(i);
+      }
+    function setParams(e, variableType){
+      const variableApiTypes = {
+        'state_label_x': 'StateLabelX',
+        'stock_type': 'StockType',
+        'transition_group': 'TransitionGroup'
+      }
+
+      let group_by_values = "Timestep,Iteration,IDScenario,Stratum,SecondaryStratum," +  variableApiTypes[variableType]
+      let params = {
+          scenario: e.detail.scenario,
+          secondary_stratum: e.detail.secondary_stratum,
+          stratum: e.detail.stratum,
+          timestep: year,
+          iteration: iterations,
+          pagesize: 10000,
+          
+        };
+       params[variableType] = e.detail.variable_detail
+      //if (variableType !== 'transition_group'){
+      //}
+     
+        
+        if (e.detail.sumby_id==='custom_group'){
+
+          params.group_by=e.detail.sumby
+
+        }else{
+          params.group_by=group_by_values 
+        }
+        if (e.detail.sumby_id==='custom_group'&&e.detail.iteration_id==='percentile'){
+              params.group_by+=',Iteration'
+        }
+        if (e.detail.iteration_id==='percentile'){
+          //minPercentile = String(100 - parseInt(e.detail.iteration_percentile))
+          maxPercentile = e.detail.iteration_percentile
+          params.percentile = "Iteration, "+maxPercentile
+        }
+        if (params.stratum === 'All') {
+          delete params.stratum;
+        };
+        if (params.secondary_stratum === 'All') {
+          delete params.secondary_stratum;
+        }
+        
+      return params
+      }
+      //updateFiltersLegend(e.detail);
+    if (e.detail.variable ==="Land-Cover State"){
+      
+      let params = setParams(e, 'state_label_x')
+      
+      // Fetch data for state class and update charts
+      let variableType= 'stateclasses/'
+      service.tabularDownload(params, variableType)
+         
+      }
+    if (e.detail.variable ==="Carbon Stock"){
+
+      let params = setParams(e, 'stock_type')
+      let variableType= 'stocktypes/'
+      service.tabularDownload(params, variableType)
+    }
+    if (e.detail.variable ==="Land-Cover Transition"){
+    
+     let params = setParams(e, 'transition_group')
+     let variableType= 'transitions/'
+    
+     service.tabularDownload(params, variableType)
+
+   }
+  });
+
+  addEventListener(document, 'filters-spatial.change', (e) => {
+    
+    let variable_detail = JSON.parse(e.detail.variable_detail);
+    let params = {
+          project:e.detail.project,
+          scenario: e.detail.scenario,
+          secondary_stratum: e.detail.secondary_stratum,
+          stratum: e.detail.stratum,
+          timestep_begin: e.detail.timestep_begin,
+          timestep_end: e.detail.timestep_end,
+          variable_detail: variable_detail.id ,
+          variable_detail_type:variable_detail.type,
+          iteration: e.detail.iteration,
+          
+        };
+  
+     
+     
+      if (params.secondary_stratum==='All'&&params.stratum==='All'){
+            let strataJson = false
+            let slug = "scenario-"+params.scenario.toString()+"-spatial-it"+leftPad(params.iteration)+"-"+params.variable_detail_type
+
+            if (params.variable_detail != "1"){
+                let transID = "-"+params.variable_detail
+                slug += (transID)
+            }
+            let dateBegin =params.timestep_begin + "-01-01"
+            let dateEnd = params.timestep_end + "-01-01"
+            let urlPath = slug + "/" +dateBegin+ "/" + dateEnd +"/"
+            
+      
+              //scenario-6385-spatial-it0015-sc/2001-01-01/2010-01-01/
+              console.log(urlPath)
+              service.spatialDownload(urlPath, strataJson)
+
+
+      }else{
+        let selectedStrata
+        if(params.secondary_stratum==="All"){
+          selectedStrata = params.stratum
+
+        }else{
+          selectedStrata = params.secondary_stratum
+        }
+        
+        selectedStrata = selectedStrata.replace(/'/g, "").replace(/ /g, "")
+
+        
+
+        let url = `${window.locationEndpoint}${selectedStrata}/?format=json`
+     
+    
+      
+       fetch(url)
+        .then((resp) => resp.json()) // Transform the data into json
+        .then(function(data) {
+           
+            // projects.getDetailsForId(params.project).details.secondary_stratum.find((item) => item.id === params.secondary_stratum).geom
+            strataJson =JSON.stringify(data)
+            
+            let slug = "scenario-"+params.scenario.toString()+"-spatial-it"+leftPad(params.iteration)+"-"+params.variable_detail_type
+
+            if (params.variable_detail != "1"){
+                let transID = "-"+params.variable_detail
+                slug += (transID)
+            }
+            let dateBegin =params.timestep_begin + "-01-01"
+            let dateEnd = params.timestep_end + "-01-01"
+            let urlPath = slug + "/" +dateBegin+ "/" + dateEnd + "/"
+           
+           service.spatialDownload(urlPath, strataJson)
+
+
+
+
+
+
+          })
+       
+        
+    }    
+      
+  })
+
+  // Intializing the filters starts the app on page load
+  
+  
+  filters_download.init();
+  
+  function setTab2(evt, tabName) {
+
+      // Declare all variables
+      var i, tabcontent, tablinks;
+
+      // Get all elements with class="tabcontent" and hide them
+      tabcontent = document.getElementsByClassName("tabcontentdownload");
+
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+
+      // Get all elements with class="tablinks" and remove the class "active"
+      tablinks = document.getElementsByClassName("tablinks");
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+      }
+
+      // Show the current tab, and add an "active" class to the button that opened the tab
+      document.getElementById(tabName).style.display = "block";
+      evt.currentTarget.className += " active";
+      } 
+
+    //Run functions on tab click
+      const tabSummary = document.getElementById('tabTabular');
+      tabSummary.onclick = function (e) {
+        setTab2(e, "tabular_tab")
+      }
+
+      const tabMap = document.getElementById('tabSpatial');
+      tabMap.onclick = function (e) {
+
+        setTab2(e, "spatial_tab")
+
+
+      }
+
+      document.getElementById("tabTabular").click();
+  }
 /*smoothScroll.init({
   updateURL: false,
   easing: 'easeInOutCubic',
@@ -488,15 +726,22 @@ tabMap.onclick = function (e) {
 const tabGraph = document.getElementById('tabGraph');
 tabGraph.onclick = function (e) {
   setTab(e, "Graph")
+  
   loadGraphSection()
+  
 }
 
 const tabDownload = document.getElementById('tabDownload');
 tabDownload.onclick = function (e) {
   setTab(e, "Download")
+  console.log(download_init)
+  if (download_init ===true){
+  loadDownloadSection()
+  }
+  download_init = false
 }
 
-document.getElementById("tabGraph").click();
+document.getElementById("tabDownload").click();
 
 });
 

@@ -12,22 +12,12 @@ import './../components/multiline-area-chart/multiLine-area-chart.//css';
 
 
 // Import Components
-//import leafletMap from './../components/map/index';
-//import leafletFilters from './../components/map/leaflet_filters'//mport chart from './../components/multiline-area-chart/multiLine-area-chart';
 import { triggerEvent } from './../helpers/utils';
 
 /*
 * PRIVATE VARIABLES
 */
-/*const parentContainer = document.getElementById('one');
-const mapContainer = document.getElementById('map');
-const filtersContainer = document.getElementById('mapfilters');
-let sliderContainer = parentContainer.querySelector('.chroniton-slider');
-let slider;
-let controlsContainer = parentContainer.querySelector('.controls');
-const chartContainer = parentContainer.querySelector('.chart');
-let timeseriesChart;
-let loading;*/
+
 
 /*
 * EXPORT OBJECT

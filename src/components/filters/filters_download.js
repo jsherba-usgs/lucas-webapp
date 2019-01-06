@@ -208,7 +208,7 @@ function updateTimestepsSpatial(){
 
 function updateVariableSelect (){
 
-  variableSelectInput = document.querySelectorAll('input[name=variable_checkboxes]:checked')
+  variableSelectInput = document.querySelectorAll('input[name=variable_checkboxes_download]:checked')
   updateVariableDetail()
   updateVariableDetailInput()
 }
@@ -231,6 +231,7 @@ function updateVariableDetail() {
   
 
   const id = getCheckBoxVals(variableSelectInput);
+
   const getvariableDetail = details.variable.find((item) => item.id === id);
 
     
@@ -319,7 +320,7 @@ function updateVariableDetailSpatial() {
 
 function updateFields() {
   
-  projectId = this.options[this.selectedIndex].value;
+  projectId = '7096'//this.options[this.selectedIndex].value;
 
   details = projects.getDetailsForId(projectId).details;
 
@@ -493,7 +494,7 @@ function updateFields() {
     details.variable.forEach((item) => {
       const checkbox = document.createElement("input");
       checkbox.type = "radio";
-      checkbox.name = "variable_checkboxes";//item.name;
+      checkbox.name = "variable_checkboxes_download";//item.name;
       checkbox.value = item.id;
       checkbox.id =item.id;
       if (first){
@@ -592,7 +593,7 @@ model.init = () => {
   /*let iteration1 = document.getElementById('iteration1');
   let iteration2 = document.getElementById('iteration2');
   let iteration1Label = document.getElementById("iteration1Label")*/
-  filtersContainer = document.getElementById('filters');
+  filtersContainer = document.getElementById('filters_download');
   filtersContainer.innerHTML = content;
 
   /*iterationTypeSelect = filtersContainer.querySelector('select[name=iteration_type]');
@@ -639,12 +640,12 @@ model.init = () => {
   variableDetailSpatial.disabled = false;
 
   // Initialize container
-  filtersContainer2 = document.getElementById('filters_project');
-  filtersContainer2.innerHTML = projectFilterContent;
+  //filtersContainer2 = document.getElementById('filters_project');
+  //filtersContainer2.innerHTML = projectFilterContent;
   
 
   // Add list of projects to content
-  projectSelect = filtersContainer2.querySelector('select[name=project]');
+  /*projectSelect = filtersContainer2.querySelector('select[name=project]');
 
   projects.getList().forEach((project) => {
     const option = document.createElement('option');
@@ -656,9 +657,12 @@ model.init = () => {
 
 
 
-
+  
   projectSelect.onchange = updateFields;
-  projectSelect.onchange();
+  projectSelect.onchange();*/
+  projectSelect = '7096' 
+  updateFields()
+
 
   scenarioSelect.onchange = onScenarioChange//updateIterationInput;updateTimesteps;
   scenarioSelectSpatial.onchange = onScenarioChangeSpatial//updateIterationInputSpatial;updateTimestepsSpatial;
@@ -935,7 +939,7 @@ stratamap.addControl(new ourCustomControl());
 model.getValuesSpatial = () => (
   {
 
-    project: projectSelect.value,
+    project: projectSelect,
     scenario: getCheckBoxVals(scenarioSelectInputSpatial),
     stratum: stratumSelectSpatial.value,
     secondary_stratum: secStratumSelectSpatial.value,
@@ -952,7 +956,7 @@ model.getValuesSpatial = () => (
 model.getValues = () => (
   {
 
-    project: projectSelect.value,
+    project: projectSelect,
     scenario: getCheckBoxVals(scenarioSelectInput),//getOptionVals(scenarioSelect),
     stratum: stratumSelect.value,
     secondary_stratum: secStratumSelect.value,
