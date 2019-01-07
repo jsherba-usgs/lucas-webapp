@@ -18,7 +18,7 @@ import {downloadCSV, exportTableToCSV} from './../helpers/csv-service';
 /*
 * PRIVATE VARIABLES
 */
-const parentContainer = document.getElementById('two');
+const parentContainer = document.getElementById('four');
 const chartContainer = parentContainer.querySelector('.chart.multiples');
 const showTotals = parentContainer.querySelector('.total');
 const showChange = parentContainer.querySelector('.change');
@@ -49,7 +49,7 @@ const view = {
     timeSeriesBarChart = barChart()
 
     
-    const section2 = document.getElementById("two")
+    const section2 = document.getElementById("four")
 
     const scenarioGroupCheckbox = section2.querySelector('option[id=scenarioGroup]');
     
@@ -78,7 +78,7 @@ const view = {
     timeseriesChart.yAxisAnnotation(projectDetails.getUnit(variableType)); 
     timeSeriesBarChart.yAxisAnnotation(projectDetails.getUnit(variableType));
 
-    this.chartStatus('loaded');
+    //this.chartStatus('loaded');
     chartContainer.classList.remove('no-data');
     let maxY = d3.max(nestedData[0].values, (d) => d.key);
     let minY = d3.min(nestedData[0].values, (d) => d.key);
@@ -139,7 +139,7 @@ const view = {
         if (index > barLength/2){
           index = index-(barLength/2)
         }
-        console.log(barLength)
+       
         let filteredValues = series.values.filter(function (el) {return el.key === minY || el.key === maxY});
         let yearShort
        
@@ -151,7 +151,6 @@ const view = {
             }else{
                 yearShort = row.key
             }
-             console.log(index)
              
             decadalData.push(
               {
@@ -303,14 +302,14 @@ const view = {
 
     
 function updateGraphDisplay(){
-    
-      let totalChange = showTotals.options[showTotals.selectedIndex].value
-      let classScenario = groupScenario.options[groupScenario.selectedIndex].value
-      let graphType = showGraphType.options[showGraphType.selectedIndex].value
+      
+      let totalChange = "Totals"
+      let classScenario = "Group Scenario"
+      let graphType = "Line Graph"
       timeseriesChart.color(colorScale);
       totalBar = totalArea(nestedData, groupByScenario)
       totalLine = totalAreaLine(nestedData, groupByScenario)
-     
+      
       if (totalChange === "Totals"&&classScenario==="Group Scenario"){
         
         if (graphType === "Line Graph"){
@@ -451,7 +450,7 @@ function updateGraphDisplay(){
     }
    } 
   
-    showTotals.onclick = () => {
+   /* showTotals.onclick = () => {
       updateGraphDisplay()
       
     };
@@ -464,12 +463,12 @@ function updateGraphDisplay(){
 
   showGraphType.onclick = () => {
       updateGraphDisplay()
-  }
+  }*/
 
     // First time
     // Call bar charts - small multiples
 
-
+console.log("newtest")
 
 
    /* timeseriesChart.color(colorScale);

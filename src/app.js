@@ -25,6 +25,7 @@ import projects from './helpers/project-details';
 import section1 from './views/section1';
 import section2 from './views/section2';
 import section3 from './views/section3';
+import section4 from './views/section4';
 
 import config from './helpers/api-config';
 //import { loadtheme } from './theme/js/theme-lucas';
@@ -69,7 +70,100 @@ document.addEventListener('DOMContentLoaded', () => {
   /*
   * INTIALIZATIONS FOR SECTION 1
   */
+  function loadSummarySection() {
+   
 
+    let params = {
+        iteration: "1005,1050,1095",
+        pagesize: 1000,
+        scenario: "6370",
+        secondary_stratum: "All",
+        state_label_x: "Agriculture,Developed",
+        stratum: "All",
+        timestep:[2011, 2012, 2013, 2014,2015]
+      };
+   
+  
+    let details = projects.getDetailsForId("7096").details;
+    params.state_label_x = details.StateLabelX.join()
+    let min = details.timestep.min
+    let max = details.timestep.max
+   
+    let test = Array.from({length: 20}, (x,i) => i);
+    console.log(test)
+    console.log(details)
+    console.log(params)
+    //updateFiltersLegend(e.detail);
+    //updateProjectLegend(details);
+    
+    // Setup query params for fetching data from API
+      
+      
+      //let params = setParams(e, 'state_label_x')
+      
+      // Fetch data for state class and update charts
+      
+      service.loadStates(params)
+
+        .then((data) => {
+          
+          const percentile_dictionary = d3.nest()
+          .key(function(d) { return d.IDScenario; })
+          .key(function(d) { return d.StateLabelX; })
+          .key(function(d) { return d.Timestep; })
+          .key(function(d) { return d.Iteration; })
+          .rollup()
+          .map(data)
+         
+          data.forEach(function(element) {
+            let iteration_vals = params.iteration.split(',')
+            if (element.Iteration === 1050){
+            
+            element.max = percentile_dictionary[element.IDScenario][element.StateLabelX][element.Timestep][parseInt(iteration_vals[2])][0]['Amount']
+            element.min = percentile_dictionary[element.IDScenario][element.StateLabelX][element.Timestep][parseInt(iteration_vals[0])][0]['Amount']
+            element.Mean =percentile_dictionary[element.IDScenario][element.StateLabelX][element.Timestep][1050][0]['Amount']
+          }
+
+          })
+          data = data.filter(function(el) {
+              return el.Iteration === 1050;
+          });
+          
+         
+          const totalAreaByYear = d3.nest()
+            .key((d) => d.StateLabelX+" / "+d.IDScenario)
+            .key((d) => d.Timestep)
+            
+            .entries(data);
+          
+      
+          // Update section 2 charts
+          console.log(totalAreaByYear)
+          console.log(colorScaleDic['Land-Cover State'][0])
+          //section4.chartStatus('loading');
+          section4.updateChart(totalAreaByYear, colorScaleDic['Land-Cover State'][0], details, 'state_label_x');
+           
+
+         
+
+
+        })
+        .catch((error) => {
+          if (error.message.indexOf('No data') > -1) {
+            d3.selectAll('.chart')
+              .classed('no-data', true)
+              .select('svg')
+                .remove();
+          }
+          console.log(error);
+        });
+      
+       
+    
+   
+  
+
+  }
   function loadMapSection() {
     section1.init();
 
@@ -263,7 +357,7 @@ document.addEventListener('DOMContentLoaded', () => {
       let params = setParams(e, 'state_label_x')
       
       // Fetch data for state class and update charts
-      
+      console.log(params)
       service.loadStates(params)
 
         .then((data) => {
@@ -668,8 +762,8 @@ document.addEventListener('DOMContentLoaded', () => {
       } 
 
     //Run functions on tab click
-      const tabSummary = document.getElementById('tabTabular');
-      tabSummary.onclick = function (e) {
+      const tabTabular = document.getElementById('tabTabular');
+      tabTabular.onclick = function (e) {
         setTab2(e, "tabular_tab")
       }
 
@@ -714,6 +808,7 @@ function setTab(evt, tabName) {
 const tabSummary = document.getElementById('tabSummary');
 tabSummary.onclick = function (e) {
   setTab(e, "Summary")
+  loadSummarySection()
 }
 
 const tabMap = document.getElementById('tabMap');
@@ -726,7 +821,6 @@ tabMap.onclick = function (e) {
 const tabGraph = document.getElementById('tabGraph');
 tabGraph.onclick = function (e) {
   setTab(e, "Graph")
-  
   loadGraphSection()
   
 }
@@ -741,7 +835,7 @@ tabDownload.onclick = function (e) {
   download_init = false
 }
 
-document.getElementById("tabDownload").click();
+document.getElementById("tabSummary").click();
 
 });
 
