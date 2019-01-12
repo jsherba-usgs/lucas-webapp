@@ -6,7 +6,9 @@ const nodeEnv = process.env.NODE_ENV || 'development';
 const isProd = nodeEnv === 'production';
 
 module.exports = {
-  devtool: isProd ? 'hidden-source-map' : 'cheap-eval-source-map',
+  mode: 'development',
+  //devtool: isProd ? 'hidden-source-map' : 'cheap-eval-source-map',
+  devtool:'eval-source-map',
   context: path.join(__dirname, './src'),
   entry: {
     lucas: './app.js',

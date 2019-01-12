@@ -26,6 +26,8 @@ import section1 from './views/section1';
 import section2 from './views/section2';
 import section3 from './views/section3';
 import section4 from './views/section4';
+//import section5 from './views/section5';
+import section6 from './views/section6';
 
 import config from './helpers/api-config';
 //import { loadtheme } from './theme/js/theme-lucas';
@@ -76,23 +78,26 @@ document.addEventListener('DOMContentLoaded', () => {
     let params = {
         iteration: "1005,1050,1095",
         pagesize: 1000,
-        scenario: "6370",
         secondary_stratum: "All",
-        state_label_x: "Agriculture,Developed",
         stratum: "All",
-        timestep:[2011, 2012, 2013, 2014,2015]
       };
    
   
     let details = projects.getDetailsForId("7096").details;
-    params.state_label_x = details.StateLabelX.join()
-    let min = details.timestep.min
-    let max = details.timestep.max
+    
+
+    let scenarios = details.scenario.map(a => a.id).join();
    
-    let test = Array.from({length: 20}, (x,i) => i);
-    console.log(test)
-    console.log(details)
-    console.log(params)
+    params.scenario = scenarios
+
+    params.state_label_x = details.StateLabelX.join()
+    let min = parseInt(details.timestep[0].min)
+    let max = parseInt(details.timestep[0].max)
+    
+    let timesteps = Array.from(new Array((max+1)-min), (x,i) => i + min)
+
+    params.timestep = timesteps
+   
     //updateFiltersLegend(e.detail);
     //updateProjectLegend(details);
     
@@ -138,10 +143,10 @@ document.addEventListener('DOMContentLoaded', () => {
           
       
           // Update section 2 charts
-          console.log(totalAreaByYear)
-          console.log(colorScaleDic['Land-Cover State'][0])
+        
           //section4.chartStatus('loading');
-          section4.updateChart(totalAreaByYear, colorScaleDic['Land-Cover State'][0], details, 'state_label_x');
+          let containerID = "four"
+          section4.updateChart(totalAreaByYear, colorScaleDic['Land-Cover State'][0], details, 'state_label_x', containerID);
            
 
          
@@ -160,7 +165,111 @@ document.addEventListener('DOMContentLoaded', () => {
       
        
     
-   
+        //let params = setParams(e, 'stock_type')
+
+        // Fetch data for state class and update charts
+        service.loadCarbonStocks(params)
+          .then((data) => {
+
+          const percentile_dictionary = d3.nest()
+          .key(function(d) { return d.IDScenario; })
+          .key(function(d) { return d.StockType; })
+          .key(function(d) { return d.Timestep; })
+          .key(function(d) { return d.Iteration; })
+          .rollup()
+          .map(data)
+         
+          data.forEach(function(element) {
+            let iteration_vals = params.iteration.split(',')
+            if (element.Iteration === 1050){
+            
+            element.max = parseFloat(percentile_dictionary[element.IDScenario][element.StockType][element.Timestep][parseInt(iteration_vals[2])][0]['Amount'].toFixed(2));
+            element.min = parseFloat(percentile_dictionary[element.IDScenario][element.StockType][element.Timestep][parseInt(iteration_vals[0])][0]['Amount'].toFixed(2));
+            element.Mean =parseFloat(percentile_dictionary[element.IDScenario][element.StockType][element.Timestep][1050][0]['Amount'].toFixed(2));
+          }
+
+          })
+          data = data.filter(function(el) {
+              return el.Iteration === 1050;
+          });
+              
+            // Group data by stateclass and year, calculate total area (amount)
+           
+            const totalAreaByYear = d3.nest()
+              .key((d) => d.StockType+" / "+d.IDScenario)
+              .key((d) => d.Timestep)
+              .entries(data);
+            
+            
+            
+          // Update section 2 charts
+          let containerID = "five"
+          section4.updateChart(totalAreaByYear, colorScaleDic["Carbon Stock"][0], details, 'stock_type', containerID);
+            
+          })
+          .catch((error) => {
+            if (error.message.indexOf('No data') > -1) {
+              d3.selectAll('.chart')
+                .classed('no-data', true)
+                .select('svg')
+                  .remove();
+            }
+            console.log(error);
+          });
+
+
+          service.loadTransitions(params)
+          .then((data) => {
+             const percentile_dictionary = d3.nest()
+          .key(function(d) { return d.IDScenario; })
+          .key(function(d) { return d.TransitionGroup; })
+          .key(function(d) { return d.Timestep; })
+          .key(function(d) { return d.Iteration; })
+          .rollup()
+          .map(data)
+         
+          data.forEach(function(element) {
+            let iteration_vals = params.iteration.split(',')
+            if (element.Iteration === 1050){
+            
+            element.max = percentile_dictionary[element.IDScenario][element.TransitionGroup][element.Timestep][parseInt(iteration_vals[2])][0]['Amount']
+            element.min = percentile_dictionary[element.IDScenario][element.TransitionGroup][element.Timestep][parseInt(iteration_vals[0])][0]['Amount']
+            element.Mean =percentile_dictionary[element.IDScenario][element.TransitionGroup][element.Timestep][1050][0]['Amount']
+          }
+
+          })
+          data = data.filter(function(el) {
+              return el.Iteration === 1050;
+          });
+              
+              
+           const totalAreaByYearAll = d3.nest()
+              .key((d) => d.TransitionGroup+" / "+d.IDScenario)
+              
+              .key((d) => d.Timestep)
+               
+              .entries(data);
+           console.log(details)
+           let groupVariable = details.transition_group_summary
+          
+  
+            const totalAreaAll2 = totalAreaByYearAll.filter(function (d) { return groupVariable.includes(d["key"].split(' / ')[0])})
+            const totalAreaAll3 = totalAreaByYearAll.filter(function (d) { if (groupVariable.includes(d["key"].split(':')[0]) || groupVariable.includes(d["key"].split(' / ')[0])) return true}  )
+            
+            // Update section 1 charts
+           
+            
+
+          
+      
+          // Update section 2 charts
+          
+          //section3.updateChart(totalAreaAll2, colorScaleDic[e.detail.variable][0], details, 'transition_group');
+
+          section6.updateChart(totalAreaAll3, colorScaleDic["Land-Cover Transition Types"][0], groupVariable, details, 'transition_group');
+
+              })
+          
   
 
   }
@@ -283,7 +392,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let projectStart = "7096"
     let scenarioStart = 'option[value="7096"]'
     filters.init(scenarioStart,projectStart);
-
+    section2.init()
     let lucasVariable = 'Land-Cover State'
 
      function variableHasChanged(e){
@@ -357,7 +466,7 @@ document.addEventListener('DOMContentLoaded', () => {
       let params = setParams(e, 'state_label_x')
       
       // Fetch data for state class and update charts
-      console.log(params)
+      
       service.loadStates(params)
 
         .then((data) => {
@@ -401,7 +510,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
         })
-        .catch((error) => {
+       /* .catch((error) => {
           if (error.message.indexOf('No data') > -1) {
             d3.selectAll('.chart')
               .classed('no-data', true)
@@ -409,7 +518,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 .remove();
           }
           console.log(error);
-        });
+        });*/
       
        
     }
@@ -513,7 +622,7 @@ document.addEventListener('DOMContentLoaded', () => {
               .entries(data);
 
            let groupVariable = e.detail.variable_detail.split(",")
-          
+         
   
             const totalAreaAll2 = totalAreaByYearAll.filter(function (d) { return groupVariable.includes(d["key"].split(' / ')[0])})
             const totalAreaAll3 = totalAreaByYearAll.filter(function (d) { if (groupVariable.includes(d["key"].split(':')[0]) || groupVariable.includes(d["key"].split(' / ')[0])) return true}  )
@@ -808,7 +917,7 @@ function setTab(evt, tabName) {
 const tabSummary = document.getElementById('tabSummary');
 tabSummary.onclick = function (e) {
   setTab(e, "Summary")
-  loadSummarySection()
+ // loadSummarySection()
 }
 
 const tabMap = document.getElementById('tabMap');
@@ -835,7 +944,7 @@ tabDownload.onclick = function (e) {
   download_init = false
 }
 
-document.getElementById("tabSummary").click();
-
+document.getElementById("tabGraph").click();
+//loadSummarySection()
 });
 

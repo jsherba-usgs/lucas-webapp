@@ -456,6 +456,7 @@ const projectDetails = [
         'VEGETATION CHANGE: Shrubland->Forest',
         'VEGETATION CHANGE: Shrubland->Grassland'
       ],
+      transition_group_summary: ['AGRICULTURAL CONTRACTION','AGRICULTURAL EXPANSION','URBANIZATION'],
       //height: 1620,
       //width: 2200, 
       height: 1600,

@@ -310,7 +310,14 @@ function updateGraphDisplay(){
       timeseriesChart.color(colorScale);
       totalBar = totalArea(nestedData, groupByScenario)
       totalLine = totalAreaLine(nestedData, groupByScenario)
-     
+      
+
+      let legendData= d3.nest()
+    .key((d) => d.scenario)
+    .key((d) => d.state)
+    .entries(totalBar);
+    updateLineandBarLegend(legendData)
+
       if (totalChange === "Totals"&&classScenario==="Group Scenario"){
         
         if (graphType === "Line Graph"){
@@ -499,25 +506,22 @@ function updateGraphDisplay(){
       .datum(barChartTotals)
       .call(timeSeriesBarChart
         .color(colorScale)
-    );
-
-    let legendData= d3.nest()
-    .key((d) => d.scenario)
-    .key((d) => d.state)
-    .entries(totalBar);*/
+    );*/
+  
 
   updateGraphDisplay()
+
   let ticks = details.xDomain[0][variableType][0].ticks
     timeseriesChart.updateTicks(ticks)
   
   function updateLineandBarLegend(legendData){
     
     const collapseSection2 = document.getElementById('collapseLineGraphSection2')
-    collapseSection2.classList.add("in");
+    //collapseSection2.classList.add("in");
     d3.selectAll(".legend-section2-body > *").remove();
     
     let sectionLegend = document.getElementById("legend-section2-body")
-
+    console.log("newtest")
     legendData.forEach(function(scenarioObject){
       
       let scenario = projectDetails.getNameForID(scenarioObject['key'])
@@ -581,10 +585,10 @@ function updateGraphDisplay(){
         
       })
     })
-   
-     collapseSection2.classList.remove("in");
+ 
+     //collapseSection2.classList.remove("in");
     }    
-    updateLineandBarLegend(legendData)
+    //updateLineandBarLegend(legendData)
 
 
   function updateLineandBarLegendSection1(legendData){
@@ -639,7 +643,7 @@ function updateGraphDisplay(){
    
      collapseSection1.classList.remove("in");
     }    
-    updateLineandBarLegendSection1(legendData)
+    //updateLineandBarLegendSection1(legendData)
 
 
 
