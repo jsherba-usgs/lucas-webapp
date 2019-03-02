@@ -944,7 +944,7 @@ tabDownload.onclick = function (e) {
   download_init = false
 }
 
-document.getElementById("tabGraph").click();
+document.getElementById("tabMap").click();
 //loadSummarySection()
 });
 

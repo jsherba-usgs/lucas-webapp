@@ -96,11 +96,15 @@ function range(start, stop, step){
 /**
 * PUBLIC FUNCTIONS
 **/
-model.init = ({ selector, lat = 22.234262, lng = -159.784857, scenario = '6368', iteration = '1', year = '2011', project = '7096' }) => {
+//model.init = ({ selector, lat = 22.234262, lng = -159.784857, scenario = '6368', iteration = '1', year = '2011', project = '7096' }) => {
+model.init = (selector, lat, lng, scenario, iteration, year, project) => {
+  console.log(selector)
   // Initialize container
   if (!selector) {
+    console.log("test")
     mapContainer = document.getElementById('map');
   } else {
+
     mapContainer = selector;
   }
 

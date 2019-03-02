@@ -69,15 +69,19 @@
                               <option class="change area" name="change-checkbox" id="netChange" >Net Change</option>
                         </select>
                         <div class="chart multiples"></div>
-
-                        <div class='inner inner-section-2'>
+                      </div> 
+                      <div class="col onethird" id="summaryDescription">test</div> 
+                       </div> 
+                       <div class='inner inner-section-2'>
                             <div class="chart-legends">
 
                                 <div class="row">
                                     <article class="col">
-                                        <p class="legendcollapsename">
+
+
+                                         <p class="legendcollapsename">
                                             <!--<div class="accordion-heading">-->
-                                            <a class="legendcollapsenametext accordion-toggle" data-toggle="collapse" href="#collapseLineGraphSection4" data-parent="#accordion2">
+                                            <a class="legendcollapsenametext" data-toggle="collapse" href="#collapseLineGraphSection4" aria-expanded="false" aria-controls="collapseLineGraphSection4">
                                       Show legend & data
                                     </a>
                                             <a id="downloadsection4" class="downloadsection">
@@ -88,9 +92,9 @@
                                 </div>
                                 <div class="row">
                                     <article class="col">
-                                        <div class="collapsedivsgraphs collapse in" id="collapseLineGraphSection4">
+                                        <div class="collapsedivsgraphs collapse" id="collapseLineGraphSection4">
 
-                                            <div id="accordion-toggle" class="legends-section2">
+                                            <div id="accordion-toggle" class="legends-section4">
 
                                                 <!--<div class="inline legend-stateclass2"></div>
                                          <div class="inline legend-scenario2"></div>-->
@@ -123,10 +127,6 @@
                                 </div>
                             </div>
                         </div>
-                         
-                      </div> 
-                      <div class="col onethird" id="summaryDescription">test</div> 
-                       </div> 
             </section>
              <section id="six">
                 <header class="major">
@@ -276,14 +276,14 @@
                 <section>
                     <div class="inner">
                         <header class="major">
-                            <h2>Change Accross the Landscape</h2>
+                            <h2>Compare scenarios of land-use and terrestrial carbon</h2>
                         </header>
                         <!-- <p>
                       Land-use and carbon were modeled between 2011 and 2061 for the Hawai'ian Islands at the 1x1 km scale. The model was run over 20 monte carlo iterations to produce a distribution of projected results
 
                     </p>-->
 
-                        The map below shows the change in land-use or carbon over the simulation period for the selected combination of scenario, iteration, and strata. Use the controls below the map to change the year, scenario, iteration or land-use layer on the map. The chart below displays trajectories of landscape change through time. Use the play, pause and stop controls or move the slider to animate the map through time.
+                        The map below shows the change in land-use or carbon over the simulation period for the selected combination of scenario, iteration, and strata. Use the controls below the map to change the year, scenario, iteration or land-use layer on the map. Add a second map frame to compare two scenarios, timesteps, or layers. 
 
                     </div>
                 </section>
@@ -292,52 +292,148 @@
                     <div class="inner-section1">
 
                         <div class="row">
-                            <article class="flex-article2" id="mapframebuttonbox">
-                                <div class="framecontrols inline">
+                            <article class="flex-article3" id="mapframebuttonbox">
+                                        <div class="framecontrols inline">
 
-                                    <button id="addremoveframe" type="button">
-                                        Add Map Frame
-                                    </button>
+                                            <button id="addremoveframe" type="button">
+                                                Add Map Frame
+                                            </button>
 
-                                </div>
+                                        </div>
                             </article>
-                            <select class="mapfilters" name="maplayer">
-                                <option value="1">Zoom to</option>
-                                <option value="7129">AGRICULTURAL CONTRACTION</option>
-                                <option value="7134">AGRICULTURAL EXPANSION</option>
-                                <option value="7141">MOISTURE ZONE: Dry-&gt;Mesic</option>
-                                <option value="7148">MOISTURE ZONE: Mesic-&gt;Dry</option>
-                                <option value="7151">MOISTURE ZONE: Mesic-&gt;Wet</option>
-                                <option value="7158">MOISTURE ZONE: Wet-&gt;Mesic</option>
-                                <option value="7171">URBANIZATION</option>
-                            </select>
+                            
+                            <article class="flex-article4">
+                                <select class="mapfilters" name="maplayer">
+                                    <option value="1">Zoom to</option>
+                                    <option value="7129">AGRICULTURAL CONTRACTION</option>
+                                    <option value="7134">AGRICULTURAL EXPANSION</option>
+                                    <option value="7141">MOISTURE ZONE: Dry-&gt;Mesic</option>
+                                    <option value="7148">MOISTURE ZONE: Mesic-&gt;Dry</option>
+                                    <option value="7151">MOISTURE ZONE: Mesic-&gt;Wet</option>
+                                    <option value="7158">MOISTURE ZONE: Wet-&gt;Mesic</option>
+                                    <option value="7171">URBANIZATION</option>
+                                </select>
+                           </article>
+                            
                         </div>
                         <div class="row">
-                            <article class="flex-article1">
-                                <div class="rowvertical1">
+                            
 
-                                    <article class="flex-mapcontrols2">
-                                        <div class="row" id="mapfilters"></div>
-                                    </article>
+                            
+                            <article id="maparticle" class="flex-article2">
+                                    <div id="map"></div>
+                                    <!--<div class="rowvertical1">
+                                        <article class="flex-mapcontrols2">
+                                           
+                                            <div class="row" id="mapfilters"></div>
+                                            <div class="chroniton-slider"></div>
+                                            <div class="controls"></div>
+                                        </article>
 
-                                </div>
-                                <div class="rowvertical2">
-                                    <div class="controls"></div>
-                                </div>
+                                    </div>-->
+                                    
+                                    
+                            </article>
+                            <!--<article  class="flex-article1">
+                                    
+                                            
+                                    
+
+                            </article>-->
+                            <article  class="flex-article2">
+                                    <div class="row" id="mapfilters"></div>
+                                            
+                                    
 
                             </article>
-                            <article id="maparticle" class="flex-article2">
-
-                                <div class="box">
-
-                                    <div id="map"></div>
-                                    <div class="chroniton-slider"></div>
-
-                                </div>
-
+                            <article  class="flex-article5">
+                                   <div class="chroniton-slider"></div>
+                                    <div class="controls"></div>
                             </article>
 
                         </div>
+                       
+
+                    </div>
+
+                </section>
+                <section>
+                    <div class="inner">
+                        <header class="major">
+                            <h2>Animate scenarios of land-use and terrestrial carbon</h2>
+                        </header>
+                    
+
+                        The map below displays trajectories of landscape change through time. Select a layer, and iteration and use the play, pause and stop controls or move the slider to animate the map through time.
+
+                    </div>
+                </section>
+                <section id="two">
+
+                    <div class="inner-section1">
+
+                        <div class="row">
+                            <article class="flex-article3" id="mapframebuttonbox">
+                                        <div class="framecontrols inline">
+
+                                            <button id="addremoveframe" type="button">
+                                                Add Map Frame
+                                            </button>
+
+                                        </div>
+                            </article>
+                            
+                            <article class="flex-article4">
+                                <select class="mapfilters" name="maplayer">
+                                    <option value="1">Zoom to</option>
+                                    <option value="7129">AGRICULTURAL CONTRACTION</option>
+                                    <option value="7134">AGRICULTURAL EXPANSION</option>
+                                    <option value="7141">MOISTURE ZONE: Dry-&gt;Mesic</option>
+                                    <option value="7148">MOISTURE ZONE: Mesic-&gt;Dry</option>
+                                    <option value="7151">MOISTURE ZONE: Mesic-&gt;Wet</option>
+                                    <option value="7158">MOISTURE ZONE: Wet-&gt;Mesic</option>
+                                    <option value="7171">URBANIZATION</option>
+                                </select>
+                           </article>
+                            
+                        </div>
+                        <div class="row">
+                            
+
+                            
+                            <article id="maparticle" class="flex-article2">
+                                    <div id="map2"></div>
+                                    <!--<div class="rowvertical1">
+                                        <article class="flex-mapcontrols2">
+                                           
+                                            <div class="row" id="mapfilters"></div>
+                                            <div class="chroniton-slider"></div>
+                                            <div class="controls"></div>
+                                        </article>
+
+                                    </div>-->
+                                    
+                                    
+                            </article>
+                            <!--<article  class="flex-article1">
+                                    
+                                            
+                                    
+
+                            </article>-->
+                            <article  class="flex-article2">
+                                    <div class="row" id="mapfilters"></div>
+                                            
+                                    
+
+                            </article>
+                            <article  class="flex-article5">
+                                   <div class="chroniton-slider"></div>
+                                    <div class="controls"></div>
+                            </article>
+
+                        </div>
+                       
 
                     </div>
 
@@ -366,10 +462,10 @@
                 </section>
                
                 <section id="filters">
-                test
+
                     <div class="collapsedivsgraphs collapse" id="collapseFilterGraphSection2">
 
-                        test
+                      
 
                     </div>
                 </section>

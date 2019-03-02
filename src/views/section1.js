@@ -12,6 +12,7 @@ import projectDetails from './../helpers/project-details.js';
 
 // Import Components
 import leafletMap from './../components/map/index';
+import leafletMap2 from './../components/map/index';
 import leafletFilters from './../components/map/leaflet_filters'
 import chart from './../components/multiline-area-chart/multiLine-area-chart';
 import { triggerEvent } from './../helpers/utils';
@@ -19,8 +20,10 @@ import projects from './../helpers/project-details';
 /*
 * PRIVATE VARIABLES
 */
-const parentContainer = document.getElementById('one');
-const mapContainer = document.getElementById('map');
+const tabContainer = document.getElementById('Map');
+const parentContainer = tabContainer.querySelector('#two');
+const mapContainer = tabContainer.querySelector('#map');
+const mapContainer2 = tabContainer.querySelector('#map2');
 const filtersContainer = document.getElementById('mapfilters');
 const projectContainer = document.getElementById('filters_project');
 let sliderContainer = parentContainer.querySelector('.chroniton-slider');
@@ -43,8 +46,10 @@ let xDomainValues
 const view = {
   init() {
     // Init map
-    
-    leafletMap.init(mapContainer);
+    console.log(mapContainer)
+    leafletMap.init(mapContainer,22.234262,-159.784857,'6368','1','2011','7096' );
+    leafletMap2.init(mapContainer2,22.234262,-159.784857,'6368','1','2011','7096' );
+    //leafletMap2.init(mapContainer2);
     let startYear = 2011
     let endYear = 2061
     let sliderVals = []
@@ -80,6 +85,7 @@ const view = {
 
         
           leafletMap.preLoadRasters(slider, d, startYear, endYear)
+          leafletMap2.preLoadRasters(slider, d, startYear, endYear)
           
           }
           initiateChart=false
@@ -91,6 +97,7 @@ const view = {
             sliderYear = year
             if (sliderVals.indexOf(year) > -1 && year!==sliderYear) {
               leafletMap.updateRaster({ year })
+              leafletMap2.updateRaster({ year })
              }
             
         } 
@@ -101,6 +108,7 @@ const view = {
 
             if (sliderVals.indexOf(year) > -1 && year!==sliderYear) {
               leafletMap.updateRaster({ year })
+              leafletMap2.updateRaster({ year })
               sliderYear = year
              }
          
@@ -190,6 +198,7 @@ const view = {
 
             
             leafletMap.preLoadRasters(slider, d, startYear, endYear)
+            leafletMap2.preLoadRasters(slider, d, startYear, endYear)
             
             }
             initiateChart=false
@@ -203,6 +212,7 @@ const view = {
               if (sliderVals.indexOf(year) > -1 && year!==sliderYear) {
 
                 leafletMap.updateRaster({ year })
+                leafletMap2.updateRaster({ year })
                }
               
           } 
@@ -213,6 +223,7 @@ const view = {
               if (sliderVals.indexOf(year) > -1 && year!==sliderYear) {
                
                 leafletMap.updateRaster({ year })
+                leafletMap2.updateRaster({ year })
                 sliderYear = year
                }
           
@@ -329,22 +340,27 @@ const view = {
   },
   removeLayers(){
     leafletMap.removeTimeSeriesRasters()
+    leafletMap2.removeTimeSeriesRasters()
   },
   resizeMap(){
     leafletMap.resizeMap()
+    leafletMap2.resizeMap()
   },
   updateMap(options) {
     leafletMap.updateRaster(options);
+    leafletMap2.updateRaster(options);
   },
   updateIndividualMap(options) {
 
     leafletFilters.updateIndividualLegend(options)
     leafletMap.updateIndividualRaster(options);
+    leafletMap2.updateIndividualRaster(options);
     
   },
   reloadMap(options, addMapLegend) {
     
     leafletMap.reloadMap(options);
+    leafletMap2.reloadMap(options);
     
     leafletFilters.init(options, addMapLegend)
 

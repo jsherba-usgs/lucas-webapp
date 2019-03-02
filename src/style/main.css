@@ -280,20 +280,48 @@
 	
 
 	.flex-article1{
-		flex: calc(100% * 0.2);
+		flex: calc(100% * .2);
 		
-	  height:600px;
+		
+		
 	  padding: 0px;
 	  width: 250px;
-	      margin-top: 10px;
-    margin-right: 5px;
-    margin-bottom: 0px;
-    margin-left: 5px;
+	  
+	  margin-top: 10px;
 	  
 	}
 
 	.flex-article2{
-		flex: calc(100% * 0.5);
+		flex: calc(100% * 1);
+		
+		
+		
+	  padding: 0px;
+	  width: 250px;
+	  
+	  margin-top: 10px;
+	  
+	  
+	}
+	.flex-article3{
+		flex: calc(100% * .7);
+		
+		
+		
+	  padding: 0px;
+	  width: 250px;
+	  
+	  margin-top: 10px;
+	  
+	  
+	}
+
+	.flex-article4{
+		
+		margin-top: 50px;
+	}
+	.flex-article5{
+		flex: calc(100% * .3);
 		
 		
 		
@@ -324,15 +352,19 @@
 	.row {
 		display: flex;
 		flex-direction: row;
+		margin-right: 0px; 
+    	margin-left: 0px; 
+    
 	}
 
 	.rowvertical1 {
+		margin-top: 15px;
 		display: flex;
 		flex-direction: column;
 		justify-content:space-around;
-		/*background: #F5F5F5;*/
-		height:600px;
-		border: 1px solid rgba(131, 142, 222, .3)
+		
+		
+		
 	}
 	.rowvertical2{
 		.rowvertical1 {
@@ -508,7 +540,7 @@
 	label {
 		color: #444;
 		display: block;
-		font-size: 0.8em;
+		font-size: 0.7em;
 		font-weight: 600;
 		letter-spacing: 0.25em;
 		margin: 0 0 1em 0;
@@ -1065,7 +1097,7 @@
 		box-shadow: none;
 		cursor: pointer;
 		display: inline-block;
-		font-size: 0.8em;
+		font-size: 0.6em;
 		font-weight: 600;
 		height: 3.5em;
 		letter-spacing: 0.25em;
@@ -1721,7 +1753,7 @@
 			padding: 0em 0 0em 0 ;
 			margin: 0 auto;
 			max-width: 65em;
-			width: calc(100% - 6em);
+			width: calc(100% - 25em);
 		}
 
 		#wrapper > * > .inner-section-2{
@@ -2202,7 +2234,8 @@
 * Section 1 Chart and Map Elements
 **********************************/
 #one #map {
-	height: 600px;
+	height: 500px;
+	box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
 }
 
 /**********************************
@@ -2509,8 +2542,13 @@
         margin: 0;
         float: left;
         background: white;
-        border: 1px solid #eee;
+        
       }
+
+ #map_1{
+ 	  border-left: 1px solid #eee;
+
+ }
  .info{
  	color:white;
  	background-color:#87a449;
@@ -2678,6 +2716,7 @@ margin:10px;
 	}
 .label{
 	font-weight: 200;
+
 }
 
 input.mapfilters[type="text"]:focus,
@@ -2691,8 +2730,9 @@ input.mapfilters[type="number"]:focus,
 			box-shadow: none;
 		}
 input.mapfilters, select.mapfilters{
+	
 	width:10em;
-	font-size: 1em;
+	font-size: .7em;
 	border:none;
 	height: 1.5em;
 	border-bottom: 2px solid #838ede;
@@ -2724,22 +2764,22 @@ height: auto;
 .control-label{
 	float:left;
 	text-align: left;
-	font-size: 1em;
 	padding-top:0px;
 	margin:0px;
+
+    font-size: .6em;
 }
 form .form-group{
-	margin-top:.1em;
-	margin-bottom:1em;
-	margin-left:.2em;
+	margin-top: 0em;
+	margin-bottom:.5em;
+	margin-left:0em;
 	margin-right:0px;
+	height: 1em;
 }
 .mapselect-wrapper::before{
 	display:none;
 }
-#mapfilters{margin-left: 20px;
-margin-right: 20px;
-}
+
 .mapform{
 	margin-top: .2em;
 	
@@ -2871,8 +2911,9 @@ display: block;
 /*replace the content value with the
 corresponding value from the list below*/
 .framecontrols{
-	margin-left:5px;
+	margin-left:0px;
 	margin-bottom:0em;
+
 }
 
 .infoButtonRow {

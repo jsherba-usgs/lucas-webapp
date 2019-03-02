@@ -37,7 +37,7 @@ const view = {
   init() {
 
 		
-		const section3Table = document.getElementById("downloadsection2")
+		const section3Table = document.getElementById("downloadsection4")
 		section3Table.onclick = function(e) {
 			e.preventDefault();
 			
@@ -376,17 +376,17 @@ function  totalAreaLine(nestedData, groupByScenario, transitionGroups){
 
         // Call horizontal bar charts - small multiples
    updateGraphDisplayTransition()
-   console.log("testtesttest")
-    let ticks = details.xDomain[0][variableType][0].ticks
-    timeseriesChart.updateTicks(ticks)
+   
+    //let ticks = details.xDomain[0][variableType][0].ticks
+    //timeseriesChart.updateTicks(ticks)
 
  function updateLineandBarLegend(legendData){
     
-    const collapseSection3 = document.getElementById('collapseLineGraphSection2')
+    const collapseSection3 = document.getElementById('collapseLineGraphSection4')
     collapseSection3.classList.add("in");
-    d3.selectAll(".legend-section3-body > *").remove();
+    d3.selectAll(".legend-section4-body > *").remove();
     
-    let sectionLegend = document.getElementById("legend-section3-body")
+    let sectionLegend = document.getElementById("legend-section4-body")
    
     legendData.forEach(function(stateObject, indexIDGroup){
       
