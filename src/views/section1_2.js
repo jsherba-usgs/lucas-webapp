@@ -11,7 +11,7 @@ import './../components/multiline-area-chart/multiLine-area-chart.css';
 import projectDetails from './../helpers/project-details.js';
 
 // Import Components
-import leafletMap from './../components/map/index';
+import leafletMap from './../components/map/index_animation';
 import leafletFilters from './../components/map/leaflet_filters'
 import chart from './../components/multiline-area-chart/multiLine-area-chart';
 import { triggerEvent } from './../helpers/utils';
@@ -20,9 +20,9 @@ import projects from './../helpers/project-details';
 * PRIVATE VARIABLES
 */
 const tabContainer = document.getElementById('Map');
-const parentContainer = tabContainer.querySelector('#one');
-const mapContainer = tabContainer.querySelector('#map');
-const filtersContainer = document.getElementById('mapfilters');
+const parentContainer = tabContainer.querySelector('#one-two');
+const mapContainer = tabContainer.querySelector('#map2');
+const filtersContainer = document.getElementById('mapfilters2');
 const projectContainer = document.getElementById('filters_project');
 let sliderContainer = parentContainer.querySelector('.chroniton-slider');
 let slider;
@@ -44,7 +44,7 @@ let xDomainValues
 const view = {
   init() {
     // Init map
-
+    console.log(mapContainer)
     leafletMap.init(mapContainer,22.234262,-159.784857,'6368','1','2011','7096' );
     
     let startYear = 2011
@@ -56,11 +56,105 @@ const view = {
     let initiateChart = true
     
     
-    
+     let sliderYear = 2011
+    // Init date slider
+    slider = chroniton()
+      // TODO: Refactor - get range of years from data, instead of hardcoding values below
+      .loop(true)
+      .domain([new Date(2011, 0), new Date(2061, 0)])
+      .labelFormat(d3.time.format('%Y'))
+      .width(sliderContainer.offsetWidth)
+      .margin({ top: 10, right: 25, bottom: 10, left: 25})
+      // TODO: Refactor axis tick values to add ticks every n years
+      // instead of hardcoding values below
+      .tapAxis((axis) => axis.tickValues([new Date(2011, 0), new Date(2021, 0), new Date(2031, 0), new Date(2041, 0), new Date(2051, 0), new Date(2061, 0)]))
+      .on('change', (d) => {
+       /* if (initiateChart === false){
+          slider.playPause()
+        }*/
+        
+        
+        const year = d.getFullYear();
+        
+        let loadAll = function(slider,d){
+          
+          if (initiateChart === false){
+
+        
+          leafletMap.preLoadRasters(slider, d, startYear, endYear)
+          
+          
+          }
+          initiateChart=false
+
+        }
+     
+          
+        let updateRasterOpacity = function(){
+            sliderYear = year
+            if (sliderVals.indexOf(year) > -1 && year!==sliderYear) {
+              leafletMap.updateRaster({ year })
+             
+             }
+            
+        } 
+
+        
+        loadAll(slider, d)
+
+
+            if (sliderVals.indexOf(year) > -1 && year!==sliderYear) {
+              leafletMap.updateRaster({ year })
+              
+              sliderYear = year
+             }
+         
+       // timeseriesChart.moveTooltip(year);
+        
+      })
+      .playbackRate(5);
 
    
 
+   document.getElementById("map2").onclick = function () {
+      
+      let layerLength = leafletMap.mapLayers()
+     
+      if (layerLength > 0){
+      leafletMap.removeTimeSeriesRasters()
+      leafletFilters.triggerChange()
+
+
+    }
+   }
+    // Create slider
+    // TODO: Set slider domain and change function after data comes back from API,;
+    //       move create slider to update function
    
+   
+    d3.select(sliderContainer)
+      .call(slider);
+
+     // Add slider controls
+    d3.select(controlsContainer)
+        .append('button')
+        .html('<i class="icon fa-play"></i>')
+        .attr('class', 'small')
+        .on('click', () => slider.play());
+
+    d3.select(controlsContainer)
+        .append('button')
+        .html('<i class="icon fa-pause"></i>')
+        .attr('class', 'small')
+        .attr('id', 'pause_button')
+        .on('click', () => slider.pause());
+
+    d3.select(controlsContainer)
+        .append('button')
+        .html('<i class="icon fa-stop"></i>')
+        .attr('class', 'small')
+        .attr('id', 'stop_button')
+        .on('click', () => slider.stop());
   },
   sliderupdate(details, variableType){
     
@@ -251,7 +345,7 @@ const view = {
   },
   updateMap(options) {
     leafletMap.updateRaster(options);
-   
+    
   },
   updateIndividualMap(options) {
 
@@ -263,7 +357,8 @@ const view = {
   reloadMap(options, addMapLegend) {
     
     leafletMap.reloadMap(options);
-    leafletFilters.init(options, addMapLegend,'mapfilters')
+    console.log(options)
+    leafletFilters.init(options, addMapLegend, 'mapfilters2')
 
     
   },

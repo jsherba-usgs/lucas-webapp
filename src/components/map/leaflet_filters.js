@@ -230,14 +230,14 @@ collapseDiv.classList.remove("in");
 
 }
 
-model.init = (options, addMapLegends) => {
+model.init = (options, addMapLegends, filtersid) => {
   // Initialize container
  //const addMapLegends2 = addMapLegends()
  
  let scenarioOptions = options.scenario.split(",").slice(0,3)
 
- 
- filtersContainer = document.getElementById('mapfilters');
+
+ filtersContainer = document.getElementById(filtersid);
 
 while (filtersContainer.hasChildNodes()) {
     filtersContainer.removeChild(filtersContainer.lastChild);

@@ -101,7 +101,7 @@ model.init = (selector, lat, lng, scenario, iteration, year, project) => {
   
   // Initialize container
   if (!selector) {
-    mapContainer = document.getElementById('map');
+    mapContainer = document.getElementById('map2');
   } else {
 
     mapContainer = selector;
@@ -123,7 +123,7 @@ model.init = (selector, lat, lng, scenario, iteration, year, project) => {
     subdomains: 'abc',
     layers: [cartoDBPositron, stateclassTiles],
   });
- console.log(map)
+ 
   maps = [map]
 
   settings = {
@@ -434,8 +434,8 @@ if (update) {
   let width = project.details.width
   let height = project.details.height
   
-   d3.selectAll("#map > *").remove();
-  mapContainer = document.getElementById('map');
+   d3.selectAll("#map2 > *").remove();
+  mapContainer = document.getElementById('map2');
   settings.iteration_number = leftPad("1")
   
  // mapContainer.remove();
@@ -452,7 +452,7 @@ if (update) {
 
     settings.iteration_array[i] = settings.iteration_number
 
-    var id = "map_"+ i.toString();
+    var id = "map_3"+ i.toString();
     var test = "test_"+ i.toString();
     var m = document.createElement('div')
     m.className="map"
@@ -512,7 +512,7 @@ const Esri_WorldImagery = L.tileLayer(
 
 
 // https: also suppported.
-
+console.log(id)
 maps[i] =  L.map(id, {
       center: ["43.5754794945", "-125.260128026"],
       zoom: 9,

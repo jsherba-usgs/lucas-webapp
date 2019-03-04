@@ -23,6 +23,7 @@ import filters_download from './components/filters/filters_download';
 import projects from './helpers/project-details';
 // Import views
 import section1 from './views/section1';
+import section1_2 from './views/section1_2';
 import section2 from './views/section2';
 import section3 from './views/section3';
 import section4 from './views/section4';
@@ -275,7 +276,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   function loadMapSection() {
     section1.init();
-
+    section1_2.init();
     const legend = d3.legend.color()
     const stateclassColorScale = colorScaleDic["Land-Cover State"][0]
 
@@ -318,12 +319,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     addEventListener(document, 'mapfilters.change', (e) => {
-
+      console.log("test")
       section1.removeLayers()
       section1.updateIndividualMap(e.detail, addMapLegends)
     })
 
     document.getElementById("one").style.display = 'block';
+    document.getElementById("one-two").style.display = 'block';
     //  document.getElementById("two").style.display = 'block';
     //  document.getElementById("three").style.display = 'block';
 
@@ -369,6 +371,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('addremoveframe').onclick = addframe;
 
     section1.reloadMap(initialDetails, addMapLegends)
+    
+    section1_2.reloadMap(initialDetails, addMapLegends)
 
     // Open, close overlay
     function overlayOpen() {
